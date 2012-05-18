@@ -14,101 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cassert>
-#include "LevenshteinIndex.hh"
+/*
+ * This file tests the error tolerant matching of the Levenshtein index.
+ */
 
-void basic_test() {
+#include"LevenshteinIndex.hh"
+
+void test_index() {
     LevenshteinIndex ind;
-    std::string word1("word");
-    std::string word2("another");
-
-    assert(!ind.has_word(word1));
-    assert(!ind.has_word(word2));
-
-    ind.insert_word(word1);
-    assert(ind.has_word(word1));
-    assert(!ind.has_word(word2));
-
-    ind.insert_word(word2);
-    assert(ind.has_word(word1));
-    assert(ind.has_word(word2));
-}
-
-void short_test() {
-    LevenshteinIndex ind;
-    std::string word("a");
-
-    assert(!ind.has_word(word));
-
-    ind.insert_word(word);
-    assert(ind.has_word(word));
-}
-
-void prefix_test() {
-    LevenshteinIndex ind;
-    std::string word("ab");
-    std::string prefix("a");
-
-    assert(!ind.has_word(word));
-    assert(!ind.has_word(prefix));
-
-    ind.insert_word(word);
-    assert(ind.has_word(word));
-    assert(!ind.has_word(prefix));
-
-    ind.insert_word(prefix);
-    assert(ind.has_word(word));
-    assert(ind.has_word(prefix));
-}
-
-void suffix_test() {
-    LevenshteinIndex ind;
-    std::string word("abc");
-    std::string word2("abcd");
-
-    assert(!ind.has_word(word));
-    assert(!ind.has_word(word2));
-
-    ind.insert_word(word);
-    assert(ind.has_word(word));
-    assert(!ind.has_word(word2));
-
-    ind.insert_word(word2);
-    assert(ind.has_word(word));
-    assert(ind.has_word(word2));
-}
-
-void branch_test() {
-    LevenshteinIndex ind;
-    std::string word("abc");
-    std::string word2("abcd");
-    std::string word3("abce");
-
-    assert(!ind.has_word(word));
-    assert(!ind.has_word(word2));
-    assert(!ind.has_word(word3));
-
-    ind.insert_word(word);
-    assert(ind.has_word(word));
-    assert(!ind.has_word(word2));
-    assert(!ind.has_word(word3));
-
-    ind.insert_word(word2);
-    assert(ind.has_word(word));
-    assert(ind.has_word(word2));
-    assert(!ind.has_word(word3));
-
-    ind.insert_word(word3);
-    assert(ind.has_word(word));
-    assert(ind.has_word(word2));
-    assert(ind.has_word(word3));
 }
 
 int main(int argc, char **argv) {
-    basic_test();
-    short_test();
-    prefix_test();
-    suffix_test();
-    branch_test();
+    test_index();
     return 0;
 }
