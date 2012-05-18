@@ -1,6 +1,10 @@
-add_executable(assert_fail_test assert_fail_test.cc)
-add_test(assert_fail_test assert_fail_test)
-set_tests_properties(assert_fail_test PROPERTIES WILL_FAIL TRUE)
+add_executable(assert_fail assert_fail_test.cc)
+add_test(assert_fail assert_fail)
+set_tests_properties(assert_fail PROPERTIES WILL_FAIL TRUE)
 
-add_executable(assert_succ_test assert_succ_test.cc)
-add_test(assert_succ_test assert_succ_test)
+add_executable(assert_succ assert_succ_test.cc)
+add_test(assert_succ assert_succ)
+
+add_executable(levindex levindex_test.cc)
+target_link_libraries(levindex columbus)
+add_test(levindex levindex)

@@ -17,15 +17,24 @@
 #ifndef LEVENSHTEININDEX_HH
 #define LEVENSHTEININDEX_HH
 
+#include <map>
+#include <string>
+#include "columbuscore.h"
+
 class LevenshteinIndex {
 private:
     LevenshteinIndex *parent;
+    std::map<Letter, LevenshteinIndex*> children;
+    Letter letter;
 
-    LevenshteinIndex(LevenshteinIndex *parent_node);
+    LevenshteinIndex(LevenshteinIndex *parent_node, Letter l);
+
 
 public:
     LevenshteinIndex();
 
+    void insert_word(const std::string &word);
+    bool has_word(const std::string &word) const;
 };
 
 #endif

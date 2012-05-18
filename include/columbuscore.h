@@ -4,4 +4,6 @@
 #include<stdlib.h>
 #define COL_ASSERT(value) if(!(value)) exit(127);
 
+typedef unsigned int Letter;
+
 #endif

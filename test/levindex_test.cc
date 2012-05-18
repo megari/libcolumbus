@@ -14,18 +14,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include "LevenshteinIndex.hh"
 
-LevenshteinIndex::LevenshteinIndex() : parent(0) {
-}
+int main(int argc, char **argv) {
+    LevenshteinIndex ind;
+    std::string word1("word");
+    std::string word2("another");
 
-LevenshteinIndex::LevenshteinIndex(LevenshteinIndex *parent_node, Letter l) : parent(parent_node), letter(l) {
-}
+    assert(!ind.has_word(word1));
+    assert(!ind.has_word(word2));
 
-void LevenshteinIndex::insert_word(const std::string &word) {
+    ind.insert_word(word1);
+    assert(ind.has_word(word1));
+    assert(!ind.has_word(word2));
 
-}
-
-bool LevenshteinIndex::has_word(const std::string &word) const {
-    return false;
+    ind.insert_word(word2);
+    assert(ind.has_word(word1));
+    assert(ind.has_word(word2));
+    return 0;
 }
