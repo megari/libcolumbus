@@ -17,7 +17,7 @@
 #include <cassert>
 #include "LevenshteinIndex.hh"
 
-int main(int argc, char **argv) {
+void basic_test() {
     LevenshteinIndex ind;
     std::string word1("word");
     std::string word2("another");
@@ -32,5 +32,56 @@ int main(int argc, char **argv) {
     ind.insert_word(word2);
     assert(ind.has_word(word1));
     assert(ind.has_word(word2));
+}
+
+void short_test() {
+    LevenshteinIndex ind;
+    std::string word("a");
+
+    assert(!ind.has_word(word));
+
+    ind.insert_word(word);
+    assert(ind.has_word(word));
+}
+
+void prefix_test() {
+    LevenshteinIndex ind;
+    std::string word("ab");
+    std::string prefix("a");
+
+    assert(!ind.has_word(word));
+    assert(!ind.has_word(prefix));
+
+    ind.insert_word(word);
+    assert(ind.has_word(word));
+    assert(!ind.has_word(prefix));
+
+    ind.insert_word(prefix);
+    assert(ind.has_word(word));
+    assert(ind.has_word(prefix));
+}
+
+void suffix_test() {
+    LevenshteinIndex ind;
+    std::string word("abc");
+    std::string word2("abcd");
+
+    assert(!ind.has_word(word));
+    assert(!ind.has_word(word2));
+
+    ind.insert_word(word);
+    assert(ind.has_word(word));
+    assert(!ind.has_word(word2));
+
+    ind.insert_word(word2);
+    assert(ind.has_word(word));
+    assert(ind.has_word(word2));
+}
+
+int main(int argc, char **argv) {
+    basic_test();
+    short_test();
+    prefix_test();
+    suffix_test();
     return 0;
 }
