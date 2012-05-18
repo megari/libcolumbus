@@ -26,12 +26,16 @@ private:
     LevenshteinIndex *parent;
     std::map<Letter, LevenshteinIndex*> children;
     Letter letter;
+    std::string current_word; // The word that ends in this node.
 
     LevenshteinIndex(LevenshteinIndex *parent_node, Letter l);
 
+    void insert_word(const std::string &word, size_t i);
+    bool has_word(const std::string &word, size_t i) const;
 
 public:
     LevenshteinIndex();
+    ~LevenshteinIndex();
 
     void insert_word(const std::string &word);
     bool has_word(const std::string &word) const;
