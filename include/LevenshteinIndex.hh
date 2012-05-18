@@ -14,9 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "columbuscore.h"
+#ifndef LEVENSHTEININDEX_HH
+#define LEVENSHTEININDEX_HH
 
-int main(int argc, char **argv) {
-    COL_ASSERT(true);
-    return 0;
-}
+class LevenshteinIndex {
+private:
+    LevenshteinIndex *parent;
+
+    LevenshteinIndex(LevenshteinIndex *parent_node);
+
+public:
+    LevenshteinIndex();
+
+};
+
+#endif
