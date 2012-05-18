@@ -17,21 +17,14 @@
 #ifndef LEVENSHTEININDEX_HH
 #define LEVENSHTEININDEX_HH
 
-#include <map>
 #include <string>
 #include "columbuscore.h"
 
+struct TrieNode;
+
 class LevenshteinIndex {
 private:
-    LevenshteinIndex *parent;
-    std::map<Letter, LevenshteinIndex*> children;
-    Letter letter;
-    std::string current_word; // The word that ends in this node.
-
-    LevenshteinIndex(LevenshteinIndex *parent_node, Letter l);
-
-    void insert_word(const std::string &word, size_t i);
-    bool has_word(const std::string &word, size_t i) const;
+    TrieNode *root;
 
 public:
     LevenshteinIndex();

@@ -15,63 +15,83 @@
  */
 
 #include <cassert>
+#include <map>
+#include <vector>
 #include "LevenshteinIndex.hh"
 
 using namespace std;
-typedef map<Letter, LevenshteinIndex*>::iterator mapiter;
-typedef map<Letter, LevenshteinIndex*>::const_iterator mapiter_c;
 
-LevenshteinIndex::LevenshteinIndex() : parent(0), letter(0) {
+struct TrieNode {
+    TrieNode *parent;
+    std::map<Letter, TrieNode*> children;
+    Letter letter;
+    std::string current_word; // The word that ends in this node.
+};
+
+typedef map<Letter, TrieNode*>::iterator mapiter;
+typedef map<Letter, TrieNode*>::const_iterator mapiter_c;
+
+void gather_all_nodes(TrieNode *root, vector<TrieNode*> &nodes) {
+    for(mapiter c=root->children.begin(); c != root->children.end(); c++) {
+        gather_all_nodes(c->second, nodes);
+        nodes.push_back(c->second);
+    }
 }
 
-LevenshteinIndex::LevenshteinIndex(LevenshteinIndex *parent_node, Letter l) : parent(parent_node), letter(l) {
+LevenshteinIndex::LevenshteinIndex() {
+    root = new TrieNode();
+    root->parent = 0;
+    root->letter = 0;
 }
 
 LevenshteinIndex::~LevenshteinIndex() {
-    for(mapiter m = children.begin(); m != children.end(); m++)
-        delete m->second;
+    vector<TrieNode*> nodes;
+    gather_all_nodes(root, nodes);
+    for(size_t i=0; i< nodes.size(); i++)
+        delete nodes[i];
 }
 
+
 void LevenshteinIndex::insert_word(const std::string &word) {
-    insert_word(word, 0);
+    TrieNode *node = root;
+    size_t i = 0;
+    while(word.length() > i) {
+        Letter l = word[i];
+        mapiter child = node->children.find(l);
+        TrieNode *c;
+
+        if(child == node->children.end()) {
+            c = new TrieNode();
+            c->letter = l;
+            c->parent = node;
+            node->children[l] = c;
+        } else {
+            c = child->second;
+        }
+        assert(c != 0);
+        node = c;
+        i++;
+    }
+    node->current_word = word;
+    return;
 }
 
 bool LevenshteinIndex::has_word(const std::string &word) const {
-    return has_word(word, 0);
-}
+    TrieNode *node = root;
+    size_t i = 0;
+    while(word.length() > i) {
+        Letter l = word[i];
+        mapiter_c child = node->children.find(l);
 
-void LevenshteinIndex::insert_word(const std::string &word, size_t i) {
-    if(word.length() <= i) {
-        current_word = word;
-        return;
-    }
-    Letter l = word[i];
-    LevenshteinIndex *c;
-    mapiter child = children.find(l);
-
-    if(child == children.end()) {
-         c = new LevenshteinIndex(this, l);
-         children[l] = c;
-    } else {
-        c = child->second;
-    }
-    assert(c != 0);
-    c->insert_word(word, i+1);
-}
-
-bool LevenshteinIndex::has_word(const std::string &word, size_t i) const {
-    if(word.length() <= i) {
-        if(current_word.length() > 0) {
-            assert(current_word == word);
-            return true;
-        }
-        return false;
+        if(child == node->children.end())
+            return false;
+        node = child->second;
+        i++;
     }
 
-    Letter l = word[i];
-    mapiter_c child = children.find(l);
-
-    if(child == children.end())
-        return false;
-    return child->second->has_word(word, i+1);
+    if(node->current_word.length() > 0) {
+         assert(node->current_word == word);
+         return true;
+     }
+     return false;
 }

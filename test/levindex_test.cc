@@ -78,10 +78,37 @@ void suffix_test() {
     assert(ind.has_word(word2));
 }
 
+void branch_test() {
+    LevenshteinIndex ind;
+    std::string word("abc");
+    std::string word2("abcd");
+    std::string word3("abce");
+
+    assert(!ind.has_word(word));
+    assert(!ind.has_word(word2));
+    assert(!ind.has_word(word3));
+
+    ind.insert_word(word);
+    assert(ind.has_word(word));
+    assert(!ind.has_word(word2));
+    assert(!ind.has_word(word3));
+
+    ind.insert_word(word2);
+    assert(ind.has_word(word));
+    assert(ind.has_word(word2));
+    assert(!ind.has_word(word3));
+
+    ind.insert_word(word3);
+    assert(ind.has_word(word));
+    assert(ind.has_word(word2));
+    assert(ind.has_word(word3));
+}
+
 int main(int argc, char **argv) {
     basic_test();
     short_test();
     prefix_test();
     suffix_test();
+    branch_test();
     return 0;
 }
