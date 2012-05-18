@@ -18,6 +18,7 @@
 #include <map>
 #include <vector>
 #include "LevenshteinIndex.hh"
+#include "MatchRow.hh"
 
 using namespace std;
 
@@ -38,7 +39,11 @@ void gather_all_nodes(TrieNode *root, vector<TrieNode*> &nodes) {
     }
 }
 
-LevenshteinIndex::LevenshteinIndex() {
+LevenshteinIndex::LevenshteinIndex() :
+    insertion_error(DEFAULT_ERROR),
+    deletion_error(DEFAULT_ERROR),
+    transpose_error(DEFAULT_ERROR),
+    substitute_error(DEFAULT_ERROR) {
     root = new TrieNode();
     root->parent = 0;
     root->letter = 0;
@@ -94,4 +99,8 @@ bool LevenshteinIndex::has_word(const std::string &word) const {
          return true;
      }
      return false;
+}
+
+void LevenshteinIndex::find_words(const std::string &word, const int max_error, std::vector<Match> &matches) {
+
 }

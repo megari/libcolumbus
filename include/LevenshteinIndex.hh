@@ -18,13 +18,29 @@
 #define LEVENSHTEININDEX_HH
 
 #include <string>
+#include <vector>
 #include "columbuscore.h"
 
 struct TrieNode;
 
+struct Match {
+    std::string word;
+    int error;
+};
+
 class LevenshteinIndex {
 private:
     TrieNode *root;
+    static const int DEFAULT_ERROR = 100;
+    int insertion_error;
+    int deletion_error;
+    int transpose_error;
+    int substitute_error;
+
+    int get_insertion_error() const { return insertion_error; }
+    int get_deletion_error() const { return deletion_error; }
+    int get_transpose_error() const { return transpose_error; }
+    int get_substitute_error(Letter l1, Letter l2) const { return substitute_error; }
 
 public:
     LevenshteinIndex();
@@ -32,6 +48,8 @@ public:
 
     void insert_word(const std::string &word);
     bool has_word(const std::string &word) const;
+
+    void find_words(const std::string &word, const int max_error, std::vector<Match> &matches);
 };
 
 #endif
