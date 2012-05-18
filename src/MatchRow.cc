@@ -21,10 +21,10 @@ MatchRow::MatchRow(int rowsize_, int error) : parent(0), rowsize(rowsize_) {
     for(int i=0; i<rowsize; i++)
         values[i] = i*error;
 }
-MatchRow::MatchRow(MatchRow *parent_) : parent(parent_), rowsize(parent->rowsize){
+MatchRow::MatchRow(MatchRow *parent_, int deletion_error) : parent(parent_), rowsize(parent->rowsize){
     values = new int[rowsize];
-    for(int i=0; i<rowsize; i++) {
-        values[i] = parent->values[i];
+    for(int i=1; i<rowsize; i++) {
+        values[i] = parent->values[i] + deletion_error;
     }
 }
 
@@ -32,3 +32,10 @@ MatchRow::~MatchRow() {
     delete []values;
 }
 
+int MatchRow::min_error() const {
+    int result = values[0];
+    for(int i=1; i<rowsize; i++)
+        if(values[i] < result)
+            result = values[i];
+    return result;
+}

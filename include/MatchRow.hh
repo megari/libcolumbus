@@ -26,10 +26,13 @@ private:
 
 public:
     MatchRow(int rowsize_, int error);
-    MatchRow(MatchRow *parent_);
+    MatchRow(MatchRow *parent_, int deletion_error);
     ~MatchRow();
 
-    int value(int i) { return values[i]; }
+    int get_value(int i) const { return values[i]; }
+    void set_value(int i, int new_value) { values[i] = new_value; }
+    int total_error() const { return values[rowsize-1]; }
+    int min_error() const;
 };
 
 #endif /* MATCHROW_H_ */

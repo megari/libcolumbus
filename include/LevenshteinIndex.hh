@@ -22,6 +22,7 @@
 #include "columbuscore.h"
 
 struct TrieNode;
+class MatchRow;
 
 struct Match {
     std::string word;
@@ -40,7 +41,9 @@ private:
     int get_insertion_error() const { return insertion_error; }
     int get_deletion_error() const { return deletion_error; }
     int get_transpose_error() const { return transpose_error; }
-    int get_substitute_error(Letter l1, Letter l2) const { return substitute_error; }
+    int get_substitute_error(Letter l1, Letter l2) const { return l1 == l2 ? 0 : substitute_error; }
+
+    void search_recursive(const std::string &word, TrieNode *node, int depth, MatchRow *previous_row, std::vector<Match> &matches, int max_error);
 
 public:
     LevenshteinIndex();
