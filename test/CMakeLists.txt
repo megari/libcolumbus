@@ -1,0 +1,6 @@
+add_executable(assert_fail_test assert_fail_test.cc)
+add_test(assert_fail_test assert_fail_test)
+set_tests_properties(assert_fail_test PROPERTIES WILL_FAIL TRUE)
+
+add_executable(assert_succ_test assert_succ_test.cc)
+add_test(assert_succ_test assert_succ_test)
