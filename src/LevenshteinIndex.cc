@@ -32,9 +32,9 @@ typedef map<Letter, TrieNode*>::iterator mapiter;
 typedef map<Letter, TrieNode*>::const_iterator mapiter_c;
 
 void gather_all_nodes(TrieNode *root, vector<TrieNode*> &nodes) {
+    nodes.push_back(root);
     for(mapiter c=root->children.begin(); c != root->children.end(); c++) {
         gather_all_nodes(c->second, nodes);
-        nodes.push_back(c->second);
     }
 }
 
