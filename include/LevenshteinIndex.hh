@@ -24,6 +24,7 @@
 
 struct TrieNode;
 class MatchRow;
+class MemoryCleaner;
 
 class LevenshteinIndex {
 private:
@@ -39,7 +40,7 @@ private:
     int get_transpose_error() const { return transpose_error; }
     int get_substitute_error(Letter l1, Letter l2) const { return l1 == l2 ? 0 : substitute_error; }
 
-    void search_recursive(const std::string &word, TrieNode *node, Letter letter, Letter previousLetter, MatchRow *previous_row, IndexMatches &matches, int max_error) const;
+    void search_recursive(const std::string &word, TrieNode *node, Letter letter, Letter previousLetter, MatchRow *previous_row, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const;
 
 public:
     LevenshteinIndex();
