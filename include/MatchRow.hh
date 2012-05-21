@@ -22,15 +22,15 @@ class MatchRow {
 private:
     MatchRow *parent;
     int *values;
-    int rowsize;
+    size_t rowsize;
 
 public:
-    MatchRow(int rowsize_, int error);
+    MatchRow(size_t rowsize_, int error);
     MatchRow(MatchRow *parent_, int deletion_error);
     ~MatchRow();
 
-    int get_value(int i) const { return values[i]; }
-    void set_value(int i, int new_value);
+    int get_value(size_t i) const { return values[i]; }
+    void set_value(size_t i, int new_value);
     int total_error() const { return values[rowsize-1]; }
     int min_error() const;
 

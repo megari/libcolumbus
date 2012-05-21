@@ -23,7 +23,7 @@ class LevenshteinIndex;
 struct IndexMatchesPrivate;
 
 /**
- * A class that contains a list of index matches. They are stored
+ * A class that contains a list of index matches
  * in growing error order.
  *
  */

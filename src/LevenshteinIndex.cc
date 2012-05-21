@@ -154,8 +154,6 @@ void LevenshteinIndex::search_recursive(const std::string &word, TrieNode *node,
     if(current_row->total_error() < max_error && node->current_word.length() > 0) {
         matches.addMatch(node->current_word, current_row->total_error());
     }
-    if(current_row->min_error() < 1)
-        printf("Something.\n");
     if(current_row->min_error() <= max_error) {
         for(mapiter i = node->children.begin(); i != node->children.end(); i++) {
             search_recursive(word, i->second, i->first, letter, current_row, matches, max_error, cleaner);

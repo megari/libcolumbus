@@ -16,17 +16,19 @@
 
 #include <stdio.h>
 #include <cassert>
+#include <limits.h>
 #include "MatchRow.hh"
 
-MatchRow::MatchRow(int rowsize_, int error) : parent(0), rowsize(rowsize_) {
+MatchRow::MatchRow(size_t rowsize_, int error) : parent(0), rowsize(rowsize_) {
     values = new int[rowsize];
-    for(int i=0; i<rowsize; i++)
+    for(size_t i=0; i<rowsize; i++)
         values[i] = i*error;
 }
 MatchRow::MatchRow(MatchRow *parent_, int deletion_error) : parent(parent_), rowsize(parent->rowsize){
     values = new int[rowsize];
-    for(int i=1; i<rowsize; i++) {
-        values[i] = parent->values[i] + deletion_error;
+    values[0] = parent->values[0] + deletion_error;
+    for(size_t i=1; i<rowsize; i++) {
+        values[i] = INT_MAX;
     }
 }
 
@@ -34,7 +36,7 @@ MatchRow::~MatchRow() {
     delete []values;
 }
 
-void MatchRow::set_value(int i, int new_value) {
+void MatchRow::set_value(size_t i, int new_value) {
     assert(i >= 0);
     assert(i < rowsize);
     values[i] = new_value;
@@ -42,14 +44,14 @@ void MatchRow::set_value(int i, int new_value) {
 
 int MatchRow::min_error() const {
     int result = values[0];
-    for(int i=1; i<rowsize; i++)
+    for(size_t i=1; i<rowsize; i++)
         if(values[i] < result)
             result = values[i];
     return result;
 }
 
 void MatchRow::print() const {
-    for(int i=0; i<rowsize; i++) {
+    for(size_t i=0; i<rowsize; i++) {
         printf("%d ", values[i]);
     }
     printf("\n");
