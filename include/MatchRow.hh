@@ -29,10 +29,10 @@ public:
     MatchRow(MatchRow *parent_, int deletion_error);
     ~MatchRow();
 
-    int get_value(size_t i) const { return values[i]; }
-    void set_value(size_t i, int new_value);
-    int total_error() const { return values[rowsize-1]; }
-    int min_error() const;
+    int getValue(size_t i) const { return values[i]; }
+    void setValue(size_t i, int new_value);
+    int totalError() const { return values[rowsize-1]; }
+    int minError() const;
 
     void print() const;
 };

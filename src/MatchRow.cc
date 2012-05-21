@@ -36,13 +36,13 @@ MatchRow::~MatchRow() {
     delete []values;
 }
 
-void MatchRow::set_value(size_t i, int new_value) {
+void MatchRow::setValue(size_t i, int new_value) {
     assert(i >= 0);
     assert(i < rowsize);
     values[i] = new_value;
 }
 
-int MatchRow::min_error() const {
+int MatchRow::minError() const {
     int result = values[0];
     for(size_t i=1; i<rowsize; i++)
         if(values[i] < result)

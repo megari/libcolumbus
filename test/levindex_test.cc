@@ -23,38 +23,38 @@
 
 using namespace std;
 
-void test_trivial() {
+void testTrivial() {
     LevenshteinIndex ind;
     IndexMatches matches;
 
-    ind.find_words("a", 100*LevenshteinIndex::getDefaultError(), matches);
+    ind.findWords("a", 100*LevenshteinIndex::getDefaultError(), matches);
     assert(matches.numMatches() == 0);
 }
 
-void test_simple() {
+void testSimple() {
     LevenshteinIndex ind;
     IndexMatches matches;
     string w1 = "abc";
     string w2 = "def";
 
-    ind.insert_word(w1);
-    ind.insert_word(w2);
+    ind.insertWord(w1);
+    ind.insertWord(w2);
 
-    ind.find_words(w1, LevenshteinIndex::getDefaultError(), matches);
+    ind.findWords(w1, LevenshteinIndex::getDefaultError(), matches);
     assert(matches.numMatches() == 1);
     assert(matches.getMatch(0) == w1);
     assert(matches.getMatchError(0) == 0);
 
     matches.clear();
 
-    ind.find_words(w2, LevenshteinIndex::getDefaultError(), matches);
+    ind.findWords(w2, LevenshteinIndex::getDefaultError(), matches);
     assert(matches.numMatches() == 1);
     assert(matches.getMatch(0) == w2);
     assert(matches.getMatchError(0) == 0);
 }
 
 int main(int argc, char **argv) {
-    test_trivial();
-    test_simple();
+    testTrivial();
+    testSimple();
     return 0;
 }

@@ -35,12 +35,12 @@ private:
     int transpose_error;
     int substitute_error;
 
-    int get_insertion_error() const { return insertion_error; }
-    int get_deletion_error() const { return deletion_error; }
-    int get_transpose_error() const { return transpose_error; }
-    int get_substitute_error(Letter l1, Letter l2) const { return l1 == l2 ? 0 : substitute_error; }
+    int getInsertionError() const { return insertion_error; }
+    int getDeletionError() const { return deletion_error; }
+    int getTransposeError() const { return transpose_error; }
+    int getSubstituteError(Letter l1, Letter l2) const { return l1 == l2 ? 0 : substitute_error; }
 
-    void search_recursive(const std::string &word, TrieNode *node, Letter letter, Letter previousLetter, MatchRow *previous_row, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const;
+    void searchRecursive(const std::string &word, TrieNode *node, Letter letter, Letter previousLetter, MatchRow *previous_row, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const;
 
 public:
     LevenshteinIndex();
@@ -48,10 +48,10 @@ public:
 
     static int getDefaultError() { return LevenshteinIndex::DEFAULT_ERROR; }
 
-    void insert_word(const std::string &word);
-    bool has_word(const std::string &word) const;
+    void insertWord(const std::string &word);
+    bool hasWord(const std::string &word) const;
 
-    void find_words(const std::string &word, const int max_error, IndexMatches &matches) const;
+    void findWords(const std::string &word, const int max_error, IndexMatches &matches) const;
 };
 
 #endif

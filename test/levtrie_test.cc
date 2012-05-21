@@ -22,98 +22,98 @@
 #include <cassert>
 #include "LevenshteinIndex.hh"
 
-void basic_test() {
+void basicTest() {
     LevenshteinIndex ind;
     std::string word1("word");
     std::string word2("another");
 
-    assert(!ind.has_word(word1));
-    assert(!ind.has_word(word2));
+    assert(!ind.hasWord(word1));
+    assert(!ind.hasWord(word2));
 
-    ind.insert_word(word1);
-    assert(ind.has_word(word1));
-    assert(!ind.has_word(word2));
+    ind.insertWord(word1);
+    assert(ind.hasWord(word1));
+    assert(!ind.hasWord(word2));
 
-    ind.insert_word(word2);
-    assert(ind.has_word(word1));
-    assert(ind.has_word(word2));
+    ind.insertWord(word2);
+    assert(ind.hasWord(word1));
+    assert(ind.hasWord(word2));
 }
 
-void short_test() {
+void shortTest() {
     LevenshteinIndex ind;
     std::string word("a");
 
-    assert(!ind.has_word(word));
+    assert(!ind.hasWord(word));
 
-    ind.insert_word(word);
-    assert(ind.has_word(word));
+    ind.insertWord(word);
+    assert(ind.hasWord(word));
 }
 
-void prefix_test() {
+void prefixTest() {
     LevenshteinIndex ind;
     std::string word("ab");
     std::string prefix("a");
 
-    assert(!ind.has_word(word));
-    assert(!ind.has_word(prefix));
+    assert(!ind.hasWord(word));
+    assert(!ind.hasWord(prefix));
 
-    ind.insert_word(word);
-    assert(ind.has_word(word));
-    assert(!ind.has_word(prefix));
+    ind.insertWord(word);
+    assert(ind.hasWord(word));
+    assert(!ind.hasWord(prefix));
 
-    ind.insert_word(prefix);
-    assert(ind.has_word(word));
-    assert(ind.has_word(prefix));
+    ind.insertWord(prefix);
+    assert(ind.hasWord(word));
+    assert(ind.hasWord(prefix));
 }
 
-void suffix_test() {
+void suffixTest() {
     LevenshteinIndex ind;
     std::string word("abc");
     std::string word2("abcd");
 
-    assert(!ind.has_word(word));
-    assert(!ind.has_word(word2));
+    assert(!ind.hasWord(word));
+    assert(!ind.hasWord(word2));
 
-    ind.insert_word(word);
-    assert(ind.has_word(word));
-    assert(!ind.has_word(word2));
+    ind.insertWord(word);
+    assert(ind.hasWord(word));
+    assert(!ind.hasWord(word2));
 
-    ind.insert_word(word2);
-    assert(ind.has_word(word));
-    assert(ind.has_word(word2));
+    ind.insertWord(word2);
+    assert(ind.hasWord(word));
+    assert(ind.hasWord(word2));
 }
 
-void branch_test() {
+void branchTest() {
     LevenshteinIndex ind;
     std::string word("abc");
     std::string word2("abcd");
     std::string word3("abce");
 
-    assert(!ind.has_word(word));
-    assert(!ind.has_word(word2));
-    assert(!ind.has_word(word3));
+    assert(!ind.hasWord(word));
+    assert(!ind.hasWord(word2));
+    assert(!ind.hasWord(word3));
 
-    ind.insert_word(word);
-    assert(ind.has_word(word));
-    assert(!ind.has_word(word2));
-    assert(!ind.has_word(word3));
+    ind.insertWord(word);
+    assert(ind.hasWord(word));
+    assert(!ind.hasWord(word2));
+    assert(!ind.hasWord(word3));
 
-    ind.insert_word(word2);
-    assert(ind.has_word(word));
-    assert(ind.has_word(word2));
-    assert(!ind.has_word(word3));
+    ind.insertWord(word2);
+    assert(ind.hasWord(word));
+    assert(ind.hasWord(word2));
+    assert(!ind.hasWord(word3));
 
-    ind.insert_word(word3);
-    assert(ind.has_word(word));
-    assert(ind.has_word(word2));
-    assert(ind.has_word(word3));
+    ind.insertWord(word3);
+    assert(ind.hasWord(word));
+    assert(ind.hasWord(word2));
+    assert(ind.hasWord(word3));
 }
 
 int main(int argc, char **argv) {
-    basic_test();
-    short_test();
-    prefix_test();
-    suffix_test();
-    branch_test();
+    basicTest();
+    shortTest();
+    prefixTest();
+    suffixTest();
+    branchTest();
     return 0;
 }
