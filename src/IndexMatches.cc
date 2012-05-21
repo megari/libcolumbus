@@ -50,7 +50,7 @@ void IndexMatches::addMatch(const std::string &str, int error) {
     p->matches.push_back(m);
 }
 
-size_t IndexMatches::numMatches() const {
+size_t IndexMatches::size() const {
     return p->matches.size();
 }
 

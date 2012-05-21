@@ -28,7 +28,7 @@ void testTrivial() {
     IndexMatches matches;
 
     ind.findWords("a", 100*LevenshteinIndex::getDefaultError(), matches);
-    assert(matches.numMatches() == 0);
+    assert(matches.size() == 0);
 }
 
 void testSimple() {
@@ -41,20 +41,56 @@ void testSimple() {
     ind.insertWord(w2);
 
     ind.findWords(w1, LevenshteinIndex::getDefaultError(), matches);
-    assert(matches.numMatches() == 1);
+    assert(matches.size() == 1);
     assert(matches.getMatch(0) == w1);
     assert(matches.getMatchError(0) == 0);
 
     matches.clear();
 
     ind.findWords(w2, LevenshteinIndex::getDefaultError(), matches);
-    assert(matches.numMatches() == 1);
+    assert(matches.size() == 1);
     assert(matches.getMatch(0) == w2);
     assert(matches.getMatchError(0) == 0);
+}
+
+void testOrder() {
+    LevenshteinIndex ind;
+    IndexMatches matches;
+
+    string w1 = "abcde";
+    string w2 = "abxye";
+    string w3 = "abche";
+    string w4 = "abxhe";
+
+    ind.insertWord(w1);
+    ind.insertWord(w2);
+
+    ind.findWords(w3, LevenshteinIndex::getDefaultError(), matches);
+    assert(matches.size() == 1);
+    assert(matches.getMatch(0) == w1);
+
+    matches.clear();
+
+    ind.findWords(w4, LevenshteinIndex::getDefaultError(), matches);
+    assert(matches.size() == 1);
+    assert(matches.getMatch(0) == w2);
+
+    matches.clear();
+
+    ind.findWords(w3, 2*LevenshteinIndex::getDefaultError(), matches);
+    assert(matches.size() == 2);
+    assert(matches.getMatch(0) == w1);
+
+    matches.clear();
+
+    ind.findWords(w4, 2*LevenshteinIndex::getDefaultError(), matches);
+    assert(matches.size() == 2);
+    assert(matches.getMatch(0) == w2);
 }
 
 int main(int argc, char **argv) {
     testTrivial();
     testSimple();
+    testOrder();
     return 0;
 }

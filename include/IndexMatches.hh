@@ -41,7 +41,7 @@ public:
     IndexMatches();
     ~IndexMatches();
 
-    size_t numMatches() const;
+    size_t size() const;
     const std::string& getMatch(size_t num) const;
     int getMatchError(size_t num) const;
     void clear();
