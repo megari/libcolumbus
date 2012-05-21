@@ -57,3 +57,8 @@ int IndexMatches::getMatchError(size_t num) const {
     }
     return p->errors[num];
 }
+
+void IndexMatches::clear() {
+    p->matches.clear();
+    p->errors.clear();
+}

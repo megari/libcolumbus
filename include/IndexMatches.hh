@@ -34,6 +34,8 @@ public:
     size_t numMatches() const;
     const std::string& getMatch(size_t num) const;
     int getMatchError(size_t num) const;
+
+    void clear();
 };
 
 #endif /* INDEXMATCHES_H_ */

@@ -45,6 +45,8 @@ public:
     LevenshteinIndex();
     ~LevenshteinIndex();
 
+    static int getDefaultError() { return LevenshteinIndex::DEFAULT_ERROR; }
+
     void insert_word(const std::string &word);
     bool has_word(const std::string &word) const;
 
