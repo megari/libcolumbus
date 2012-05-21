@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
 #include <cassert>
 #include <map>
 #include <vector>
@@ -102,31 +103,34 @@ bool LevenshteinIndex::has_word(const std::string &word) const {
 }
 
 void LevenshteinIndex::find_words(const std::string &word, const int max_error, IndexMatches &matches) const {
-    MatchRow *first = new MatchRow(word.length()+1, get_insertion_error());
-    search_recursive(word, root, 0, first, matches, max_error);
+    MatchRow *first_row = new MatchRow(word.length()+1, get_insertion_error());
+    assert(first_row->get_value(0) == 0);
+    assert(first_row->get_value(1) == get_insertion_error());
+    for(mapiter i = root->children.begin(); i != root->children.end(); i++) {
+                search_recursive(word, i->second, i->first, 0, first_row, matches, max_error);
+    }
 
 }
 
-void LevenshteinIndex::search_recursive(const std::string &word, TrieNode *node, int depth, MatchRow *previous_row, IndexMatches &matches, int max_error) const {
+void LevenshteinIndex::search_recursive(const std::string &word, TrieNode *node, Letter letter, Letter previousLetter, MatchRow *previous_row, IndexMatches &matches, int max_error) const {
     MatchRow *current_row = new MatchRow(previous_row, get_deletion_error());
 
     for(size_t i = 1; i < word.length()+1; i++) {
-        Letter l = word[depth];
-        Letter previous_letter = depth>0 ?  word[depth-1] : 0;
         int insert_cost = current_row->get_value(i-1) + get_insertion_error();
         int delete_error = previous_row->get_value(i) + get_deletion_error();
-        int substitute_error = previous_row->get_value(i-1) + get_substitute_error(l, previous_letter);
+        int substitute_error = previous_row->get_value(i-1) + get_substitute_error(word[i-1], letter);
 
-        int total_error = min(insert_cost, min(delete_error, substitute_error));
-        current_row->set_value(i, total_error);
+        int min_error = min(insert_cost, min(delete_error, substitute_error));
+        current_row->set_value(i, min_error);
     }
+
     // Error row evaluated. Now check if a word was found and continue recursively.
     if(current_row->total_error() < max_error && node->current_word.length() > 0) {
         matches.addMatch(node->current_word, current_row->total_error());
     }
     if(current_row->min_error() <= max_error) {
         for(mapiter i = node->children.begin(); i != node->children.end(); i++) {
-            search_recursive(word, i->second, depth+1, current_row, matches, max_error);
+            search_recursive(word, i->second, i->first, letter, current_row, matches, max_error);
         }
     }
 }

@@ -30,9 +30,11 @@ public:
     ~MatchRow();
 
     int get_value(int i) const { return values[i]; }
-    void set_value(int i, int new_value) { values[i] = new_value; }
+    void set_value(int i, int new_value);
     int total_error() const { return values[rowsize-1]; }
     int min_error() const;
+
+    void print() const;
 };
 
 #endif /* MATCHROW_H_ */

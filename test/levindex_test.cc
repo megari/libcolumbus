@@ -49,7 +49,7 @@ void test_simple() {
 
     ind.find_words(w2, LevenshteinIndex::getDefaultError(), matches);
     assert(matches.numMatches() == 1);
-    assert(matches.getMatch(0) == w1);
+    assert(matches.getMatch(0) == w2);
     assert(matches.getMatchError(0) == 0);
 }
 
