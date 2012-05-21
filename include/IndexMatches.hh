@@ -19,23 +19,33 @@
 
 #include<string>
 
+class LevenshteinIndex;
 struct IndexMatchesPrivate;
 
+/**
+ * A class that contains a list of index matches. They are stored
+ * in growing error order.
+ *
+ */
 class IndexMatches {
+    friend class LevenshteinIndex;
+
 private:
 
     IndexMatchesPrivate *p;
+
+    void addMatch(const std::string &str, int error);
+    void sort();
 
 public:
     IndexMatches();
     ~IndexMatches();
 
-    void addMatch(const std::string &str, int error);
     size_t numMatches() const;
     const std::string& getMatch(size_t num) const;
     int getMatchError(size_t num) const;
-
     void clear();
+
 };
 
 #endif /* INDEXMATCHES_H_ */

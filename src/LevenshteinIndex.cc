@@ -107,9 +107,9 @@ void LevenshteinIndex::find_words(const std::string &word, const int max_error, 
     assert(first_row->get_value(0) == 0);
     assert(first_row->get_value(1) == get_insertion_error());
     for(mapiter i = root->children.begin(); i != root->children.end(); i++) {
-                search_recursive(word, i->second, i->first, 0, first_row, matches, max_error);
+        search_recursive(word, i->second, i->first, 0, first_row, matches, max_error);
     }
-
+    matches.sort();
 }
 
 void LevenshteinIndex::search_recursive(const std::string &word, TrieNode *node, Letter letter, Letter previousLetter, MatchRow *previous_row, IndexMatches &matches, int max_error) const {

@@ -17,13 +17,22 @@
 #include "IndexMatches.hh"
 
 #include <vector>
+#include <algorithm>
 #include <cassert>
 
 using namespace std;
 
+struct MatchData {
+    string text;
+    int error;
+
+    bool operator<(const MatchData &other) const {
+        return error < other.error;
+    };
+};
+
 struct IndexMatchesPrivate {
-    vector<string> matches;
-    vector<int> errors;
+    vector<MatchData> matches;
 };
 
 IndexMatches::IndexMatches() {
@@ -35,9 +44,10 @@ IndexMatches::~IndexMatches() {
 }
 
 void IndexMatches::addMatch(const std::string &str, int error) {
-    assert(p->errors.size() == p->matches.size());
-    p->matches.push_back(str);
-    p->errors.push_back(error);
+    MatchData m;
+    m.text = str;
+    m.error = error;
+    p->matches.push_back(m);
 }
 
 size_t IndexMatches::numMatches() const {
@@ -48,17 +58,20 @@ const std::string& IndexMatches::getMatch(size_t num) const {
     if(num >= p->matches.size()) {
         throw "Tried to access nonexisting match.";
     }
-    return p->matches[num];
+    return p->matches[num].text;
 }
 
 int IndexMatches::getMatchError(size_t num) const {
-    if(num >= p->errors.size()) {
+    if(num >= p->matches.size()) {
         throw "Tried to access nonexisting match error.";
     }
-    return p->errors[num];
+    return p->matches[num].error;
 }
 
 void IndexMatches::clear() {
     p->matches.clear();
-    p->errors.clear();
+}
+
+void IndexMatches::sort() {
+    std::sort(p->matches.begin(), p->matches.end());
 }
