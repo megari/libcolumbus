@@ -20,14 +20,10 @@
 #include <string>
 #include <vector>
 #include "columbuscore.h"
+#include "IndexMatches.hh"
 
 struct TrieNode;
 class MatchRow;
-
-struct Match {
-    std::string word;
-    int error;
-};
 
 class LevenshteinIndex {
 private:
@@ -43,7 +39,7 @@ private:
     int get_transpose_error() const { return transpose_error; }
     int get_substitute_error(Letter l1, Letter l2) const { return l1 == l2 ? 0 : substitute_error; }
 
-    void search_recursive(const std::string &word, TrieNode *node, int depth, MatchRow *previous_row, std::vector<Match> &matches, int max_error);
+    void search_recursive(const std::string &word, TrieNode *node, int depth, MatchRow *previous_row, IndexMatches &matches, int max_error) const;
 
 public:
     LevenshteinIndex();
@@ -52,7 +48,7 @@ public:
     void insert_word(const std::string &word);
     bool has_word(const std::string &word) const;
 
-    void find_words(const std::string &word, const int max_error, std::vector<Match> &matches);
+    void find_words(const std::string &word, const int max_error, IndexMatches &matches) const;
 };
 
 #endif

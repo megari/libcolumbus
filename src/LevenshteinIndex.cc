@@ -101,13 +101,13 @@ bool LevenshteinIndex::has_word(const std::string &word) const {
      return false;
 }
 
-void LevenshteinIndex::find_words(const std::string &word, const int max_error, std::vector<Match> &matches) {
+void LevenshteinIndex::find_words(const std::string &word, const int max_error, IndexMatches &matches) const {
     MatchRow *first = new MatchRow(word.length()+1, get_insertion_error());
     search_recursive(word, root, 0, first, matches, max_error);
 
 }
 
-void LevenshteinIndex::search_recursive(const std::string &word, TrieNode *node, int depth, MatchRow *previous_row, std::vector<Match> &matches, int max_error) {
+void LevenshteinIndex::search_recursive(const std::string &word, TrieNode *node, int depth, MatchRow *previous_row, IndexMatches &matches, int max_error) const {
     MatchRow *current_row = new MatchRow(previous_row, get_deletion_error());
 
     for(size_t i = 1; i < word.length()+1; i++) {
@@ -122,10 +122,7 @@ void LevenshteinIndex::search_recursive(const std::string &word, TrieNode *node,
     }
     // Error row evaluated. Now check if a word was found and continue recursively.
     if(current_row->total_error() < max_error && node->current_word.length() > 0) {
-        Match m;
-        m.error = current_row->total_error();
-        m.word = node->current_word;
-        matches.push_back(m);
+        matches.addMatch(node->current_word, current_row->total_error());
     }
     if(current_row->min_error() <= max_error) {
         for(mapiter i = node->children.begin(); i != node->children.end(); i++) {

@@ -31,9 +31,9 @@ public:
     ~IndexMatches();
 
     void addMatch(const std::string &str, int error);
-    size_t numMatches();
-    const std::string& getMatch(size_t num);
-    int getMatchError(size_t num);
+    size_t numMatches() const;
+    const std::string& getMatch(size_t num) const;
+    int getMatchError(size_t num) const;
 };
 
 #endif /* INDEXMATCHES_H_ */

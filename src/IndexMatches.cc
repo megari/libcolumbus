@@ -40,20 +40,20 @@ void IndexMatches::addMatch(const std::string &str, int error) {
     p->errors.push_back(error);
 }
 
-size_t IndexMatches::numMatches() {
+size_t IndexMatches::numMatches() const {
     return p->matches.size();
 }
 
-const std::string& IndexMatches::getMatch(size_t num) {
+const std::string& IndexMatches::getMatch(size_t num) const {
     if(num >= p->matches.size()) {
         throw "Tried to access nonexisting match.";
     }
     return p->matches[num];
 }
 
-int IndexMatches::getMatchError(size_t num) {
+int IndexMatches::getMatchError(size_t num) const {
     if(num >= p->errors.size()) {
-        throw "Tried to access nonexisting match.";
+        throw "Tried to access nonexisting match error.";
     }
     return p->errors[num];
 }
