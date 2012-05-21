@@ -1,4 +1,8 @@
-add_library(columbus SHARED LevenshteinIndex.cc MatchRow.cc)
+add_library(columbus SHARED
+LevenshteinIndex.cc
+MatchRow.cc
+IndexMatches.cc
+)
 
 set_target_properties(columbus PROPERTIES VERSION ${SO_VERSION} SOVERSION ${ABI_VERSION})
 
