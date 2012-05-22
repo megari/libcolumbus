@@ -35,6 +35,7 @@ public:
     int minError() const;
 
     void print() const;
+    MatchRow* getParent() { return parent; }
 };
 
 #endif /* MATCHROW_H_ */

@@ -162,6 +162,36 @@ void testExact() {
     assert(matches.getMatch(0) == w1);
     assert(matches.getMatchError(0) == 0);
 }
+
+void testTranspose() {
+    LevenshteinIndex ind;
+    IndexMatches matches;
+    const int defaultError = LevenshteinIndex::getDefaultError();
+
+    string w1 = "abcd";
+    string w2 = "acbd";
+    string w3 = "bacd";
+    string w4 = "abdc";
+
+    ind.insertWord(w1);
+
+    ind.findWords(w2, defaultError, matches);
+    assert(matches.size() == 1);
+    assert(matches.getMatchError(0) == defaultError);
+    matches.clear();
+
+    ind.findWords(w3, defaultError, matches);
+    assert(matches.size() == 1);
+    assert(matches.getMatchError(0) == defaultError);
+    matches.clear();
+
+    ind.findWords(w4, defaultError, matches);
+    assert(matches.size() == 1);
+    assert(matches.getMatchError(0) == defaultError);
+    matches.clear();
+}
+
+
 int main(int argc, char **argv) {
     testTrivial();
     testSimple();
@@ -169,5 +199,6 @@ int main(int argc, char **argv) {
     testEdges();
     testEmptyQuery();
     testExact();
+    testTranspose();
     return 0;
 }
