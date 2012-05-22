@@ -151,7 +151,7 @@ void LevenshteinIndex::searchRecursive(const std::string &word, TrieNode *node, 
     }
 
     // Error row evaluated. Now check if a word was found and continue recursively.
-    if(current_row->totalError() < max_error && node->current_word.length() > 0) {
+    if(current_row->totalError() <= max_error && node->current_word.length() > 0) {
         matches.addMatch(node->current_word, current_row->totalError());
     }
     if(current_row->minError() <= max_error) {
