@@ -44,6 +44,7 @@ public:
     bool hasWord(const std::string &word) const;
 
     void findWords(const std::string &word, const int max_error, IndexMatches &matches) const;
+    ErrorValues * getErrorValues() { return e; }
 };
 
 #endif

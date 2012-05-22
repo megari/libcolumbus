@@ -19,6 +19,8 @@
 
 #include "columbuscore.h"
 
+struct ErrorValuesPrivate;
+
 class ErrorValues {
 private:
     static const int DEFAULT_ERROR = 100;
@@ -28,16 +30,22 @@ private:
     int substitute_error;
     int transpose_error;
 
+    ErrorValuesPrivate *p;
+
 public:
 
     ErrorValues();
+    ~ErrorValues();
 
     int getInsertionError() const { return insertion_error; }
     int getDeletionError() const { return deletion_error; }
     int getTransposeError() const { return transpose_error; }
-    int getSubstituteError(Letter l1, Letter l2) const { return l1 == l2 ? 0 : substitute_error; }
+    int getSubstituteError(Letter l1, Letter l2) const;
 
     static int getDefaultError() { return ErrorValues::DEFAULT_ERROR; }
+
+    void setError(Letter l1, Letter l2, int error);
+    void clearErrors();
 };
 
 #endif /* ERRORVALUES_HH_ */

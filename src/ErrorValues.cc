@@ -14,13 +14,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <map>
 #include "ErrorValues.hh"
+
+using namespace std;
+
+struct ErrorValuesPrivate {
+    std::map<pair<Letter, Letter>, int> errors;
+};
 
 ErrorValues::ErrorValues() :
     insertion_error(DEFAULT_ERROR),
     deletion_error(DEFAULT_ERROR),
     substitute_error(DEFAULT_ERROR),
     transpose_error(DEFAULT_ERROR) {
-
+    p = new ErrorValuesPrivate;
 }
 
+ErrorValues::~ErrorValues() {
+    delete p;
+}
+
+void ErrorValues::setError(Letter l1, Letter l2, int error) {
+    if(l1 > l2) {
+        Letter tmp = l1;
+        l1 = l2;
+        l2 = tmp;
+    }
+    pair<Letter, Letter> in(l1, l2);
+    p->errors[in] = error;
+}
+
+int ErrorValues::getSubstituteError(Letter l1, Letter l2) const {
+    if(l1 == l2)
+        return 0;
+    if(l1 > l2) {
+        Letter tmp = l1;
+        l1 = l2;
+        l2 = tmp;
+    }
+    pair<Letter, Letter> in(l1, l2);
+    std::map<pair<Letter, Letter>, int>::iterator f = p->errors.find(in);
+    if(f == p->errors.end())
+        return substitute_error;
+    return f->second;
+}
+
+void ErrorValues::clearErrors() {
+    p->errors.clear();
+}

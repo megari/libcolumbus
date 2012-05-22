@@ -18,3 +18,7 @@ target_link_libraries(lev_scalability columbus)
 if(${enable_scalability_tests})
   add_test(lev_scalability lev_scalability)
 endif()
+
+add_executable(custom_error custom_error_test.cc)
+target_link_libraries(custom_error columbus)
+add_test(custom_error custom_error)
