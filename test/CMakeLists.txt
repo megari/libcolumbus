@@ -12,3 +12,7 @@ add_test(levtrie levtrie)
 add_executable(levindex levindex_test.cc)
 target_link_libraries(levindex columbus)
 add_test(levindex levindex)
+
+add_executable(lev_scalability lev_scalability_test.cc)
+target_link_libraries(lev_scalability columbus)
+add_test(lev_scalability lev_scalability)
