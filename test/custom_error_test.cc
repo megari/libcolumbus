@@ -29,7 +29,9 @@ void testCustomError() {
     IndexMatches matches;
     const int defaultError = ErrorValues::getDefaultError();
     const int smallError = 1;
+    const int biggerError = 2;
     assert(smallError < defaultError);
+    assert(biggerError < defaultError);
 
     string w1 = "abc";
     string w2 = "adc";
@@ -43,6 +45,11 @@ void testCustomError() {
     ind.getErrorValues()->setError(Letter('b'), Letter('d'), smallError);
     ind.findWords(w2, defaultError, matches);
     assert(matches.getMatchError(0) == smallError);
+    matches.clear();
+
+    ind.getErrorValues()->setError(Letter('d'), Letter('b'), biggerError);
+    ind.findWords(w2, defaultError, matches);
+    assert(matches.getMatchError(0) == biggerError);
     matches.clear();
 
     ind.getErrorValues()->clearErrors();
