@@ -56,7 +56,7 @@ void testSimple() {
 void testOrder() {
     LevenshteinIndex ind;
     IndexMatches matches;
-    int defaultError = LevenshteinIndex::getDefaultError();
+    const int defaultError = LevenshteinIndex::getDefaultError();
 
     string w1 = "abcde";
     string w2 = "abxye";
@@ -97,9 +97,38 @@ void testOrder() {
     assert(matches.getMatchError(1) == 2*defaultError);
 }
 
+void testEdges() {
+    LevenshteinIndex ind;
+    IndexMatches matches;
+    const int defaultError = LevenshteinIndex::getDefaultError();
+    const int bigError = 100*defaultError;
+    string w1 = "abc";
+    string w2 = "bbc";
+    string w3 = "acc";
+    string w4 = "abb";
+
+    ind.insertWord(w1);
+
+    ind.findWords(w2, bigError, matches);
+    assert(matches.size() == 1);
+    assert(matches.getMatchError(0) == defaultError);
+    matches.clear();
+
+    ind.findWords(w3, bigError, matches);
+    assert(matches.size() == 1);
+    assert(matches.getMatchError(0) == defaultError);
+    matches.clear();
+
+    ind.findWords(w4, bigError, matches);
+    assert(matches.size() == 1);
+    assert(matches.getMatchError(0) == defaultError);
+    matches.clear();
+}
+
 int main(int argc, char **argv) {
     testTrivial();
     testSimple();
     testOrder();
+    testEdges();
     return 0;
 }
