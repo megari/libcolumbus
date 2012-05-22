@@ -24,6 +24,7 @@
 #include <vector>
 #include <cstdio>
 #include <cstring>
+#include <sys/time.h>
 #include "LevenshteinIndex.hh"
 
 using namespace std;
@@ -43,25 +44,46 @@ void readData(vector<string> &a) {
     fclose(f);
 }
 
-void runTest(vector<string> &a) {
+void runTest(vector<string> &a, int query_size, struct timeval *build_start, struct timeval *build_end, struct timeval *query_start, struct timeval *query_end) {
     LevenshteinIndex ind;
     IndexMatches matches;
     const int defaultError = LevenshteinIndex::getDefaultError();
 
+    gettimeofday(build_start, NULL);
     for(size_t i=0; i < a.size(); i++)
         ind.insertWord(a[i]);
+    gettimeofday(build_end, NULL);
 
-    for(size_t i=0; i < a.size(); i++) {
+    gettimeofday(query_start, NULL);
+    for(size_t i=0; i < (size_t)query_size; i++) {
         ind.findWords(a[i], 2*defaultError, matches);
         matches.clear();
     }
+    gettimeofday(query_end, NULL);
 }
 
 int main(int argc, char **argv) {
+    struct timeval build_start, build_end, query_start, query_end;
+    double bs, be, qs, qe;
+    double query_time, build_time;
     vector<string> a;
+    int query_size;
     readData(a);
     printf("Read in %ld words.\n", a.size());
 
-    runTest(a);
+    if(argc > 1)
+        query_size = atoi(argv[1]);
+    else
+        query_size = a.size();
+    printf("Querying %d elements.\n", query_size);
+    runTest(a, query_size, &build_start, &build_end, &query_start, &query_end);
+    bs = build_start.tv_sec + build_start.tv_usec/1000000.0;
+    be = build_end.tv_sec + build_end.tv_usec/1000000.0;
+    qs = query_start.tv_sec + query_start.tv_usec/1000000.0;
+    qe = query_end.tv_sec + query_end.tv_usec/1000000.0;
+    build_time = be - bs;
+    query_time = qe - qs;
+    printf("Index built in %f seconds. Words per second %.2f.\n", build_time, a.size()/build_time);
+    printf("Queries done in %f seconds. Queries per second %.2f.\n", query_time, query_size/query_time);
     return 0;
 }
