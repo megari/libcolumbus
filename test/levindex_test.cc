@@ -125,10 +125,29 @@ void testEdges() {
     matches.clear();
 }
 
+
+void testExact() {
+    LevenshteinIndex ind;
+    IndexMatches matches;
+
+    string w1 = "abcd";
+    string w2 = "abce";
+
+    ind.insertWord(w1);
+
+    ind.findWords(w2, 0, matches);
+    assert(matches.size() == 0);
+
+    ind.findWords(w1, 0, matches);
+    assert(matches.size() == 1);
+    assert(matches.getMatch(0) == w1);
+    assert(matches.getMatchError(0) == 0);
+}
 int main(int argc, char **argv) {
     testTrivial();
     testSimple();
     testOrder();
     testEdges();
+    testExact();
     return 0;
 }
