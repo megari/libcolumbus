@@ -125,6 +125,25 @@ void testEdges() {
     matches.clear();
 }
 
+void testEmptyQuery() {
+    LevenshteinIndex ind;
+    IndexMatches matches;
+    const int defaultError = LevenshteinIndex::getDefaultError();
+
+    string w1 = "a";
+    string w2 = "b";
+    string w3 = "abc";
+    string empty = "";
+
+    ind.insertWord(w1);
+    ind.insertWord(w2);
+    ind.insertWord(w3);
+
+    ind.findWords(empty, defaultError, matches);
+    assert(matches.size() == 2);
+    assert(matches.getMatchError(0) == defaultError);
+    assert(matches.getMatchError(1) == defaultError);
+}
 
 void testExact() {
     LevenshteinIndex ind;
@@ -148,6 +167,7 @@ int main(int argc, char **argv) {
     testSimple();
     testOrder();
     testEdges();
+    testEmptyQuery();
     testExact();
     return 0;
 }

@@ -84,6 +84,8 @@ LevenshteinIndex::~LevenshteinIndex() {
 void LevenshteinIndex::insertWord(const std::string &word) {
     TrieNode *node = root;
     size_t i = 0;
+    if(word == "")
+        return;
     while(word.length() > i) {
         Letter l = word[i];
         mapiter child = node->children.find(l);
@@ -130,7 +132,8 @@ void LevenshteinIndex::findWords(const std::string &word, const int max_error, I
     MatchRow *first_row = new MatchRow(word.length()+1, getInsertionError());
     cleaner.addRow(first_row);
     assert(first_row->getValue(0) == 0);
-    assert(first_row->getValue(1) == getInsertionError());
+    if(word.size() > 0)
+        assert(first_row->getValue(1) == getInsertionError());
     for(mapiter i = root->children.begin(); i != root->children.end(); i++) {
         searchRecursive(word, i->second, i->first, 0, first_row, matches, max_error, cleaner);
     }

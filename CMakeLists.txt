@@ -6,6 +6,7 @@ if(PROJECT_BINARY_DIR STREQUAL PROJECT_SOURCE_DIR)
 endif()
 
 option(enable_tests "Enable tests.")
+option(enable_scalability_tests "Additional scalability tests that are potentially very slow to run." OFF)
 option(full_warnings "Full compiler warnings." ON)
 
 if(${full_warnings})

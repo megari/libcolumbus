@@ -61,6 +61,7 @@ int main(int argc, char **argv) {
     vector<string> a;
     readData(a);
     printf("Read in %ld words.\n", a.size());
+
     runTest(a);
     return 0;
 }

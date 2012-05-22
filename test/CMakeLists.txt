@@ -15,4 +15,6 @@ add_test(levindex levindex)
 
 add_executable(lev_scalability lev_scalability_test.cc)
 target_link_libraries(lev_scalability columbus)
-add_test(lev_scalability lev_scalability)
+if(${enable_scalability_tests})
+  add_test(lev_scalability lev_scalability)
+endif()
