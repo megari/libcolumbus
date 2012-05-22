@@ -28,7 +28,9 @@ set(ABI_VERSION 0)
 set(LIBDIR "lib")
 
 include_directories(include)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
+add_subdirectory(include)
 add_subdirectory(src)
 
 if(${enable_tests})

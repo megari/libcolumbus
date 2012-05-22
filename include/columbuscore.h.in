@@ -2,6 +2,10 @@
 #define COLUMBUSCORE_H
 
 #include<stdlib.h>
+
+#define COLUMBUS_VERSION_STRING "${SO_VERSION}"
+#define COLUMBUS_ABI_VERSION ${ABI_VERSION}
+
 #define COL_ASSERT(value) if(!(value)) exit(127);
 
 typedef unsigned int Letter;
