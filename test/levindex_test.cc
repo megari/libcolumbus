@@ -62,9 +62,11 @@ void testOrder() {
     string w2 = "abxye";
     string w3 = "abche";
     string w4 = "abxhe";
+    string veryFarFromEveryOtherString = "supercalifragilisticexpialidocious";
 
     ind.insertWord(w1);
     ind.insertWord(w2);
+    ind.insertWord(veryFarFromEveryOtherString);
 
     ind.findWords(w3, defaultError, matches);
     assert(matches.size() == 1);
