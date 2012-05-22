@@ -28,7 +28,7 @@ struct MatchData {
 
     bool operator<(const MatchData &other) const {
         return error < other.error;
-    };
+    }
 };
 
 struct IndexMatchesPrivate {
