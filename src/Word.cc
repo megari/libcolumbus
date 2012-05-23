@@ -36,8 +36,26 @@ Word::Word(const char *utf8_word) {
     }
 }
 
+Word::Word(const Word &w) : text(0), len(0) {
+    duplicateFrom(w);
+}
+
 Word::~Word() {
     delete []text;
+}
+
+void Word::duplicateFrom(const Word &w) {
+    if(this == &w) {
+        return;
+    }
+    delete []text;
+    len = w.len;
+    if(len == 0) {
+        text = 0;
+    } else {
+        text = new Letter[len+1];
+        memcpy(text, w.text, (len+1)*sizeof(Letter));
+    }
 }
 
 Letter Word::operator[](unsigned int i) const {
@@ -46,18 +64,8 @@ Letter Word::operator[](unsigned int i) const {
     return text[i];
 }
 
-Word& Word::operator=(const Word &s) {
-    if(this == &s) {
-        return *this;
-    }
-    delete []text;
-    len = s.len;
-    if(len == 0) {
-        text = 0;
-    } else {
-        text = new Letter[len+1];
-        memcpy(text, s.text, (len+1)*sizeof(Letter));
-    }
+Word& Word::operator=(const Word &w) {
+    duplicateFrom(w);
     return *this;
 }
 

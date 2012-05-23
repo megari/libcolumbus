@@ -71,9 +71,38 @@ void testWhitespace() {
     shouldThrow("a\na");
 }
 
+void testCreation() {
+    Word w1("abc");
+    Word w2(w1);
+    Word empty1;
+    Word empty2(empty1);
+
+    assert(empty1.length() == 0);
+    assert(empty2.length() == 0);
+
+    assert(w2.length() == 3);
+    assert(w2[0] == 'a');
+    assert(w2[1] == 'b');
+    assert(w2[2] == 'c');
+
+    Word *w3 = new Word(w1);
+    assert(w3->length() == 3);
+    assert((*w3)[0] == 'a');
+    assert((*w3)[1] == 'b');
+    assert((*w3)[2] == 'c');
+    delete w3;
+
+    // Check that w1 did not get destroyed along with w3.
+    assert(w1.length() == 3);
+    assert(w1[0] == 'a');
+    assert(w1[1] == 'b');
+    assert(w1[2] == 'c');
+}
+
 int main(int argc, char **argv) {
     testEmpty();
     testIndexing();
     testWhitespace();
+    testCreation();
 }
 

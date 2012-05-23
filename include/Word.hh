@@ -30,11 +30,13 @@ private:
 
     Letter *text; // Change this to a shared pointer to save memory.
     unsigned int len;
-    Word& operator=(const Word &s); // Keep this private until proper semantics can be worked out.
+    Word& operator=(const Word &w); // Keep this private until proper semantics can be worked out.
     bool hasWhitespace();
+    void duplicateFrom(const Word &w);
 
 public:
     Word();
+    Word(const Word &w);
     explicit Word(const char *utf8_word);
     ~Word();
 
