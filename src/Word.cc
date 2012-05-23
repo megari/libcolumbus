@@ -30,8 +30,10 @@ Word::Word(const char *utf8_word) {
         text[i] = Letter(utf8_word[i]);
     }
     text[len] = 0; // Null terminated, just in case.
-    if(hasWhitespace())
+    if(hasWhitespace()) {
+        delete []text;
         throw "Tried to create a word with whitespace in it.";
+    }
 }
 
 Word::~Word() {
