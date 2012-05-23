@@ -23,12 +23,7 @@
 
 void testEmpty() {
     Word w1;
-    Word w2;
     assert(w1.length() == 0);
-
-    w2 = w1;
-    assert(w1.length() == 0);
-    assert(w2.length() == 0);
 }
 
 void testIndexing() {
@@ -48,20 +43,37 @@ void testIndexing() {
 
 }
 
-void testAssignment() {
-    Word w1("abc");
-    Word w2;
+void shouldThrow(const char *str) {
+    bool gotException;
+    try {
+        Word w(str);
+        gotException = false;
+    } catch(const char *s) {
+        gotException = true;
+    }
+    assert(gotException);
+}
 
-    w2 = w1;
-    assert(w2.length() == 2);
-    assert(w2[0] == 'a');
-    assert(w2[1] == 'b');
-    assert(w2[2] == 'c');
+void testWhitespace() {
+    shouldThrow(" ");
+    shouldThrow(" a");
+    shouldThrow("a ");
+    shouldThrow("a a");
+
+    shouldThrow("\t");
+    shouldThrow("a\t");
+    shouldThrow("\ta");
+    shouldThrow("a\ta");
+
+    shouldThrow("\n");
+    shouldThrow("a\n");
+    shouldThrow("\na");
+    shouldThrow("a\na");
 }
 
 int main(int argc, char **argv) {
     testEmpty();
     testIndexing();
-    testAssignment();
+    testWhitespace();
 }
 

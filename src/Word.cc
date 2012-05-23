@@ -30,6 +30,8 @@ Word::Word(const char *utf8_word) {
         text[i] = Letter(utf8_word[i]);
     }
     text[len] = 0; // Null terminated, just in case.
+    if(hasWhitespace())
+        throw "Tried to create a word with whitespace in it.";
 }
 
 Word::~Word() {
@@ -40,4 +42,34 @@ Letter Word::operator[](unsigned int i) const {
     if(i >= len)
         throw "Tried to access past the end of Word array.";
     return text[i];
+}
+
+Word& Word::operator=(const Word &s) {
+    if(this == &s) {
+        return *this;
+    }
+    delete []text;
+    len = s.len;
+    if(len == 0) {
+        text = 0;
+    } else {
+        text = new Letter[len+1];
+        memcpy(text, s.text, (len+1)*sizeof(Letter));
+    }
+    return *this;
+}
+
+/**
+ * A word is not supposed to have any whitespace in it. Verify that we don't.
+ */
+bool Word::hasWhitespace() {
+    Letter space = ' ';
+    Letter tab = '\t';
+    Letter linefeed = '\n';
+    for(unsigned int i=0; i<len; i++) {
+        Letter cur = text[i];
+        if(cur == space || cur == tab || cur == linefeed)
+            return true;
+    }
+    return false;
 }

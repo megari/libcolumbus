@@ -23,16 +23,19 @@
  * A word encapsulates a single word. That is,
  * there is no whitespace in it.
  *
- * A word is immutable.
+ * A word's contents are immutable.
  */
 class Word {
+private:
 
     Letter *text; // Change this to a shared pointer to save memory.
     unsigned int len;
+    Word& operator=(const Word &s); // Keep this private until proper semantics can be worked out.
+    bool hasWhitespace();
 
 public:
     Word();
-    Word(const char *utf8_word);
+    explicit Word(const char *utf8_word);
     ~Word();
 
     int length() const { return len;}
