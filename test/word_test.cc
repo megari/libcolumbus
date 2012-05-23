@@ -19,6 +19,7 @@
  */
 
 #include <cassert>
+#include <stdexcept>
 #include "Word.hh"
 
 void testEmpty() {
@@ -36,7 +37,7 @@ void testIndexing() {
 
     try {
         w[3];
-    } catch(const char *str) {
+    } catch(std::out_of_range &e) {
         gotException = true;
     }
     assert(gotException);
@@ -48,7 +49,7 @@ void shouldThrow(const char *str) {
     try {
         Word w(str);
         gotException = false;
-    } catch(const char *s) {
+    } catch(std::invalid_argument &e) {
         gotException = true;
     }
     assert(gotException);

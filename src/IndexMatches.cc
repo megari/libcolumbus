@@ -16,6 +16,7 @@
 
 #include "IndexMatches.hh"
 
+#include <stdexcept>
 #include <vector>
 #include <algorithm>
 #include <cassert>
@@ -56,14 +57,24 @@ size_t IndexMatches::size() const {
 
 const std::string& IndexMatches::getMatch(size_t num) const {
     if(num >= p->matches.size()) {
-        throw "Tried to access nonexisting match.";
+        std::string msg("Attempt to access match ");
+        msg += num;
+        msg += " out of bounds (array size ";
+        msg += p->matches.size();
+        msg += ").";
+        throw out_of_range(msg);
     }
     return p->matches[num].text;
 }
 
 int IndexMatches::getMatchError(size_t num) const {
     if(num >= p->matches.size()) {
-        throw "Tried to access nonexisting match error.";
+        std::string msg("Attempt to access match error ");
+        msg += num;
+        msg += " out of bounds (array size ";
+        msg += p->matches.size();
+        msg += ").";
+        throw out_of_range(msg);
     }
     return p->matches[num].error;
 }

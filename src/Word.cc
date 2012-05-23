@@ -16,6 +16,7 @@
 
 #include "Word.hh"
 #include<cstring>
+#include<stdexcept>
 
 Word::Word() : text(0), len(0) {
 
@@ -32,7 +33,7 @@ Word::Word(const char *utf8_word) {
     text[len] = 0; // Null terminated, just in case.
     if(hasWhitespace()) {
         delete []text;
-        throw "Tried to create a word with whitespace in it.";
+        throw std::invalid_argument("Tried to create a word with whitespace in it.");
     }
 }
 
@@ -59,8 +60,14 @@ void Word::duplicateFrom(const Word &w) {
 }
 
 Letter Word::operator[](unsigned int i) const {
-    if(i >= len)
-        throw "Tried to access past the end of Word array.";
+    if(i >= len) {
+        std::string msg("Tried to access letter ");
+        msg += i;
+        msg += " in a word of size ";
+        msg += len;
+        msg += ".";
+        throw std::out_of_range(msg);
+    }
     return text[i];
 }
 
