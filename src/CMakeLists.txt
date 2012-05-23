@@ -3,6 +3,7 @@ LevenshteinIndex.cc
 MatchRow.cc
 IndexMatches.cc
 ErrorValues.cc
+Word.cc
 )
 
 set_target_properties(columbus PROPERTIES VERSION ${SO_VERSION} SOVERSION ${ABI_VERSION})

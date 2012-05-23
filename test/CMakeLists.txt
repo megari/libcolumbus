@@ -22,3 +22,7 @@ endif()
 add_executable(custom_error custom_error_test.cc)
 target_link_libraries(custom_error columbus)
 add_test(custom_error custom_error)
+
+add_executable(word word_test.cc)
+target_link_libraries(word columbus)
+add_test(word word)
