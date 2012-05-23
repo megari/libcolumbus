@@ -91,18 +91,18 @@ bool Word::hasWhitespace() {
     return false;
 }
 
-bool Word::operator==(const Word &w) {
+bool Word::operator==(const Word &w) const {
     if(this == &w)
         return true;
     if(len != w.len)
         return false;
-    for(unsigned int i; i<len; i++)
+    for(unsigned int i=0; i<len; i++)
         if(text[i] != w.text[i])
             return false;
     return true;
 }
 
-bool Word::operator!=(const Word &w) {
+bool Word::operator!=(const Word &w) const {
     return !(*this == w);
 }
 

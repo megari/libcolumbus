@@ -30,7 +30,6 @@ private:
 
     Letter *text; // Change this to a shared pointer to save memory.
     unsigned int len;
-    Word& operator=(const Word &w); // Keep this private until proper semantics can be worked out.
     bool hasWhitespace();
     void duplicateFrom(const Word &w);
 
@@ -40,12 +39,13 @@ public:
     explicit Word(const char *utf8_word);
     ~Word();
 
-    int length() const { return len;}
+    unsigned int length() const { return len;}
     void toUtf8(char *buf, unsigned int bufSize) const;
 
     Letter operator[](unsigned int i) const;
-    bool operator==(const Word &w);
-    bool operator!=(const Word &w);
+    bool operator==(const Word &w) const;
+    bool operator!=(const Word &w) const;
+    Word& operator=(const Word &w); // Should we allow assignment? Is it the proper semantic thing to do?
 };
 
 #endif /* WORD_HH_ */

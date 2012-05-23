@@ -21,11 +21,12 @@
 
 #include <cassert>
 #include "LevenshteinIndex.hh"
+#include "Word.hh"
 
 void basicTest() {
     LevenshteinIndex ind;
-    std::string word1("word");
-    std::string word2("another");
+    Word word1("word");
+    Word word2("another");
 
     assert(!ind.hasWord(word1));
     assert(!ind.hasWord(word2));
@@ -41,7 +42,7 @@ void basicTest() {
 
 void shortTest() {
     LevenshteinIndex ind;
-    std::string word("a");
+    Word word("a");
 
     assert(!ind.hasWord(word));
 
@@ -51,8 +52,8 @@ void shortTest() {
 
 void prefixTest() {
     LevenshteinIndex ind;
-    std::string word("ab");
-    std::string prefix("a");
+    Word word("ab");
+    Word prefix("a");
 
     assert(!ind.hasWord(word));
     assert(!ind.hasWord(prefix));
@@ -68,8 +69,8 @@ void prefixTest() {
 
 void suffixTest() {
     LevenshteinIndex ind;
-    std::string word("abc");
-    std::string word2("abcd");
+    Word word("abc");
+    Word word2("abcd");
 
     assert(!ind.hasWord(word));
     assert(!ind.hasWord(word2));
@@ -85,9 +86,9 @@ void suffixTest() {
 
 void branchTest() {
     LevenshteinIndex ind;
-    std::string word("abc");
-    std::string word2("abcd");
-    std::string word3("abce");
+    Word word("abc");
+    Word word2("abcd");
+    Word word3("abce");
 
     assert(!ind.hasWord(word));
     assert(!ind.hasWord(word2));

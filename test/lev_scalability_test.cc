@@ -26,10 +26,11 @@
 #include <cstring>
 #include <sys/time.h>
 #include "LevenshteinIndex.hh"
+#include "Word.hh"
 
 using namespace std;
 
-void readData(vector<string> &a, const char *ifilename) {
+void readData(vector<Word> &a, const char *ifilename) {
     FILE *f = fopen(ifilename, "r");
     char buffer[1024];
     if(!f) {
@@ -37,14 +38,14 @@ void readData(vector<string> &a, const char *ifilename) {
         exit(0);
     }
     while(fgets(buffer, 1024, f) != NULL) {
-        buffer[strlen(buffer)-2] = '\0';
-        string s(buffer);
+        buffer[strlen(buffer)-2] = '\0'; // Chop the \n.
+        Word s(buffer);
         a.push_back(s);
     }
     fclose(f);
 }
 
-void runTest(vector<string> &a, int query_size, struct timeval *build_start, struct timeval *build_end, struct timeval *query_start, struct timeval *query_end) {
+void runTest(vector<Word> &a, int query_size, struct timeval *build_start, struct timeval *build_end, struct timeval *query_start, struct timeval *query_end) {
     LevenshteinIndex ind;
     IndexMatches matches;
     const int defaultError = LevenshteinIndex::getDefaultError();
@@ -66,7 +67,7 @@ int main(int argc, char **argv) {
     struct timeval build_start, build_end, query_start, query_end;
     double bs, be, qs, qe;
     double query_time, build_time;
-    vector<string> a;
+    vector<Word> a;
     int query_size;
     const char *ifile;
 

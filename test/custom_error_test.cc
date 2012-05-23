@@ -21,6 +21,7 @@
 #include <cassert>
 #include "LevenshteinIndex.hh"
 #include "ErrorValues.hh"
+#include "Word.hh"
 
 using namespace std;
 
@@ -33,8 +34,8 @@ void testCustomError() {
     assert(smallError < defaultError);
     assert(biggerError < defaultError);
 
-    string w1 = "abc";
-    string w2 = "adc";
+    Word w1("abc");
+    Word w2("adc");
 
     ind.insertWord(w1);
 

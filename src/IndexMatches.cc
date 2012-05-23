@@ -15,6 +15,7 @@
  */
 
 #include "IndexMatches.hh"
+#include "Word.hh"
 
 #include <stdexcept>
 #include <vector>
@@ -24,7 +25,7 @@
 using namespace std;
 
 struct MatchData {
-    string text;
+    Word text;
     int error;
 
     bool operator<(const MatchData &other) const {
@@ -44,7 +45,7 @@ IndexMatches::~IndexMatches() {
     delete p;
 }
 
-void IndexMatches::addMatch(const std::string &str, int error) {
+void IndexMatches::addMatch(const Word &str, int error) {
     MatchData m;
     m.text = str;
     m.error = error;
@@ -55,7 +56,7 @@ size_t IndexMatches::size() const {
     return p->matches.size();
 }
 
-const std::string& IndexMatches::getMatch(size_t num) const {
+const Word& IndexMatches::getMatch(size_t num) const {
     if(num >= p->matches.size()) {
         std::string msg("Attempt to access match ");
         msg += num;

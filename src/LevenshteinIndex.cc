@@ -21,6 +21,7 @@
 #include "LevenshteinIndex.hh"
 #include "MatchRow.hh"
 #include "ErrorValues.hh"
+#include "Word.hh"
 
 using namespace std;
 
@@ -28,7 +29,7 @@ struct TrieNode {
     TrieNode *parent;
     std::map<Letter, TrieNode*> children;
     Letter letter;
-    std::string current_word; // The word that ends in this node.
+    Word current_word; // The word that ends in this node.
 };
 
 
@@ -83,10 +84,10 @@ int LevenshteinIndex::getDefaultError() {
     return ErrorValues::getDefaultError();
 }
 
-void LevenshteinIndex::insertWord(const std::string &word) {
+void LevenshteinIndex::insertWord(const Word &word) {
     TrieNode *node = root;
     size_t i = 0;
-    if(word == "")
+    if(word.length() == 0)
         return;
     while(word.length() > i) {
         Letter l = word[i];
@@ -109,7 +110,7 @@ void LevenshteinIndex::insertWord(const std::string &word) {
     return;
 }
 
-bool LevenshteinIndex::hasWord(const std::string &word) const {
+bool LevenshteinIndex::hasWord(const Word &word) const {
     TrieNode *node = root;
     size_t i = 0;
     while(word.length() > i) {
@@ -129,12 +130,12 @@ bool LevenshteinIndex::hasWord(const std::string &word) const {
      return false;
 }
 
-void LevenshteinIndex::findWords(const std::string &word, const int max_error, IndexMatches &matches) const {
+void LevenshteinIndex::findWords(const Word &word, const int max_error, IndexMatches &matches) const {
     MemoryCleaner cleaner;
     MatchRow *first_row = new MatchRow(word.length()+1, e->getInsertionError());
     cleaner.addRow(first_row);
     assert(first_row->getValue(0) == 0);
-    if(word.size() > 0)
+    if(word.length() > 0)
         assert(first_row->getValue(1) == e->getInsertionError());
     for(mapiter i = root->children.begin(); i != root->children.end(); i++) {
         searchRecursive(word, i->second, i->first, 0, first_row, matches, max_error, cleaner);
@@ -142,7 +143,7 @@ void LevenshteinIndex::findWords(const std::string &word, const int max_error, I
     matches.sort();
 }
 
-void LevenshteinIndex::searchRecursive(const std::string &word, TrieNode *node, Letter letter, Letter previousLetter, MatchRow *previousRow, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const {
+void LevenshteinIndex::searchRecursive(const Word &word, TrieNode *node, Letter letter, Letter previousLetter, MatchRow *previousRow, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const {
     MatchRow *currentRow = new MatchRow(previousRow, e->getDeletionError());
     cleaner.addRow(currentRow);
 

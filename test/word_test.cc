@@ -105,6 +105,7 @@ void testComparison() {
     Word w1b;
     Word w2a("abc");
     Word w2b("abc");
+    Word w2c("abd");
     Word different("different");
 
     assert(w1a == w1a);
@@ -116,10 +117,12 @@ void testComparison() {
     assert(!(w2b != w2b));
 
     assert(w1a != w2a);
+    assert(w2a != w2c);
     assert(w1a != different);
     assert(w2a != different);
 
     assert(!(w1a == w2a));
+    assert(!(w2a == w2c));
     assert(!(w1a == different));
     assert(!(w2a == different));
 }

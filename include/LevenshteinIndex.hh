@@ -17,7 +17,6 @@
 #ifndef LEVENSHTEININDEX_HH
 #define LEVENSHTEININDEX_HH
 
-#include <string>
 #include <vector>
 #include "columbuscore.h"
 #include "IndexMatches.hh"
@@ -26,13 +25,14 @@ struct TrieNode;
 class MatchRow;
 class MemoryCleaner;
 class ErrorValues;
+class Word;
 
 class LevenshteinIndex {
 private:
     TrieNode *root;
     ErrorValues *e;
 
-    void searchRecursive(const std::string &word, TrieNode *node, Letter letter, Letter previousLetter, MatchRow *previous_row, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const;
+    void searchRecursive(const Word &word, TrieNode *node, Letter letter, Letter previousLetter, MatchRow *previous_row, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const;
 
 public:
     LevenshteinIndex();
@@ -40,10 +40,10 @@ public:
 
     static int getDefaultError();
 
-    void insertWord(const std::string &word);
-    bool hasWord(const std::string &word) const;
+    void insertWord(const Word &word);
+    bool hasWord(const Word &word) const;
 
-    void findWords(const std::string &word, const int max_error, IndexMatches &matches) const;
+    void findWords(const Word &word, const int max_error, IndexMatches &matches) const;
     ErrorValues * getErrorValues() { return e; }
 };
 

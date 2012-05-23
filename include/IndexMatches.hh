@@ -17,10 +17,11 @@
 #ifndef INDEXMATCHES_H_
 #define INDEXMATCHES_H_
 
-#include<string>
+#include <cstddef>
 
 class LevenshteinIndex;
 struct IndexMatchesPrivate;
+class Word;
 
 /**
  * A class that contains a list of index matches
@@ -34,7 +35,7 @@ private:
 
     IndexMatchesPrivate *p;
 
-    void addMatch(const std::string &str, int error);
+    void addMatch(const Word &str, int error);
     void sort();
 
 public:
@@ -42,7 +43,7 @@ public:
     ~IndexMatches();
 
     size_t size() const;
-    const std::string& getMatch(size_t num) const;
+    const Word& getMatch(size_t num) const;
     int getMatchError(size_t num) const;
     void clear();
 

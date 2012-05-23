@@ -31,21 +31,24 @@ void load_data(LevenshteinIndex &ind, char *file) {
     }
     while(fgets(buffer, 1024, f) != NULL) {
         buffer[strlen(buffer)-2] = '\0'; // Chop off linefeed.
-        std::string s(buffer);
+        Word s(buffer);
         ind.insertWord(s);
     }
     fclose(f);
 }
 
-void queryAndPrint(LevenshteinIndex &ind, std::string &query, int maxError) {
+void queryAndPrint(LevenshteinIndex &ind, Word &query, int maxError) {
     IndexMatches matches;
-    ind.findWords(query.c_str(), maxError, matches);
+    ind.findWords(query, maxError, matches);
     if(matches.size() == 0) {
         printf("No matches.\n");
         return;
     }
     for(size_t i=0; i<matches.size(); i++) {
-        printf("%s %d\n", matches.getMatch(i).c_str(), matches.getMatchError(i));
+        const unsigned int bufSize = 1024;
+        char buf[bufSize];
+        matches.getMatch(i).toUtf8(buf, bufSize);
+        printf("%s %d\n", buf, matches.getMatchError(i));
     }
 }
 
@@ -74,8 +77,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    std::string tmp(argv[2]);
-    queryAndPrint(ind, tmp, maxError);
+    queryAndPrint(ind, *query, maxError);
     delete query;
     return 0;
 }
