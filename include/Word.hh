@@ -42,6 +42,8 @@ public:
 
     int length() const { return len;}
     Letter operator[](unsigned int i) const;
+    bool operator==(const Word &w);
+    bool operator!=(const Word &w);
 };
 
 #endif /* WORD_HH_ */

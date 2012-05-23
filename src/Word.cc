@@ -90,3 +90,18 @@ bool Word::hasWhitespace() {
     }
     return false;
 }
+
+bool Word::operator==(const Word &w) {
+    if(this == &w)
+        return true;
+    if(len != w.len)
+        return false;
+    for(unsigned int i; i<len; i++)
+        if(text[i] != w.text[i])
+            return false;
+    return true;
+}
+
+bool Word::operator!=(const Word &w) {
+    return !(*this == w);
+}

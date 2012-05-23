@@ -100,10 +100,35 @@ void testCreation() {
     assert(w1[2] == 'c');
 }
 
+void testComparison() {
+    Word w1a;
+    Word w1b;
+    Word w2a("abc");
+    Word w2b("abc");
+    Word different("different");
+
+    assert(w1a == w1a);
+    assert(w2a == w2a);
+    assert(w2b == w2b);
+
+    assert(!(w1a != w1b));
+    assert(!(w2a != w2a));
+    assert(!(w2b != w2b));
+
+    assert(w1a != w2a);
+    assert(w1a != different);
+    assert(w2a != different);
+
+    assert(!(w1a == w2a));
+    assert(!(w1a == different));
+    assert(!(w2a == different));
+}
+
 int main(int argc, char **argv) {
     testEmpty();
     testIndexing();
     testWhitespace();
     testCreation();
+    testComparison();
 }
 
