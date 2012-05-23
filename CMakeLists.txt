@@ -32,6 +32,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
 add_subdirectory(include)
 add_subdirectory(src)
+add_subdirectory(tools)
 
 if(${enable_tests})
   enable_testing()
