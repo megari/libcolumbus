@@ -124,11 +124,16 @@ void testComparison() {
     assert(!(w2a == different));
 }
 
+void testEncoding() {
+    // FIXME add tests here once we use iconv.
+}
+
 int main(int argc, char **argv) {
     testEmpty();
     testIndexing();
     testWhitespace();
     testCreation();
     testComparison();
+    testEncoding();
 }
 

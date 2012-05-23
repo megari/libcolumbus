@@ -41,6 +41,8 @@ public:
     ~Word();
 
     int length() const { return len;}
+    void toUtf8(char *buf, unsigned int bufSize) const;
+
     Letter operator[](unsigned int i) const;
     bool operator==(const Word &w);
     bool operator!=(const Word &w);

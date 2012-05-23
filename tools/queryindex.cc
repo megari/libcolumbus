@@ -15,12 +15,67 @@
  */
 
 #include "LevenshteinIndex.hh"
+#include "Word.hh"
+#include "IndexMatches.hh"
 #include <cstdio>
+#include <stdexcept>
+#include <string>
+#include <cstring>
+
+void load_data(LevenshteinIndex &ind, char *file) {
+    FILE *f = fopen(file, "r");
+    char buffer[1024];
+    if(!f) {
+        printf("Could not open file %s.\n", file);
+        exit(1);
+    }
+    while(fgets(buffer, 1024, f) != NULL) {
+        buffer[strlen(buffer)-2] = '\0'; // Chop off linefeed.
+        std::string s(buffer);
+        ind.insertWord(s);
+    }
+    fclose(f);
+}
+
+void queryAndPrint(LevenshteinIndex &ind, std::string &query, int maxError) {
+    IndexMatches matches;
+    ind.findWords(query.c_str(), maxError, matches);
+    if(matches.size() == 0) {
+        printf("No matches.\n");
+        return;
+    }
+    for(size_t i=0; i<matches.size(); i++) {
+        printf("%s %d\n", matches.getMatch(i).c_str(), matches.getMatchError(i));
+    }
+}
 
 int main(int argc, char **argv) {
+    LevenshteinIndex ind;
+    char *file;
+    int maxError;
+    Word *query;
     if(argc < 4) {
         printf("%s datafile queryword max_error\n", argv[0]);
         return 0;
     }
+    file = argv[1];
+    try {
+        query = new Word(argv[2]);
+    } catch(std::invalid_argument &e) {
+        printf("Query term \"%s\" must not have whitespace in it.", argv[2]);
+        return 1;
+    }
+    maxError = atoi(argv[3]);
+
+    try {
+        load_data(ind, file);
+    } catch(std::invalid_argument &e) {
+        printf("Data file malformed: %s\n", e.what());
+        return 1;
+    }
+
+    std::string tmp(argv[2]);
+    queryAndPrint(ind, tmp, maxError);
+    delete query;
     return 0;
 }
