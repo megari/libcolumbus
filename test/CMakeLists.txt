@@ -16,7 +16,7 @@ add_test(levindex levindex)
 add_executable(lev_scalability lev_scalability_test.cc)
 target_link_libraries(lev_scalability columbus)
 if(${enable_scalability_tests})
-  add_test(lev_scalability lev_scalability)
+  add_test(lev_scalability lev_scalability /usr/share/dict/words)
 endif()
 
 add_executable(custom_error custom_error_test.cc)

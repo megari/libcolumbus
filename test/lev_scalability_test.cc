@@ -29,8 +29,8 @@
 
 using namespace std;
 
-void readData(vector<string> &a) {
-    FILE *f = fopen("/usr/share/dict/words", "r");
+void readData(vector<string> &a, const char *ifilename) {
+    FILE *f = fopen(ifilename, "r");
     char buffer[1024];
     if(!f) {
         printf("Could not open dictionary file. Skipping performance test.\n");
@@ -68,11 +68,17 @@ int main(int argc, char **argv) {
     double query_time, build_time;
     vector<string> a;
     int query_size;
-    readData(a);
-    printf("Read in %ld words.\n", a.size());
+    const char *ifile;
 
-    if(argc > 1)
-        query_size = atoi(argv[1]);
+    if(argc == 1) {
+        printf("%s input_file_name.txt <num_of_queries>\n", argv[0]);
+        return 1;
+    }
+    ifile = argv[1];
+    readData(a, ifile);
+    printf("Read in %ld words.\n", a.size());
+    if(argc > 2)
+        query_size = atoi(argv[2]);
     else
         query_size = a.size();
     printf("Querying %d elements.\n", query_size);
