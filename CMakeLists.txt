@@ -27,6 +27,9 @@ set(ABI_VERSION 0)
 # Should be lib64 on some platforms.
 set(LIBDIR "lib")
 
+#find_package(PkgConfig)
+#pkg_check_modules(ICONV REQUIRED iconv)
+
 include_directories(include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 

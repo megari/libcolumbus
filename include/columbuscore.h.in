@@ -9,5 +9,6 @@
 #define COL_ASSERT(value) if(!(value)) exit(127);
 
 typedef unsigned int Letter;
+#define INTERNAL_ENCODING "UTF-32LE" /* Change in a configure check once someone wants to run on BE hardware. */
 
 #endif
