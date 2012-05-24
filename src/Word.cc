@@ -38,9 +38,9 @@ Word::Word(const char *utf8_word) {
         throw std::runtime_error("Could not create iconv converter.");
     }
 
-    int inputLen = strlen(utf8_word);
+    int inputLen = strlen((const char*)(utf8_word));
     txt = new char[(inputLen+1)*sizeof(Letter)];
-    tmp = strdup(utf8_word);
+    tmp = strdup((const char*)(utf8_word));
     assert(tmp);
     inBytes = inputLen;
     outBytes = sizeof(Letter)*(inBytes+1);
@@ -56,7 +56,7 @@ Word::Word(const char *utf8_word) {
 
         perror("Iconv error");
         std::string err("Could not convert UTF8-string to internal representation: ");
-        err += utf8_word;
+        err += (const char*)(utf8_word);
         throw std::runtime_error(err);
     }
     text = reinterpret_cast<Letter*>(txt);
@@ -65,7 +65,7 @@ Word::Word(const char *utf8_word) {
     if(hasWhitespace()) {
         delete []text;
         std::string err("Tried to create a word with whitespace in it: ");
-        err += utf8_word;
+        err += (const char*)utf8_word;
         throw std::invalid_argument(err);
     }
 }

@@ -128,7 +128,14 @@ void testComparison() {
 }
 
 void testEncoding() {
-    // FIXME add tests here once we use iconv.
+    unsigned char txt[4] = {0x61, 0xc3, 0xa4, 0x63};
+    char *text = (char*)txt;
+    Word w1(text);
+
+    assert(w1.length() == 3);
+    assert(w1[0] == 'a');
+    assert(w1[1] == 0xe4);
+    assert(w1[2] == 'c');
 }
 
 int main(int argc, char **argv) {
