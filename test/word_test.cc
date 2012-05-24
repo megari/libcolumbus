@@ -18,6 +18,7 @@
  * Tests the custom word class. Valgrind strongly recommended.
  */
 
+#include <cstring>
 #include <cassert>
 #include <stdexcept>
 #include "Word.hh"
@@ -128,14 +129,18 @@ void testComparison() {
 }
 
 void testEncoding() {
-    unsigned char txt[4] = {0x61, 0xc3, 0xa4, 0x63};
+    unsigned char txt[5] = {0x61, 0xc3, 0xa4, 0x63, 0}; // "aäc" in UTF-8.
     char *text = (char*)txt;
+    char returned[4];
     Word w1(text);
 
     assert(w1.length() == 3);
     assert(w1[0] == 'a');
     assert(w1[1] == 0xe4);
     assert(w1[2] == 'c');
+
+    w1.toUtf8(returned, 4);
+    assert(strcmp(text, returned) == 0);
 }
 
 int main(int argc, char **argv) {

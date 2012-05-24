@@ -103,11 +103,5 @@ bool Word::operator!=(const Word &w) const {
 }
 
 void Word::toUtf8(char *buf, unsigned int bufSize) const {
-    // Again, fix to use iconv.
-    unsigned int count = std::min(bufSize-1, len);
-
-    for(unsigned int i=0; i<count; i++) {
-        buf[i] = char(text[i]);
-    }
-    buf[count] = 0;
+    internalToUtf8(text, len, buf, bufSize);
 }

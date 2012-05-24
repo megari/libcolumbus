@@ -20,6 +20,7 @@
 #include "columbuscore.h"
 
 Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize);
+void internalToUtf8(const Letter *source, unsigned int characters, char *buf, unsigned int bufsize);
 
 #endif
 

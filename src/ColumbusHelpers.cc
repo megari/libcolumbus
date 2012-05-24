@@ -62,3 +62,27 @@ Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize) {
     text[resultStringSize] = 0; // Null terminated, just in case.
     return text;
 }
+
+void internalToUtf8(const Letter* source, unsigned int characters, char *buf, unsigned int bufsize) {
+    iconv_t ic = iconv_open("UTF-8", INTERNAL_ENCODING);
+    char *inBuf = reinterpret_cast<char*>(const_cast<Letter*>(source));
+    char *outBuf;
+    size_t badConvertedCharacters;
+    size_t inBytes, outBytes, outBytesOriginal, resultStringSize;
+    if (ic == (iconv_t)-1) {
+        throw std::runtime_error("Could not create iconv converter.");
+    }
+
+    inBytes = characters*sizeof(Letter);
+    outBytes = bufsize;
+    outBytesOriginal = outBytes;
+
+    outBuf = buf;
+    badConvertedCharacters = iconv(ic, &inBuf, &inBytes, &outBuf, &outBytes);
+    iconv_close(ic);
+    if(badConvertedCharacters == (size_t)-1) {
+        throw std::runtime_error("Could not convert internal string to UTF-8.");
+    }
+    resultStringSize = outBytesOriginal - outBytes;
+    buf[resultStringSize] = 0; // Null terminated, just in case.
+}
