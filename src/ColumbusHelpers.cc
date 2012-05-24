@@ -35,11 +35,12 @@ Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize) {
     char *outBuf;
     size_t badConvertedCharacters;
     size_t inBytes, outBytes, outBytesOriginal;
+    size_t bytesWritten;
     if (ic == (iconv_t)-1) {
         throw std::runtime_error("Could not create iconv converter.");
     }
 
-    int inputLen = strlen((const char*)(utf8Text));
+    unsigned int inputLen = strlen((const char*)(utf8Text));
     txt = new char[(inputLen+1)*sizeof(Letter)];
     tmp = strdup((const char*)(utf8Text)); // Iconv should take a const pointer but does not. Protect against it screwing up.
     assert(tmp);
@@ -57,7 +58,15 @@ Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize) {
         err += (const char*)(utf8Text);
         throw std::runtime_error(err);
     }
-    resultStringSize = (outBytesOriginal - outBytes)/sizeof(Letter);
+    bytesWritten = outBytesOriginal - outBytes;
+    resultStringSize = bytesWritten/sizeof(Letter);
+    if(bytesWritten < inputLen) {
+        // Shrink allocated memory size to exactly the produced string.
+        char *newtxt = new char[(bytesWritten + 1)*sizeof(Letter)];
+        memcpy(newtxt, txt, bytesWritten*sizeof(Letter));
+        delete []txt;
+        txt = newtxt;
+    }
     Letter* text = reinterpret_cast<Letter*>(txt);
     text[resultStringSize] = 0; // Null terminated, just in case.
     return text;
