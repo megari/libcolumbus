@@ -36,7 +36,7 @@ private:
 public:
     Word();
     Word(const Word &w);
-    explicit Word(const char *utf8_word);
+    explicit Word(const char *utf8Word);
     ~Word();
 
     unsigned int length() const { return len;}

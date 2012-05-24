@@ -18,54 +18,18 @@
 #include <cstring>
 #include <stdexcept>
 #include <cassert>
-#include <iconv.h>
-#include <cstdio>
-#include <cerrno>
+#include "ColumbusHelpers.hh"
 
 Word::Word() : text(0), len(0) {
 
 }
 
-Word::Word(const char *utf8_word) {
-    iconv_t ic = iconv_open(INTERNAL_ENCODING, "UTF-8");
-    char *tmp;
-    char *txt;
-    char *inBuf;
-    char *outBuf;
-    size_t badConvertedCharacters;
-    size_t inBytes, outBytes, outBytesOriginal;
-    if (ic == (iconv_t)-1) {
-        throw std::runtime_error("Could not create iconv converter.");
-    }
-
-    int inputLen = strlen((const char*)(utf8_word));
-    txt = new char[(inputLen+1)*sizeof(Letter)];
-    tmp = strdup((const char*)(utf8_word));
-    assert(tmp);
-    inBytes = inputLen;
-    outBytes = sizeof(Letter)*(inBytes+1);
-    outBytesOriginal = outBytes;
-
-    inBuf = tmp;
-    outBuf = txt;
-    badConvertedCharacters = iconv(ic, &inBuf, &inBytes, &outBuf, &outBytes);
-    free(tmp);
-    iconv_close(ic);
-    if(badConvertedCharacters == (size_t)-1) {
-        printf("Error num: %d (EINVAL=%d)\n", errno, EINVAL);
-
-        perror("Iconv error");
-        std::string err("Could not convert UTF8-string to internal representation: ");
-        err += (const char*)(utf8_word);
-        throw std::runtime_error(err);
-    }
-    text = reinterpret_cast<Letter*>(txt);
-    len = (outBytesOriginal - outBytes)/sizeof(Letter);
-    text[len] = 0; // Null terminated, just in case.
+Word::Word(const char *utf8Word) {
+    text = utf8ToInternal(utf8Word, len);
     if(hasWhitespace()) {
         delete []text;
         std::string err("Tried to create a word with whitespace in it: ");
-        err += (const char*)utf8_word;
+        err += (const char*)utf8Word;
         throw std::invalid_argument(err);
     }
 }
