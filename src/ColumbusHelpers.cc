@@ -62,7 +62,7 @@ Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize) {
     resultStringSize = bytesWritten/sizeof(Letter);
     if(bytesWritten < inputLen) {
         // Shrink allocated memory size to exactly the produced string.
-        char *newtxt = new char[(bytesWritten + 1)*sizeof(Letter)];
+        char *newtxt = new char[(bytesWritten + 1)];
         memcpy(newtxt, txt, bytesWritten*sizeof(Letter));
         delete []txt;
         txt = newtxt;
