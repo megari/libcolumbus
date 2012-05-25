@@ -18,6 +18,7 @@
  * A simple GUI application to search from a list of single words.
  */
 
+#include "ColumbusHelpers.hh"
 #include "LevenshteinIndex.hh"
 #include "Word.hh"
 #include <gtk/gtk.h>
@@ -27,12 +28,18 @@
 
 using namespace std;
 
+const char *queryTime = "Query time: ";
+const char *resultCount = "Total results: ";
+
+
 struct app_data {
     LevenshteinIndex ind;
     GtkWidget *window;
     GtkWidget *entry;
     GtkListStore *matchStore;
     GtkWidget *matchView;
+    GtkWidget *queryTimeLabel;
+    GtkWidget *resultCountLabel;
 };
 
 static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) {
@@ -49,10 +56,13 @@ static void textChanged(GtkWidget *widget, gpointer data) {
     IndexMatches matches;
     GtkTreeIter iter;
     Word query(gtk_entry_get_text(GTK_ENTRY(app->entry)));
+    double queryStart, queryEnd;
     gtk_list_store_clear(app->matchStore);
     if(query.length() == 0)
         return;
+    queryStart = hiresTimestamp();
     app->ind.findWords(query, 200, matches);
+    queryEnd = hiresTimestamp();
     for(size_t i=0; i<matches.size(); i++) {
         char buf[1024];
         matches.getMatch(i).toUtf8(buf, 1024);
@@ -62,6 +72,11 @@ static void textChanged(GtkWidget *widget, gpointer data) {
                 1, (int)matches.getMatchError(i),
                 -1);
     }
+    char buf[1024];
+    sprintf(buf, "%s%f", queryTime, queryEnd - queryStart);
+    gtk_label_set_text(GTK_LABEL(app->queryTimeLabel), buf);
+    sprintf(buf, "%s%ld", resultCount, matches.size());
+    gtk_label_set_text(GTK_LABEL(app->resultCountLabel), buf);
 }
 
 void build_gui(app_data &app) {
@@ -93,11 +108,18 @@ void build_gui(app_data &app) {
     scroller = gtk_scrolled_window_new(NULL, NULL);
     gtk_container_add(GTK_CONTAINER(scroller), app.matchView);
 
+    app.queryTimeLabel = gtk_label_new(queryTime);
+    gtk_label_set_justify(GTK_LABEL(app.queryTimeLabel), GTK_JUSTIFY_LEFT);
+    app.resultCountLabel = gtk_label_new(resultCount);
+    gtk_label_set_justify(GTK_LABEL(app.resultCountLabel), GTK_JUSTIFY_LEFT);
+
     quitButton = gtk_button_new_with_label("Quit");
     g_signal_connect(quitButton, "clicked", G_CALLBACK(destroy), NULL);
 
     gtk_box_pack_start(GTK_BOX(vbox), app.entry, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), scroller, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), app.queryTimeLabel, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), app.resultCountLabel, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), quitButton, FALSE, TRUE, 0);
     gtk_widget_show_all(app.window);
 }
