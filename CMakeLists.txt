@@ -1,4 +1,4 @@
-project(columbus CXX)
+project(columbus C CXX)
 cmake_minimum_required(VERSION 2.8)
 
 if(PROJECT_BINARY_DIR STREQUAL PROJECT_SOURCE_DIR)
@@ -27,8 +27,13 @@ set(ABI_VERSION 0)
 # Should be lib64 on some platforms.
 set(LIBDIR "lib")
 
-#find_package(PkgConfig)
-#pkg_check_modules(ICONV REQUIRED iconv)
+include(TestBigEndian)
+TEST_BIG_ENDIAN(IS_BIG_ENDIAN)
+if(${IS_BIG_ENDIAN})
+  set(NATIVE_ENCODING "UTF-32BE") # Iconv encoding string.
+else()
+  set(NATIVE_ENCODING "UTF-32LE")
+endif()
 
 include_directories(include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
