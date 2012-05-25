@@ -40,12 +40,15 @@ static void destroy(GtkWidget *widget, gpointer data) {
 
 static void textChanged(GtkWidget *widget, gpointer data) {
     app_data *app = (app_data*) data;
+    printf("%s\n", gtk_entry_get_text(GTK_ENTRY(app->entry)));
 }
 
 void build_gui(app_data &app) {
     GtkWidget *vbox;
     GtkWidget *scroller;
     GtkWidget *quitButton;
+    GtkTreeViewColumn *textColumn;
+    GtkTreeViewColumn *errorColumn;
     app.window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     g_signal_connect (app.window, "delete-event",
             G_CALLBACK (delete_event), NULL);
@@ -60,6 +63,12 @@ void build_gui(app_data &app) {
 
     app.matchStore = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
     app.matchView = gtk_tree_view_new_with_model(GTK_TREE_MODEL(app.matchStore));
+    textColumn = gtk_tree_view_column_new_with_attributes("Match",
+            gtk_cell_renderer_text_new(), "text", 0, NULL);
+    gtk_tree_view_append_column(GTK_TREE_VIEW(app.matchView), textColumn);
+    errorColumn = gtk_tree_view_column_new_with_attributes("Error",
+            gtk_cell_renderer_text_new(), "text", 1, NULL);
+    gtk_tree_view_append_column(GTK_TREE_VIEW(app.matchView), errorColumn);
     scroller = gtk_scrolled_window_new(NULL, NULL);
     gtk_container_add(GTK_CONTAINER(scroller), app.matchView);
 
@@ -72,11 +81,22 @@ void build_gui(app_data &app) {
     gtk_widget_show_all(app.window);
 }
 
+void dummy(app_data &app) {
+    GtkTreeIter iter;
+    // Add a new row to the model
+    gtk_list_store_append (app.matchStore, &iter);
+    gtk_list_store_set (app.matchStore, &iter,
+            0, "something",
+            1, 35,
+            -1);
+}
+
 int main(int argc, char **argv) {
     app_data app;
     gtk_init(&argc, &argv);
 
     build_gui(app);
+    dummy(app);
     gtk_main();
     return 0;
 }
