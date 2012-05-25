@@ -129,7 +129,7 @@ void testComparison() {
 }
 
 void testEncoding() {
-    unsigned char txt[5] = {0x61, 0xc3, 0xa4, 0x63, 0}; // "aäc" in UTF-8.
+    const unsigned char txt[5] = {0x61, 0xc3, 0xa4, 0x63, 0}; // "aäc" in UTF-8.
     char *text = (char*)txt;
     char returned[4];
     Word w1(text);
