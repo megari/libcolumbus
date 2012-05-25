@@ -35,6 +35,9 @@ else()
   set(INTERNAL_ENCODING "UTF-32LE")
 endif()
 
+include(FindPkgConfig)
+pkg_search_module(GTK3 gtk+-3.0)
+
 include_directories(include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
