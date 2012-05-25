@@ -19,38 +19,36 @@
  */
 
 #include <gtk/gtk.h>
+#include "LevenshteinIndex.hh"
 
-static gboolean delete_event( GtkWidget *widget,
-                              GdkEvent  *event,
-                              gpointer   data )
-{
+struct app_data {
+    LevenshteinIndex ind;
+    GtkWidget *window;
+};
+
+static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) {
     gtk_main_quit();
     return TRUE;
 }
 
-/* Another callback */
-static void destroy(GtkWidget *widget,
-                     gpointer   data )
-{
+static void destroy(GtkWidget *widget, gpointer data ) {
     gtk_main_quit ();
 }
 
-GtkWidget* build_gui() {
-    GtkWidget *window;
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    g_signal_connect (window, "delete-event",
+void build_gui(app_data &app) {
+    app.window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    g_signal_connect (app.window, "delete-event",
             G_CALLBACK (delete_event), NULL);
-    g_signal_connect (window, "destroy",
+    g_signal_connect (app.window, "destroy",
             G_CALLBACK (destroy), NULL);
-    return window;
+    gtk_widget_show_all(app.window);
 }
 
 int main(int argc, char **argv) {
-    GtkWidget *window;
+    app_data app;
     gtk_init(&argc, &argv);
 
-    window = build_gui();
-    gtk_widget_show_all(window);
+    build_gui(app);
     gtk_main();
     return 0;
 }
