@@ -15,7 +15,7 @@
  */
 
 /*
- * This file tests the performance using the common wordlist.
+ * This file tests the performance using the given wordlist.
  * It does not check search results, only that the program
  * does not crash. Run under Valgrind to check for memory leaks.
  */

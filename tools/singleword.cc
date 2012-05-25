@@ -18,8 +18,14 @@
  * A simple GUI application to search from a list of single words.
  */
 
-#include <gtk/gtk.h>
 #include "LevenshteinIndex.hh"
+#include "Word.hh"
+#include <gtk/gtk.h>
+#include <vector>
+#include <cassert>
+#include <cstring>
+
+using namespace std;
 
 struct app_data {
     LevenshteinIndex ind;
@@ -40,7 +46,22 @@ static void destroy(GtkWidget *widget, gpointer data) {
 
 static void textChanged(GtkWidget *widget, gpointer data) {
     app_data *app = (app_data*) data;
-    printf("%s\n", gtk_entry_get_text(GTK_ENTRY(app->entry)));
+    IndexMatches matches;
+    GtkTreeIter iter;
+    Word query(gtk_entry_get_text(GTK_ENTRY(app->entry)));
+    gtk_list_store_clear(app->matchStore);
+    if(query.length() == 0)
+        return;
+    app->ind.findWords(query, 200, matches);
+    for(size_t i=0; i<matches.size(); i++) {
+        char buf[1024];
+        matches.getMatch(i).toUtf8(buf, 1024);
+        gtk_list_store_append(app->matchStore, &iter);
+        gtk_list_store_set(app->matchStore, &iter,
+                0, buf,
+                1, (int)matches.getMatchError(i),
+                -1);
+    }
 }
 
 void build_gui(app_data &app) {
@@ -81,22 +102,39 @@ void build_gui(app_data &app) {
     gtk_widget_show_all(app.window);
 }
 
-void dummy(app_data &app) {
-    GtkTreeIter iter;
-    // Add a new row to the model
-    gtk_list_store_append (app.matchStore, &iter);
-    gtk_list_store_set (app.matchStore, &iter,
-            0, "something",
-            1, 35,
-            -1);
+/*
+ * Replace with library data read function once it is finished.
+ */
+static void readData(vector<Word> &a, const char *ifilename) {
+    FILE *f = fopen(ifilename, "r");
+    char buffer[1024];
+    if(!f) {
+        printf("Could not open dictionary file. Skipping performance test.\n");
+        exit(0);
+    }
+    while(fgets(buffer, 1024, f) != NULL) {
+        unsigned int slen = strlen(buffer);
+        assert(buffer[slen-1] == '\n');
+        buffer[slen-1] = '\0'; // Chop the \n.
+        Word s(buffer);
+        a.push_back(s);
+    }
+    fclose(f);
 }
 
 int main(int argc, char **argv) {
     app_data app;
+    vector<Word> words;
     gtk_init(&argc, &argv);
 
+    if(argc < 2) {
+        printf("%s input_data_file.txt\n", argv[0]);
+        return 0;
+    }
     build_gui(app);
-    dummy(app);
+    readData(words, argv[1]);
+    for(size_t i=0; i<words.size(); i++)
+        app.ind.insertWord(words[i]);
     gtk_main();
     return 0;
 }
