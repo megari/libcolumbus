@@ -24,6 +24,9 @@
 struct app_data {
     LevenshteinIndex ind;
     GtkWidget *window;
+    GtkWidget *entry;
+    GtkWidget *matchStore;
+    GtkWidget *matchView;
 };
 
 static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) {
@@ -31,16 +34,29 @@ static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) 
     return TRUE;
 }
 
-static void destroy(GtkWidget *widget, gpointer data ) {
+static void destroy(GtkWidget *widget, gpointer data) {
     gtk_main_quit ();
 }
 
+static void textChanged(GtkWidget *widget, gpointer data) {
+    app_data *app = (app_data*) data;
+}
+
 void build_gui(app_data &app) {
+    GtkWidget *vbox;
     app.window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     g_signal_connect (app.window, "delete-event",
             G_CALLBACK (delete_event), NULL);
     g_signal_connect (app.window, "destroy",
             G_CALLBACK (destroy), NULL);
+    gtk_window_set_default_size(GTK_WINDOW(app.window), 600, 700);
+    gtk_window_set_title(GTK_WINDOW(app.window), "Columbus single word search test tool");
+    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_container_add(GTK_CONTAINER(app.window), vbox);
+    app.entry = gtk_entry_new();
+    g_signal_connect(app.entry, "changed", G_CALLBACK(textChanged), &app);
+
+    gtk_box_pack_start(GTK_BOX(vbox), app.entry, FALSE, TRUE, 0);
     gtk_widget_show_all(app.window);
 }
 
