@@ -30,9 +30,9 @@ set(LIBDIR "lib")
 include(TestBigEndian)
 TEST_BIG_ENDIAN(IS_BIG_ENDIAN)
 if(${IS_BIG_ENDIAN})
-  set(NATIVE_ENCODING "UTF-32BE") # Iconv encoding string.
+  set(INTERNAL_ENCODING "UTF-32BE") # Iconv encoding string.
 else()
-  set(NATIVE_ENCODING "UTF-32LE")
+  set(INTERNAL_ENCODING "UTF-32LE")
 endif()
 
 include_directories(include)
