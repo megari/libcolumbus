@@ -25,6 +25,7 @@
 #include <cassert>
 #include <stdexcept>
 #include <cstring>
+#include <sys/time.h>
 
 Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize) {
     iconv_t ic = iconv_open(INTERNAL_ENCODING, "UTF-8");
@@ -94,3 +95,11 @@ void internalToUtf8(const Letter* source, unsigned int characters, char *buf, un
     resultStringSize = outBytesOriginal - outBytes;
     buf[resultStringSize] = 0; // Null terminated, just in case.
 }
+
+double hiresTimestamp() {
+    struct timeval now;
+    gettimeofday(&now, NULL);
+    return now.tv_sec + now.tv_usec/1000000.0;
+
+}
+
