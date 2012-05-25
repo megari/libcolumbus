@@ -17,7 +17,7 @@
 #ifndef WORD_HH_
 #define WORD_HH_
 
-#include "columbuscore.h"
+#include "ColumbusCore.hh"
 
 /**
  * A word encapsulates a single word. That is,

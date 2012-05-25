@@ -1,1 +1,1 @@
-configure_file(columbuscore.h.in columbuscore.h)
+configure_file(ColumbusCore.hh.in ColumbusCore.hh)

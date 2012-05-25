@@ -18,7 +18,6 @@
  * This file contains various library helper functions.
  */
 
-#include "columbuscore.h"
 #include "ColumbusHelpers.hh"
 #include <iconv.h>
 #include <cstdio>

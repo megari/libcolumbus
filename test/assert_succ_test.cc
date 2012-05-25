@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "columbuscore.h"
+#include "ColumbusCore.hh"
 
 int main(int argc, char **argv) {
     COL_ASSERT(true);

@@ -17,7 +17,7 @@
 #ifndef ERRORVALUES_HH_
 #define ERRORVALUES_HH_
 
-#include "columbuscore.h"
+#include "ColumbusCore.hh"
 
 struct ErrorValuesPrivate;
 

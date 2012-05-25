@@ -18,7 +18,7 @@
 #define LEVENSHTEININDEX_HH
 
 #include <vector>
-#include "columbuscore.h"
+#include "ColumbusCore.hh"
 #include "IndexMatches.hh"
 
 struct TrieNode;
