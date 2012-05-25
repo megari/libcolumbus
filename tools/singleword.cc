@@ -99,8 +99,10 @@ void build_gui(app_data &app) {
     gtk_container_add(GTK_CONTAINER(app.window), vbox);
     hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     app.entry = gtk_entry_new();
+    gtk_widget_set_tooltip_text(app.entry, "Word to search, must not contain whitespace.");
     app.errorSpinner = gtk_spin_button_new_with_range(100, 1000, 100);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(app.errorSpinner), DEFAULT_ERROR);
+    gtk_widget_set_tooltip_text(app.errorSpinner, "Maximum error, 100 corresponds to one wrong letter.");
     g_signal_connect(app.entry, "changed", G_CALLBACK(doSearch), &app);
     g_signal_connect(app.errorSpinner, "value-changed", G_CALLBACK(doSearch), &app);
 
