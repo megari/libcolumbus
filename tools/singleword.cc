@@ -30,7 +30,7 @@ using namespace std;
 
 const char *queryTime = "Query time: ";
 const char *resultCount = "Total results: ";
-
+const int DEFAULT_ERROR = 200;
 
 struct app_data {
     LevenshteinIndex ind;
@@ -40,6 +40,7 @@ struct app_data {
     GtkWidget *matchView;
     GtkWidget *queryTimeLabel;
     GtkWidget *resultCountLabel;
+    GtkWidget *errorSpinner;
 };
 
 static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) {
@@ -51,17 +52,18 @@ static void destroy(GtkWidget *widget, gpointer data) {
     gtk_main_quit ();
 }
 
-static void textChanged(GtkWidget *widget, gpointer data) {
+static void doSearch(GtkWidget *widget, gpointer data) {
     app_data *app = (app_data*) data;
     IndexMatches matches;
     GtkTreeIter iter;
+    int maxError = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(app->errorSpinner));
     Word query(gtk_entry_get_text(GTK_ENTRY(app->entry)));
     double queryStart, queryEnd;
     gtk_list_store_clear(app->matchStore);
     if(query.length() == 0)
         return;
     queryStart = hiresTimestamp();
-    app->ind.findWords(query, 200, matches);
+    app->ind.findWords(query, maxError, matches);
     queryEnd = hiresTimestamp();
     for(size_t i=0; i<matches.size(); i++) {
         char buf[1024];
@@ -81,6 +83,7 @@ static void textChanged(GtkWidget *widget, gpointer data) {
 
 void build_gui(app_data &app) {
     GtkWidget *vbox;
+    GtkWidget *hbox;
     GtkWidget *scroller;
     GtkWidget *quitButton;
     GtkTreeViewColumn *textColumn;
@@ -94,8 +97,12 @@ void build_gui(app_data &app) {
     gtk_window_set_title(GTK_WINDOW(app.window), "Columbus single word search test tool");
     vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add(GTK_CONTAINER(app.window), vbox);
+    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     app.entry = gtk_entry_new();
-    g_signal_connect(app.entry, "changed", G_CALLBACK(textChanged), &app);
+    app.errorSpinner = gtk_spin_button_new_with_range(100, 1000, 100);
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(app.errorSpinner), DEFAULT_ERROR);
+    g_signal_connect(app.entry, "changed", G_CALLBACK(doSearch), &app);
+    g_signal_connect(app.errorSpinner, "value-changed", G_CALLBACK(doSearch), &app);
 
     app.matchStore = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
     app.matchView = gtk_tree_view_new_with_model(GTK_TREE_MODEL(app.matchStore));
@@ -116,7 +123,9 @@ void build_gui(app_data &app) {
     quitButton = gtk_button_new_with_label("Quit");
     g_signal_connect(quitButton, "clicked", G_CALLBACK(destroy), NULL);
 
-    gtk_box_pack_start(GTK_BOX(vbox), app.entry, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), app.entry, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), app.errorSpinner, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), scroller, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), app.queryTimeLabel, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), app.resultCountLabel, FALSE, TRUE, 0);
