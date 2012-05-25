@@ -25,7 +25,7 @@ struct app_data {
     LevenshteinIndex ind;
     GtkWidget *window;
     GtkWidget *entry;
-    GtkWidget *matchStore;
+    GtkListStore *matchStore;
     GtkWidget *matchView;
 };
 
@@ -44,6 +44,8 @@ static void textChanged(GtkWidget *widget, gpointer data) {
 
 void build_gui(app_data &app) {
     GtkWidget *vbox;
+    GtkWidget *scroller;
+    GtkWidget *quitButton;
     app.window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     g_signal_connect (app.window, "delete-event",
             G_CALLBACK (delete_event), NULL);
@@ -56,7 +58,17 @@ void build_gui(app_data &app) {
     app.entry = gtk_entry_new();
     g_signal_connect(app.entry, "changed", G_CALLBACK(textChanged), &app);
 
+    app.matchStore = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
+    app.matchView = gtk_tree_view_new_with_model(GTK_TREE_MODEL(app.matchStore));
+    scroller = gtk_scrolled_window_new(NULL, NULL);
+    gtk_container_add(GTK_CONTAINER(scroller), app.matchView);
+
+    quitButton = gtk_button_new_with_label("Quit");
+    g_signal_connect(quitButton, "clicked", G_CALLBACK(destroy), NULL);
+
     gtk_box_pack_start(GTK_BOX(vbox), app.entry, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), scroller, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), quitButton, FALSE, TRUE, 0);
     gtk_widget_show_all(app.window);
 }
 
