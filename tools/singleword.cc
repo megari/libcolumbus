@@ -57,14 +57,23 @@ static void doSearch(GtkWidget *widget, gpointer data) {
     IndexMatches matches;
     GtkTreeIter iter;
     int maxError = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(app->errorSpinner));
-    Word query(gtk_entry_get_text(GTK_ENTRY(app->entry)));
     double queryStart, queryEnd;
-    gtk_list_store_clear(app->matchStore);
-    if(query.length() == 0)
+    try {
+        Word query(gtk_entry_get_text(GTK_ENTRY(app->entry)));
+        if(query.length() == 0)
+            return;
+        queryStart = hiresTimestamp();
+        app->ind.findWords(query, maxError, matches);
+        queryEnd = hiresTimestamp();
+    } catch(exception &e) {
+        printf("Matching failed: %s\n", e.what());
+        gtk_list_store_clear(app->matchStore);
+        gtk_label_set_text(GTK_LABEL(app->queryTimeLabel), queryTime);
+        gtk_label_set_text(GTK_LABEL(app->resultCountLabel), resultCount);
+        gtk_entry_set_text(GTK_ENTRY(app->entry), "");
         return;
-    queryStart = hiresTimestamp();
-    app->ind.findWords(query, maxError, matches);
-    queryEnd = hiresTimestamp();
+    }
+    gtk_list_store_clear(app->matchStore);
     for(size_t i=0; i<matches.size(); i++) {
         char buf[1024];
         matches.getMatch(i).toUtf8(buf, 1024);
