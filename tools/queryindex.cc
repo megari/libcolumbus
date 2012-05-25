@@ -21,6 +21,7 @@
 #include <stdexcept>
 #include <string>
 #include <cstring>
+#include <cassert>
 
 void load_data(LevenshteinIndex &ind, char *file) {
     FILE *f = fopen(file, "r");
@@ -30,7 +31,9 @@ void load_data(LevenshteinIndex &ind, char *file) {
         exit(1);
     }
     while(fgets(buffer, 1024, f) != NULL) {
-        buffer[strlen(buffer)-2] = '\0'; // Chop off linefeed.
+        unsigned int slen = strlen(buffer);
+        assert(buffer[slen-1] == '\n');
+        buffer[slen-1] = '\0'; // Chop the \n.
         Word s(buffer);
         ind.insertWord(s);
     }

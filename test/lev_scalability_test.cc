@@ -24,6 +24,7 @@
 #include <vector>
 #include <cstdio>
 #include <cstring>
+#include <cassert>
 #include <sys/time.h>
 #include "LevenshteinIndex.hh"
 #include "Word.hh"
@@ -38,7 +39,9 @@ void readData(vector<Word> &a, const char *ifilename) {
         exit(0);
     }
     while(fgets(buffer, 1024, f) != NULL) {
-        buffer[strlen(buffer)-2] = '\0'; // Chop the \n.
+        unsigned int slen = strlen(buffer);
+        assert(buffer[slen-1] == '\n');
+        buffer[slen-1] = '\0'; // Chop the \n.
         Word s(buffer);
         a.push_back(s);
     }
