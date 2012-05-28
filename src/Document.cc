@@ -15,11 +15,45 @@
  */
 
 #include "Document.hh"
+#include "Word.hh"
+#include "WordList.hh"
+#include <map>
+#include <stdexcept>
 
-Document::Document() {
+using namespace std;
 
+struct DocumentPrivate {
+    Word id;
+    map<Word, WordList> texts;
+};
+
+typedef map<Word, WordList>::iterator TextIter;
+
+Document::Document(const Word &id_) {
+    p = new DocumentPrivate();
+    p->id = id_;
 }
 
 Document::~Document() {
+    delete p;
 }
 
+void Document::addText(const Word &name, const WordList &words) {
+    p->texts[name] = words;
+}
+
+const WordList& Document::getText(const Word &name) const {
+    TextIter res = p->texts.find(name);
+    if(res == p->texts.end()) {
+        throw invalid_argument("Tried to access nonexisting text field in Document.");
+    }
+    return res->second;
+}
+
+size_t Document::textCount() const {
+    return p->texts.size();
+}
+
+const Word& Document::getName() {
+    return p->id;
+}

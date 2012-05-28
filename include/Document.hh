@@ -17,13 +17,25 @@
 #ifndef DOCUMENT_HH_
 #define DOCUMENT_HH_
 
+#include <cstddef>
+
 class Word;
 class WordList;
 
+struct DocumentPrivate;
+
 class Document {
+private:
+    DocumentPrivate *p;
+
 public:
-    Document();
+    Document(const Word &id_);
     ~Document();
+
+    void addText(const Word &name, const WordList &words);
+    const WordList& getText(const Word &name) const;
+    size_t textCount() const;
+    const Word& getName();
 };
 
 #endif /* DOCUMENT_HH_ */

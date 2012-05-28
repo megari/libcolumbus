@@ -15,9 +15,32 @@
  */
 
 #include "Document.hh"
+#include "Word.hh"
+#include "WordList.hh"
+#include <cassert>
 
 void testDoc() {
+    Word docId("tester");
+    Document d(docId);
 
+    Word w1("abc");
+    Word w2("def");
+    Word textName("title");
+    WordList *l = new WordList();
+    l->addWord(w1);
+    l->addWord(w2);
+
+    d.addText(textName, *l);
+    const WordList &l2 = d.getText(textName);
+    assert(l2.size() == 2);
+    assert(l2[0] == w1);
+    assert(l2[1] == w2);
+
+    delete l;
+    const WordList &l3 = d.getText(textName);
+    assert(l3.size() == 2);
+    assert(l3[0] == w1);
+    assert(l3[1] == w2);
 }
 
 

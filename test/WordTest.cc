@@ -143,6 +143,20 @@ void testEncoding() {
     assert(strcmp(text, returned) == 0);
 }
 
+void testLessThan() {
+    Word w1("a");
+    Word w2("b");
+    Word w3("aa");
+    Word w4("ab");
+
+    assert(w1 < w2);
+    assert(w1 < w3);
+    assert(w3 < w2);
+    assert(w3 < w4);
+    assert(w4 < w2);
+    assert(w1 < w4);
+}
+
 int main(int argc, char **argv) {
     testEmpty();
     testIndexing();
@@ -150,5 +164,6 @@ int main(int argc, char **argv) {
     testCreation();
     testComparison();
     testEncoding();
+    testLessThan();
 }
 

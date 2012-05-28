@@ -6,6 +6,7 @@ ErrorValues.cc
 Word.cc
 ColumbusHelpers.cc
 WordList.cc
+Document.cc
 )
 
 #target_link_libraries(columbus ${ICONV_LIBRARIES}

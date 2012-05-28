@@ -45,6 +45,7 @@ public:
     Letter operator[](unsigned int i) const;
     bool operator==(const Word &w) const;
     bool operator!=(const Word &w) const;
+    bool operator<(const Word &w) const;
     Word& operator=(const Word &w); // Should we allow assignment? Is it the proper semantic thing to do?
 };
 

@@ -102,6 +102,21 @@ bool Word::operator!=(const Word &w) const {
     return !(*this == w);
 }
 
+bool Word::operator<(const Word &w) const {
+    if(this == &w)
+        return false;
+    size_t minLen = len < w.len ? len : w.len;
+    for(size_t i=0; i<minLen; i++) {
+        if(text[i] < w.text[i])
+            return true;
+        if(text[i] > w.text[i])
+            return false;
+    }
+    if(w.len > len)
+        return true;
+    return false;
+}
+
 void Word::toUtf8(char *buf, unsigned int bufSize) const {
     internalToUtf8(text, len, buf, bufSize);
 }
