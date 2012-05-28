@@ -30,8 +30,10 @@ private:
 
 public:
     Document(const Word &id_);
+    Document(const Document &d);
     ~Document();
 
+    const Document& operator=(const Document &d);
     void addText(const Word &name, const WordList &words);
     const WordList& getText(const Word &name) const;
     size_t textCount() const;

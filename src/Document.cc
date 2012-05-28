@@ -34,6 +34,12 @@ Document::Document(const Word &id_) {
     p->id = id_;
 }
 
+Document::Document(const Document& d) {
+    p = new DocumentPrivate();
+    p->id = d.p->id;
+    p->texts = d.p->texts;
+}
+
 Document::~Document() {
     delete p;
 }
@@ -56,4 +62,12 @@ size_t Document::textCount() const {
 
 const Word& Document::getName() const {
     return p->id;
+}
+
+const Document& Document::operator=(const Document&d) {
+    if(this == &d)
+        return *this;
+    p->id = d.p->id;
+    p->texts = d.p->texts;
+    return *this;
 }
