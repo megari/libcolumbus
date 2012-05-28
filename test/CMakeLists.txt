@@ -30,3 +30,7 @@ add_test(word word)
 add_executable(wordlist wordlist_test.cc)
 target_link_libraries(wordlist columbus)
 add_test(wordlist wordlist)
+
+add_executable(document document_test.cc)
+target_link_libraries(document columbus)
+add_test(document document)
