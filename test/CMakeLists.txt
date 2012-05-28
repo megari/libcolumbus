@@ -34,3 +34,7 @@ add_test(wordlist wordlist)
 add_executable(document DocumentTest.cc)
 target_link_libraries(document columbus)
 add_test(document document)
+
+add_executable(corpus CorpusTest.cc)
+target_link_libraries(corpus columbus)
+add_test(corpus corpus)
