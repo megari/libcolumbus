@@ -54,6 +54,6 @@ size_t Document::textCount() const {
     return p->texts.size();
 }
 
-const Word& Document::getName() {
+const Word& Document::getName() const {
     return p->id;
 }

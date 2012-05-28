@@ -14,28 +14,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DOCUMENT_HH_
-#define DOCUMENT_HH_
+#ifndef CORPUS_HH_
+#define CORPUS_HH_
 
 #include <cstddef>
 
-class Word;
-class WordList;
+struct CorpusPrivate;
+class Document;
 
-struct DocumentPrivate;
-
-class Document {
+class Corpus {
 private:
-    DocumentPrivate *p;
+    CorpusPrivate *p;
+    Corpus(const Corpus &c);
+    const Corpus& operator=(const Corpus &c);
 
 public:
-    Document(const Word &id_);
-    ~Document();
+    Corpus();
+    ~Corpus();
 
-    void addText(const Word &name, const WordList &words);
-    const WordList& getText(const Word &name) const;
-    size_t textCount() const;
-    const Word& getName() const;
+    void addDocument(const Document &d);
+    size_t size() const;
+    const Document& getDocument(size_t i);
+
+    // Add iterators here. This class should really only expose them.
 };
 
-#endif /* DOCUMENT_HH_ */
+#endif /* CORPUS_HH_ */

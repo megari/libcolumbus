@@ -14,28 +14,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DOCUMENT_HH_
-#define DOCUMENT_HH_
+#include "Corpus.hh"
+#include "Document.hh"
+#include <vector>
+#include <stdexcept>
 
-#include <cstddef>
+using namespace std;
 
-class Word;
-class WordList;
-
-struct DocumentPrivate;
-
-class Document {
-private:
-    DocumentPrivate *p;
-
-public:
-    Document(const Word &id_);
-    ~Document();
-
-    void addText(const Word &name, const WordList &words);
-    const WordList& getText(const Word &name) const;
-    size_t textCount() const;
-    const Word& getName() const;
+struct CorpusPrivate {
+    vector<Document> documents;
 };
 
-#endif /* DOCUMENT_HH_ */
+Corpus::Corpus() {
+    p = new CorpusPrivate();
+}
+
+Corpus::~Corpus() {
+    delete p;
+}
+
+void Corpus::addDocument(const Document &d) {
+    p->documents.push_back(d);
+}
+
+size_t Corpus::size() const {
+    return p->documents.size();
+}
+
+const Document& Corpus::getDocument(size_t i) {
+    if(i >= p->documents.size())
+        throw out_of_range("Out of bounds access in Document.");
+    return p->documents[i];
+}
