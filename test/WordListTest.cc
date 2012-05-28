@@ -46,7 +46,23 @@ void testList() {
     assert(l[1] == w2);
 }
 
+void testAssignment() {
+    WordList *l1 = new WordList();
+    WordList l2;
+    Word w("abc");
+
+    l1->addWord(w);
+    assert(l1->size() == 1);
+    l2 = *l1;
+    assert(l2.size() == 1);
+    assert(l2[0] == w);
+    delete l1;
+    assert(l2.size() == 1);
+    assert(l2[0] == w);
+}
+
 int main(int argc, char **argv) {
     testList();
+    testAssignment();
     return 0;
 }

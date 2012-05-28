@@ -31,6 +31,7 @@ public:
 
     size_t size() const;
     const Word& operator[](const size_t i) const;
+    const WordList& operator=(const WordList &l);
     void addWord(const Word &w); // This is more of an implementation detail and should not be exposed in a base class or interface.
 
     // Add proper iterators here.

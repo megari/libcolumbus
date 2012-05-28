@@ -45,3 +45,10 @@ const Word& WordList::operator[](const size_t i) const {
 void WordList::addWord(const Word &w) {
     p->words.push_back(w);
 }
+
+const WordList& WordList::operator=(const WordList &l) {
+    if(this == &l)
+        return *this;
+    p->words = l.p->words;
+    return *this;
+}
