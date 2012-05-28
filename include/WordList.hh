@@ -17,7 +17,9 @@
 #ifndef WORDLIST_HH_
 #define WORDLIST_HH_
 
+#include <cstddef>
 struct WordListPrivate;
+class Word;
 
 class WordList {
 private:
@@ -26,6 +28,12 @@ private:
 public:
     WordList();
     ~WordList();
+
+    size_t size() const;
+    const Word& operator[](const size_t i) const;
+    void addWord(const Word &w); // This is more of an implementation detail and should not be exposed in a base class or interface.
+
+    // Add proper iterators here.
 };
 
 #endif /* WORDLIST_HH_ */

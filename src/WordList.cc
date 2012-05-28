@@ -17,6 +17,7 @@
 #include "WordList.hh"
 #include "Word.hh"
 #include <vector>
+#include <stdexcept>
 
 using namespace std;
 
@@ -32,3 +33,15 @@ WordList::~WordList() {
     delete p;
 }
 
+size_t WordList::size() const {
+    return p->words.size();
+}
+const Word& WordList::operator[](const size_t i) const {
+    if(i >= p->words.size())
+        throw out_of_range("Out of bounds access in WordList.");
+    return p->words[i];
+}
+
+void WordList::addWord(const Word &w) {
+    p->words.push_back(w);
+}

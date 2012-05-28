@@ -17,9 +17,33 @@
 #include "WordList.hh"
 #include "Word.hh"
 #include <cassert>
+#include <stdexcept>
 
 void testList() {
+    WordList l;
+    bool gotException;
+    Word w1("abc");
+    Word w2("def");
+    Word *w2Shadow = new Word(w2);
 
+    assert(l.size() == 0);
+    try {
+        Word wTmp = l[1];
+        gotException = false;
+    } catch(std::out_of_range &e) {
+        gotException = true;
+    }
+
+    assert(gotException);
+
+    l.addWord(w1);
+    assert(l.size() == 1);
+    assert(l[0] == w1);
+
+    l.addWord(*w2Shadow);
+    delete w2Shadow;
+    assert(l.size() == 2);
+    assert(l[1] == w2);
 }
 
 int main(int argc, char **argv) {
