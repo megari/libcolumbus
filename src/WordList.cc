@@ -29,6 +29,12 @@ WordList::WordList() {
     p = new WordListPrivate();
 }
 
+WordList::WordList(const WordList &wl) {
+    p = new WordListPrivate();
+    p->words = wl.p->words;
+}
+
+
 WordList::~WordList() {
     delete p;
 }

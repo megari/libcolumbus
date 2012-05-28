@@ -27,6 +27,7 @@ private:
 
 public:
     WordList();
+    WordList(const WordList &wl);
     ~WordList();
 
     size_t size() const;

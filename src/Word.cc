@@ -24,7 +24,7 @@ Word::Word() : text(0), len(0) {
 
 }
 
-Word::Word(const char *utf8Word) {
+Word::Word(const char *utf8Word) : text(0), len(0) {
     text = utf8ToInternal(utf8Word, len);
     if(hasWhitespace()) {
         delete []text;
