@@ -14,29 +14,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MATCHER_HH_
-#define MATCHER_HH_
+#ifndef RESULTGATHERER_HH_
+#define RESULTGATHERER_HH_
 
-class Corpus;
-struct MatcherPrivate;
-class Word;
-class Document;
-class WordList;
+/**
+ * This class stores the data gathered during query execution.
+ */
 
-class Matcher {
+struct ResultGathererPrivate;
+
+class ResultGatherer {
 private:
-    MatcherPrivate *p;
 
-    void buildIndexes();
-    void addToIndex(const Word &word, const Word &indexName);
-    void addToReverseIndex(const Word &word, const Document *d);
-    void match_with_relevancy(const WordList &query, const bool dynamicError);
-    int getDynamicError(const Word &w);
-    void fuzzy_match_indices(const Word &word, const int maxError);
+    ResultGathererPrivate *p;
 
 public:
-    Matcher(Corpus *corp); // Matcher will delete[] the Corpus object.
-    ~Matcher();
+    ResultGatherer();
+    ~ResultGatherer();
 };
 
-#endif /* MATCHER_HH_ */
+#endif /* RESULTGATHERER_HH_ */

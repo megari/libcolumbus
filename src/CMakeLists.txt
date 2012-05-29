@@ -9,6 +9,7 @@ WordList.cc
 Document.cc
 Corpus.cc
 Matcher.cc
+ResultGatherer.cc
 )
 
 #target_link_libraries(columbus ${ICONV_LIBRARIES}

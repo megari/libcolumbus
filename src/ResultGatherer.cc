@@ -14,29 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MATCHER_HH_
-#define MATCHER_HH_
+#include "ResultGatherer.hh"
 
-class Corpus;
-struct MatcherPrivate;
-class Word;
-class Document;
-class WordList;
+struct ResultGathererPrivate {
 
-class Matcher {
-private:
-    MatcherPrivate *p;
-
-    void buildIndexes();
-    void addToIndex(const Word &word, const Word &indexName);
-    void addToReverseIndex(const Word &word, const Document *d);
-    void match_with_relevancy(const WordList &query, const bool dynamicError);
-    int getDynamicError(const Word &w);
-    void fuzzy_match_indices(const Word &word, const int maxError);
-
-public:
-    Matcher(Corpus *corp); // Matcher will delete[] the Corpus object.
-    ~Matcher();
 };
 
-#endif /* MATCHER_HH_ */
+ResultGatherer::ResultGatherer() {
+    p = new ResultGathererPrivate();
+}
+
+ResultGatherer::~ResultGatherer() {
+    delete p;
+}
+
