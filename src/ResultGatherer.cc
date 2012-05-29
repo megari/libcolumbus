@@ -15,10 +15,19 @@
  */
 
 #include "ResultGatherer.hh"
+#include "IndexMatches.hh"
+#include "Word.hh"
+#include <map>
+
+using namespace std;
 
 struct ResultGathererPrivate {
-
+    // For each index list matched words and the smallest error with which they were matched.
+    map<Word, map<Word, int> > bestIndexMatches;
 };
+
+typedef map<Word, map<Word, int> >::iterator IndIterator;
+typedef map<Word, int>::iterator MatchIterator;
 
 ResultGatherer::ResultGatherer() {
     p = new ResultGathererPrivate();
@@ -28,3 +37,25 @@ ResultGatherer::~ResultGatherer() {
     delete p;
 }
 
+void ResultGatherer::addMatches(const Word &queryWord, const Word &indexName, IndexMatches &matches) {
+    IndIterator it = p->bestIndexMatches.find(indexName);
+    map<Word, int> *indexMatches;
+    if(it == p->bestIndexMatches.end()) {
+        map<Word, int> tmp;
+        p->bestIndexMatches[indexName] = tmp;
+        it = p->bestIndexMatches.find(indexName);
+    }
+    indexMatches = &(it->second);
+    for(size_t i=0; i < matches.size(); i++) {
+        const Word &matchWord = matches.getMatch(i);
+        const int matchError = matches.getMatchError(i);
+        MatchIterator mIt = indexMatches->find(matchWord);
+        if(mIt == indexMatches->end()) {
+            (*indexMatches)[matchWord] = matchError;
+        } else {
+            if(mIt->second > matchError)
+                (*indexMatches)[matchWord] = matchError;
+        }
+
+    }
+}

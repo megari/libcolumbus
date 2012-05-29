@@ -22,6 +22,8 @@
  */
 
 struct ResultGathererPrivate;
+class Word;
+class IndexMatches;
 
 class ResultGatherer {
 private:
@@ -31,6 +33,8 @@ private:
 public:
     ResultGatherer();
     ~ResultGatherer();
+
+    void addMatches(const Word &queryWord, const Word &indexName, IndexMatches &matches);
 };
 
 #endif /* RESULTGATHERER_HH_ */

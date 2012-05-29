@@ -21,6 +21,7 @@
 #include "Document.hh"
 #include "WordList.hh"
 #include "IndexMatches.hh"
+#include "ResultGatherer.hh"
 #include <map>
 #include <set>
 
@@ -89,7 +90,7 @@ void Matcher::addToReverseIndex(const Word &word, const Document *d) {
 }
 
 void Matcher::match_with_relevancy(const WordList &query, const bool dynamicError) {
-    vector<IndexMatches*> indexMatches;
+    ResultGatherer r;
     for(size_t i=0; i<query.size(); i++) {
         const Word &w = query[i];
         int maxError;
@@ -100,6 +101,7 @@ void Matcher::match_with_relevancy(const WordList &query, const bool dynamicErro
         for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
             IndexMatches m;
             it->second->findWords(w, maxError, m);
+            r.addMatches(w, it->first, m);
         }
     }
 }
