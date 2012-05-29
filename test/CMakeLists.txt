@@ -38,3 +38,7 @@ add_test(document document)
 add_executable(corpus CorpusTest.cc)
 target_link_libraries(corpus columbus)
 add_test(corpus corpus)
+
+add_executable(matcher MatcherTest.cc)
+target_link_libraries(matcher columbus)
+add_test(matcher matcher)

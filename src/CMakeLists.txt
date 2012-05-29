@@ -8,6 +8,7 @@ ColumbusHelpers.cc
 WordList.cc
 Document.cc
 Corpus.cc
+Matcher.cc
 )
 
 #target_link_libraries(columbus ${ICONV_LIBRARIES}
