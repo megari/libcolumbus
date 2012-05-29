@@ -17,6 +17,7 @@
 #ifndef MATCHER_HH_
 #define MATCHER_HH_
 
+#include <vector> // Get rid of this soon!
 class Corpus;
 struct MatcherPrivate;
 class Word;
@@ -29,7 +30,7 @@ private:
 
     void buildIndexes();
     void addToIndex(const Word &word, const Word &indexName);
-    void addToReverseIndex(const Word &word, const Document *d);
+    void addToReverseIndex(const Word &word, const Word &indexName, const Document *d);
     void match_with_relevancy(const WordList &query, const bool dynamicError);
     int getDynamicError(const Word &w);
     void fuzzy_match_indices(const Word &word, const int maxError);
@@ -37,6 +38,8 @@ private:
 public:
     Matcher(Corpus *corp); // Matcher will delete[] the Corpus object.
     ~Matcher();
+
+    void findDocuments(const Word &word, const Word &textName, std::vector<Document> result);
 };
 
 #endif /* MATCHER_HH_ */

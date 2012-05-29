@@ -30,11 +30,12 @@ using namespace std;
 struct MatcherPrivate {
     Corpus *c;
     map<Word, LevenshteinIndex*> indexes;
-    map<Word, set<const Document*> > wordReverseIndex;
+    map<Word, map<Word, set<const Document*> > > reverseIndex; // Index name, word, documents.
 };
 
 typedef map<Word, LevenshteinIndex*>::iterator IndIterator;
-typedef map<Word, set<const Document*> >::iterator RevIndIterator;
+typedef map<Word, map<Word, set<const Document*> > >::iterator RevIndIterator;
+typedef map<Word, set<const Document*> >::iterator RevIterator;
 
 Matcher::Matcher(Corpus *corp) {
     p = new MatcherPrivate();
@@ -60,7 +61,7 @@ void Matcher::buildIndexes() {
             for(size_t wi=0; wi<text.size(); wi++) {
                 const Word &word = text[wi];
                 addToIndex(word, name);
-                addToReverseIndex(word, &d);
+                addToReverseIndex(word, name, &d);
             }
         }
     }
@@ -78,14 +79,21 @@ void Matcher::addToIndex(const Word &word, const Word &indexName) {
     target->insertWord(word);
 }
 
-void Matcher::addToReverseIndex(const Word &word, const Document *d) {
-    RevIndIterator rit = p->wordReverseIndex.find(word);
-    if(rit == p->wordReverseIndex.end()) {
+void Matcher::addToReverseIndex(const Word &word, const Word &indexName, const Document *d) {
+    RevIndIterator rit = p->reverseIndex.find(indexName);
+    if(rit == p->reverseIndex.end()) {
+        map<Word, set<const Document*> > tmp;
+        p->reverseIndex[indexName] = tmp;
+        rit = p->reverseIndex.find(indexName);
+    }
+    map<Word, set<const Document*> > &indexRind = rit->second;
+    RevIterator revIt = indexRind.find(word);
+    if(revIt == indexRind.end()) {
         set<const Document*> tmp;
         tmp.insert(d);
-        p->wordReverseIndex[word] = tmp;
+        indexRind[word] = tmp;
     } else {
-        rit->second.insert(d);
+        revIt->second.insert(d);
     }
 }
 
@@ -103,6 +111,7 @@ void Matcher::match_with_relevancy(const WordList &query, const bool dynamicErro
             it->second->findWords(w, maxError, m);
             r.addMatches(w, it->first, m);
         }
+        // Code missing.
     }
 }
 
@@ -112,4 +121,15 @@ int Matcher::getDynamicError(const Word &w) {
         return LevenshteinIndex::getDefaultError();
     else
         return len/4*LevenshteinIndex::getDefaultError(); // Permit a typo for every fourth letter.
+}
+
+void Matcher::findDocuments(const Word &word, const Word &textName, std::vector<Document> result) {
+    IndexMatches im;
+    IndIterator it = p->indexes.find(textName);
+    if(it == p->indexes.end())
+        return;
+    for(size_t i=0; i<im.size(); i++) {
+        const Word &matched = im.getMatch(i);
+
+    }
 }
