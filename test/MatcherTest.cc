@@ -15,9 +15,36 @@
  */
 
 #include "Matcher.hh"
+#include "Corpus.hh"
+#include "Word.hh"
+#include "WordList.hh"
+#include "Document.hh"
 
 void testMatcher() {
-    Matcher m;
+    Corpus *c = new Corpus();
+    Word w1("abc");
+    Word w2("def");
+    Word w3("abe");
+    Word w4("test");
+    Word name1("doc1");
+    Word name2("doc2");
+    Word textName("title");
+
+    WordList wl1, wl2;
+    wl1.addWord(w1);
+    wl1.addWord(w2);
+    wl2.addWord(w3);
+    wl2.addWord(w4);
+
+    Document d1(name1);
+    d1.addText(textName, wl1);
+    Document d2(name2);
+    d2.addText(textName, wl2);
+    c->addDocument(d1);
+    c->addDocument(d2);
+
+    Matcher m(c);
+
 }
 
 int main(int argc, char **argv) {

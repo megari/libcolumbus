@@ -15,10 +15,33 @@
  */
 
 #include "Matcher.hh"
+#include "Corpus.hh"
+#include "LevenshteinIndex.hh"
+#include "Word.hh"
+#include <map>
 
-Matcher::Matcher() {
+using namespace std;
+
+struct MatcherPrivate {
+    Corpus *c;
+    map<Word, LevenshteinIndex*> indexes;
+};
+
+typedef map<Word, LevenshteinIndex*>::iterator IndIterator;
+
+Matcher::Matcher(Corpus *corp) {
+    p = new MatcherPrivate();
+    p->c = corp;
 }
 
 Matcher::~Matcher() {
+    delete p->c;
+    for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
+        delete it->second;
+    }
+    delete p;
 }
 
+void Matcher::buildIndexes() {
+
+}

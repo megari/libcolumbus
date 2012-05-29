@@ -17,9 +17,17 @@
 #ifndef MATCHER_HH_
 #define MATCHER_HH_
 
+class Corpus;
+struct MatcherPrivate;
+
 class Matcher {
+private:
+    MatcherPrivate *p;
+
+    void buildIndexes();
+
 public:
-    Matcher();
+    Matcher(Corpus *corp); // Matcher will delete[] the Corpus object.
     ~Matcher();
 };
 
