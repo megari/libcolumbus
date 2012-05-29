@@ -18,6 +18,7 @@
 #include "Word.hh"
 #include "WordList.hh"
 #include <cassert>
+#include <stdexcept>
 
 void testDoc() {
     Word docId("tester");
@@ -43,9 +44,51 @@ void testDoc() {
     assert(l3[1] == w2);
 }
 
+void testIndexNames() {
+    Word docId("tester");
+    Document d(docId);
+
+    Word w1("abc");
+    Word w2("def");
+    Word text1Name("text1");
+    Word text2Name("text2");
+    WordList wl1;
+    WordList wl2;
+    WordList textNames;
+
+    wl1.addWord(w1);
+    wl2.addWord(w2);
+
+    d.addText(text1Name, wl1);
+    d.addText(text2Name, wl2);
+
+    d.getTextNames(textNames);
+    for(size_t i=0; i<textNames.size(); i++) {
+        bool gotException;
+        try {
+            d.getText(textNames[i]);
+            gotException = false;
+        } catch(std::invalid_argument &e) {
+            gotException = true;
+        }
+        assert(!gotException);
+    }
+
+    bool gotException;
+    try {
+        Word nonexisting("foooooo");
+        d.getText(nonexisting);
+        gotException = false;
+    } catch(std::invalid_argument &e) {
+        gotException = true;
+    }
+    assert(gotException);
+
+}
 
 int main(int argc, char **argv) {
     testDoc();
+    testIndexNames();
     return 0;
 }
 

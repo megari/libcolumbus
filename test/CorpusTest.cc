@@ -49,14 +49,14 @@ void testCorpus() {
     c.addDocument(*d2);
     assert(c.size() == 2);
 
-    assert(c.getDocument(0).getName() == name1);
+    assert(c.getDocument(0).getID() == name1);
     const Document &dNew = c.getDocument(1);
-    assert(dNew.getName() == name2);
+    assert(dNew.getID() == name2);
 
     delete d2;
     assert(c.size() == 2);
     const Document &dNew2 = c.getDocument(1);
-    assert(dNew2.getName() == name2);
+    assert(dNew2.getID() == name2);
     const WordList &lNew = dNew.getText(textName);
     assert(lNew[0] == w3);
     assert(lNew[1] == w4);

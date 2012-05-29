@@ -37,7 +37,10 @@ public:
     void addText(const Word &name, const WordList &words);
     const WordList& getText(const Word &name) const;
     size_t textCount() const;
-    const Word& getName() const;
+    const Word& getID() const;
+    void getTextNames(WordList &list) const;
+
+    // Needs iterators to browse through text names.
 };
 
 #endif /* DOCUMENT_HH_ */

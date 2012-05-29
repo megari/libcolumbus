@@ -60,8 +60,14 @@ size_t Document::textCount() const {
     return p->texts.size();
 }
 
-const Word& Document::getName() const {
+const Word& Document::getID() const {
     return p->id;
+}
+
+void Document::getTextNames(WordList &list) const {
+    for(TextIter it=p->texts.begin(); it != p->texts.end(); it++) {
+        list.addWord(it->first);
+    }
 }
 
 const Document& Document::operator=(const Document&d) {

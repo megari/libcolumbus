@@ -18,6 +18,7 @@
 #include "Corpus.hh"
 #include "LevenshteinIndex.hh"
 #include "Word.hh"
+#include "Document.hh"
 #include <map>
 
 using namespace std;
@@ -43,5 +44,8 @@ Matcher::~Matcher() {
 }
 
 void Matcher::buildIndexes() {
-
+    for(size_t ci = 0; ci < p->c->size(); ci++) {
+        const Document &d = p->c->getDocument(ci);
+        //for(size_t di=0; di < d.textCount(); di++)
+    }
 }

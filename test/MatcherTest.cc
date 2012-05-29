@@ -44,7 +44,6 @@ void testMatcher() {
     c->addDocument(d2);
 
     Matcher m(c);
-
 }
 
 int main(int argc, char **argv) {
