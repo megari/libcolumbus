@@ -20,6 +20,7 @@
 #include "Word.hh"
 #include "Document.hh"
 #include "WordList.hh"
+#include "IndexMatches.hh"
 #include <map>
 #include <set>
 
@@ -85,4 +86,28 @@ void Matcher::addToReverseIndex(const Word &word, const Document *d) {
     } else {
         rit->second.insert(d);
     }
+}
+
+void Matcher::match_with_relevancy(const WordList &query, const bool dynamicError) {
+    vector<IndexMatches*> indexMatches;
+    for(size_t i=0; i<query.size(); i++) {
+        const Word &w = query[i];
+        int maxError;
+        if(dynamicError)
+            maxError = getDynamicError(w);
+        else
+            maxError = 2*LevenshteinIndex::getDefaultError();
+        for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
+            IndexMatches m;
+            it->second->findWords(w, maxError, m);
+        }
+    }
+}
+
+int Matcher::getDynamicError(const Word &w) {
+    size_t len = w.length();
+    if(len <= 4)
+        return LevenshteinIndex::getDefaultError();
+    else
+        return len/4*LevenshteinIndex::getDefaultError(); // Permit a typo for every fourth letter.
 }
