@@ -19,12 +19,14 @@
 
 class Corpus;
 struct MatcherPrivate;
+class Word;
 
 class Matcher {
 private:
     MatcherPrivate *p;
 
     void buildIndexes();
+    void addToIndex(const Word &word, const Word &indexName);
 
 public:
     Matcher(Corpus *corp); // Matcher will delete[] the Corpus object.

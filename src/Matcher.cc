@@ -19,6 +19,7 @@
 #include "LevenshteinIndex.hh"
 #include "Word.hh"
 #include "Document.hh"
+#include "WordList.hh"
 #include <map>
 
 using namespace std;
@@ -46,6 +47,27 @@ Matcher::~Matcher() {
 void Matcher::buildIndexes() {
     for(size_t ci = 0; ci < p->c->size(); ci++) {
         const Document &d = p->c->getDocument(ci);
-        //for(size_t di=0; di < d.textCount(); di++)
+        WordList textNames;
+        d.getTextNames(textNames);
+        for(size_t ti=0; ti < textNames.size(); ti++) {
+            const Word &name = textNames[ti];
+            const WordList &text = d.getText(name);
+            for(size_t wi=0; wi<text.size(); wi++) {
+                const Word &word = text[wi];
+                addToIndex(word, name);
+            }
+        }
     }
+}
+
+void Matcher::addToIndex(const Word &word, const Word &indexName) {
+    LevenshteinIndex *target;
+    IndIterator it = p->indexes.find(indexName);
+    if(it == p->indexes.end()) {
+        target = new LevenshteinIndex();
+        p->indexes[indexName] = target;
+    } else {
+        target = it->second;
+    }
+    target->insertWord(word);
 }
