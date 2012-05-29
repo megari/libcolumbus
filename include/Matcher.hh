@@ -20,6 +20,7 @@
 class Corpus;
 struct MatcherPrivate;
 class Word;
+class Document;
 
 class Matcher {
 private:
@@ -27,6 +28,7 @@ private:
 
     void buildIndexes();
     void addToIndex(const Word &word, const Word &indexName);
+    void addToReverseIndex(const Word &word, const Document *d);
 
 public:
     Matcher(Corpus *corp); // Matcher will delete[] the Corpus object.

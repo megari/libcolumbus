@@ -21,15 +21,18 @@
 #include "Document.hh"
 #include "WordList.hh"
 #include <map>
+#include <set>
 
 using namespace std;
 
 struct MatcherPrivate {
     Corpus *c;
     map<Word, LevenshteinIndex*> indexes;
+    map<Word, set<const Document*> > wordReverseIndex;
 };
 
 typedef map<Word, LevenshteinIndex*>::iterator IndIterator;
+typedef map<Word, set<const Document*> >::iterator RevIndIterator;
 
 Matcher::Matcher(Corpus *corp) {
     p = new MatcherPrivate();
@@ -55,6 +58,7 @@ void Matcher::buildIndexes() {
             for(size_t wi=0; wi<text.size(); wi++) {
                 const Word &word = text[wi];
                 addToIndex(word, name);
+                addToReverseIndex(word, &d);
             }
         }
     }
@@ -70,4 +74,15 @@ void Matcher::addToIndex(const Word &word, const Word &indexName) {
         target = it->second;
     }
     target->insertWord(word);
+}
+
+void Matcher::addToReverseIndex(const Word &word, const Document *d) {
+    RevIndIterator rit = p->wordReverseIndex.find(word);
+    if(rit == p->wordReverseIndex.end()) {
+        set<const Document*> tmp;
+        tmp.insert(d);
+        p->wordReverseIndex[word] = tmp;
+    } else {
+        rit->second.insert(d);
+    }
 }
