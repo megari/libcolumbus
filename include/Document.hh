@@ -34,11 +34,11 @@ public:
     ~Document();
 
     const Document& operator=(const Document &d);
-    void addText(const Word &name, const WordList &words);
-    const WordList& getText(const Word &name) const;
-    size_t textCount() const;
+    void addText(const Word &field, const WordList &words);
+    const WordList& getText(const Word &field) const;
+    size_t fieldCount() const;
     const Word& getID() const;
-    void getTextNames(WordList &list) const;
+    void getFieldNames(WordList &list) const;
 
     // Needs iterators to browse through text names.
 };

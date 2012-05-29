@@ -39,7 +39,7 @@ public:
     Matcher(Corpus *corp); // Matcher will delete[] the Corpus object.
     ~Matcher();
 
-    void findDocuments(const Word &word, const Word &textName, std::vector<Document> result);
+    void findDocuments(const Word &word, const Word &fieldName, std::vector<const Document*> result);
 };
 
 #endif /* MATCHER_HH_ */

@@ -44,19 +44,19 @@ Document::~Document() {
     delete p;
 }
 
-void Document::addText(const Word &name, const WordList &words) {
-    p->texts[name] = words;
+void Document::addText(const Word &field, const WordList &words) {
+    p->texts[field] = words;
 }
 
-const WordList& Document::getText(const Word &name) const {
-    TextIter res = p->texts.find(name);
+const WordList& Document::getText(const Word &field) const {
+    TextIter res = p->texts.find(field);
     if(res == p->texts.end()) {
         throw invalid_argument("Tried to access nonexisting text field in Document.");
     }
     return res->second;
 }
 
-size_t Document::textCount() const {
+size_t Document::fieldCount() const {
     return p->texts.size();
 }
 
@@ -64,7 +64,7 @@ const Word& Document::getID() const {
     return p->id;
 }
 
-void Document::getTextNames(WordList &list) const {
+void Document::getFieldNames(WordList &list) const {
     for(TextIter it=p->texts.begin(); it != p->texts.end(); it++) {
         list.addWord(it->first);
     }

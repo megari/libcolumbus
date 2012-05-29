@@ -62,7 +62,7 @@ void testIndexNames() {
     d.addText(text1Name, wl1);
     d.addText(text2Name, wl2);
 
-    d.getTextNames(textNames);
+    d.getFieldNames(textNames);
     for(size_t i=0; i<textNames.size(); i++) {
         bool gotException;
         try {

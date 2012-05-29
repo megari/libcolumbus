@@ -54,7 +54,7 @@ void Matcher::buildIndexes() {
     for(size_t ci = 0; ci < p->c->size(); ci++) {
         const Document &d = p->c->getDocument(ci);
         WordList textNames;
-        d.getTextNames(textNames);
+        d.getFieldNames(textNames);
         for(size_t ti=0; ti < textNames.size(); ti++) {
             const Word &name = textNames[ti];
             const WordList &text = d.getText(name);
@@ -120,16 +120,24 @@ int Matcher::getDynamicError(const Word &w) {
     if(len <= 4)
         return LevenshteinIndex::getDefaultError();
     else
-        return len/4*LevenshteinIndex::getDefaultError(); // Permit a typo for every fourth letter.
+        return int(len/4.0*LevenshteinIndex::getDefaultError()); // Permit a typo for every fourth letter.
 }
 
-void Matcher::findDocuments(const Word &word, const Word &textName, std::vector<Document> result) {
+void Matcher::findDocuments(const Word &word, const Word &fieldName, std::vector<const Document*> result) {
     IndexMatches im;
-    IndIterator it = p->indexes.find(textName);
-    if(it == p->indexes.end())
+    RevIndIterator it = p->reverseIndex.find(fieldName);
+    if(it == p->reverseIndex.end())
         return;
+    map<Word, set<const Document*> > &rind = it->second;
     for(size_t i=0; i<im.size(); i++) {
         const Word &matched = im.getMatch(i);
-
+        RevIterator s = rind.find(matched);
+        if(s == rind.end())
+            continue;
+        set<const Document*> &docSet = s->second;
+        set<const Document*>::iterator foo;
+        for(set<const Document*>::iterator docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
+            result.push_back(*docIter);
+        }
     }
 }
