@@ -22,12 +22,14 @@
 
 using namespace std;
 
+typedef map<Word, int> MatchErrorMap;
+
 struct ResultGathererPrivate {
     // For each index list matched words and the smallest error with which they were matched.
-    map<Word, map<Word, int> > bestIndexMatches;
+    map<Word, MatchErrorMap> bestIndexMatches;
 };
 
-typedef map<Word, map<Word, int> >::iterator IndIterator;
+typedef map<Word, MatchErrorMap>::iterator IndIterator;
 typedef map<Word, int>::iterator MatchIterator;
 
 ResultGatherer::ResultGatherer(Matcher *m) : matcher(m) {
