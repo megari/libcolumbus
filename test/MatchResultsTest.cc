@@ -15,9 +15,30 @@
  */
 
 #include "MatchResults.hh"
+#include "Word.hh"
+#include <cassert>
 
 void testMatchResult() {
     MatchResults r;
+    Word w1("abc");
+    double r1 = 1;
+    Word w2("def");
+    double r2 = 2;
+    Word w3("geh");
+    double r3 = 0.5;
+
+    assert(r.size() == 0);
+    r.addResult(w1, r1);
+    assert(r.size() == 1);
+    assert(r.getRelevancy(0) == r1);
+
+    r.addResult(w2, r2);
+    assert(r.size() == 2);
+    assert(r.getRelevancy(0) == r2);
+
+    r.addResult(w3, r3);
+    assert(r.size() == 3);
+    assert(r.getRelevancy(0) == r2);
 }
 
 int main(int argc, char **argv) {

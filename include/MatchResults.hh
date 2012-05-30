@@ -29,6 +29,10 @@ public:
     MatchResults();
     ~MatchResults();
 
+    void addResult(const Word &documentID, double relevancy);
+    size_t size() const;
+    const Word& getDocumentID(size_t i) const;
+    double getRelevancy(size_t i) const;
 };
 
 #endif /* MATCHRESULTS_HH_ */
