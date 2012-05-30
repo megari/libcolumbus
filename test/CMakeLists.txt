@@ -42,3 +42,7 @@ add_test(corpus corpus)
 add_executable(matcher MatcherTest.cc)
 target_link_libraries(matcher columbus)
 add_test(matcher matcher)
+
+add_executable(matchresults MatchResultsTest.cc)
+target_link_libraries(matchresults columbus)
+add_test(matchresults matchresults)
