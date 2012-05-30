@@ -40,6 +40,7 @@ typedef map<Word, set<const Document*> >::iterator RevIterator;
 Matcher::Matcher(Corpus *corp) {
     p = new MatcherPrivate();
     p->c = corp;
+    buildIndexes();
 }
 
 Matcher::~Matcher() {
