@@ -60,6 +60,8 @@ void testMatcher() {
     queryList.addWord(w1);
     m.match(queryList, matches);
     assert(matches.size() == 2);
+    assert(matches[0] != &dFar);
+    assert(matches[1] != &dFar);
 }
 
 int main(int argc, char **argv) {
