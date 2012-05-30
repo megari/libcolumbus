@@ -31,7 +31,7 @@ private:
     void buildIndexes();
     void addToIndex(const Word &word, const Word &indexName);
     void addToReverseIndex(const Word &word, const Word &indexName, const Document *d);
-    void match_with_relevancy(const WordList &query, const bool dynamicError);
+    void matchWithRelevancy(const WordList &query, const bool dynamicError, std::vector<const Document*> &matchedDocuments);
     int getDynamicError(const Word &w);
     void fuzzy_match_indices(const Word &word, const int maxError);
 
@@ -40,6 +40,7 @@ public:
     ~Matcher();
 
     void findDocuments(const Word &word, const Word &fieldName, std::vector<const Document*> result);
+    void match(const WordList &query, std::vector<const Document*> &matchedDocuments);
 };
 
 #endif /* MATCHER_HH_ */

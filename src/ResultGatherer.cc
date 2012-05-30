@@ -61,8 +61,7 @@ void ResultGatherer::addMatches(const Word &queryWord, const Word &indexName, In
     }
 }
 
-void ResultGatherer::gatherMatchedDocuments() {
-    vector<const Document*> matchedDocuments;
+void ResultGatherer::gatherMatchedDocuments(vector<const Document*> &matchedDocuments) {
     for(IndIterator it = p->bestIndexMatches.begin(); it != p->bestIndexMatches.end(); it++) {
         for(MatchIterator mIt = it->second.begin(); mIt != it->second.end(); mIt++) {
             vector<const Document*> tmp;

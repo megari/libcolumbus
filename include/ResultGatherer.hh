@@ -21,10 +21,13 @@
  * This class stores the data gathered during query execution.
  */
 
+#include<vector> // Get rid of this.
+
 struct ResultGathererPrivate;
 class Word;
 class IndexMatches;
 class Matcher;
+class Document;
 
 class ResultGatherer {
 private:
@@ -37,7 +40,7 @@ public:
     ~ResultGatherer();
 
     void addMatches(const Word &queryWord, const Word &indexName, IndexMatches &matches);
-    void gatherMatchedDocuments();
+    void gatherMatchedDocuments(std::vector<const Document*> &matchedDocuments);
 };
 
 #endif /* RESULTGATHERER_HH_ */

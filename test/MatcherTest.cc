@@ -19,6 +19,9 @@
 #include "Word.hh"
 #include "WordList.hh"
 #include "Document.hh"
+#include <cassert>
+
+using namespace std;
 
 void testMatcher() {
     Corpus *c = new Corpus();
@@ -44,6 +47,11 @@ void testMatcher() {
     c->addDocument(d2);
 
     Matcher m(c);
+    vector<const Document*> matches;
+    WordList queryList;
+    queryList.addWord(w1);
+    m.match(queryList, matches);
+    assert(matches.size() == 1);
 }
 
 int main(int argc, char **argv) {
