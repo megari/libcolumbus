@@ -143,14 +143,15 @@ void testEncoding() {
     assert(strcmp(text, returned) == 0);
     assert(strcmp(text, w1.asUtf8()) == 0);
 
-    Word wAss = w1;
+    Word wAss("abc");
+    assert(strcmp("abc", wAss.asUtf8()) == 0); // Make it allocate its internal things to check that they are released appropriately
+    wAss = w1;
     assert(strcmp(text, w1.asUtf8()) == 0);
     assert(strcmp(text, wAss.asUtf8()) == 0);
 
     Word wInit(w1);
     assert(strcmp(text, w1.asUtf8()) == 0);
     assert(strcmp(text, wInit.asUtf8()) == 0);
-
 }
 
 void testLessThan() {
