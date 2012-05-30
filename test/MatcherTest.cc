@@ -19,6 +19,7 @@
 #include "Word.hh"
 #include "WordList.hh"
 #include "Document.hh"
+#include "MatchResults.hh"
 #include <cassert>
 
 using namespace std;
@@ -60,7 +61,7 @@ Corpus * testCorpus() {
 void testMatcher() {
     Corpus *c = testCorpus();
     Matcher m(c);
-    vector<const Document*> matches;
+    MatchResults matches;
     WordList queryList;
     Word w1("abc");
     Word dFarName("distantdoc");
@@ -69,9 +70,9 @@ void testMatcher() {
     queryList.addWord(w1);
     m.match(queryList, matches);
     assert(matches.size() == 2);
-    assert(matches[0]->getID() != dFarName);
-    assert(matches[1]->getID() != dFarName);
-    assert(matches[0]->getID() == name1 || matches[1]->getID() == name1);
+    assert(matches.getDocumentID(0) != dFarName);
+    assert(matches.getDocumentID(1) != dFarName);
+    assert(matches.getDocumentID(0) == name1 || matches.getDocumentID(1) == name1);
 }
 
 int main(int argc, char **argv) {

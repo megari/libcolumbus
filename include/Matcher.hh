@@ -23,6 +23,7 @@ struct MatcherPrivate;
 class Word;
 class Document;
 class WordList;
+class MatchResults;
 
 class Matcher {
 private:
@@ -31,7 +32,7 @@ private:
     void buildIndexes();
     void addToIndex(const Word &word, const Word &indexName);
     void addToReverseIndex(const Word &word, const Word &indexName, const Document *d);
-    void matchWithRelevancy(const WordList &query, const bool dynamicError, std::vector<const Document*> &matchedDocuments);
+    void matchWithRelevancy(const WordList &query, const bool dynamicError, MatchResults &matchedDocuments);
     int getDynamicError(const Word &w);
     void fuzzy_match_indices(const Word &word, const int maxError);
 
@@ -40,7 +41,7 @@ public:
     ~Matcher();
 
     void findDocuments(const Word &word, const Word &fieldName, std::vector<const Document*> &result);
-    void match(const WordList &query, std::vector<const Document*> &matchedDocuments);
+    void match(const WordList &query, MatchResults &matchedDocuments);
 };
 
 #endif /* MATCHER_HH_ */

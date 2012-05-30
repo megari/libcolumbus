@@ -22,6 +22,7 @@
 #include "WordList.hh"
 #include "IndexMatches.hh"
 #include "ResultGatherer.hh"
+#include "MatchResults.hh"
 #include <map>
 #include <set>
 
@@ -99,7 +100,8 @@ void Matcher::addToReverseIndex(const Word &word, const Word &indexName, const D
     }
 }
 
-void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError, vector<const Document*> &matchedDocuments) {
+void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError, MatchResults &matchedDocuments) {
+    vector<const Document*> docs;
     ResultGatherer r(this);
     for(size_t i=0; i<query.size(); i++) {
         const Word &w = query[i];
@@ -117,9 +119,12 @@ void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError,
         }
     }
     // Now we know all matched words in all indexes. Gather up the corresponding documents.
-    r.gatherMatchedDocuments(matchedDocuments);
+    r.gatherMatchedDocuments(docs);
     debugMessage("Found a total of %ld documents.\n", matchedDocuments.size());
-
+    for(size_t i=0; i<docs.size(); i++) {
+        double relevancy = 1.0;
+        matchedDocuments.addResult(docs[i]->getID(), relevancy);
+    }
 }
 
 int Matcher::getDynamicError(const Word &w) {
@@ -146,6 +151,6 @@ void Matcher::findDocuments(const Word &word, const Word &fieldName, std::vector
     }
 }
 
-void Matcher::match(const WordList &query, std::vector<const Document*> &matchedDocuments) {
+void Matcher::match(const WordList &query, MatchResults &matchedDocuments) {
     matchWithRelevancy(query, true, matchedDocuments);
 }
