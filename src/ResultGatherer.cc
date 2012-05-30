@@ -66,6 +66,8 @@ void ResultGatherer::gatherMatchedDocuments(vector<const Document*> &matchedDocu
         for(MatchIterator mIt = it->second.begin(); mIt != it->second.end(); mIt++) {
             vector<const Document*> tmp;
             matcher->findDocuments(mIt->first, it->first, tmp);
+            debugMessage("Exact searched \"%s\" in field \"%s\", which was found in %ld documents.\n",
+                    mIt->first.asUtf8(), it->first.asUtf8(), tmp.size());
             for(size_t i=0; i<tmp.size(); i++)
                 matchedDocuments.push_back(tmp[i]);
         }

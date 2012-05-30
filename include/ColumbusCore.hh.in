@@ -1,7 +1,15 @@
 #ifndef COLUMBUSCORE_H
 #define COLUMBUSCORE_H
 
-#include<stdlib.h>
+#include<cstdlib>
+
+#ifdef DEBUG_MESSAGES
+#include<cstdio>
+#define debugMessage(...) printf(__VA_ARGS__);
+#else
+#define debugMessage(...)
+#endif
+
 
 #define COLUMBUS_VERSION_STRING "${SO_VERSION}"
 #define COLUMBUS_ABI_VERSION ${ABI_VERSION}

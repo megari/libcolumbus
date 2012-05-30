@@ -41,6 +41,7 @@ Matcher::Matcher(Corpus *corp) {
     p = new MatcherPrivate();
     p->c = corp;
     buildIndexes();
+    debugMessage("Created matcher with %ld documents.\n", corp->size());
 }
 
 Matcher::~Matcher() {
@@ -111,10 +112,13 @@ void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError,
             IndexMatches m;
             it->second->findWords(w, maxError, m);
             r.addMatches(w, it->first, m);
+            debugMessage("Matched word %s in index %s with error %d and got %ld matches.\n",
+                    w.asUtf8(), it->first.asUtf8(), maxError, m.size());
         }
     }
     // Now we know all matched words in all indexes. Gather up the corresponding documents.
     r.gatherMatchedDocuments(matchedDocuments);
+    debugMessage("Found a total of %ld documents.\n", matchedDocuments.size());
 
 }
 
@@ -126,7 +130,7 @@ int Matcher::getDynamicError(const Word &w) {
         return int(len/4.0*LevenshteinIndex::getDefaultError()); // Permit a typo for every fourth letter.
 }
 
-void Matcher::findDocuments(const Word &word, const Word &fieldName, std::vector<const Document*> result) {
+void Matcher::findDocuments(const Word &word, const Word &fieldName, std::vector<const Document*> &result) {
     IndexMatches im;
     RevIndIterator it = p->reverseIndex.find(fieldName);
     if(it == p->reverseIndex.end())

@@ -8,6 +8,7 @@ endif()
 option(enable_tests "Enable tests.")
 option(enable_scalability_tests "Additional scalability tests that are potentially very slow to run." OFF)
 option(full_warnings "Full compiler warnings." ON)
+option(debug_messages "Print debug messages.")
 
 if(${full_warnings})
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic")
@@ -40,6 +41,14 @@ pkg_search_module(GTK3 gtk+-3.0)
 
 include_directories(include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
+
+if(${debug_messages})
+  add_definitions(-DDEBUG_MESSAGES)
+endif()
+
+# Remove this once we go full C++1x and the compiler will shut up.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-variadic-macros")
+
 
 add_subdirectory(include)
 add_subdirectory(src)
