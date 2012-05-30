@@ -136,16 +136,13 @@ void Matcher::findDocuments(const Word &word, const Word &fieldName, std::vector
     if(it == p->reverseIndex.end())
         return;
     map<Word, set<const Document*> > &rind = it->second;
-    for(size_t i=0; i<im.size(); i++) {
-        const Word &matched = im.getMatch(i);
-        RevIterator s = rind.find(matched);
-        if(s == rind.end())
-            continue;
-        set<const Document*> &docSet = s->second;
-        set<const Document*>::iterator foo;
-        for(set<const Document*>::iterator docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
-            result.push_back(*docIter);
-        }
+    RevIterator s = rind.find(word);
+    if(s == rind.end())
+        return;
+    set<const Document*> &docSet = s->second;
+    set<const Document*>::iterator foo;
+    for(set<const Document*>::iterator docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
+        result.push_back(*docIter);
     }
 }
 
