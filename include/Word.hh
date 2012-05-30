@@ -32,6 +32,7 @@ private:
     unsigned int len;
     bool hasWhitespace();
     void duplicateFrom(const Word &w);
+    char *utf8Repr; // Only created on demand to save space.
 
 public:
     Word();
@@ -41,6 +42,7 @@ public:
 
     unsigned int length() const { return len;}
     void toUtf8(char *buf, unsigned int bufSize) const;
+    const char* asUtf8() const;
 
     Letter operator[](unsigned int i) const;
     bool operator==(const Word &w) const;

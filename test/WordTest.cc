@@ -141,6 +141,16 @@ void testEncoding() {
 
     w1.toUtf8(returned, 4);
     assert(strcmp(text, returned) == 0);
+    assert(strcmp(text, w1.asUtf8()) == 0);
+
+    Word wAss = w1;
+    assert(strcmp(text, w1.asUtf8()) == 0);
+    assert(strcmp(text, wAss.asUtf8()) == 0);
+
+    Word wInit(w1);
+    assert(strcmp(text, w1.asUtf8()) == 0);
+    assert(strcmp(text, wInit.asUtf8()) == 0);
+
 }
 
 void testLessThan() {

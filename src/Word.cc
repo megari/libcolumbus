@@ -18,13 +18,14 @@
 #include <cstring>
 #include <stdexcept>
 #include <cassert>
+#include <cstring>
 #include "ColumbusHelpers.hh"
 
-Word::Word() : text(0), len(0) {
+Word::Word() : text(0), len(0), utf8Repr(0) {
 
 }
 
-Word::Word(const char *utf8Word) : text(0), len(0) {
+Word::Word(const char *utf8Word) : text(0), len(0), utf8Repr(0) {
     text = utf8ToInternal(utf8Word, len);
     if(hasWhitespace()) {
         delete []text;
@@ -33,12 +34,13 @@ Word::Word(const char *utf8Word) : text(0), len(0) {
         throw std::invalid_argument(err);
     }
 }
-Word::Word(const Word &w) : text(0), len(0) {
+Word::Word(const Word &w) : text(0), len(0), utf8Repr(0) {
     duplicateFrom(w);
 }
 
 Word::~Word() {
     delete []text;
+    delete []utf8Repr;
 }
 
 void Word::duplicateFrom(const Word &w) {
@@ -46,6 +48,8 @@ void Word::duplicateFrom(const Word &w) {
         return;
     }
     delete []text;
+    delete []utf8Repr;
+    utf8Repr = 0;
     len = w.len;
     if(len == 0) {
         text = 0;
@@ -119,4 +123,14 @@ bool Word::operator<(const Word &w) const {
 
 void Word::toUtf8(char *buf, unsigned int bufSize) const {
     internalToUtf8(text, len, buf, bufSize);
+}
+
+const char* Word::asUtf8() const {
+    if(utf8Repr)
+        return utf8Repr;
+    size_t strSize = 4*(len+1); // One codepoint is max 4 bytes in UTF-8.
+    char *u8 = new char[strSize];
+    toUtf8(u8, strSize);
+    const_cast<Word*>(this)->utf8Repr = u8;
+    return utf8Repr;
 }
