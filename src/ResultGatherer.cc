@@ -17,6 +17,7 @@
 #include "ResultGatherer.hh"
 #include "IndexMatches.hh"
 #include "Word.hh"
+#include "Matcher.hh"
 #include <map>
 
 using namespace std;
@@ -29,7 +30,7 @@ struct ResultGathererPrivate {
 typedef map<Word, map<Word, int> >::iterator IndIterator;
 typedef map<Word, int>::iterator MatchIterator;
 
-ResultGatherer::ResultGatherer() {
+ResultGatherer::ResultGatherer(Matcher *m) : matcher(m) {
     p = new ResultGathererPrivate();
 }
 
@@ -57,5 +58,17 @@ void ResultGatherer::addMatches(const Word &queryWord, const Word &indexName, In
                 (*indexMatches)[matchWord] = matchError;
         }
 
+    }
+}
+
+void ResultGatherer::gatherMatchedDocuments() {
+    vector<const Document*> matchedDocuments;
+    for(IndIterator it = p->bestIndexMatches.begin(); it != p->bestIndexMatches.end(); it++) {
+        for(MatchIterator mIt = it->second.begin(); mIt != it->second.end(); mIt++) {
+            vector<const Document*> tmp;
+            matcher->findDocuments(mIt->first, it->first, tmp);
+            for(size_t i=0; i<tmp.size(); i++)
+                matchedDocuments.push_back(tmp[i]);
+        }
     }
 }

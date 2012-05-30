@@ -98,7 +98,7 @@ void Matcher::addToReverseIndex(const Word &word, const Word &indexName, const D
 }
 
 void Matcher::match_with_relevancy(const WordList &query, const bool dynamicError) {
-    ResultGatherer r;
+    ResultGatherer r(this);
     for(size_t i=0; i<query.size(); i++) {
         const Word &w = query[i];
         int maxError;
@@ -111,8 +111,10 @@ void Matcher::match_with_relevancy(const WordList &query, const bool dynamicErro
             it->second->findWords(w, maxError, m);
             r.addMatches(w, it->first, m);
         }
-        // Code missing.
     }
+    // Now we know all matched words in all indexes. Gather up the corresponding documents.
+    r.gatherMatchedDocuments();
+
 }
 
 int Matcher::getDynamicError(const Word &w) {

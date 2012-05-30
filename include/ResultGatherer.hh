@@ -24,17 +24,20 @@
 struct ResultGathererPrivate;
 class Word;
 class IndexMatches;
+class Matcher;
 
 class ResultGatherer {
 private:
 
+    Matcher *matcher;
     ResultGathererPrivate *p;
 
 public:
-    ResultGatherer();
+    ResultGatherer(Matcher *m);
     ~ResultGatherer();
 
     void addMatches(const Word &queryWord, const Word &indexName, IndexMatches &matches);
+    void gatherMatchedDocuments();
 };
 
 #endif /* RESULTGATHERER_HH_ */
