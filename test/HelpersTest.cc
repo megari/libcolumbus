@@ -14,17 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef COLUMBUSHELPERS_H_
-#define COLUMBUSHELPERS_H_
+#include "ColumbusHelpers.hh"
+#include "Word.hh"
+#include "WordList.hh"
 
-#include "ColumbusCore.hh"
+void testSplitter() {
 
-class Word;
-class WordList;
+}
 
-Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize);
-void internalToUtf8(const Letter *source, unsigned int characters, char *buf, unsigned int bufsize);
-double hiresTimestamp();
-
-#endif
-
+int main(int argc, char **argv) {
+    testSplitter();
+    return 0;
+}
