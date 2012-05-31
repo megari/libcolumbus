@@ -13,7 +13,9 @@ ResultGatherer.cc
 MatchResults.cc
 )
 
-target_link_libraries(columbus ${ICONV_LIBRARIES})
+if(ICONV_LIBRARIES)
+  target_link_libraries(columbus ${ICONV_LIBRARIES})
+endif()
 
 set_target_properties(columbus PROPERTIES VERSION ${SO_VERSION} SOVERSION ${ABI_VERSION})
 
