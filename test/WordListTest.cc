@@ -61,8 +61,35 @@ void testAssignment() {
     assert(l2[0] == w);
 }
 
+void testEquality() {
+    WordList l1, l2;
+    Word w1("abc");
+    Word w2("def");
+    Word w3("ghi");
+
+    assert(l1 == l2);
+    assert(!(l1 != l2));
+
+    l1.addWord(w1);
+    assert(!(l1 == l2));
+    assert(l1 != l2);
+
+    l2.addWord(w1);
+    assert(l1 == l2);
+    assert(!(l1 != l2));
+
+    l2.addWord(w2);
+    assert(!(l1 == l2));
+    assert(l1 != l2);
+
+    l1.addWord(w3);
+    assert(!(l1 == l2));
+    assert(l1 != l2);
+}
+
 int main(int argc, char **argv) {
     testList();
     testAssignment();
+    testEquality();
     return 0;
 }

@@ -58,3 +58,11 @@ const WordList& WordList::operator=(const WordList &l) {
     p->words = l.p->words;
     return *this;
 }
+
+bool WordList::operator==(const WordList &l) const {
+    return p->words == l.p->words;
+}
+
+bool WordList::operator!=(const WordList &l) const {
+    return p->words != l.p->words;
+}
