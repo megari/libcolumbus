@@ -40,6 +40,11 @@ ResultGatherer::~ResultGatherer() {
     delete p;
 }
 
+double ResultGatherer::calculateRelevancy(const Word &w, int error) {
+    return 100.0/(100.0+error);
+}
+
+
 void ResultGatherer::addMatches(const Word &queryWord, const Word &indexName, IndexMatches &matches) {
     IndIterator it = p->bestIndexMatches.find(indexName);
     map<Word, int> *indexMatches;
@@ -63,15 +68,24 @@ void ResultGatherer::addMatches(const Word &queryWord, const Word &indexName, In
     }
 }
 
-void ResultGatherer::gatherMatchedDocuments(vector<const Document*> &matchedDocuments) {
+void ResultGatherer::gatherMatchedDocuments(map<const Document*, double> &matchedDocuments) {
     for(IndIterator it = p->bestIndexMatches.begin(); it != p->bestIndexMatches.end(); it++) {
         for(MatchIterator mIt = it->second.begin(); mIt != it->second.end(); mIt++) {
             vector<const Document*> tmp;
             matcher->findDocuments(mIt->first, it->first, tmp);
             debugMessage("Exact searched \"%s\" in field \"%s\", which was found in %ld documents.\n",
                     mIt->first.asUtf8(), it->first.asUtf8(), tmp.size());
-            for(size_t i=0; i<tmp.size(); i++)
-                matchedDocuments.push_back(tmp[i]);
+            for(size_t i=0; i<tmp.size(); i++) {
+                const Document *curDoc = tmp[i];
+                // At this point we know the matched word, and which index and field
+                // it matched in. Now we can just increment the relevancy of said document.
+                double relevancy = calculateRelevancy(mIt->first, mIt->second);
+                map<const Document*, double>::iterator doc = matchedDocuments.find(curDoc);
+                if(doc == matchedDocuments.end())
+                    matchedDocuments[curDoc] = relevancy;
+                else
+                    matchedDocuments[curDoc] += relevancy;
+            }
         }
     }
 }
