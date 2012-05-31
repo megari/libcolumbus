@@ -36,6 +36,10 @@ else()
   set(INTERNAL_ENCODING "UTF-32LE")
 endif()
 
+# Only required on some platforms.
+# If not found, that's ok.
+find_library(ICONV_LIBRARIES iconv)
+
 include(FindPkgConfig)
 pkg_search_module(GTK3 gtk+-3.0)
 
