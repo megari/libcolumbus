@@ -19,6 +19,8 @@
  */
 
 #include "ColumbusHelpers.hh"
+#include "Word.hh"
+#include "WordList.hh"
 #include <iconv.h>
 #include <cstdio>
 #include <cerrno>
@@ -103,3 +105,37 @@ double hiresTimestamp() {
 
 }
 
+void splitToWords(const char *utf8Text, WordList &list) {
+    unsigned int strSize = strlen(utf8Text);
+    size_t begin, end;
+    end = 0;
+    do {
+        begin = end;
+        while(isWhitespace(utf8Text[begin]) && begin < strSize) {
+            begin++;
+        }
+        if(begin >= strSize)
+            return;
+        end = begin+1;
+        while(!isWhitespace(utf8Text[end]) && end < strSize) {
+            end++;
+        }
+        // End points to one past the last letter.
+        unsigned int wordLen = end-begin;
+        char *word = new char[wordLen+1];
+        memcpy(word, utf8Text+begin, wordLen);
+        word[wordLen] = '\0';
+        Word w(word);
+        list.addWord(w);
+        delete []word;
+    } while(end < strSize);
+}
+
+bool isWhitespace(Letter l) {
+    Letter space = ' ';
+    Letter tab = '\t';
+    Letter linefeed = '\n';
+    if(l == space || l == tab || l == linefeed)
+        return true;
+    return false;
+}

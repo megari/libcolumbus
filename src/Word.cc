@@ -80,12 +80,9 @@ Word& Word::operator=(const Word &w) {
  * A word is not supposed to have any whitespace in it. Verify that we don't.
  */
 bool Word::hasWhitespace() {
-    Letter space = ' ';
-    Letter tab = '\t';
-    Letter linefeed = '\n';
     for(unsigned int i=0; i<len; i++) {
         Letter cur = text[i];
-        if(cur == space || cur == tab || cur == linefeed)
+        if(isWhitespace(cur))
             return true;
     }
     return false;

@@ -17,9 +17,34 @@
 #include "ColumbusHelpers.hh"
 #include "Word.hh"
 #include "WordList.hh"
+#include <cassert>
+
+bool splitCorrectly(const char *txt, const WordList &l) {
+    WordList result;
+    splitToWords(txt, result);
+    return result == l;
+}
 
 void testSplitter() {
+    Word w1("abc");
+    Word w2("def");
+    WordList l1;
+    l1.addWord(w1);
+    l1.addWord(w2);
 
+    assert(splitCorrectly("abc def", l1));
+    assert(splitCorrectly("abc\tdef", l1));
+    assert(splitCorrectly("abc\ndef", l1));
+    assert(splitCorrectly(" abc def", l1));
+    assert(splitCorrectly("abc def ", l1));
+    assert(splitCorrectly(" abc def ", l1));
+
+    WordList empty;
+    assert(splitCorrectly("", empty));
+    assert(splitCorrectly(" ", empty));
+    assert(splitCorrectly("\t", empty));
+    assert(splitCorrectly("\n", empty));
+    assert(splitCorrectly(" \t\n\t ", empty));
 }
 
 int main(int argc, char **argv) {
