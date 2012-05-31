@@ -75,7 +75,25 @@ void testMatcher() {
     assert(matches.getDocumentID(0) == name1 || matches.getDocumentID(1) == name1);
 }
 
+void testRelevancy() {
+    Corpus *c = testCorpus();
+    Matcher m(c);
+    MatchResults matches;
+    WordList queryList;
+    Word w1("abc");
+    Word dFarName("distantdoc");
+    Word name1("doc1");
+
+    queryList.addWord(w1);
+    m.match(queryList, matches);
+    assert(matches.size() == 2);
+    // Document doc1 has an exact match, so it should be the best match.
+    assert(matches.getRelevancy(0) > matches.getRelevancy(1));
+    assert(matches.getDocumentID(0) == name1);
+}
+
 int main(int argc, char **argv) {
     testMatcher();
+    testRelevancy();
     return 0;
 }
