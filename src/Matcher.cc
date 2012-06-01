@@ -22,6 +22,7 @@
 #include "WordList.hh"
 #include "IndexMatches.hh"
 #include "MatchResults.hh"
+#include "ErrorValues.hh"
 #include <vector>
 #include <map>
 #include <set>
@@ -32,6 +33,7 @@ struct MatcherPrivate {
     Corpus *c;
     map<Word, LevenshteinIndex*> indexes;
     map<Word, map<Word, set<const Document*> > > reverseIndex; // Index name, word, documents.
+    ErrorValues e;
 };
 
 typedef map<Word, LevenshteinIndex*>::iterator IndIterator;
@@ -192,7 +194,7 @@ void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError,
             maxError = 2*LevenshteinIndex::getDefaultError();
         for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
             IndexMatches m;
-            it->second->findWords(w, maxError, m);
+            it->second->findWords(w, p->e, maxError, m);
             addMatches(bestIndexMatches, w, it->first, m);
             debugMessage("Matched word %s in index %s with error %d and got %ld matches.\n",
                     w.asUtf8(), it->first.asUtf8(), maxError, m.size());

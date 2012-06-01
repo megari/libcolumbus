@@ -28,6 +28,7 @@ using namespace std;
 void testCustomError() {
     LevenshteinIndex ind;
     IndexMatches matches;
+    ErrorValues e;
     const int defaultError = ErrorValues::getDefaultError();
     const int smallError = 1;
     const int biggerError = 2;
@@ -39,22 +40,22 @@ void testCustomError() {
 
     ind.insertWord(w1);
 
-    ind.findWords(w2, defaultError, matches);
+    ind.findWords(w2, e, defaultError, matches);
     assert(matches.getMatchError(0) == defaultError);
     matches.clear();
 
-    ind.getErrorValues()->setError(Letter('b'), Letter('d'), smallError);
-    ind.findWords(w2, defaultError, matches);
+    e.setError(Letter('b'), Letter('d'), smallError);
+    ind.findWords(w2, e, defaultError, matches);
     assert(matches.getMatchError(0) == smallError);
     matches.clear();
 
-    ind.getErrorValues()->setError(Letter('d'), Letter('b'), biggerError);
-    ind.findWords(w2, defaultError, matches);
+    e.setError(Letter('d'), Letter('b'), biggerError);
+    ind.findWords(w2, e, defaultError, matches);
     assert(matches.getMatchError(0) == biggerError);
     matches.clear();
 
-    ind.getErrorValues()->clearErrors();
-    ind.findWords(w2, defaultError, matches);
+    e.clearErrors();
+    ind.findWords(w2, e, defaultError, matches);
     assert(matches.getMatchError(0) == defaultError);
     matches.clear();
 }

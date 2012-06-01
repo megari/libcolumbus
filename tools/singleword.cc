@@ -21,6 +21,7 @@
 #include "ColumbusHelpers.hh"
 #include "LevenshteinIndex.hh"
 #include "Word.hh"
+#include "ErrorValues.hh"
 #include <gtk/gtk.h>
 #include <vector>
 #include <cassert>
@@ -34,6 +35,7 @@ const int DEFAULT_ERROR = 200;
 
 struct app_data {
     LevenshteinIndex ind;
+    ErrorValues e;
     GtkWidget *window;
     GtkWidget *entry;
     GtkListStore *matchStore;
@@ -63,7 +65,7 @@ static void doSearch(GtkWidget *widget, gpointer data) {
         if(query.length() == 0)
             return;
         queryStart = hiresTimestamp();
-        app->ind.findWords(query, maxError, matches);
+        app->ind.findWords(query, app->e, maxError, matches);
         queryEnd = hiresTimestamp();
     } catch(exception &e) {
         printf("Matching failed: %s\n", e.what());

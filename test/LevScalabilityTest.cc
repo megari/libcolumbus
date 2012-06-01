@@ -28,6 +28,7 @@
 #include "LevenshteinIndex.hh"
 #include "Word.hh"
 #include "ColumbusHelpers.hh"
+#include "ErrorValues.hh"
 
 using namespace std;
 
@@ -51,6 +52,7 @@ void readData(vector<Word> &a, const char *ifilename) {
 void runTest(vector<Word> &a, int query_size, double *build_start, double *build_end, double *query_start, double *query_end) {
     LevenshteinIndex ind;
     IndexMatches matches;
+    ErrorValues e;
     const int defaultError = LevenshteinIndex::getDefaultError();
 
     *build_start = hiresTimestamp();
@@ -60,7 +62,7 @@ void runTest(vector<Word> &a, int query_size, double *build_start, double *build
 
     *query_start = hiresTimestamp();
     for(size_t i=0; i < (size_t)query_size; i++) {
-        ind.findWords(a[i], 2*defaultError, matches);
+        ind.findWords(a[i], e, 2*defaultError, matches);
         matches.clear();
     }
     *query_end = hiresTimestamp();

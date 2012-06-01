@@ -17,6 +17,7 @@
 #include "LevenshteinIndex.hh"
 #include "Word.hh"
 #include "IndexMatches.hh"
+#include "ErrorValues.hh"
 #include <cstdio>
 #include <stdexcept>
 #include <string>
@@ -42,7 +43,8 @@ void load_data(LevenshteinIndex &ind, char *file) {
 
 void queryAndPrint(LevenshteinIndex &ind, Word &query, int maxError) {
     IndexMatches matches;
-    ind.findWords(query, maxError, matches);
+    ErrorValues e;
+    ind.findWords(query, e, maxError, matches);
     if(matches.size() == 0) {
         printf("No matches.\n");
         return;

@@ -21,35 +21,38 @@
 #include <cassert>
 #include "LevenshteinIndex.hh"
 #include "Word.hh"
+#include "ErrorValues.hh"
 
 using namespace std;
 
 void testTrivial() {
     LevenshteinIndex ind;
     IndexMatches matches;
+    ErrorValues e;
     Word w("a");
 
-    ind.findWords(w, 100*LevenshteinIndex::getDefaultError(), matches);
+    ind.findWords(w, e, 100*LevenshteinIndex::getDefaultError(), matches);
     assert(matches.size() == 0);
 }
 
 void testSimple() {
     LevenshteinIndex ind;
     IndexMatches matches;
+    ErrorValues e;
     Word w1("abc");
     Word w2("def");
 
     ind.insertWord(w1);
     ind.insertWord(w2);
 
-    ind.findWords(w1, LevenshteinIndex::getDefaultError(), matches);
+    ind.findWords(w1, e, LevenshteinIndex::getDefaultError(), matches);
     assert(matches.size() == 1);
     assert(w1 == matches.getMatch(0));
     assert(matches.getMatchError(0) == 0);
 
     matches.clear();
 
-    ind.findWords(w2, LevenshteinIndex::getDefaultError(), matches);
+    ind.findWords(w2, e, LevenshteinIndex::getDefaultError(), matches);
     assert(matches.size() == 1);
     assert(matches.getMatch(0) == w2);
     assert(matches.getMatchError(0) == 0);
@@ -58,6 +61,7 @@ void testSimple() {
 void testOrder() {
     LevenshteinIndex ind;
     IndexMatches matches;
+    ErrorValues e;
     const int defaultError = LevenshteinIndex::getDefaultError();
 
     Word w1("abcde");
@@ -70,21 +74,21 @@ void testOrder() {
     ind.insertWord(w2);
     ind.insertWord(veryFarFromEveryOtherString);
 
-    ind.findWords(w3, defaultError, matches);
+    ind.findWords(w3, e, defaultError, matches);
     assert(matches.size() == 1);
     assert(matches.getMatch(0) == w1);
     assert(matches.getMatchError(0) == defaultError);
 
     matches.clear();
 
-    ind.findWords(w4, defaultError, matches);
+    ind.findWords(w4, e, defaultError, matches);
     assert(matches.size() == 1);
     assert(matches.getMatch(0) == w2);
     assert(matches.getMatchError(0) == defaultError);
 
     matches.clear();
 
-    ind.findWords(w3, 2*defaultError, matches);
+    ind.findWords(w3, e, 2*defaultError, matches);
     assert(matches.size() == 2);
     assert(matches.getMatch(0) == w1);
     assert(matches.getMatchError(0) == defaultError);
@@ -92,7 +96,7 @@ void testOrder() {
 
     matches.clear();
 
-    ind.findWords(w4, 2*defaultError, matches);
+    ind.findWords(w4, e, 2*defaultError, matches);
     assert(matches.size() == 2);
     assert(matches.getMatch(0) == w2);
     assert(matches.getMatchError(0) == defaultError);
@@ -102,6 +106,7 @@ void testOrder() {
 void testEdges() {
     LevenshteinIndex ind;
     IndexMatches matches;
+    ErrorValues e;
     const int defaultError = LevenshteinIndex::getDefaultError();
     const int bigError = 100*defaultError;
     Word w1("abc");
@@ -111,17 +116,17 @@ void testEdges() {
 
     ind.insertWord(w1);
 
-    ind.findWords(w2, bigError, matches);
+    ind.findWords(w2, e, bigError, matches);
     assert(matches.size() == 1);
     assert(matches.getMatchError(0) == defaultError);
     matches.clear();
 
-    ind.findWords(w3, bigError, matches);
+    ind.findWords(w3, e, bigError, matches);
     assert(matches.size() == 1);
     assert(matches.getMatchError(0) == defaultError);
     matches.clear();
 
-    ind.findWords(w4, bigError, matches);
+    ind.findWords(w4, e, bigError, matches);
     assert(matches.size() == 1);
     assert(matches.getMatchError(0) == defaultError);
     matches.clear();
@@ -130,6 +135,7 @@ void testEdges() {
 void testEmptyQuery() {
     LevenshteinIndex ind;
     IndexMatches matches;
+    ErrorValues e;
     const int defaultError = LevenshteinIndex::getDefaultError();
 
     Word w1("a");
@@ -141,7 +147,7 @@ void testEmptyQuery() {
     ind.insertWord(w2);
     ind.insertWord(w3);
 
-    ind.findWords(empty, defaultError, matches);
+    ind.findWords(empty, e, defaultError, matches);
     assert(matches.size() == 2);
     assert(matches.getMatchError(0) == defaultError);
     assert(matches.getMatchError(1) == defaultError);
@@ -150,16 +156,17 @@ void testEmptyQuery() {
 void testExact() {
     LevenshteinIndex ind;
     IndexMatches matches;
+    ErrorValues e;
 
     Word w1("abcd");
     Word w2("abce");
 
     ind.insertWord(w1);
 
-    ind.findWords(w2, 0, matches);
+    ind.findWords(w2, e, 0, matches);
     assert(matches.size() == 0);
 
-    ind.findWords(w1, 0, matches);
+    ind.findWords(w1, e, 0, matches);
     assert(matches.size() == 1);
     assert(matches.getMatch(0) == w1);
     assert(matches.getMatchError(0) == 0);
@@ -168,6 +175,7 @@ void testExact() {
 void testTranspose() {
     LevenshteinIndex ind;
     IndexMatches matches;
+    ErrorValues e;
     const int defaultError = LevenshteinIndex::getDefaultError();
 
     Word w1("abcd");
@@ -177,17 +185,17 @@ void testTranspose() {
 
     ind.insertWord(w1);
 
-    ind.findWords(w2, defaultError, matches);
+    ind.findWords(w2, e, defaultError, matches);
     assert(matches.size() == 1);
     assert(matches.getMatchError(0) == defaultError);
     matches.clear();
 
-    ind.findWords(w3, defaultError, matches);
+    ind.findWords(w3, e, defaultError, matches);
     assert(matches.size() == 1);
     assert(matches.getMatchError(0) == defaultError);
     matches.clear();
 
-    ind.findWords(w4, defaultError, matches);
+    ind.findWords(w4, e, defaultError, matches);
     assert(matches.size() == 1);
     assert(matches.getMatchError(0) == defaultError);
     matches.clear();

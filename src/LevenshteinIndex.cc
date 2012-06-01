@@ -32,11 +32,6 @@ struct TrieNode {
     Word current_word; // The word that ends in this node.
 };
 
-struct LevenshteinIndexPrivate {
-    ErrorValues e;
-};
-
-
 /**
  * Store all rows allocated during search to this and then
  * free them all at once.
@@ -73,7 +68,6 @@ LevenshteinIndex::LevenshteinIndex() {
     root = new TrieNode();
     root->parent = 0;
     root->letter = 0;
-    p = new LevenshteinIndexPrivate();
 }
 
 LevenshteinIndex::~LevenshteinIndex() {
@@ -81,7 +75,6 @@ LevenshteinIndex::~LevenshteinIndex() {
     gather_all_nodes(root, nodes);
     for(size_t i=0; i< nodes.size(); i++)
         delete nodes[i];
-    delete p;
 }
 
 int LevenshteinIndex::getDefaultError() {
@@ -134,31 +127,31 @@ bool LevenshteinIndex::hasWord(const Word &word) const {
      return false;
 }
 
-void LevenshteinIndex::findWords(const Word &query, const int max_error, IndexMatches &matches) const {
+void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int max_error, IndexMatches &matches) const {
     MemoryCleaner cleaner;
-    MatchRow *first_row = new MatchRow(query.length()+1, p->e.getInsertionError());
+    MatchRow *first_row = new MatchRow(query.length()+1, e.getInsertionError());
     cleaner.addRow(first_row);
     assert(first_row->getValue(0) == 0);
     if(query.length() > 0)
-        assert(first_row->getValue(1) == p->e.getInsertionError());
+        assert(first_row->getValue(1) == e.getInsertionError());
     for(mapiter i = root->children.begin(); i != root->children.end(); i++) {
-        searchRecursive(query, i->second, i->first, 0, first_row, matches, max_error, cleaner);
+        searchRecursive(query, i->second, e, i->first, 0, first_row, matches, max_error, cleaner);
     }
     matches.sort();
 }
 
-void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, Letter letter, Letter previousLetter, MatchRow *previousRow, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const {
-    MatchRow *currentRow = new MatchRow(previousRow, p->e.getDeletionError());
+void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e, Letter letter, Letter previousLetter, MatchRow *previousRow, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const {
+    MatchRow *currentRow = new MatchRow(previousRow, e.getDeletionError());
     cleaner.addRow(currentRow);
 
     for(size_t i = 1; i < query.length()+1; i++) {
-        int insertError = currentRow->getValue(i-1) + p->e.getInsertionError();
-        int deleteError = previousRow->getValue(i) + p->e.getDeletionError();
-        int substituteError = previousRow->getValue(i-1) + p->e.getSubstituteError(query[i-1], letter);
+        int insertError = currentRow->getValue(i-1) + e.getInsertionError();
+        int deleteError = previousRow->getValue(i) + e.getDeletionError();
+        int substituteError = previousRow->getValue(i-1) + e.getSubstituteError(query[i-1], letter);
 
         int transposeError;
         if(i > 1 && query[i - 1] == previousLetter && query[i - 2] == letter) {
-            transposeError = previousRow->getParent()->getValue(i-2) + p->e.getTransposeError();
+            transposeError = previousRow->getParent()->getValue(i-2) + e.getTransposeError();
         } else {
             transposeError = insertError + 10000; // Ensures this will not be chosen.
         }
@@ -172,11 +165,7 @@ void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, Letter
     }
     if(currentRow->minError() <= max_error) {
         for(mapiter i = node->children.begin(); i != node->children.end(); i++) {
-            searchRecursive(query, i->second, i->first, letter, currentRow, matches, max_error, cleaner);
+            searchRecursive(query, i->second, e, i->first, letter, currentRow, matches, max_error, cleaner);
         }
     }
-}
-
-ErrorValues * LevenshteinIndex::getErrorValues() {
-    return &p->e;
 }
