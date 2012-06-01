@@ -32,7 +32,7 @@ private:
     TrieNode *root;
     ErrorValues *e;
 
-    void searchRecursive(const Word &word, TrieNode *node, Letter letter, Letter previousLetter, MatchRow *previous_row, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const;
+    void searchRecursive(const Word &query, TrieNode *node, Letter letter, Letter previousLetter, MatchRow *previous_row, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const;
 
 public:
     LevenshteinIndex();
@@ -43,7 +43,7 @@ public:
     void insertWord(const Word &word);
     bool hasWord(const Word &word) const;
 
-    void findWords(const Word &word, const int max_error, IndexMatches &matches) const;
+    void findWords(const Word &query, const int max_error, IndexMatches &matches) const;
     ErrorValues * getErrorValues() { return e; }
 };
 
