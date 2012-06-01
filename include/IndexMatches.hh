@@ -38,6 +38,10 @@ private:
     void addMatch(const Word &str, int error);
     void sort();
 
+    // Disable copy and assignment.
+    IndexMatches(const IndexMatches &other);
+    const IndexMatches & operator=(const IndexMatches &other);
+
 public:
     IndexMatches();
     ~IndexMatches();
