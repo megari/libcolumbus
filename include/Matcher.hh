@@ -17,7 +17,6 @@
 #ifndef MATCHER_HH_
 #define MATCHER_HH_
 
-#include <vector> // Get rid of this soon!
 class Corpus;
 struct MatcherPrivate;
 class Word;
@@ -40,7 +39,6 @@ public:
     Matcher(Corpus *corp); // Matcher will delete[] the Corpus object.
     ~Matcher();
 
-    void findDocuments(const Word &word, const Word &fieldName, std::vector<const Document*> &result);
     void match(const WordList &query, MatchResults &matchedDocuments);
 };
 

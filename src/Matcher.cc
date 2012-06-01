@@ -22,6 +22,7 @@
 #include "WordList.hh"
 #include "IndexMatches.hh"
 #include "MatchResults.hh"
+#include <vector>
 #include <map>
 #include <set>
 
@@ -79,11 +80,27 @@ static double calculateRelevancy(const Word &w, int error) {
     return 100.0/(100.0+error);
 }
 
-static void gatherMatchedDocuments(Matcher *matcher, map<Word, MatchErrorMap> &bestIndexMatches, map<const Document*, double> &matchedDocuments) {
+static void findDocuments(MatcherPrivate *p, const Word &word, const Word &fieldName, std::vector<const Document*> &result) {
+    IndexMatches im;
+    RevIndIterator it = p->reverseIndex.find(fieldName);
+    if(it == p->reverseIndex.end())
+        return;
+    map<Word, set<const Document*> > &rind = it->second;
+    RevIterator s = rind.find(word);
+    if(s == rind.end())
+        return;
+    set<const Document*> &docSet = s->second;
+    set<const Document*>::iterator foo;
+    for(set<const Document*>::iterator docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
+        result.push_back(*docIter);
+    }
+}
+
+static void gatherMatchedDocuments(MatcherPrivate *p,  map<Word, MatchErrorMap> &bestIndexMatches, map<const Document*, double> &matchedDocuments) {
     for(MatchIndIterator it = bestIndexMatches.begin(); it != bestIndexMatches.end(); it++) {
         for(MatchIterator mIt = it->second.begin(); mIt != it->second.end(); mIt++) {
             vector<const Document*> tmp;
-            matcher->findDocuments(mIt->first, it->first, tmp);
+            findDocuments(p, mIt->first, it->first, tmp);
             debugMessage("Exact searched \"%s\" in field \"%s\", which was found in %ld documents.\n",
                     mIt->first.asUtf8(), it->first.asUtf8(), tmp.size());
             for(size_t i=0; i<tmp.size(); i++) {
@@ -182,7 +199,7 @@ void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError,
         }
     }
     // Now we know all matched words in all indexes. Gather up the corresponding documents.
-    gatherMatchedDocuments(this, bestIndexMatches, docs);
+    gatherMatchedDocuments(p, bestIndexMatches, docs);
     debugMessage("Found a total of %ld documents.\n", matchedDocuments.size());
     for(map<const Document*, double>::iterator it=docs.begin(); it != docs.end(); it++) {
         matchedDocuments.addResult(it->first->getID(), it->second);
@@ -195,22 +212,6 @@ int Matcher::getDynamicError(const Word &w) {
         return LevenshteinIndex::getDefaultError();
     else
         return int(len/4.0*LevenshteinIndex::getDefaultError()); // Permit a typo for every fourth letter.
-}
-
-void Matcher::findDocuments(const Word &word, const Word &fieldName, std::vector<const Document*> &result) {
-    IndexMatches im;
-    RevIndIterator it = p->reverseIndex.find(fieldName);
-    if(it == p->reverseIndex.end())
-        return;
-    map<Word, set<const Document*> > &rind = it->second;
-    RevIterator s = rind.find(word);
-    if(s == rind.end())
-        return;
-    set<const Document*> &docSet = s->second;
-    set<const Document*>::iterator foo;
-    for(set<const Document*>::iterator docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
-        result.push_back(*docIter);
-    }
 }
 
 void Matcher::match(const WordList &query, MatchResults &matchedDocuments) {
