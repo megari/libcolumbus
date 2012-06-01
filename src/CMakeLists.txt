@@ -9,7 +9,6 @@ WordList.cc
 Document.cc
 Corpus.cc
 Matcher.cc
-ResultGatherer.cc
 MatchResults.cc
 )
 
