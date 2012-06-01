@@ -219,3 +219,7 @@ int Matcher::getDynamicError(const Word &w) {
 void Matcher::match(const WordList &query, MatchResults &matchedDocuments) {
     matchWithRelevancy(query, true, matchedDocuments);
 }
+
+ErrorValues& Matcher::getErrorValues() {
+    return p->e;
+}

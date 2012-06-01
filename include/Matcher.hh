@@ -23,6 +23,7 @@ class Word;
 class Document;
 class WordList;
 class MatchResults;
+class ErrorValues;
 
 class Matcher {
 private:
@@ -39,6 +40,7 @@ public:
     ~Matcher();
 
     void match(const WordList &query, MatchResults &matchedDocuments);
+    ErrorValues& getErrorValues();
 };
 
 #endif /* MATCHER_HH_ */
