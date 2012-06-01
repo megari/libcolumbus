@@ -157,7 +157,7 @@ void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, Letter
         int substituteError = previousRow->getValue(i-1) + p->e.getSubstituteError(query[i-1], letter);
 
         int transposeError;
-        if(i > 1 && Letter(query[i - 1]) == previousLetter && Letter(query[i - 2]) == letter) {
+        if(i > 1 && query[i - 1] == previousLetter && query[i - 2] == letter) {
             transposeError = previousRow->getParent()->getValue(i-2) + p->e.getTransposeError();
         } else {
             transposeError = insertError + 10000; // Ensures this will not be chosen.
