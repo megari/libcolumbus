@@ -33,7 +33,6 @@ private:
     void addToReverseIndex(const Word &word, const Word &indexName, const Document *d);
     void matchWithRelevancy(const WordList &query, const bool dynamicError, MatchResults &matchedDocuments);
     int getDynamicError(const Word &w);
-    void fuzzy_match_indices(const Word &word, const int maxError);
 
 public:
     Matcher(Corpus *corp); // Matcher will delete[] the Corpus object.
