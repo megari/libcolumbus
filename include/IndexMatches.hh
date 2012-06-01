@@ -35,7 +35,7 @@ private:
 
     IndexMatchesPrivate *p;
 
-    void addMatch(const Word &str, int error);
+    void addMatch(const Word &queryWord, const Word &matchedWord, int error);
     void sort();
 
     // Disable copy and assignment.
@@ -48,6 +48,7 @@ public:
 
     size_t size() const;
     const Word& getMatch(size_t num) const;
+    const Word& getQuery(size_t num) const;
     int getMatchError(size_t num) const;
     void clear();
 

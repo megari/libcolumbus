@@ -25,7 +25,8 @@
 using namespace std;
 
 struct MatchData {
-    Word text;
+    Word queryWord;
+    Word matchedWord;
     int error;
 
     bool operator<(const MatchData &other) const {
@@ -45,9 +46,9 @@ IndexMatches::~IndexMatches() {
     delete p;
 }
 
-void IndexMatches::addMatch(const Word &str, int error) {
+void IndexMatches::addMatch(const Word &queryWord, const Word &matchedWord, int error) {
     MatchData m;
-    m.text = str;
+    m.matchedWord = matchedWord;
     m.error = error;
     p->matches.push_back(m);
 }
@@ -65,7 +66,19 @@ const Word& IndexMatches::getMatch(size_t num) const {
         msg += ").";
         throw out_of_range(msg);
     }
-    return p->matches[num].text;
+    return p->matches[num].matchedWord;
+}
+
+const Word& IndexMatches::getQuery(size_t num) const {
+    if(num >= p->matches.size()) {
+        std::string msg("Attempt to access query term ");
+        msg += num;
+        msg += " out of bounds (array size ";
+        msg += p->matches.size();
+        msg += ").";
+        throw out_of_range(msg);
+    }
+    return p->matches[num].queryWord;
 }
 
 int IndexMatches::getMatchError(size_t num) const {
