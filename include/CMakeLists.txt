@@ -1,5 +1,12 @@
 configure_file(ColumbusCore.hh.in ColumbusCore.hh)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ColumbusCore.hh Matcher.hh columbus.h DESTINATION include/columbus)
+install(FILES
+${CMAKE_CURRENT_BINARY_DIR}/ColumbusCore.hh
+Matcher.hh
+columbus.h
+WordList.hh
+Word.hh
+ErrorValues.hh
+DESTINATION include/columbus)
 
 # Build and install a pkg-config file
 set(prefix ${CMAKE_INSTALL_PREFIX})
