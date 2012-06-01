@@ -71,6 +71,11 @@ void testWhitespace() {
     shouldThrow("a\n");
     shouldThrow("\na");
     shouldThrow("a\na");
+
+    shouldThrow("\r");
+    shouldThrow("a\r");
+    shouldThrow("\ra");
+    shouldThrow("a\ra");
 }
 
 void testCreation() {

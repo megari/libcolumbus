@@ -35,6 +35,7 @@ void testSplitter() {
     assert(splitCorrectly("abc def", l1));
     assert(splitCorrectly("abc\tdef", l1));
     assert(splitCorrectly("abc\ndef", l1));
+    assert(splitCorrectly("abc\rdef", l1));
     assert(splitCorrectly(" abc def", l1));
     assert(splitCorrectly("abc def ", l1));
     assert(splitCorrectly(" abc def ", l1));
@@ -44,7 +45,8 @@ void testSplitter() {
     assert(splitCorrectly(" ", empty));
     assert(splitCorrectly("\t", empty));
     assert(splitCorrectly("\n", empty));
-    assert(splitCorrectly(" \t\n\t ", empty));
+    assert(splitCorrectly("\r", empty));
+    assert(splitCorrectly(" \t\n\r\n\t ", empty));
 }
 
 int main(int argc, char **argv) {

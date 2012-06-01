@@ -132,10 +132,11 @@ void splitToWords(const char *utf8Text, WordList &list) {
 }
 
 bool isWhitespace(Letter l) {
-    Letter space = ' ';
-    Letter tab = '\t';
-    Letter linefeed = '\n';
-    if(l == space || l == tab || l == linefeed)
+    const Letter space = ' ';
+    const Letter tab = '\t';
+    const Letter linefeed = '\n';
+    const Letter carriage = '\r';
+    if(l == space || l == tab || l == linefeed || l == carriage)
         return true;
     return false;
 }
