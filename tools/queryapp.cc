@@ -50,7 +50,40 @@ static void destroy(GtkWidget *widget, gpointer data) {
 
 static void doSearch(GtkWidget *widget, gpointer data) {
     app_data *app = (app_data*) data;
-    printf("Searching: %s\n", gtk_entry_get_text(GTK_ENTRY(app->entry)));
+    WordList query;
+    MatchResults matches;
+    GtkTreeIter iter;
+    double queryStart, queryEnd;
+    try {
+        splitToWords(gtk_entry_get_text(GTK_ENTRY(app->entry)), query);
+        if(query.size() == 0)
+            return;
+        queryStart = hiresTimestamp();
+        app->m->match(query, matches);
+        queryEnd = hiresTimestamp();
+    } catch(exception &e) {
+        printf("Matching failed: %s\n", e.what());
+        gtk_list_store_clear(app->matchStore);
+        gtk_label_set_text(GTK_LABEL(app->queryTimeLabel), queryTime);
+        gtk_label_set_text(GTK_LABEL(app->resultCountLabel), resultCount);
+        gtk_entry_set_text(GTK_ENTRY(app->entry), "");
+        return;
+    }
+    gtk_list_store_clear(app->matchStore);
+    for(size_t i=0; i<matches.size(); i++) {
+        const Word &title = matches.getDocumentID(i);
+        gtk_list_store_append(app->matchStore, &iter);
+        gtk_list_store_set(app->matchStore, &iter,
+                0, title.asUtf8(),
+                1, (int)matches.getRelevancy(i),
+                -1);
+    }
+    char buf[1024];
+    sprintf(buf, "%s%f", queryTime, queryEnd - queryStart);
+    gtk_label_set_text(GTK_LABEL(app->queryTimeLabel), buf);
+    sprintf(buf, "%s%ld", resultCount, matches.size());
+    gtk_label_set_text(GTK_LABEL(app->resultCountLabel), buf);
+
 }
 
 void build_gui(app_data &app) {
@@ -60,7 +93,7 @@ void build_gui(app_data &app) {
     GtkWidget *quitButton;
     GtkWidget *searchButton;
     GtkTreeViewColumn *textColumn;
-    GtkTreeViewColumn *errorColumn;
+    GtkTreeViewColumn *relevancyColumn;
     app.window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     g_signal_connect (app.window, "delete-event",
             G_CALLBACK (delete_event), NULL);
@@ -82,9 +115,9 @@ void build_gui(app_data &app) {
     textColumn = gtk_tree_view_column_new_with_attributes("Match",
             gtk_cell_renderer_text_new(), "text", 0, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(app.matchView), textColumn);
-    errorColumn = gtk_tree_view_column_new_with_attributes("Error",
+    relevancyColumn = gtk_tree_view_column_new_with_attributes("Relevancy",
             gtk_cell_renderer_text_new(), "text", 1, NULL);
-    gtk_tree_view_append_column(GTK_TREE_VIEW(app.matchView), errorColumn);
+    gtk_tree_view_append_column(GTK_TREE_VIEW(app.matchView), relevancyColumn);
     scroller = gtk_scrolled_window_new(NULL, NULL);
     gtk_container_add(GTK_CONTAINER(scroller), app.matchView);
 

@@ -23,6 +23,7 @@
 
 #include "ColumbusCore.hh"
 #include <Matcher.hh>
+#include <MatchResults.hh>
 #include <Corpus.hh>
 #include <WordList.hh>
 #include <Word.hh>
