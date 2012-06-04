@@ -108,6 +108,7 @@ void build_gui(app_data &app) {
 
 void build_matcher(app_data &app, const char *dataFile) {
     Corpus *c = new Corpus();
+    Word field("name");
 
     ifstream ifile(dataFile);
     if(ifile.fail()) {
@@ -116,8 +117,15 @@ void build_matcher(app_data &app, const char *dataFile) {
     }
     string line;
 
+    // Build Corpus.
     while(getline(ifile, line)) {
-        printf("%s\n", line.c_str());
+        WordList l;
+        splitToWords(line.c_str(), l);
+        if(l.size() == 0)
+            continue;
+        Document d(l[0]);
+        d.addText(field, l);
+        c->addDocument(d);
     }
     app.m = new Matcher(c);
 }

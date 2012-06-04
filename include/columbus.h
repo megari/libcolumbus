@@ -24,3 +24,7 @@
 #include "ColumbusCore.hh"
 #include <Matcher.hh>
 #include <Corpus.hh>
+#include <WordList.hh>
+#include <Word.hh>
+#include <Document.hh>
+#include <ColumbusHelpers.hh>
