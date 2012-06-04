@@ -71,10 +71,10 @@ static void doSearch(GtkWidget *widget, gpointer data) {
     }
     gtk_list_store_clear(app->matchStore);
     for(size_t i=0; i<matches.size(); i++) {
-        const Word &title = matches.getDocumentID(i);
+        const char *title = matches.getDocumentID(i);
         gtk_list_store_append(app->matchStore, &iter);
         gtk_list_store_set(app->matchStore, &iter,
-                0, title.asUtf8(),
+                0, title,
                 1, matches.getRelevancy(i),
                 -1);
     }
@@ -158,7 +158,7 @@ void build_matcher(app_data &app, const char *dataFile) {
         splitToWords(line.c_str(), l);
         if(l.size() == 0)
             continue;
-        Document d(l[0]);
+        Document d(line.c_str());
         d.addText(field, l);
         c->addDocument(d);
     }

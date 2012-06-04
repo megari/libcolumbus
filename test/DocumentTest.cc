@@ -21,7 +21,7 @@
 #include <stdexcept>
 
 void testDoc() {
-    Word docId("tester");
+    const char* docId = "tester";
     Document d(docId);
 
     Word w1("abc");
@@ -45,7 +45,7 @@ void testDoc() {
 }
 
 void testIndexNames() {
-    Word docId("tester");
+    const char * docId = "tester";
     Document d(docId);
 
     Word w1("abc");

@@ -21,6 +21,7 @@
 #include "Document.hh"
 #include "MatchResults.hh"
 #include <cassert>
+#include <cstring>
 
 using namespace std;
 
@@ -32,9 +33,9 @@ Corpus * testCorpus() {
     Word w4("test");
     Word w5("faraway");
     Word w6("donotmatchme");
-    Word name1("doc1");
-    Word name2("doc2");
-    Word name3("distantdoc");
+    const char *name1 = "doc1";
+    const char *name2 = "doc2";
+    const char *name3 = "distantdoc";
     Word textName("title");
 
     WordList wl1, wl2, wlFar;
@@ -64,15 +65,16 @@ void testMatcher() {
     MatchResults matches;
     WordList queryList;
     Word w1("abc");
-    Word dFarName("distantdoc");
-    Word name1("doc1");
+    const char *dFarName = "distantdoc";
+    const char *name1("doc1");
 
     queryList.addWord(w1);
     m.match(queryList, matches);
     assert(matches.size() == 2);
-    assert(matches.getDocumentID(0) != dFarName);
-    assert(matches.getDocumentID(1) != dFarName);
-    assert(matches.getDocumentID(0) == name1 || matches.getDocumentID(1) == name1);
+    assert(strcmp(matches.getDocumentID(0), dFarName) != 0);
+    assert(strcmp(matches.getDocumentID(1), dFarName) != 0);
+    assert(strcmp(matches.getDocumentID(0), name1) == 0 ||
+           strcmp(matches.getDocumentID(1),name1) == 0);
 }
 
 void testRelevancy() {
@@ -82,14 +84,14 @@ void testRelevancy() {
     WordList queryList;
     Word w1("abc");
     Word dFarName("distantdoc");
-    Word name1("doc1");
+    const char *name1 = "doc1";
 
     queryList.addWord(w1);
     m.match(queryList, matches);
     assert(matches.size() == 2);
     // Document doc1 has an exact match, so it should be the best match.
     assert(matches.getRelevancy(0) > matches.getRelevancy(1));
-    assert(matches.getDocumentID(0) == name1);
+    assert(strcmp(matches.getDocumentID(0), name1) == 0);
 }
 
 int main(int argc, char **argv) {

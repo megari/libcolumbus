@@ -20,11 +20,11 @@
 
 void testMatchResult() {
     MatchResults r;
-    Word w1("abc");
+    const char *w1 = "abc";
     double r1 = 1;
-    Word w2("def");
+    const char *w2 = "def";
     double r2 = 2;
-    Word w3("geh");
+    const char *w3 = "geh";
     double r3 = 0.5;
 
     assert(r.size() == 0);

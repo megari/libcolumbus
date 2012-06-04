@@ -29,7 +29,7 @@ private:
     DocumentPrivate *p;
 
 public:
-    Document(const Word &id_);
+    Document(const char *id_);
     Document(const Document &d);
     ~Document();
 
@@ -37,7 +37,7 @@ public:
     void addText(const Word &field, const WordList &words);
     const WordList& getText(const Word &field) const;
     size_t fieldCount() const;
-    const Word& getID() const;
+    const char* getID() const;
     void getFieldNames(WordList &list) const;
 
     // Needs iterators to browse through text names.

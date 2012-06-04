@@ -23,7 +23,7 @@
 using namespace std;
 
 struct MatchResultsPrivate {
-    vector<pair<double, Word> > results;
+    vector<pair<double, const char*> > results; // Having ID as char* means that this result is only valid for as long as the original document exists.
     bool sorted;
 };
 
@@ -36,8 +36,8 @@ MatchResults::~MatchResults() {
     delete p;
 }
 
-void MatchResults::addResult(const Word &documentID, double relevancy) {
-    pair<double, Word> n;
+void MatchResults::addResult(const char *documentID, double relevancy) {
+    pair<double, const char*> n;
     n.first = -relevancy; // To make std::sort put the result in descending order.
     n.second = documentID;
     p->results.push_back(n);
@@ -56,7 +56,7 @@ void MatchResults::sortIfRequired() const {
     me->p->sorted = true;
 }
 
-const Word& MatchResults::getDocumentID(size_t i) const {
+const char* MatchResults::getDocumentID(size_t i) const {
     if(i>=p->results.size()) {
         throw out_of_range("Access out of bounds in MatchResults::getDocumentID.");
     }

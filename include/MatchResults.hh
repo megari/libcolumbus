@@ -31,9 +31,9 @@ public:
     MatchResults();
     ~MatchResults();
 
-    void addResult(const Word &documentID, double relevancy);
+    void addResult(const char *documentID, double relevancy);
     size_t size() const;
-    const Word& getDocumentID(size_t i) const;
+    const char* getDocumentID(size_t i) const;
     double getRelevancy(size_t i) const;
 };
 

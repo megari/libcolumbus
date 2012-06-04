@@ -19,17 +19,18 @@
 #include "WordList.hh"
 #include <map>
 #include <stdexcept>
+#include <string>
 
 using namespace std;
 
 struct DocumentPrivate {
-    Word id;
+    string id;
     map<Word, WordList> texts;
 };
 
 typedef map<Word, WordList>::iterator TextIter;
 
-Document::Document(const Word &id_) {
+Document::Document(const char *id_) {
     p = new DocumentPrivate();
     p->id = id_;
 }
@@ -60,8 +61,8 @@ size_t Document::fieldCount() const {
     return p->texts.size();
 }
 
-const Word& Document::getID() const {
-    return p->id;
+const char* Document::getID() const {
+    return p->id.c_str();
 }
 
 void Document::getFieldNames(WordList &list) const {
