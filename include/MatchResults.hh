@@ -25,6 +25,8 @@ class Word;
 class MatchResults {
     MatchResultsPrivate *p;
 
+    void sortIfRequired() const;
+
 public:
     MatchResults();
     ~MatchResults();
