@@ -23,3 +23,4 @@
 
 #include "ColumbusCore.hh"
 #include <Matcher.hh>
+#include <Corpus.hh>

@@ -20,6 +20,8 @@
 
 #include "columbus.h" // This app should only need public API from Columbus.
 #include <gtk/gtk.h>
+#include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -104,6 +106,26 @@ void build_gui(app_data &app) {
     gtk_widget_show_all(app.window);
 }
 
+void build_matcher(app_data &app, const char *dataFile) {
+    Corpus *c = new Corpus();
+
+    ifstream ifile(dataFile);
+    if(ifile.fail()) {
+        printf("Could not open file %s.\n", dataFile);
+        exit(1);
+    }
+    string line;
+
+    while(getline(ifile, line)) {
+        printf("%s\n", line.c_str());
+    }
+    app.m = new Matcher(c);
+}
+
+void delete_matcher(app_data &app) {
+    delete app.m;
+    app.m = 0;
+}
 int main(int argc, char **argv) {
     app_data app;
     gtk_init(&argc, &argv);
@@ -113,6 +135,7 @@ int main(int argc, char **argv) {
         return 0;
     }
     build_gui(app);
+    build_matcher(app, argv[1]);
     gtk_main();
     return 0;
 }
