@@ -23,6 +23,7 @@
 #include "IndexMatches.hh"
 #include "MatchResults.hh"
 #include "ErrorValues.hh"
+#include "ColumbusHelpers.hh"
 #include <vector>
 #include <map>
 #include <set>
@@ -121,10 +122,13 @@ static void gatherMatchedDocuments(MatcherPrivate *p,  map<Word, MatchErrorMap> 
 }
 
 Matcher::Matcher(Corpus *corp) {
+    double buildStart, buildEnd;
     p = new MatcherPrivate();
     p->c = corp;
+    buildStart = hiresTimestamp();
     buildIndexes();
-    debugMessage("Created matcher with %ld documents.\n", corp->size());
+    buildEnd = hiresTimestamp();
+    debugMessage("Created matcher with %ld documents. Index creation took %.2f seconds.\n", corp->size(), buildEnd - buildStart);
 }
 
 Matcher::~Matcher() {
@@ -185,6 +189,9 @@ void Matcher::addToReverseIndex(const Word &word, const Word &indexName, const D
 void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError, MatchResults &matchedDocuments) {
     map<const Document*, double> docs;
     map<Word, MatchErrorMap> bestIndexMatches;
+    double start, indexMatchEnd, gatherEnd, finish;
+
+    start = hiresTimestamp();
     for(size_t i=0; i<query.size(); i++) {
         const Word &w = query[i];
         int maxError;
@@ -200,12 +207,17 @@ void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError,
                     w.asUtf8(), it->first.asUtf8(), maxError, m.size());
         }
     }
+    indexMatchEnd = hiresTimestamp();
     // Now we know all matched words in all indexes. Gather up the corresponding documents.
     gatherMatchedDocuments(p, bestIndexMatches, docs);
-    debugMessage("Found a total of %ld documents.\n", matchedDocuments.size());
+    gatherEnd = hiresTimestamp();
     for(map<const Document*, double>::iterator it=docs.begin(); it != docs.end(); it++) {
         matchedDocuments.addResult(it->first->getID(), it->second);
     }
+    debugMessage("Found a total of %ld documents.\n", matchedDocuments.size());
+    finish = hiresTimestamp();
+    debugMessage("Query finished. Index lookups took %.2fs, result gathering %.2fs, result building %.2fs.\n",
+            indexMatchEnd - start, gatherEnd - indexMatchEnd, finish - gatherEnd);
 }
 
 int Matcher::getDynamicError(const Word &w) {

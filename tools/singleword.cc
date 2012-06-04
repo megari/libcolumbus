@@ -86,7 +86,7 @@ static void doSearch(GtkWidget *widget, gpointer data) {
                 -1);
     }
     char buf[1024];
-    sprintf(buf, "%s%f", queryTime, queryEnd - queryStart);
+    sprintf(buf, "%s%.2f", queryTime, queryEnd - queryStart);
     gtk_label_set_text(GTK_LABEL(app->queryTimeLabel), buf);
     sprintf(buf, "%s%ld", resultCount, matches.size());
     gtk_label_set_text(GTK_LABEL(app->resultCountLabel), buf);

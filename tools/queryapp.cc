@@ -79,7 +79,7 @@ static void doSearch(GtkWidget *widget, gpointer data) {
                 -1);
     }
     char buf[1024];
-    sprintf(buf, "%s%f", queryTime, queryEnd - queryStart);
+    sprintf(buf, "%s%.2f", queryTime, queryEnd - queryStart);
     gtk_label_set_text(GTK_LABEL(app->queryTimeLabel), buf);
     sprintf(buf, "%s%ld", resultCount, matches.size());
     gtk_label_set_text(GTK_LABEL(app->resultCountLabel), buf);
@@ -142,6 +142,7 @@ void build_gui(app_data &app) {
 void build_matcher(app_data &app, const char *dataFile) {
     Corpus *c = new Corpus();
     Word field("name");
+    double dataReadStart, dataReadEnd;
 
     ifstream ifile(dataFile);
     if(ifile.fail()) {
@@ -151,6 +152,7 @@ void build_matcher(app_data &app, const char *dataFile) {
     string line;
 
     // Build Corpus.
+    dataReadStart = hiresTimestamp();
     while(getline(ifile, line)) {
         WordList l;
         splitToWords(line.c_str(), l);
@@ -160,6 +162,8 @@ void build_matcher(app_data &app, const char *dataFile) {
         d.addText(field, l);
         c->addDocument(d);
     }
+    dataReadEnd = hiresTimestamp();
+    printf("Read in %ld documents in %.2f seconds.\n", c->size(), dataReadEnd - dataReadStart);
     app.m = new Matcher(c);
 }
 
@@ -169,6 +173,7 @@ void delete_matcher(app_data &app) {
 }
 int main(int argc, char **argv) {
     app_data app;
+    double buildStart, buildEnd;
     gtk_init(&argc, &argv);
 
     if(argc < 2) {
@@ -176,7 +181,10 @@ int main(int argc, char **argv) {
         return 0;
     }
     build_gui(app);
+    buildStart = hiresTimestamp();
     build_matcher(app, argv[1]);
+    buildEnd = hiresTimestamp();
+    printf("Building the matcher took %.2f seconds.\n", buildEnd - buildStart);
     gtk_main();
     return 0;
 }
