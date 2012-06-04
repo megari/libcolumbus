@@ -75,7 +75,7 @@ static void doSearch(GtkWidget *widget, gpointer data) {
         gtk_list_store_append(app->matchStore, &iter);
         gtk_list_store_set(app->matchStore, &iter,
                 0, title.asUtf8(),
-                1, (int)matches.getRelevancy(i),
+                1, matches.getRelevancy(i),
                 -1);
     }
     char buf[1024];
@@ -110,7 +110,7 @@ void build_gui(app_data &app) {
     g_signal_connect(searchButton, "clicked", G_CALLBACK(doSearch), &app);
     g_signal_connect(app.entry, "activate", G_CALLBACK(doSearch), &app); // GTK+ docs say not to connect to "activate" but it seems to work.
 
-    app.matchStore = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
+    app.matchStore = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_DOUBLE);
     app.matchView = gtk_tree_view_new_with_model(GTK_TREE_MODEL(app.matchStore));
     textColumn = gtk_tree_view_column_new_with_attributes("Match",
             gtk_cell_renderer_text_new(), "text", 0, NULL);
