@@ -21,5 +21,5 @@
  * guaranteed to work.
  */
 
-#include <ColumbusCore.hh">
+#include "ColumbusCore.hh"
 #include <Matcher.hh>

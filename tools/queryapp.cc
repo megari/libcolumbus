@@ -1,0 +1,118 @@
+/*
+ * Copyright (C) 2012 Canonical, Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * A simple GUI application to search the database.
+ */
+
+#include "columbus.h" // This app should only need public API from Columbus.
+#include <gtk/gtk.h>
+
+using namespace std;
+
+const char *queryTime = "Query time: ";
+const char *resultCount = "Total results: ";
+const int DEFAULT_ERROR = 200;
+
+struct app_data {
+    Matcher *m;
+    GtkWidget *window;
+    GtkWidget *entry;
+    GtkListStore *matchStore;
+    GtkWidget *matchView;
+    GtkWidget *queryTimeLabel;
+    GtkWidget *resultCountLabel;
+};
+
+static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) {
+    gtk_main_quit();
+    return TRUE;
+}
+
+static void destroy(GtkWidget *widget, gpointer data) {
+    gtk_main_quit ();
+}
+
+static void doSearch(GtkWidget *widget, gpointer data) {
+    app_data *app = (app_data*) data;
+    printf("Searching: %s\n", gtk_entry_get_text(GTK_ENTRY(app->entry)));
+}
+
+void build_gui(app_data &app) {
+    GtkWidget *vbox;
+    GtkWidget *hbox;
+    GtkWidget *scroller;
+    GtkWidget *quitButton;
+    GtkWidget *searchButton;
+    GtkTreeViewColumn *textColumn;
+    GtkTreeViewColumn *errorColumn;
+    app.window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    g_signal_connect (app.window, "delete-event",
+            G_CALLBACK (delete_event), NULL);
+    g_signal_connect (app.window, "destroy",
+            G_CALLBACK (destroy), NULL);
+    gtk_window_set_default_size(GTK_WINDOW(app.window), 600, 700);
+    gtk_window_set_title(GTK_WINDOW(app.window), "Columbus query tool");
+    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_container_add(GTK_CONTAINER(app.window), vbox);
+    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    app.entry = gtk_entry_new();
+    gtk_widget_set_tooltip_text(app.entry, "Word to search, must not contain whitespace.");
+    searchButton = gtk_button_new_with_label("Search");
+    g_signal_connect(searchButton, "clicked", G_CALLBACK(doSearch), &app);
+    g_signal_connect(app.entry, "activate", G_CALLBACK(doSearch), &app); // GTK+ docs say not to connect to "activate" but it seems to work.
+
+    app.matchStore = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
+    app.matchView = gtk_tree_view_new_with_model(GTK_TREE_MODEL(app.matchStore));
+    textColumn = gtk_tree_view_column_new_with_attributes("Match",
+            gtk_cell_renderer_text_new(), "text", 0, NULL);
+    gtk_tree_view_append_column(GTK_TREE_VIEW(app.matchView), textColumn);
+    errorColumn = gtk_tree_view_column_new_with_attributes("Error",
+            gtk_cell_renderer_text_new(), "text", 1, NULL);
+    gtk_tree_view_append_column(GTK_TREE_VIEW(app.matchView), errorColumn);
+    scroller = gtk_scrolled_window_new(NULL, NULL);
+    gtk_container_add(GTK_CONTAINER(scroller), app.matchView);
+
+    app.queryTimeLabel = gtk_label_new(queryTime);
+    gtk_label_set_justify(GTK_LABEL(app.queryTimeLabel), GTK_JUSTIFY_LEFT);
+    app.resultCountLabel = gtk_label_new(resultCount);
+    gtk_label_set_justify(GTK_LABEL(app.resultCountLabel), GTK_JUSTIFY_LEFT);
+
+    quitButton = gtk_button_new_with_label("Quit");
+    g_signal_connect(quitButton, "clicked", G_CALLBACK(destroy), NULL);
+
+    gtk_box_pack_start(GTK_BOX(hbox), app.entry, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), searchButton, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), scroller, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), app.queryTimeLabel, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), app.resultCountLabel, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), quitButton, FALSE, TRUE, 0);
+    gtk_widget_show_all(app.window);
+}
+
+int main(int argc, char **argv) {
+    app_data app;
+    gtk_init(&argc, &argv);
+
+    if(argc < 2) {
+        printf("%s input_data_file.txt\n", argv[0]);
+        return 0;
+    }
+    build_gui(app);
+    gtk_main();
+    return 0;
+}
