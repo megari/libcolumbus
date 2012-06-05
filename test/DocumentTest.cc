@@ -90,9 +90,11 @@ void testCounts() {
     Word w1("abc");
     Word w2("def");
     Word w3("geh");
+    Word w4("ijk");
     Word f1("field1");
     Word f2("field2");
-    WordList l1, l2;
+    Word f3("field3");
+    WordList l1, l2, l3;
     Document d("testdoc");
 
     l1.addWord(w1);
@@ -127,6 +129,14 @@ void testCounts() {
     assert(d.totalWordCount(w1) == 1);
     assert(d.totalWordCount(w2) == 2);
     assert(d.totalWordCount(w3) == 1);
+
+    // Finally, test that a word appearing multiple
+    // times in a list works properly.
+    l3.addWord(w4);
+    l3.addWord(w4);
+    d.addText(f3, l3);
+    assert(d.wordCount(w4, f3) == 2);
+    assert(d.totalWordCount(w4) == 2);
 }
 
 int main(int argc, char **argv) {
