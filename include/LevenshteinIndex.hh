@@ -21,6 +21,7 @@
 #include "ColumbusCore.hh"
 #include "IndexMatches.hh"
 
+struct LevenshteinIndexPrivate;
 struct TrieNode;
 class MatchRow;
 class MemoryCleaner;
@@ -29,7 +30,7 @@ class ErrorValues;
 
 class LevenshteinIndex {
 private:
-    TrieNode *root;
+    LevenshteinIndexPrivate *p;
 
     void searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e, Letter letter, Letter previousLetter, MatchRow *previous_row, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const;
 
@@ -47,6 +48,7 @@ public:
     bool hasWord(const Word &word) const;
 
     void findWords(const Word &query, const ErrorValues &e, const int max_error, IndexMatches &matches) const;
+    size_t wordCount(const Word &query) const;
 };
 
 #endif

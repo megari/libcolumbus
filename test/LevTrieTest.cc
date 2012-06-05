@@ -110,11 +110,38 @@ void branchTest() {
     assert(ind.hasWord(word3));
 }
 
+void countTest() {
+    LevenshteinIndex ind;
+    Word w1("abc");
+    Word w2("def");
+    Word w3("abce");
+
+    assert(ind.wordCount(w1) == 0);
+    assert(ind.wordCount(w2) == 0);
+    assert(ind.wordCount(w3) == 0);
+
+    ind.insertWord(w1);
+    assert(ind.wordCount(w1) == 1);
+    assert(ind.wordCount(w2) == 0);
+    assert(ind.wordCount(w3) == 0);
+
+    ind.insertWord(w2);
+    assert(ind.wordCount(w1) == 1);
+    assert(ind.wordCount(w2) == 1);
+    assert(ind.wordCount(w3) == 0);
+
+    ind.insertWord(w1);
+    assert(ind.wordCount(w1) == 2);
+    assert(ind.wordCount(w2) == 1);
+    assert(ind.wordCount(w3) == 0);
+}
+
 int main(int argc, char **argv) {
     basicTest();
     shortTest();
     prefixTest();
     suffixTest();
     branchTest();
+    countTest();
     return 0;
 }
