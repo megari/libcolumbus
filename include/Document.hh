@@ -39,6 +39,8 @@ public:
     size_t fieldCount() const;
     const char* getID() const;
     void getFieldNames(WordList &list) const;
+    size_t wordCount(const Word &w, const Word field) const;
+    size_t totalWordCount(const Word &w) const;
 
     // Needs iterators to browse through text names.
 };

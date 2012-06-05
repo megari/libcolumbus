@@ -86,9 +86,53 @@ void testIndexNames() {
 
 }
 
+void testCounts() {
+    Word w1("abc");
+    Word w2("def");
+    Word w3("geh");
+    Word f1("field1");
+    Word f2("field2");
+    WordList l1, l2;
+    Document d("testdoc");
+
+    l1.addWord(w1);
+    l1.addWord(w2);
+    l2.addWord(w2);
+    l2.addWord(w3);
+
+    assert(d.wordCount(w1, f1) == 0);
+    assert(d.wordCount(w1, f2) == 0);
+    assert(d.totalWordCount(w1) == 0);
+    assert(d.totalWordCount(w2) == 0);
+    assert(d.totalWordCount(w3) == 0);
+
+    d.addText(f1, l1);
+    assert(d.wordCount(w1, f1) == 1);
+    assert(d.wordCount(w1, f2) == 0);
+    assert(d.wordCount(w2, f1) == 1);
+    assert(d.wordCount(w2, f2) == 0);
+    assert(d.wordCount(w3, f1) == 0);
+    assert(d.wordCount(w3, f2) == 0);
+    assert(d.totalWordCount(w1) == 1);
+    assert(d.totalWordCount(w2) == 1);
+    assert(d.totalWordCount(w3) == 0);
+
+    d.addText(f2, l2);
+    assert(d.wordCount(w1, f1) == 1);
+    assert(d.wordCount(w1, f2) == 0);
+    assert(d.wordCount(w2, f1) == 1);
+    assert(d.wordCount(w2, f2) == 1);
+    assert(d.wordCount(w3, f1) == 0);
+    assert(d.wordCount(w3, f2) == 1);
+    assert(d.totalWordCount(w1) == 1);
+    assert(d.totalWordCount(w2) == 2);
+    assert(d.totalWordCount(w3) == 1);
+}
+
 int main(int argc, char **argv) {
     testDoc();
     testIndexNames();
+    testCounts();
     return 0;
 }
 

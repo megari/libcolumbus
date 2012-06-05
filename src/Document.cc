@@ -29,6 +29,7 @@ struct DocumentPrivate {
 };
 
 typedef map<Word, WordList>::iterator TextIter;
+typedef map<Word, WordList>::const_iterator TextIterC;
 
 Document::Document(const char *id_) {
     p = new DocumentPrivate();
@@ -77,4 +78,24 @@ const Document& Document::operator=(const Document&d) {
     p->id = d.p->id;
     p->texts = d.p->texts;
     return *this;
+}
+
+size_t Document::wordCount(const Word &w, const Word field) const {
+    TextIterC it = p->texts.find(field);
+    size_t count = 0;
+    if(it == p->texts.end())
+        return count;
+    for(size_t i = 0; i < it->second.size(); i++) {
+        if(it->second[i] == w)
+            count++;
+    }
+    return count;
+}
+
+size_t Document::totalWordCount(const Word &w) const {
+    size_t count = 0;
+    for(TextIterC it = p->texts.begin(); it != p->texts.end(); it++) {
+        count += wordCount(w, it->first);
+    }
+    return count;
 }
