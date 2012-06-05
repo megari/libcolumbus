@@ -33,6 +33,7 @@ private:
     LevenshteinIndexPrivate *p;
 
     void searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e, Letter letter, Letter previousLetter, MatchRow *previous_row, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const;
+    void trieInsert(TrieNode *node, const Word &word);
 
     // Disable copy and move.
     LevenshteinIndex(const LevenshteinIndex &other);
@@ -49,6 +50,7 @@ public:
 
     void findWords(const Word &query, const ErrorValues &e, const int max_error, IndexMatches &matches) const;
     size_t wordCount(const Word &query) const;
+    size_t maxCount() const;
 };
 
 #endif

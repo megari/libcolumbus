@@ -37,6 +37,7 @@ typedef map<Word, size_t> WordCount;
 struct LevenshteinIndexPrivate {
     TrieNode *root;
     WordCount wordCounts; // How many times the word has been added to this index.
+    size_t maxCount; // How many times the most common word has been added.
 };
 
 /**
@@ -76,6 +77,7 @@ LevenshteinIndex::LevenshteinIndex() {
     p->root = new TrieNode();
     p->root->parent = 0;
     p->root->letter = 0;
+    p->maxCount = 0;
 }
 
 LevenshteinIndex::~LevenshteinIndex() {
@@ -91,15 +93,24 @@ int LevenshteinIndex::getDefaultError() {
 }
 
 void LevenshteinIndex::insertWord(const Word &word) {
-    TrieNode *node = p->root;
-    size_t i = 0;
     if(word.length() == 0)
         return;
     WordCount::const_iterator it = p->wordCounts.find(word);
+    size_t newCount;
     if(it != p->wordCounts.end()) {
-        p->wordCounts[word]++;
-        return;
+        newCount = p->wordCounts[word] + 1;
+    } else {
+        newCount = 1;
     }
+    trieInsert(p->root, word);
+    p->wordCounts[word] = newCount;
+    if(p->maxCount < newCount)
+        p->maxCount = newCount;
+    return;
+}
+
+void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word) {
+    size_t i = 0;
     while(word.length() > i) {
         Letter l = word[i];
         mapiter child = node->children.find(l);
@@ -118,8 +129,7 @@ void LevenshteinIndex::insertWord(const Word &word) {
         i++;
     }
     node->current_word = word;
-    p->wordCounts[word] = 1;
-    return;
+
 }
 
 bool LevenshteinIndex::hasWord(const Word &word) const {
@@ -190,4 +200,8 @@ size_t LevenshteinIndex::wordCount(const Word &query) const {
     if(i == p->wordCounts.end())
         return 0;
     return i->second;
+}
+
+size_t LevenshteinIndex::maxCount() const {
+    return p->maxCount;
 }

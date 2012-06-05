@@ -119,21 +119,25 @@ void countTest() {
     assert(ind.wordCount(w1) == 0);
     assert(ind.wordCount(w2) == 0);
     assert(ind.wordCount(w3) == 0);
+    assert(ind.maxCount() == 0);
 
     ind.insertWord(w1);
     assert(ind.wordCount(w1) == 1);
     assert(ind.wordCount(w2) == 0);
     assert(ind.wordCount(w3) == 0);
+    assert(ind.maxCount() == 1);
 
     ind.insertWord(w2);
     assert(ind.wordCount(w1) == 1);
     assert(ind.wordCount(w2) == 1);
     assert(ind.wordCount(w3) == 0);
+    assert(ind.maxCount() == 1);
 
     ind.insertWord(w1);
     assert(ind.wordCount(w1) == 2);
     assert(ind.wordCount(w2) == 1);
     assert(ind.wordCount(w3) == 0);
+    assert(ind.maxCount() == 2);
 }
 
 int main(int argc, char **argv) {
