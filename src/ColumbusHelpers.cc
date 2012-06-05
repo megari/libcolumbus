@@ -28,6 +28,11 @@
 #include <stdexcept>
 #include <cstring>
 #include <sys/time.h>
+#include <wctype.h>
+
+static Letter lowerLetter(Letter l) {
+    return Letter(towlower(l)); // Man page says towlower is not guaranteed to work on all Unicode points.
+}
 
 Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize) {
     iconv_t ic = iconv_open(INTERNAL_ENCODING, "UTF-8");
@@ -71,6 +76,10 @@ Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize) {
     }
     Letter* text = reinterpret_cast<Letter*>(txt);
     text[resultStringSize] = 0; // Null terminated, just in case.
+    // Now convert all letters to lower case, because we don't care about case difference when matching.
+    for(size_t i=0; i<resultStringSize; i++) {
+        text[i] = lowerLetter(text[i]);
+    }
     return text;
 }
 

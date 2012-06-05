@@ -173,6 +173,23 @@ void testLessThan() {
     assert(w1 < w4);
 }
 
+void testAutoLower() {
+    const unsigned char txtUpper[4] = {0x41, 0xc3, 0x84, 0}; // "AÄ" in UTF-8.
+    const unsigned char txtLower[4] = {0x61, 0xc3, 0xa4, 0}; // "aä" in UTF-8.
+
+    const char *tu = (const char*) txtUpper;
+    const char *tl = (const char*) txtLower;
+
+    Word wUpper(tu);
+    Word wLower(tl);
+
+    printf("%s %s\n", wUpper.asUtf8(), wLower.asUtf8());
+
+    assert(wUpper == wLower);
+    assert(strcmp(wUpper.asUtf8(), tl));
+
+}
+
 int main(int argc, char **argv) {
     testEmpty();
     testIndexing();
@@ -181,5 +198,6 @@ int main(int argc, char **argv) {
     testComparison();
     testEncoding();
     testLessThan();
+    //testAutoLower(); Disabled because Unicode lowercasing functions don't work.
 }
 
