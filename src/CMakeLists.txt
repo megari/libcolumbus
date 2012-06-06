@@ -15,7 +15,7 @@ MatchResults.cc
 if(ICONV_LIBRARIES)
   target_link_libraries(columbus ${ICONV_LIBRARIES})
 endif()
-target_link_libraries(columbus ${icu1} ${icu2} ${icu3})
+target_link_libraries(columbus ${icu1} ${icu2})
 
 set_target_properties(columbus PROPERTIES VERSION ${SO_VERSION} SOVERSION ${ABI_VERSION})
 
