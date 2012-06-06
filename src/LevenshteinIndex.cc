@@ -37,7 +37,6 @@ typedef ChildList::const_iterator ChildListConstIter;
 struct TrieNode {
     TrieNode *parent;
     ChildList children;
-    Letter letter;
     Word current_word; // The word that ends in this node.
 };
 
@@ -84,7 +83,6 @@ LevenshteinIndex::LevenshteinIndex() {
     p = new LevenshteinIndexPrivate();
     p->root = new TrieNode();
     p->root->parent = 0;
-    p->root->letter = 0;
     p->maxCount = 0;
 }
 
@@ -129,7 +127,6 @@ void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word) {
         if(child == node->children.end()) {
             pair<Letter, TrieNode*> n;
             c = new TrieNode();
-            c->letter = l;
             c->parent = node;
             n.first = l;
             n.second = c;
