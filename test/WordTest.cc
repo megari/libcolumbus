@@ -145,18 +145,18 @@ void testEncoding() {
     assert(w1[2] == 'c');
 
     w1.toUtf8(returned, 4);
-    assert(strcmp(text, returned) == 0);
-    assert(strcmp(text, w1.asUtf8()) == 0);
+    assert(strcmp((char*)txt, returned) == 0); // *text should be used, but due to Clang bug it will not work and we have to cast *txt.
+    assert(strcmp((char*)txt, w1.asUtf8()) == 0);
 
     Word wAss("abc");
     assert(strcmp("abc", wAss.asUtf8()) == 0); // Make it allocate its internal things to check that they are released appropriately
     wAss = w1;
-    assert(strcmp(text, w1.asUtf8()) == 0);
-    assert(strcmp(text, wAss.asUtf8()) == 0);
+    assert(strcmp((char*)txt, w1.asUtf8()) == 0);
+    assert(strcmp((char*)txt, wAss.asUtf8()) == 0);
 
     Word wInit(w1);
-    assert(strcmp(text, w1.asUtf8()) == 0);
-    assert(strcmp(text, wInit.asUtf8()) == 0);
+    assert(strcmp((char*)txt, w1.asUtf8()) == 0);
+    assert(strcmp((char*)txt, wInit.asUtf8()) == 0);
 }
 
 void testLessThan() {
