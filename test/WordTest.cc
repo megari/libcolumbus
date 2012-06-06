@@ -183,10 +183,9 @@ void testAutoLower() {
     Word wUpper(tu);
     Word wLower(tl);
 
-    printf("%s %s\n", wUpper.asUtf8(), wLower.asUtf8());
-
     assert(wUpper == wLower);
-    assert(strcmp(wUpper.asUtf8(), tl));
+    assert(strcmp(wLower.asUtf8(), tl) == 0);
+    assert(strcmp(wUpper.asUtf8(), tl) == 0);
 
 }
 
@@ -198,6 +197,6 @@ int main(int argc, char **argv) {
     testComparison();
     testEncoding();
     testLessThan();
-    //testAutoLower(); Disabled because Unicode lowercasing functions don't work.
+    testAutoLower();
 }
 

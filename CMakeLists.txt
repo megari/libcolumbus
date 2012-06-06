@@ -53,6 +53,9 @@ endif()
 # Remove this once we go full C++1x and the compiler will shut up.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-variadic-macros")
 
+find_library(icu1 icui18n)
+find_library(icu2 icuuc)
+find_library(icu3 icudata)
 
 add_subdirectory(include)
 add_subdirectory(src)

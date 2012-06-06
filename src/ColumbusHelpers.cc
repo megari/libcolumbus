@@ -28,10 +28,10 @@
 #include <stdexcept>
 #include <cstring>
 #include <sys/time.h>
-#include <wctype.h>
+#include <unicode/uchar.h>
 
 static Letter lowerLetter(Letter l) {
-    return Letter(towlower(l)); // Man page says towlower is not guaranteed to work on all Unicode points.
+    return Letter(u_tolower(l)); // Have to use ICU because towlower libc function does not work.
 }
 
 Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize) {
@@ -69,7 +69,7 @@ Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize) {
     resultStringSize = bytesWritten/sizeof(Letter);
     if(bytesWritten < inputLen) {
         // Shrink allocated memory size to exactly the produced string.
-        char *newtxt = new char[(bytesWritten + 1)];
+        char *newtxt = new char[bytesWritten + sizeof(Letter)];
         memcpy(newtxt, txt, bytesWritten*sizeof(Letter));
         delete []txt;
         txt = newtxt;
