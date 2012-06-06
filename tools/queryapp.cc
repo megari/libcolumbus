@@ -185,7 +185,7 @@ int main(int argc, char **argv) {
     build_matcher(app, argv[1]);
     buildEnd = hiresTimestamp();
     printf("Building the matcher took %.2f seconds.\n", buildEnd - buildStart);
-    gtk_main();
+    //gtk_main();
     delete_matcher(app);
     return 0;
 }
