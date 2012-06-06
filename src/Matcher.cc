@@ -128,7 +128,12 @@ Matcher::Matcher(Corpus *corp) {
     buildStart = hiresTimestamp();
     buildIndexes();
     buildEnd = hiresTimestamp();
-    debugMessage("Created matcher with %ld documents. Index creation took %.2f seconds.\n", corp->size(), buildEnd - buildStart);
+    debugMessage("Created matcher with %ld documents and %ld indexes. Index creation took %.2f seconds.\n",
+            corp->size(), p->indexes.size(), buildEnd - buildStart);
+    for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
+        debugMessage("Index \"%s\" has %ld words and %ld nodes.\n",
+                it->first.asUtf8(), it->second->numWords(), it->second->numNodes());
+    }
 }
 
 Matcher::~Matcher() {

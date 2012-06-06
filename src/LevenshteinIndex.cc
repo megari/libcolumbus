@@ -38,6 +38,8 @@ struct LevenshteinIndexPrivate {
     TrieNode *root;
     WordCount wordCounts; // How many times the word has been added to this index.
     size_t maxCount; // How many times the most common word has been added.
+    size_t numNodes;
+    size_t numWords; // How many words are in this index in total.
 };
 
 /**
@@ -121,6 +123,7 @@ void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word) {
             c->letter = l;
             c->parent = node;
             node->children[l] = c;
+            p->numNodes++;
         } else {
             c = child->second;
         }
@@ -128,7 +131,10 @@ void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word) {
         node = c;
         i++;
     }
-    node->current_word = word;
+    if(node->current_word.length() == 0) {
+        node->current_word = word;
+        p->numWords++;
+    }
 
 }
 
@@ -204,4 +210,12 @@ size_t LevenshteinIndex::wordCount(const Word &query) const {
 
 size_t LevenshteinIndex::maxCount() const {
     return p->maxCount;
+}
+
+size_t LevenshteinIndex::numNodes() const {
+    return p->numNodes;
+}
+
+size_t LevenshteinIndex::numWords() const {
+    return p->numWords;
 }
