@@ -50,3 +50,6 @@ add_test(matchresults matchresults)
 add_executable(helpers HelpersTest.cc)
 target_link_libraries(helpers columbus)
 add_test(helpers helpers)
+
+add_executable(create_performance CreatePerformanceTest.cc)
+target_link_libraries(create_performance columbus)
