@@ -25,8 +25,8 @@
 
 using namespace std;
 
-typedef map<Letter, TrieNode*> ChildList;
-typedef ChildList::iterator ChildeListIter;
+typedef vector<pair<Letter, TrieNode*> > ChildList;
+typedef ChildList::iterator ChildListIter;
 typedef ChildList::const_iterator ChildListConstIter;
 
 
@@ -75,7 +75,7 @@ public:
 
 void gather_all_nodes(TrieNode *root, vector<TrieNode*> &nodes) {
     nodes.push_back(root);
-    for(ChildeListIter c=root->children.begin(); c != root->children.end(); c++) {
+    for(ChildListIter c=root->children.begin(); c != root->children.end(); c++) {
         gather_all_nodes(c->second, nodes);
     }
 }
@@ -121,14 +121,19 @@ void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word) {
     size_t i = 0;
     while(word.length() > i) {
         Letter l = word[i];
-        ChildeListIter child = node->children.find(l);
+        ChildListIter child = node->children.begin();
+        while(child != node->children.end() && child->first != l)//= node->children.find(l);
+            child++;
         TrieNode *c;
 
         if(child == node->children.end()) {
+            pair<Letter, TrieNode*> n;
             c = new TrieNode();
             c->letter = l;
             c->parent = node;
-            node->children[l] = c;
+            n.first = l;
+            n.second = c;
+            node->children.push_back(n);
             p->numNodes++;
         } else {
             c = child->second;
@@ -149,7 +154,9 @@ bool LevenshteinIndex::hasWord(const Word &word) const {
     size_t i = 0;
     while(word.length() > i) {
         Letter l = word[i];
-        ChildListConstIter child = node->children.find(l);
+        ChildListConstIter child = node->children.begin();
+        while(child != node->children.end() && child->first != l)//= node->children.find(l);
+            child++;
 
         if(child == node->children.end())
             return false;
@@ -171,7 +178,7 @@ void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const 
     assert(first_row->getValue(0) == 0);
     if(query.length() > 0)
         assert(first_row->getValue(1) == e.getInsertionError());
-    for(ChildeListIter i = p->root->children.begin(); i != p->root->children.end(); i++) {
+    for(ChildListIter i = p->root->children.begin(); i != p->root->children.end(); i++) {
         searchRecursive(query, i->second, e, i->first, 0, first_row, matches, max_error, cleaner);
     }
     matches.sort();
@@ -201,7 +208,7 @@ void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const 
         matches.addMatch(query, node->current_word, currentRow->totalError());
     }
     if(currentRow->minError() <= max_error) {
-        for(ChildeListIter i = node->children.begin(); i != node->children.end(); i++) {
+        for(ChildListIter i = node->children.begin(); i != node->children.end(); i++) {
             searchRecursive(query, i->second, e, i->first, letter, currentRow, matches, max_error, cleaner);
         }
     }
