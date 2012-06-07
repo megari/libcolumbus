@@ -237,6 +237,12 @@ void Matcher::match(const WordList &query, MatchResults &matchedDocuments) {
     matchWithRelevancy(query, true, matchedDocuments);
 }
 
+void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments) {
+    WordList l;
+    splitToWords(queryAsUtf8, l);
+    match(l, matchedDocuments);
+}
+
 ErrorValues& Matcher::getErrorValues() {
     return p->e;
 }

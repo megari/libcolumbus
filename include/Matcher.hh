@@ -40,6 +40,7 @@ public:
     ~Matcher();
 
     void match(const WordList &query, MatchResults &matchedDocuments);
+    void match(const char *queryAsUtf8, MatchResults &matchedDocuments);
     ErrorValues& getErrorValues();
 };
 

@@ -35,6 +35,7 @@ public:
 
     const Document& operator=(const Document &d);
     void addText(const Word &field, const WordList &words);
+    void addText(const Word &field, const char *textAsUtf8);
     const WordList& getText(const Word &field) const;
     size_t fieldCount() const;
     const char* getID() const;

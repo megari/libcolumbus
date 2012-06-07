@@ -17,6 +17,7 @@
 #include "Document.hh"
 #include "Word.hh"
 #include "WordList.hh"
+#include "ColumbusHelpers.hh"
 #include <map>
 #include <stdexcept>
 #include <string>
@@ -48,6 +49,12 @@ Document::~Document() {
 
 void Document::addText(const Word &field, const WordList &words) {
     p->texts[field] = words;
+}
+
+void Document::addText(const Word &field, const char *textAsUtf8) {
+    WordList l;
+    splitToWords(textAsUtf8, l);
+    addText(field, l);
 }
 
 const WordList& Document::getText(const Word &field) const {

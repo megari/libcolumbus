@@ -43,12 +43,10 @@ Matcher* build_matcher(const char *dataFile, int maxLines) {
     // Build Corpus.
     dataReadStart = hiresTimestamp();
     while(getline(ifile, line)) {
-        WordList l;
-        splitToWords(line.c_str(), l);
-        if(l.size() == 0)
+        if(line.size() == 0)
             continue;
         Document d(line.c_str());
-        d.addText(field, l);
+        d.addText(field, line.c_str());
         c->addDocument(d);
         i++;
         if(i >= maxLines)

@@ -50,16 +50,12 @@ static void destroy(GtkWidget *widget, gpointer data) {
 
 static void doSearch(GtkWidget *widget, gpointer data) {
     app_data *app = (app_data*) data;
-    WordList query;
     MatchResults matches;
     GtkTreeIter iter;
     double queryStart, queryEnd;
     try {
-        splitToWords(gtk_entry_get_text(GTK_ENTRY(app->entry)), query);
-        if(query.size() == 0)
-            return;
         queryStart = hiresTimestamp();
-        app->m->match(query, matches);
+        app->m->match(gtk_entry_get_text(GTK_ENTRY(app->entry)), matches);
         queryEnd = hiresTimestamp();
     } catch(exception &e) {
         printf("Matching failed: %s\n", e.what());
@@ -154,12 +150,8 @@ void build_matcher(app_data &app, const char *dataFile) {
     // Build Corpus.
     dataReadStart = hiresTimestamp();
     while(getline(ifile, line)) {
-        WordList l;
-        splitToWords(line.c_str(), l);
-        if(l.size() == 0)
-            continue;
         Document d(line.c_str());
-        d.addText(field, l);
+        d.addText(field, line.c_str());
         c->addDocument(d);
     }
     dataReadEnd = hiresTimestamp();
