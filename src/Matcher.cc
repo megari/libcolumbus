@@ -27,6 +27,7 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <cassert>
 
 using namespace std;
 
@@ -34,6 +35,7 @@ struct MatcherPrivate {
     Corpus *c;
     map<Word, LevenshteinIndex*> indexes;
     map<Word, map<Word, set<const Document*> > > reverseIndex; // Index name, word, documents.
+    map<Word, size_t> totalWordCounts;
     ErrorValues e;
 };
 
@@ -79,8 +81,21 @@ static void addMatches(map<Word, MatchErrorMap> &bestIndexMatches, const Word &q
     }
 }
 
-static double calculateRelevancy(const Word &w, int error) {
-    return 100.0/(100.0+error);
+/*
+ * A simple relevancy calculator for matched word. Better ranking functions exist and should be examined:
+ * http://en.wikipedia.org/wiki/TF_IDF
+ * http://en.wikipedia.org/wiki/Okapi_BM25
+ */
+static double calculateRelevancy(MatcherPrivate *p, const Word &w, const Word &index, int error) {
+    const LevenshteinIndex * const ind = p->indexes[index];
+    double errorMultiplier = 100.0/(100.0+error); // Should be adjusted for maxError or word length.
+//    size_t totalCount = p->;
+    size_t indexCount = ind->wordCount(w);
+    size_t indexMaxCount = ind->maxCount();
+    assert(indexCount > 0);
+    assert(indexMaxCount > 0);
+    double frequencyMultiplier = 1.0 - double(indexCount)/(indexMaxCount+1);
+    return errorMultiplier*frequencyMultiplier;
 }
 
 static void findDocuments(MatcherPrivate *p, const Word &word, const Word &fieldName, std::vector<const Document*> &result) {
@@ -110,7 +125,7 @@ static void gatherMatchedDocuments(MatcherPrivate *p,  map<Word, MatchErrorMap> 
                 const Document *curDoc = tmp[i];
                 // At this point we know the matched word, and which index and field
                 // it matched in. Now we can just increment the relevancy of said document.
-                double relevancy = calculateRelevancy(mIt->first, mIt->second);
+                double relevancy = calculateRelevancy(p, mIt->first, it->first, mIt->second);
                 map<const Document*, double>::iterator doc = matchedDocuments.find(curDoc);
                 if(doc == matchedDocuments.end())
                     matchedDocuments[curDoc] = relevancy;
@@ -156,6 +171,12 @@ void Matcher::buildIndexes() {
                 const Word &word = text[wi];
                 addToIndex(word, name);
                 addToReverseIndex(word, name, &d);
+                map<Word, size_t>::iterator it = p->totalWordCounts.find(word);
+                if(it == p->totalWordCounts.end()) {
+                    p->totalWordCounts[word] = 1;
+                } else {
+                    it->second++;
+                }
             }
         }
     }
