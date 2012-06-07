@@ -24,6 +24,7 @@ class Document;
 class WordList;
 class MatchResults;
 class ErrorValues;
+class IndexWeights;
 
 class Matcher {
 private:
@@ -41,6 +42,7 @@ public:
     void match(const WordList &query, MatchResults &matchedDocuments);
     void match(const char *queryAsUtf8, MatchResults &matchedDocuments);
     ErrorValues& getErrorValues();
+    IndexWeights& getIndexWeights();
 };
 
 #endif /* MATCHER_HH_ */

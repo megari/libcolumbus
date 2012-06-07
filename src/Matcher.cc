@@ -24,6 +24,7 @@
 #include "MatchResults.hh"
 #include "ErrorValues.hh"
 #include "ColumbusHelpers.hh"
+#include "IndexWeights.hh"
 #include <vector>
 #include <map>
 #include <set>
@@ -37,6 +38,7 @@ struct MatcherPrivate {
     map<Word, map<Word, set<const Document*> > > reverseIndex; // Index name, word, documents.
     map<Word, size_t> totalWordCounts;
     ErrorValues e;
+    IndexWeights weights;
 };
 
 typedef map<Word, LevenshteinIndex*>::iterator IndIterator;
@@ -105,7 +107,8 @@ static double calculateRelevancy(MatcherPrivate *p, const Word &w, const Word &i
     assert(indexCount > 0);
     assert(indexMaxCount > 0);
     double frequencyMultiplier = 1.0 - double(indexCount)/(indexMaxCount+1);
-    return errorMultiplier*frequencyMultiplier;
+    double indexWeightMultiplier = p->weights.getWeight(index);
+    return errorMultiplier*frequencyMultiplier*indexWeightMultiplier;
 }
 
 static void findDocuments(MatcherPrivate *p, const Word &word, const Word &fieldName, std::vector<const Document*> &result) {
@@ -272,4 +275,8 @@ void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments) {
 
 ErrorValues& Matcher::getErrorValues() {
     return p->e;
+}
+
+IndexWeights& Matcher::getIndexWeights() {
+    return p->weights;
 }
