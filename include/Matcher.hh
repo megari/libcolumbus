@@ -33,7 +33,6 @@ private:
     void addToIndex(const Word &word, const Word &indexName);
     void addToReverseIndex(const Word &word, const Word &indexName, const Document *d);
     void matchWithRelevancy(const WordList &query, const bool dynamicError, MatchResults &matchedDocuments);
-    int getDynamicError(const Word &w);
 
 public:
     Matcher(Corpus *corp); // Matcher will delete[] the Corpus object.

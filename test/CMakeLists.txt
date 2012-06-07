@@ -53,3 +53,7 @@ add_test(helpers helpers)
 
 add_executable(create_performance CreatePerformanceTest.cc)
 target_link_libraries(create_performance columbus)
+
+add_executable(indexweights IndexWeightsTest.cc)
+target_link_libraries(indexweights columbus)
+add_test(indexweights indexweights)

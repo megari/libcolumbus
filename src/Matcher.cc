@@ -45,6 +45,8 @@ typedef map<Word, set<const Document*> >::iterator RevIterator;
 
 typedef map<Word, int> MatchErrorMap;
 
+typedef map<Word, MatchErrorMap> BestIndexMatches;
+
 struct ResultGathererPrivate {
     // For each index list matched words and the smallest error with which they were matched.
     map<Word, MatchErrorMap> bestIndexMatches;
@@ -57,6 +59,14 @@ typedef map<Word, int>::iterator MatchIterator;
  * These are helper functions for Matcher. They are not member functions to avoid polluting the header
  * with STL includes.
  */
+
+static int getDynamicError(const Word &w) {
+    size_t len = w.length();
+    if(len <= 4)
+        return LevenshteinIndex::getDefaultError();
+    else
+        return int(len/4.0*LevenshteinIndex::getDefaultError()); // Permit a typo for every fourth letter.
+}
 
 static void addMatches(map<Word, MatchErrorMap> &bestIndexMatches, const Word &queryWord, const Word &indexName, IndexMatches &matches) {
     MatchIndIterator it = bestIndexMatches.find(indexName);
@@ -111,6 +121,24 @@ static void findDocuments(MatcherPrivate *p, const Word &word, const Word &field
     set<const Document*>::iterator foo;
     for(set<const Document*>::iterator docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
         result.push_back(*docIter);
+    }
+}
+
+static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dynamicError, BestIndexMatches &bestIndexMatches) {
+    for(size_t i=0; i<query.size(); i++) {
+        const Word &w = query[i];
+        int maxError;
+        if(dynamicError)
+            maxError = getDynamicError(w);
+        else
+            maxError = 2*LevenshteinIndex::getDefaultError();
+        for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
+            IndexMatches m;
+            it->second->findWords(w, p->e, maxError, m);
+            addMatches(bestIndexMatches, w, it->first, m);
+            debugMessage("Matched word %s in index %s with error %d and got %ld matches.\n",
+                    w.asUtf8(), it->first.asUtf8(), maxError, m.size());
+        }
     }
 }
 
@@ -214,25 +242,11 @@ void Matcher::addToReverseIndex(const Word &word, const Word &indexName, const D
 
 void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError, MatchResults &matchedDocuments) {
     map<const Document*, double> docs;
-    map<Word, MatchErrorMap> bestIndexMatches;
+    BestIndexMatches bestIndexMatches;
     double start, indexMatchEnd, gatherEnd, finish;
 
     start = hiresTimestamp();
-    for(size_t i=0; i<query.size(); i++) {
-        const Word &w = query[i];
-        int maxError;
-        if(dynamicError)
-            maxError = getDynamicError(w);
-        else
-            maxError = 2*LevenshteinIndex::getDefaultError();
-        for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
-            IndexMatches m;
-            it->second->findWords(w, p->e, maxError, m);
-            addMatches(bestIndexMatches, w, it->first, m);
-            debugMessage("Matched word %s in index %s with error %d and got %ld matches.\n",
-                    w.asUtf8(), it->first.asUtf8(), maxError, m.size());
-        }
-    }
+    matchIndexes(p, query, dynamicError, bestIndexMatches);
     indexMatchEnd = hiresTimestamp();
     // Now we know all matched words in all indexes. Gather up the corresponding documents.
     gatherMatchedDocuments(p, bestIndexMatches, docs);
@@ -244,14 +258,6 @@ void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError,
     finish = hiresTimestamp();
     debugMessage("Query finished. Index lookups took %.2fs, result gathering %.2fs, result building %.2fs.\n",
             indexMatchEnd - start, gatherEnd - indexMatchEnd, finish - gatherEnd);
-}
-
-int Matcher::getDynamicError(const Word &w) {
-    size_t len = w.length();
-    if(len <= 4)
-        return LevenshteinIndex::getDefaultError();
-    else
-        return int(len/4.0*LevenshteinIndex::getDefaultError()); // Permit a typo for every fourth letter.
 }
 
 void Matcher::match(const WordList &query, MatchResults &matchedDocuments) {

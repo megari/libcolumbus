@@ -10,6 +10,7 @@ Document.cc
 Corpus.cc
 Matcher.cc
 MatchResults.cc
+IndexWeights.cc
 )
 
 if(ICONV_LIBRARIES)
