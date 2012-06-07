@@ -35,6 +35,8 @@ if(${IS_BIG_ENDIAN})
 else()
   set(INTERNAL_ENCODING "UTF-32LE")
 endif()
+set(LETTER_TYPE "unsigned int")
+
 
 # Only required on some platforms.
 # If not found, that's ok.

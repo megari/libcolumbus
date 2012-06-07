@@ -16,7 +16,7 @@
 
 #define COL_ASSERT(value) if(!(value)) exit(127);
 
-typedef unsigned int Letter;
+typedef ${LETTER_TYPE} Letter;
 #define INTERNAL_ENCODING "${INTERNAL_ENCODING}"
 
 #endif
