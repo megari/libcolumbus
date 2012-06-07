@@ -1,7 +1,8 @@
 #ifndef COLUMBUSCORE_H
 #define COLUMBUSCORE_H
 
-#include<cstdlib>
+#include <cstdlib>
+#include <stdint.h> // Change to <cstdint> once we go c++0x. GCC will not permit it earlier.
 
 #ifdef DEBUG_MESSAGES
 #include<cstdio>

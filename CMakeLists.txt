@@ -38,14 +38,14 @@ if(full_unicode)
   else()
     set(INTERNAL_ENCODING "UTF-32LE")
   endif()
-  set(LETTER_TYPE "unsigned int")
+  set(LETTER_TYPE "uint32_t")
 else()
   if(${IS_BIG_ENDIAN})
     set(INTERNAL_ENCODING "UCS-2BE//IGNORE") # Drop everything outside Base Multilingual Plane.
   else()
     set(INTERNAL_ENCODING "UCS-2LE//IGNORE")
   endif()
-  set(LETTER_TYPE "unsigned short")
+  set(LETTER_TYPE "uint16_t")
 endif()  
 
 # Only required on some platforms.
