@@ -9,6 +9,7 @@ option(enable_tests "Enable tests.")
 option(enable_scalability_tests "Additional scalability tests that are potentially very slow to run." OFF)
 option(full_warnings "Full compiler warnings." ON)
 option(debug_messages "Print debug messages.")
+option(full_unicode "Enable full Unicode support (takes lots of memory).")
 
 if(${full_warnings})
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic")
@@ -30,13 +31,22 @@ set(LIBDIR "lib")
 
 include(TestBigEndian)
 TEST_BIG_ENDIAN(IS_BIG_ENDIAN)
-if(${IS_BIG_ENDIAN})
-  set(INTERNAL_ENCODING "UTF-32BE") # Iconv encoding string.
-else()
-  set(INTERNAL_ENCODING "UTF-32LE")
-endif()
-set(LETTER_TYPE "unsigned int")
 
+if(full_unicode)
+  if(${IS_BIG_ENDIAN})
+    set(INTERNAL_ENCODING "UTF-32BE") # Iconv encoding string.
+  else()
+    set(INTERNAL_ENCODING "UTF-32LE")
+  endif()
+  set(LETTER_TYPE "unsigned int")
+else()
+  if(${IS_BIG_ENDIAN})
+    set(INTERNAL_ENCODING "UCS-2BE//IGNORE") # Drop everything outside Base Multilingual Plane.
+  else()
+    set(INTERNAL_ENCODING "UCS-2LE//IGNORE")
+  endif()
+  set(LETTER_TYPE "unsigned short")
+endif()  
 
 # Only required on some platforms.
 # If not found, that's ok.
