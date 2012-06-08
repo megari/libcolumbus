@@ -11,6 +11,7 @@ Corpus.cc
 Matcher.cc
 MatchResults.cc
 IndexWeights.cc
+MatcherStatistics.cc
 )
 
 if(ICONV_LIBRARIES)

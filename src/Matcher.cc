@@ -25,6 +25,7 @@
 #include "ErrorValues.hh"
 #include "ColumbusHelpers.hh"
 #include "IndexWeights.hh"
+#include "MatcherStatistics.hh"
 #include <vector>
 #include <map>
 #include <set>
@@ -36,9 +37,9 @@ struct MatcherPrivate {
     Corpus *c;
     map<Word, LevenshteinIndex*> indexes;
     map<Word, map<Word, set<const Document*> > > reverseIndex; // Index name, word, documents.
-    map<Word, size_t> totalWordCounts;
     ErrorValues e;
     IndexWeights weights;
+    MatcherStatistics stats;
 };
 
 typedef map<Word, LevenshteinIndex*>::iterator IndIterator;
@@ -202,12 +203,7 @@ void Matcher::buildIndexes() {
                 const Word &word = text[wi];
                 addToIndex(word, name);
                 addToReverseIndex(word, name, &d);
-                map<Word, size_t>::iterator it = p->totalWordCounts.find(word);
-                if(it == p->totalWordCounts.end()) {
-                    p->totalWordCounts[word] = 1;
-                } else {
-                    it->second++;
-                }
+                p->stats.wordInserted(word);
             }
         }
     }
