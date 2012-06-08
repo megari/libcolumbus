@@ -33,7 +33,7 @@ MatcherStatistics::~MatcherStatistics() {
     delete p;
 }
 
-void MatcherStatistics::wordInserted(const Word &w) {
+void MatcherStatistics::wordProcessed(const Word &w) {
     map<Word, size_t>::iterator it = p->totalWordCounts.find(w);
     if(it == p->totalWordCounts.end()) {
         p->totalWordCounts[w] = 1;
@@ -50,4 +50,8 @@ size_t MatcherStatistics::getTotalWordCount(const Word &w) const {
         return it->second;
     }
 
+}
+
+void MatcherStatistics::addedWordToIndex(const Word &word, const Word &fieldName) {
+    // Doesn't do anything yet.
 }

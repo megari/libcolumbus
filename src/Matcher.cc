@@ -197,13 +197,14 @@ void Matcher::buildIndexes() {
         WordList textNames;
         d.getFieldNames(textNames);
         for(size_t ti=0; ti < textNames.size(); ti++) {
-            const Word &name = textNames[ti];
-            const WordList &text = d.getText(name);
+            const Word &fieldName = textNames[ti];
+            const WordList &text = d.getText(fieldName);
             for(size_t wi=0; wi<text.size(); wi++) {
                 const Word &word = text[wi];
-                addToIndex(word, name);
-                addToReverseIndex(word, name, &d);
-                p->stats.wordInserted(word);
+                p->stats.wordProcessed(word);
+                addToIndex(word, fieldName);
+                p->stats.addedWordToIndex(word, fieldName);
+                addToReverseIndex(word, fieldName, &d);
             }
         }
     }

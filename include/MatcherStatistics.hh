@@ -29,8 +29,9 @@ public:
     MatcherStatistics();
     ~MatcherStatistics();
 
-    void wordInserted(const Word &w);
+    void wordProcessed(const Word &w);
     size_t getTotalWordCount(const Word &w) const;
+    void addedWordToIndex(const Word &word, const Word &fieldName);
 };
 
 #endif /* MATCHERSTATISTICS_HH_ */
