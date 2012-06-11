@@ -138,6 +138,8 @@ void build_gui(app_data &app) {
 void build_matcher(app_data &app, const char *dataFile) {
     Corpus *c = new Corpus();
     Word field("name");
+    const size_t batchSize = 100000;
+    size_t i=0;
     double dataReadStart, dataReadEnd;
 
     ifstream ifile(dataFile);
@@ -147,18 +149,25 @@ void build_matcher(app_data &app, const char *dataFile) {
     }
     string line;
 
+    app.m = new Matcher();
     // Build Corpus.
     dataReadStart = hiresTimestamp();
     while(getline(ifile, line)) {
         Document d(line.c_str());
         d.addText(field, line.c_str());
         c->addDocument(d);
+        i++;
+        if(i % batchSize == 0) {
+            app.m->index(*c);
+            delete c;
+            c = new Corpus();
+        }
     }
-    dataReadEnd = hiresTimestamp();
-    printf("Read in %ld documents in %.2f seconds.\n", c->size(), dataReadEnd - dataReadStart);
-    app.m = new Matcher();
     app.m->index(*c);
     delete c;
+    dataReadEnd = hiresTimestamp();
+    printf("Read in %ld documents in %.2f seconds.\n", c->size(), dataReadEnd - dataReadStart);
+    app.m->index(*c);
 }
 
 void delete_matcher(app_data &app) {
