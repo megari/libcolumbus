@@ -30,17 +30,18 @@ class Matcher {
 private:
     MatcherPrivate *p;
 
-    void buildIndexes();
+    void buildIndexes(const Corpus &c);
     void addToIndex(const Word &word, const Word &indexName);
     void addToReverseIndex(const Word &word, const Word &indexName, const Document *d);
     void matchWithRelevancy(const WordList &query, const bool dynamicError, MatchResults &matchedDocuments);
 
 public:
-    Matcher(Corpus *corp); // Matcher will delete[] the Corpus object.
+    Matcher(); // Matcher will delete[] the Corpus object.
     ~Matcher();
 
     void match(const WordList &query, MatchResults &matchedDocuments);
     void match(const char *queryAsUtf8, MatchResults &matchedDocuments);
+    void index(const Corpus &c);
     ErrorValues& getErrorValues();
     IndexWeights& getIndexWeights();
 };

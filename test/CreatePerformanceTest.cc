@@ -54,8 +54,10 @@ Matcher* build_matcher(const char *dataFile, int maxLines) {
     }
     dataReadEnd = hiresTimestamp();
     printf("Read in %ld documents in %.2f seconds.\n", c->size(), dataReadEnd - dataReadStart);
-    m = new Matcher(c);
+    m = new Matcher();
+    m->index(*c);
     buildEnd = hiresTimestamp();
+    delete c;
     printf("Index built in %.2f seconds.\n", buildEnd - dataReadEnd);
     return m;
 }

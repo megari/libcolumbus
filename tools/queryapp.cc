@@ -156,7 +156,9 @@ void build_matcher(app_data &app, const char *dataFile) {
     }
     dataReadEnd = hiresTimestamp();
     printf("Read in %ld documents in %.2f seconds.\n", c->size(), dataReadEnd - dataReadStart);
-    app.m = new Matcher(c);
+    app.m = new Matcher();
+    app.m->index(*c);
+    delete c;
 }
 
 void delete_matcher(app_data &app) {

@@ -35,7 +35,6 @@
 using namespace std;
 
 struct MatcherPrivate {
-    Corpus *c;
     map<Word, LevenshteinIndex*> indexes;
     map<Word, map<Word, set<string> > > reverseIndex; // Index name, word, documents.
     ErrorValues e;
@@ -169,15 +168,17 @@ static void gatherMatchedDocuments(MatcherPrivate *p,  map<Word, MatchErrorMap> 
     }
 }
 
-Matcher::Matcher(Corpus *corp) {
-    double buildStart, buildEnd;
+Matcher::Matcher() {
     p = new MatcherPrivate();
-    p->c = corp;
+}
+
+void Matcher::index(const Corpus &c) {
+    double buildStart, buildEnd;
     buildStart = hiresTimestamp();
-    buildIndexes();
+    buildIndexes(c);
     buildEnd = hiresTimestamp();
-    debugMessage("Created matcher with %ld documents and %ld indexes. Index creation took %.2f seconds.\n",
-            corp->size(), p->indexes.size(), buildEnd - buildStart);
+    debugMessage("Added %ld documents to matcher. It now has %ld indexes. Index creation took %.2f seconds.\n",
+            c.size(), p->indexes.size(), buildEnd - buildStart);
     for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
         debugMessage("Index \"%s\" has %ld words and %ld nodes.\n",
                 it->first.asUtf8(), it->second->numWords(), it->second->numNodes());
@@ -185,16 +186,15 @@ Matcher::Matcher(Corpus *corp) {
 }
 
 Matcher::~Matcher() {
-    delete p->c;
     for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
         delete it->second;
     }
     delete p;
 }
 
-void Matcher::buildIndexes() {
-    for(size_t ci = 0; ci < p->c->size(); ci++) {
-        const Document &d = p->c->getDocument(ci);
+void Matcher::buildIndexes(const Corpus &c) {
+    for(size_t ci = 0; ci < c.size(); ci++) {
+        const Document &d = c.getDocument(ci);
         WordList textNames;
         d.getFieldNames(textNames);
         for(size_t ti=0; ti < textNames.size(); ti++) {

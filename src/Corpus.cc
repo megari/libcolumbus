@@ -41,7 +41,7 @@ size_t Corpus::size() const {
     return p->documents.size();
 }
 
-const Document& Corpus::getDocument(size_t i) {
+const Document& Corpus::getDocument(size_t i) const {
     if(i >= p->documents.size())
         throw out_of_range("Out of bounds access in Document.");
     return p->documents[i];

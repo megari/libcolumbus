@@ -34,7 +34,7 @@ public:
 
     void addDocument(const Document &d);
     size_t size() const;
-    const Document& getDocument(size_t i);
+    const Document& getDocument(size_t i) const;
 
     // Add iterators here. This class should really only expose them.
 };

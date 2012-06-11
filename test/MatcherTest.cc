@@ -61,12 +61,15 @@ Corpus * testCorpus() {
 
 void testMatcher() {
     Corpus *c = testCorpus();
-    Matcher m(c);
+    Matcher m;
     MatchResults matches;
     WordList queryList;
     Word w1("abc");
     const char *dFarName = "distantdoc";
     const char *name1("doc1");
+
+    m.index(*c);
+    delete(c);
 
     queryList.addWord(w1);
     m.match(queryList, matches);
@@ -79,12 +82,15 @@ void testMatcher() {
 
 void testRelevancy() {
     Corpus *c = testCorpus();
-    Matcher m(c);
+    Matcher m;
     MatchResults matches;
     WordList queryList;
     Word w1("abc");
     Word dFarName("distantdoc");
     const char *name1 = "doc1";
+
+    m.index(*c);
+    delete c;
 
     queryList.addWord(w1);
     m.match(queryList, matches);
