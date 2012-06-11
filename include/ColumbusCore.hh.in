@@ -20,4 +20,7 @@
 typedef ${LETTER_TYPE} Letter;
 #define INTERNAL_ENCODING "${INTERNAL_ENCODING}"
 
+typedef size_t WordID;
+#define INVALID_WORDCODE SIZE_MAX
+
 #endif

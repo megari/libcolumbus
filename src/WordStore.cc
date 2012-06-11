@@ -14,14 +14,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/WordStore.hh"
+#include "WordStore.hh"
+#include "Word.hh"
+#include <map>
+#include <stdexcept>
+
+using namespace std;
+
+struct WordStorePrivate {
+    map<Word, WordID> wordList;
+    map<WordID, Word> wordIndex; // The Word object is duplicated here. It should be fixed.
+    WordID nextID; // A running counter.
+};
 
 WordStore::WordStore() {
-    // TODO Auto-generated constructor stub
+    p = new WordStorePrivate();
+    p->nextID = 0;
 
 }
 
 WordStore::~WordStore() {
-    // TODO Auto-generated destructor stub
+    delete p;
 }
 
+WordID WordStore::getID(const Word &w) {
+    map<Word, WordID>::const_iterator it = p->wordList.find(w);
+    if(it != p->wordList.end())
+        return it->second;
+    WordID result = p->nextID;
+    p->wordList[w] = p->nextID;
+    p->wordIndex[p->nextID] = w;
+    p->nextID++;
+    return result;
+}
+
+const Word& WordStore::getWord(const WordID id) const {
+    map<WordID, Word>::const_iterator it = p->wordIndex.find(id);
+    if(it == p->wordIndex.end()) {
+        throw out_of_range("Tried to access non-existing WordID in WordStore.");
+    }
+    return it->second;
+}

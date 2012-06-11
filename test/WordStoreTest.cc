@@ -15,11 +15,38 @@
  */
 
 #include "WordStore.hh"
+#include "Word.hh"
 #include <cassert>
+#include <stdexcept>
 
 void testStore() {
     WordStore s;
+    Word w1("abc");
+    Word w1Copy("abc");
+    Word w2("def");
+    WordID w1ID, w1CopyID, w2ID;
+    WordID nonexisting = 42;
+    bool gotException;
 
+    w1ID = s.getID(w1);
+    w1CopyID = s.getID(w1Copy);
+    w2ID = s.getID(w2);
+
+    assert(w1ID == w1CopyID);
+    assert(w2ID != w1ID);
+
+    assert(nonexisting != w1ID);
+    assert(nonexisting != w2ID);
+
+    assert(s.getWord(w1ID) == w1);
+    assert(s.getWord(w2ID) == w2);
+    try {
+        s.getWord(nonexisting);
+        gotException = false;
+    } catch(std::out_of_range &e) {
+        gotException = true;
+    }
+    assert(gotException);
 }
 
 int main(int argc, char **argv) {

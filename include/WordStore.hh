@@ -17,13 +17,19 @@
 #ifndef WORDSTORE_HH_
 #define WORDSTORE_HH_
 
+#include "ColumbusCore.hh"
+
 /*
  * We will get words multiple times. This class assigns each word a unique
  * ID. This deduplicates data and ensures we only keep one copy
  * of each word in memory.
+ *
+ * This is, roughly, a simpler version of
+ * http://mailinator.blogspot.fi/2012/02/how-mailinator-compresses-email-by-90.html
  */
 
 struct WordStorePrivate;
+class Word;
 
 class WordStore {
 private:
@@ -33,6 +39,9 @@ private:
 public:
     WordStore();
     ~WordStore();
+
+    WordID getID(const Word &w);
+    const Word& getWord(const WordID id) const;
 };
 
 #endif /* WORDSTORE_HH_ */
