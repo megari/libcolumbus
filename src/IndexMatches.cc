@@ -26,7 +26,7 @@ using namespace std;
 
 struct MatchData {
     Word queryWord;
-    Word matchedWord;
+    WordID matchedWord;
     int error;
 
     bool operator<(const MatchData &other) const {
@@ -46,7 +46,7 @@ IndexMatches::~IndexMatches() {
     delete p;
 }
 
-void IndexMatches::addMatch(const Word &queryWord, const Word &matchedWord, int error) {
+void IndexMatches::addMatch(const Word &queryWord, const WordID matchedWord, int error) {
     MatchData m;
     m.matchedWord = matchedWord;
     m.error = error;
@@ -57,7 +57,7 @@ size_t IndexMatches::size() const {
     return p->matches.size();
 }
 
-const Word& IndexMatches::getMatch(size_t num) const {
+const WordID& IndexMatches::getMatch(size_t num) const {
     if(num >= p->matches.size()) {
         std::string msg("Attempt to access match ");
         msg += num;

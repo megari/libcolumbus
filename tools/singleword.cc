@@ -22,6 +22,7 @@
 #include "LevenshteinIndex.hh"
 #include "Word.hh"
 #include "ErrorValues.hh"
+#include "WordStore.hh"
 #include <gtk/gtk.h>
 #include <vector>
 #include <cassert>
@@ -35,6 +36,7 @@ const int DEFAULT_ERROR = 200;
 
 struct app_data {
     LevenshteinIndex ind;
+    WordStore store;
     ErrorValues e;
     GtkWidget *window;
     GtkWidget *entry;
@@ -78,7 +80,7 @@ static void doSearch(GtkWidget *widget, gpointer data) {
     gtk_list_store_clear(app->matchStore);
     for(size_t i=0; i<matches.size(); i++) {
         char buf[1024];
-        matches.getMatch(i).toUtf8(buf, 1024);
+        app->store.getWord(matches.getMatch(i)).toUtf8(buf, 1024);
         gtk_list_store_append(app->matchStore, &iter);
         gtk_list_store_set(app->matchStore, &iter,
                 0, buf,
@@ -178,7 +180,7 @@ int main(int argc, char **argv) {
     build_gui(app);
     readData(words, argv[1]);
     for(size_t i=0; i<words.size(); i++)
-        app.ind.insertWord(words[i]);
+        app.ind.insertWord(words[i], app.store.getID(words[i]));
     gtk_main();
     return 0;
 }

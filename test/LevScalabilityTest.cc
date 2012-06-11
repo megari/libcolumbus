@@ -29,6 +29,7 @@
 #include "Word.hh"
 #include "ColumbusHelpers.hh"
 #include "ErrorValues.hh"
+#include "WordStore.hh"
 
 using namespace std;
 
@@ -51,13 +52,14 @@ void readData(vector<Word> &a, const char *ifilename) {
 
 void runTest(vector<Word> &a, int query_size, double *build_start, double *build_end, double *query_start, double *query_end) {
     LevenshteinIndex ind;
+    WordStore store;
     IndexMatches matches;
     ErrorValues e;
     const int defaultError = LevenshteinIndex::getDefaultError();
 
     *build_start = hiresTimestamp();
     for(size_t i=0; i < a.size(); i++)
-        ind.insertWord(a[i]);
+        ind.insertWord(a[i], store.getID(a[i]));
     *build_end = hiresTimestamp();
 
     *query_start = hiresTimestamp();

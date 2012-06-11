@@ -41,20 +41,22 @@ void testSimple() {
     ErrorValues e;
     Word w1("abc");
     Word w2("def");
+    WordID w1ID = 1;
+    WordID w2ID = 2;
 
-    ind.insertWord(w1);
-    ind.insertWord(w2);
+    ind.insertWord(w1, w1ID);
+    ind.insertWord(w2, w2ID);
 
     ind.findWords(w1, e, LevenshteinIndex::getDefaultError(), matches);
     assert(matches.size() == 1);
-    assert(w1 == matches.getMatch(0));
+    assert(w1ID == matches.getMatch(0));
     assert(matches.getMatchError(0) == 0);
 
     matches.clear();
 
     ind.findWords(w2, e, LevenshteinIndex::getDefaultError(), matches);
     assert(matches.size() == 1);
-    assert(matches.getMatch(0) == w2);
+    assert(matches.getMatch(0) == w2ID);
     assert(matches.getMatchError(0) == 0);
 }
 
@@ -68,29 +70,35 @@ void testOrder() {
     Word w2("abxye");
     Word w3("abche");
     Word w4("abxhe");
-    Word veryFarFromEveryOtherString("supercalifragilisticexpialidocious");
+    WordID w1ID = 1;
+    WordID w2ID = 2;
+    //WordID w3ID = 3;
+    //WordID w4ID = 4;
 
-    ind.insertWord(w1);
-    ind.insertWord(w2);
-    ind.insertWord(veryFarFromEveryOtherString);
+    Word veryFarFromEveryOtherString("supercalifragilisticexpialidocious");
+    WordID veryFarID = 100;
+
+    ind.insertWord(w1, w1ID);
+    ind.insertWord(w2, w2ID);
+    ind.insertWord(veryFarFromEveryOtherString, veryFarID);
 
     ind.findWords(w3, e, defaultError, matches);
     assert(matches.size() == 1);
-    assert(matches.getMatch(0) == w1);
+    assert(matches.getMatch(0) == w1ID);
     assert(matches.getMatchError(0) == defaultError);
 
     matches.clear();
 
     ind.findWords(w4, e, defaultError, matches);
     assert(matches.size() == 1);
-    assert(matches.getMatch(0) == w2);
+    assert(matches.getMatch(0) == w2ID);
     assert(matches.getMatchError(0) == defaultError);
 
     matches.clear();
 
     ind.findWords(w3, e, 2*defaultError, matches);
     assert(matches.size() == 2);
-    assert(matches.getMatch(0) == w1);
+    assert(matches.getMatch(0) == w1ID);
     assert(matches.getMatchError(0) == defaultError);
     assert(matches.getMatchError(1) == 2*defaultError);
 
@@ -98,7 +106,7 @@ void testOrder() {
 
     ind.findWords(w4, e, 2*defaultError, matches);
     assert(matches.size() == 2);
-    assert(matches.getMatch(0) == w2);
+    assert(matches.getMatch(0) == w2ID);
     assert(matches.getMatchError(0) == defaultError);
     assert(matches.getMatchError(1) == 2*defaultError);
 }
@@ -113,8 +121,9 @@ void testEdges() {
     Word w2("bbc");
     Word w3("acc");
     Word w4("abb");
+    WordID w1ID = 1;
 
-    ind.insertWord(w1);
+    ind.insertWord(w1, w1ID);
 
     ind.findWords(w2, e, bigError, matches);
     assert(matches.size() == 1);
@@ -142,10 +151,13 @@ void testEmptyQuery() {
     Word w2("b");
     Word w3("abc");
     Word empty("");
+    WordID w1ID = 1;
+    WordID w2ID = 2;
+    WordID w3ID = 3;
 
-    ind.insertWord(w1);
-    ind.insertWord(w2);
-    ind.insertWord(w3);
+    ind.insertWord(w1, w1ID);
+    ind.insertWord(w2, w2ID);
+    ind.insertWord(w3, w3ID);
 
     ind.findWords(empty, e, defaultError, matches);
     assert(matches.size() == 2);
@@ -160,15 +172,16 @@ void testExact() {
 
     Word w1("abcd");
     Word w2("abce");
+    WordID w1ID = 1;
 
-    ind.insertWord(w1);
+    ind.insertWord(w1, w1ID);
 
     ind.findWords(w2, e, 0, matches);
     assert(matches.size() == 0);
 
     ind.findWords(w1, e, 0, matches);
     assert(matches.size() == 1);
-    assert(matches.getMatch(0) == w1);
+    assert(matches.getMatch(0) == w1ID);
     assert(matches.getMatchError(0) == 0);
 }
 
@@ -182,8 +195,9 @@ void testTranspose() {
     Word w2("acbd");
     Word w3("bacd");
     Word w4("abdc");
+    WordID w1ID = 1;
 
-    ind.insertWord(w1);
+    ind.insertWord(w1, w1ID);
 
     ind.findWords(w2, e, defaultError, matches);
     assert(matches.size() == 1);

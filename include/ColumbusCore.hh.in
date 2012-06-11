@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <stdint.h> // Change to <cstdint> once we go c++0x. GCC will not permit it earlier.
+#include <limits>
 
 #ifdef DEBUG_MESSAGES
 #include<cstdio>
@@ -21,6 +22,6 @@ typedef ${LETTER_TYPE} Letter;
 #define INTERNAL_ENCODING "${INTERNAL_ENCODING}"
 
 typedef size_t WordID;
-#define INVALID_WORDCODE SIZE_MAX
+#define INVALID_WORDCODE (std::numeric_limits<std::size_t>::max())
 
 #endif

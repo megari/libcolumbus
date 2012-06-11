@@ -27,15 +27,17 @@ void basicTest() {
     LevenshteinIndex ind;
     Word word1("word");
     Word word2("another");
+    WordID w1ID = 1;
+    WordID w2ID = 2;
 
     assert(!ind.hasWord(word1));
     assert(!ind.hasWord(word2));
 
-    ind.insertWord(word1);
+    ind.insertWord(word1, w1ID);
     assert(ind.hasWord(word1));
     assert(!ind.hasWord(word2));
 
-    ind.insertWord(word2);
+    ind.insertWord(word2, w2ID);
     assert(ind.hasWord(word1));
     assert(ind.hasWord(word2));
 }
@@ -46,7 +48,7 @@ void shortTest() {
 
     assert(!ind.hasWord(word));
 
-    ind.insertWord(word);
+    ind.insertWord(word, 1);
     assert(ind.hasWord(word));
 }
 
@@ -58,11 +60,11 @@ void prefixTest() {
     assert(!ind.hasWord(word));
     assert(!ind.hasWord(prefix));
 
-    ind.insertWord(word);
+    ind.insertWord(word, 1);
     assert(ind.hasWord(word));
     assert(!ind.hasWord(prefix));
 
-    ind.insertWord(prefix);
+    ind.insertWord(prefix, 2);
     assert(ind.hasWord(word));
     assert(ind.hasWord(prefix));
 }
@@ -75,11 +77,11 @@ void suffixTest() {
     assert(!ind.hasWord(word));
     assert(!ind.hasWord(word2));
 
-    ind.insertWord(word);
+    ind.insertWord(word, 1);
     assert(ind.hasWord(word));
     assert(!ind.hasWord(word2));
 
-    ind.insertWord(word2);
+    ind.insertWord(word2, 2);
     assert(ind.hasWord(word));
     assert(ind.hasWord(word2));
 }
@@ -94,17 +96,17 @@ void branchTest() {
     assert(!ind.hasWord(word2));
     assert(!ind.hasWord(word3));
 
-    ind.insertWord(word);
+    ind.insertWord(word, 1);
     assert(ind.hasWord(word));
     assert(!ind.hasWord(word2));
     assert(!ind.hasWord(word3));
 
-    ind.insertWord(word2);
+    ind.insertWord(word2, 2);
     assert(ind.hasWord(word));
     assert(ind.hasWord(word2));
     assert(!ind.hasWord(word3));
 
-    ind.insertWord(word3);
+    ind.insertWord(word3, 3);
     assert(ind.hasWord(word));
     assert(ind.hasWord(word2));
     assert(ind.hasWord(word3));
@@ -122,21 +124,21 @@ void countTest() {
     assert(ind.maxCount() == 0);
     assert(ind.numWords() == 0);
 
-    ind.insertWord(w1);
+    ind.insertWord(w1, 1);
     assert(ind.wordCount(w1) == 1);
     assert(ind.wordCount(w2) == 0);
     assert(ind.wordCount(w3) == 0);
     assert(ind.maxCount() == 1);
     assert(ind.numWords() == 1);
 
-    ind.insertWord(w2);
+    ind.insertWord(w2, 2);
     assert(ind.wordCount(w1) == 1);
     assert(ind.wordCount(w2) == 1);
     assert(ind.wordCount(w3) == 0);
     assert(ind.maxCount() == 1);
     assert(ind.numWords() == 2);
 
-    ind.insertWord(w1);
+    ind.insertWord(w1, 1);
     assert(ind.wordCount(w1) == 2);
     assert(ind.wordCount(w2) == 1);
     assert(ind.wordCount(w3) == 0);

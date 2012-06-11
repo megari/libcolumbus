@@ -18,13 +18,14 @@
 #include "Word.hh"
 #include "IndexMatches.hh"
 #include "ErrorValues.hh"
+#include "WordStore.hh"
 #include <cstdio>
 #include <stdexcept>
 #include <string>
 #include <cstring>
 #include <cassert>
 
-void load_data(LevenshteinIndex &ind, char *file) {
+void load_data(LevenshteinIndex &ind, WordStore &s, char *file) {
     FILE *f = fopen(file, "r");
     char buffer[1024];
     if(!f) {
@@ -35,13 +36,13 @@ void load_data(LevenshteinIndex &ind, char *file) {
         unsigned int slen = strlen(buffer);
         assert(buffer[slen-1] == '\n');
         buffer[slen-1] = '\0'; // Chop the \n.
-        Word s(buffer);
-        ind.insertWord(s);
+        Word w(buffer);
+        ind.insertWord(w, s.getID(w));
     }
     fclose(f);
 }
 
-void queryAndPrint(LevenshteinIndex &ind, Word &query, int maxError) {
+void queryAndPrint(LevenshteinIndex &ind, WordStore &s, Word &query, int maxError) {
     IndexMatches matches;
     ErrorValues e;
     ind.findWords(query, e, maxError, matches);
@@ -52,13 +53,14 @@ void queryAndPrint(LevenshteinIndex &ind, Word &query, int maxError) {
     for(size_t i=0; i<matches.size(); i++) {
         const unsigned int bufSize = 1024;
         char buf[bufSize];
-        matches.getMatch(i).toUtf8(buf, bufSize);
+        s.getWord(matches.getMatch(i)).toUtf8(buf, bufSize);
         printf("%s %d\n", buf, matches.getMatchError(i));
     }
 }
 
 int main(int argc, char **argv) {
     LevenshteinIndex ind;
+    WordStore s;
     char *file;
     int maxError;
     Word *query;
@@ -76,13 +78,13 @@ int main(int argc, char **argv) {
     maxError = atoi(argv[3]);
 
     try {
-        load_data(ind, file);
+        load_data(ind, s, file);
     } catch(std::invalid_argument &e) {
         printf("Data file malformed: %s\n", e.what());
         return 1;
     }
 
-    queryAndPrint(ind, *query, maxError);
+    queryAndPrint(ind, s, *query, maxError);
     delete query;
     return 0;
 }

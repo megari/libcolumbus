@@ -37,7 +37,7 @@ typedef ChildList::const_iterator ChildListConstIter;
 struct TrieNode {
     TrieNode *parent;
     ChildList children;
-    Word current_word; // The word that ends in this node.
+    WordID currentWord; // The word that ends in this node.
 };
 
 typedef map<Word, size_t> WordCount;
@@ -83,6 +83,7 @@ LevenshteinIndex::LevenshteinIndex() {
     p = new LevenshteinIndexPrivate();
     p->root = new TrieNode();
     p->root->parent = 0;
+    p->root->currentWord = INVALID_WORDCODE;
     p->maxCount = 0;
 }
 
@@ -98,7 +99,7 @@ int LevenshteinIndex::getDefaultError() {
     return ErrorValues::getDefaultError();
 }
 
-void LevenshteinIndex::insertWord(const Word &word) {
+void LevenshteinIndex::insertWord(const Word &word, const WordID wordID) {
     if(word.length() == 0)
         return;
     WordCount::const_iterator it = p->wordCounts.find(word);
@@ -108,14 +109,14 @@ void LevenshteinIndex::insertWord(const Word &word) {
     } else {
         newCount = 1;
     }
-    trieInsert(p->root, word);
+    trieInsert(p->root, word, wordID);
     p->wordCounts[word] = newCount;
     if(p->maxCount < newCount)
         p->maxCount = newCount;
     return;
 }
 
-void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word) {
+void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word, const WordID wordID) {
     size_t i = 0;
     while(word.length() > i) {
         Letter l = word[i];
@@ -128,6 +129,7 @@ void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word) {
             pair<Letter, TrieNode*> n;
             c = new TrieNode();
             c->parent = node;
+            c->currentWord = INVALID_WORDCODE;
             n.first = l;
             n.second = c;
             node->children.push_back(n);
@@ -139,11 +141,16 @@ void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word) {
         node = c;
         i++;
     }
-    if(node->current_word.length() == 0) {
-        node->current_word = word;
+    if(node->currentWord == INVALID_WORDCODE) {
+        node->currentWord = wordID;
         p->numWords++;
     }
-
+    /*
+     * Theoretically there is nothing wrong with adding the same word with
+     * different IDs. In our case it probably means that the word deduplicator
+     * is not working and there is a leak somewhere. So check explicitly.
+     */
+    assert(node->currentWord == wordID);
 }
 
 bool LevenshteinIndex::hasWord(const Word &word) const {
@@ -161,8 +168,8 @@ bool LevenshteinIndex::hasWord(const Word &word) const {
         i++;
     }
 
-    if(node->current_word.length() > 0) {
-         assert(node->current_word == word);
+    if(node->currentWord != INVALID_WORDCODE) {
+         //assert(node->current_word == word); FIXME, re-enable this.
          return true;
      }
      return false;
@@ -201,8 +208,8 @@ void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const 
     }
 
     // Error row evaluated. Now check if a word was found and continue recursively.
-    if(currentRow->totalError() <= max_error && node->current_word.length() > 0) {
-        matches.addMatch(query, node->current_word, currentRow->totalError());
+    if(currentRow->totalError() <= max_error && node->currentWord != INVALID_WORDCODE) {
+        matches.addMatch(query, node->currentWord, currentRow->totalError());
     }
     if(currentRow->minError() <= max_error) {
         for(ChildListIter i = node->children.begin(); i != node->children.end(); i++) {

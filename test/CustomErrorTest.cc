@@ -29,6 +29,7 @@ void testCustomError() {
     LevenshteinIndex ind;
     IndexMatches matches;
     ErrorValues e;
+    WordID wordID = 17;
     const int defaultError = ErrorValues::getDefaultError();
     const int smallError = 1;
     const int biggerError = 2;
@@ -38,7 +39,7 @@ void testCustomError() {
     Word w1("abc");
     Word w2("adc");
 
-    ind.insertWord(w1);
+    ind.insertWord(w1, wordID);
 
     ind.findWords(w2, e, defaultError, matches);
     assert(matches.getMatchError(0) == defaultError);

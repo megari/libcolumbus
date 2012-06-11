@@ -26,6 +26,7 @@
 #include "ColumbusHelpers.hh"
 #include "IndexWeights.hh"
 #include "MatcherStatistics.hh"
+#include "WordStore.hh"
 #include <vector>
 #include <map>
 #include <set>
@@ -40,6 +41,7 @@ struct MatcherPrivate {
     ErrorValues e;
     IndexWeights weights;
     MatcherStatistics stats;
+    WordStore store;
 };
 
 typedef map<Word, LevenshteinIndex*>::iterator IndIterator;
@@ -71,7 +73,7 @@ static int getDynamicError(const Word &w) {
         return int(len/4.0*LevenshteinIndex::getDefaultError()); // Permit a typo for every fourth letter.
 }
 
-static void addMatches(map<Word, MatchErrorMap> &bestIndexMatches, const Word &queryWord, const Word &indexName, IndexMatches &matches) {
+static void addMatches(MatcherPrivate *p, map<Word, MatchErrorMap> &bestIndexMatches, const Word &queryWord, const Word &indexName, IndexMatches &matches) {
     MatchIndIterator it = bestIndexMatches.find(indexName);
     map<Word, int> *indexMatches;
     if(it == bestIndexMatches.end()) {
@@ -81,7 +83,8 @@ static void addMatches(map<Word, MatchErrorMap> &bestIndexMatches, const Word &q
     }
     indexMatches = &(it->second);
     for(size_t i=0; i < matches.size(); i++) {
-        const Word &matchWord = matches.getMatch(i);
+        const WordID matchWordID = matches.getMatch(i);
+        const Word &matchWord = p->store.getWord(matchWordID);
         const int matchError = matches.getMatchError(i);
         MatchIterator mIt = indexMatches->find(matchWord);
         if(mIt == indexMatches->end()) {
@@ -139,7 +142,7 @@ static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dy
         for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
             IndexMatches m;
             it->second->findWords(w, p->e, maxError, m);
-            addMatches(bestIndexMatches, w, it->first, m);
+            addMatches(p, bestIndexMatches, w, it->first, m);
             debugMessage("Matched word %s in index %s with error %d and got %ld matches.\n",
                     w.asUtf8(), it->first.asUtf8(), maxError, m.size());
         }
@@ -199,11 +202,13 @@ void Matcher::buildIndexes(const Corpus &c) {
         d.getFieldNames(textNames);
         for(size_t ti=0; ti < textNames.size(); ti++) {
             const Word &fieldName = textNames[ti];
+            //const WordID fieldID = p->store.getID(fieldName);
             const WordList &text = d.getText(fieldName);
             for(size_t wi=0; wi<text.size(); wi++) {
                 const Word &word = text[wi];
+                const WordID wordID = p->store.getID(word);
                 p->stats.wordProcessed(word);
-                addToIndex(word, fieldName);
+                addToIndex(word, wordID, fieldName);
                 p->stats.addedWordToIndex(word, fieldName);
                 addToReverseIndex(word, fieldName, &d);
             }
@@ -211,7 +216,7 @@ void Matcher::buildIndexes(const Corpus &c) {
     }
 }
 
-void Matcher::addToIndex(const Word &word, const Word &indexName) {
+void Matcher::addToIndex(const Word &word, WordID wordID, const Word &indexName) {
     LevenshteinIndex *target;
     IndIterator it = p->indexes.find(indexName);
     if(it == p->indexes.end()) {
@@ -220,7 +225,7 @@ void Matcher::addToIndex(const Word &word, const Word &indexName) {
     } else {
         target = it->second;
     }
-    target->insertWord(word);
+    target->insertWord(word, wordID);
 }
 
 void Matcher::addToReverseIndex(const Word &word, const Word &indexName, const Document *d) {

@@ -18,7 +18,7 @@
 #define INDEXMATCHES_H_
 
 #include <cstddef>
-
+#include "ColumbusCore.hh"
 class LevenshteinIndex;
 struct IndexMatchesPrivate;
 class Word;
@@ -35,7 +35,7 @@ private:
 
     IndexMatchesPrivate *p;
 
-    void addMatch(const Word &queryWord, const Word &matchedWord, int error);
+    void addMatch(const Word &queryWord, const WordID matchedWord, int error);
     void sort();
 
     // Disable copy and assignment.
@@ -47,7 +47,7 @@ public:
     ~IndexMatches();
 
     size_t size() const;
-    const Word& getMatch(size_t num) const;
+    const WordID& getMatch(size_t num) const;
     const Word& getQuery(size_t num) const;
     int getMatchError(size_t num) const;
     void clear();
