@@ -23,7 +23,7 @@
 using namespace std;
 
 struct MatchResultsPrivate {
-    vector<pair<double, const char*> > results; // Having ID as char* means that this result is only valid for as long as the original document exists.
+    vector<pair<double, const char*> > results; // Having ID as char* means that this result is only valid for as long as the original data source exists.
     bool sorted;
 };
 

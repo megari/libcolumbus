@@ -30,21 +30,22 @@
 #include <map>
 #include <set>
 #include <cassert>
+#include <string>
 
 using namespace std;
 
 struct MatcherPrivate {
     Corpus *c;
     map<Word, LevenshteinIndex*> indexes;
-    map<Word, map<Word, set<const Document*> > > reverseIndex; // Index name, word, documents.
+    map<Word, map<Word, set<string> > > reverseIndex; // Index name, word, documents.
     ErrorValues e;
     IndexWeights weights;
     MatcherStatistics stats;
 };
 
 typedef map<Word, LevenshteinIndex*>::iterator IndIterator;
-typedef map<Word, map<Word, set<const Document*> > >::iterator RevIndIterator;
-typedef map<Word, set<const Document*> >::iterator RevIterator;
+typedef map<Word, map<Word, set<string> > >::iterator RevIndIterator;
+typedef map<Word, set<string> >::iterator RevIterator;
 
 typedef map<Word, int> MatchErrorMap;
 
@@ -112,18 +113,18 @@ static double calculateRelevancy(MatcherPrivate *p, const Word &w, const Word &i
     return errorMultiplier*frequencyMultiplier*indexWeightMultiplier;
 }
 
-static void findDocuments(MatcherPrivate *p, const Word &word, const Word &fieldName, std::vector<const Document*> &result) {
+static void findDocuments(MatcherPrivate *p, const Word &word, const Word &fieldName, std::vector<string> &result) {
     IndexMatches im;
     RevIndIterator it = p->reverseIndex.find(fieldName);
     if(it == p->reverseIndex.end())
         return;
-    map<Word, set<const Document*> > &rind = it->second;
+    map<Word, set<string> > &rind = it->second;
     RevIterator s = rind.find(word);
     if(s == rind.end())
         return;
-    set<const Document*> &docSet = s->second;
-    set<const Document*>::iterator foo;
-    for(set<const Document*>::iterator docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
+    set<string> &docSet = s->second;
+    set<string>::iterator foo;
+    for(set<string>::iterator docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
         result.push_back(*docIter);
     }
 }
@@ -146,19 +147,19 @@ static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dy
     }
 }
 
-static void gatherMatchedDocuments(MatcherPrivate *p,  map<Word, MatchErrorMap> &bestIndexMatches, map<const Document*, double> &matchedDocuments) {
+static void gatherMatchedDocuments(MatcherPrivate *p,  map<Word, MatchErrorMap> &bestIndexMatches, map<string, double> &matchedDocuments) {
     for(MatchIndIterator it = bestIndexMatches.begin(); it != bestIndexMatches.end(); it++) {
         for(MatchIterator mIt = it->second.begin(); mIt != it->second.end(); mIt++) {
-            vector<const Document*> tmp;
+            vector<string> tmp;
             findDocuments(p, mIt->first, it->first, tmp);
             debugMessage("Exact searched \"%s\" in field \"%s\", which was found in %ld documents.\n",
                     mIt->first.asUtf8(), it->first.asUtf8(), tmp.size());
             for(size_t i=0; i<tmp.size(); i++) {
-                const Document *curDoc = tmp[i];
+                string curDoc = tmp[i];
                 // At this point we know the matched word, and which index and field
                 // it matched in. Now we can just increment the relevancy of said document.
                 double relevancy = calculateRelevancy(p, mIt->first, it->first, mIt->second);
-                map<const Document*, double>::iterator doc = matchedDocuments.find(curDoc);
+                map<string, double>::iterator doc = matchedDocuments.find(curDoc);
                 if(doc == matchedDocuments.end())
                     matchedDocuments[curDoc] = relevancy;
                 else
@@ -225,23 +226,24 @@ void Matcher::addToIndex(const Word &word, const Word &indexName) {
 void Matcher::addToReverseIndex(const Word &word, const Word &indexName, const Document *d) {
     RevIndIterator rit = p->reverseIndex.find(indexName);
     if(rit == p->reverseIndex.end()) {
-        map<Word, set<const Document*> > tmp;
+        map<Word, set<string> > tmp;
         p->reverseIndex[indexName] = tmp;
         rit = p->reverseIndex.find(indexName);
     }
-    map<Word, set<const Document*> > &indexRind = rit->second;
+    map<Word, set<string> > &indexRind = rit->second;
     RevIterator revIt = indexRind.find(word);
     if(revIt == indexRind.end()) {
-        set<const Document*> tmp;
-        tmp.insert(d);
+        set<string> tmp;
+        tmp.insert(d->getID());
         indexRind[word] = tmp;
     } else {
-        revIt->second.insert(d);
+        string tmp = d->getID();
+        revIt->second.insert(tmp);
     }
 }
 
 void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError, MatchResults &matchedDocuments) {
-    map<const Document*, double> docs;
+    map<string, double> docs;
     BestIndexMatches bestIndexMatches;
     double start, indexMatchEnd, gatherEnd, finish;
 
@@ -251,8 +253,8 @@ void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError,
     // Now we know all matched words in all indexes. Gather up the corresponding documents.
     gatherMatchedDocuments(p, bestIndexMatches, docs);
     gatherEnd = hiresTimestamp();
-    for(map<const Document*, double>::iterator it=docs.begin(); it != docs.end(); it++) {
-        matchedDocuments.addResult(it->first->getID(), it->second);
+    for(map<string, double>::iterator it=docs.begin(); it != docs.end(); it++) {
+        matchedDocuments.addResult(it->first.c_str(), it->second);
     }
     debugMessage("Found a total of %ld documents.\n", matchedDocuments.size());
     finish = hiresTimestamp();
