@@ -177,7 +177,7 @@ void Matcher::index(const Corpus &c) {
     buildStart = hiresTimestamp();
     buildIndexes(c);
     buildEnd = hiresTimestamp();
-    debugMessage("Added %ld documents to matcher. It now has %ld indexes. Index creation took %.2f seconds.\n",
+    debugMessage("Added %ld documents to matcher. It now has %ld indexes. Index population took %.2f seconds.\n",
             c.size(), p->indexes.size(), buildEnd - buildStart);
     for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
         debugMessage("Index \"%s\" has %ld words and %ld nodes.\n",

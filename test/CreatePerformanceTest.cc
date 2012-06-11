@@ -27,11 +27,13 @@
 using namespace std;
 
 Matcher* build_matcher(const char *dataFile, int maxLines) {
-    Matcher *m;
+    Matcher *m = 0;
     Corpus *c = new Corpus();
+    const int batchSize = 100000;
     Word field("name");
-    double dataReadStart, dataReadEnd, buildEnd;
+    double dataReadStart, dataReadEnd;
     int i = 0;
+    size_t totalDocs = 0;
 
     ifstream ifile(dataFile);
     if(ifile.fail()) {
@@ -40,25 +42,30 @@ Matcher* build_matcher(const char *dataFile, int maxLines) {
     }
     string line;
 
+    m = new Matcher();
+
     // Build Corpus.
     dataReadStart = hiresTimestamp();
     while(getline(ifile, line)) {
         if(line.size() == 0)
             continue;
+        totalDocs++;
         Document d(line.c_str());
         d.addText(field, line.c_str());
         c->addDocument(d);
         i++;
+        if(i % batchSize == 0) {
+            m->index(*c);
+            delete c;
+            c = new Corpus();
+        }
         if(i >= maxLines)
             break;
     }
-    dataReadEnd = hiresTimestamp();
-    printf("Read in %ld documents in %.2f seconds.\n", c->size(), dataReadEnd - dataReadStart);
-    m = new Matcher();
     m->index(*c);
-    buildEnd = hiresTimestamp();
+    dataReadEnd = hiresTimestamp();
     delete c;
-    printf("Index built in %.2f seconds.\n", buildEnd - dataReadEnd);
+    printf("Read in %ld documents in %.2f seconds.\n", totalDocs, dataReadEnd - dataReadStart);
     return m;
 }
 
