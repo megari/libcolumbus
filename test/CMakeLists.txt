@@ -57,3 +57,7 @@ target_link_libraries(create_performance columbus)
 add_executable(indexweights IndexWeightsTest.cc)
 target_link_libraries(indexweights columbus)
 add_test(indexweights indexweights)
+
+add_executable(wordstore WordStoreTest.cc)
+target_link_libraries(wordstore columbus)
+add_test(wordstore wordstore)

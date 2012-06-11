@@ -12,6 +12,7 @@ Matcher.cc
 MatchResults.cc
 IndexWeights.cc
 MatcherStatistics.cc
+WordStore.cc
 )
 
 if(ICONV_LIBRARIES)

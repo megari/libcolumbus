@@ -21,6 +21,7 @@
 #include <cstring>
 #include "ColumbusHelpers.hh"
 
+
 Word::Word() : text(0), len(0), utf8Repr(0) {
 
 }
