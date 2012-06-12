@@ -117,31 +117,34 @@ void countTest() {
     Word w1("abc");
     Word w2("def");
     Word w3("abce");
+    WordID w1ID = 1;
+    WordID w2ID = 2;
+    WordID w3ID = 3;
 
-    assert(ind.wordCount(w1) == 0);
-    assert(ind.wordCount(w2) == 0);
-    assert(ind.wordCount(w3) == 0);
+    assert(ind.wordCount(w1ID) == 0);
+    assert(ind.wordCount(w2ID) == 0);
+    assert(ind.wordCount(w3ID) == 0);
     assert(ind.maxCount() == 0);
     assert(ind.numWords() == 0);
 
-    ind.insertWord(w1, 1);
-    assert(ind.wordCount(w1) == 1);
-    assert(ind.wordCount(w2) == 0);
-    assert(ind.wordCount(w3) == 0);
+    ind.insertWord(w1, w1ID);
+    assert(ind.wordCount(w1ID) == 1);
+    assert(ind.wordCount(w2ID) == 0);
+    assert(ind.wordCount(w3ID) == 0);
     assert(ind.maxCount() == 1);
     assert(ind.numWords() == 1);
 
-    ind.insertWord(w2, 2);
-    assert(ind.wordCount(w1) == 1);
-    assert(ind.wordCount(w2) == 1);
-    assert(ind.wordCount(w3) == 0);
+    ind.insertWord(w2, w2ID);
+    assert(ind.wordCount(w1ID) == 1);
+    assert(ind.wordCount(w2ID) == 1);
+    assert(ind.wordCount(w3ID) == 0);
     assert(ind.maxCount() == 1);
     assert(ind.numWords() == 2);
 
-    ind.insertWord(w1, 1);
-    assert(ind.wordCount(w1) == 2);
-    assert(ind.wordCount(w2) == 1);
-    assert(ind.wordCount(w3) == 0);
+    ind.insertWord(w1, w1ID);
+    assert(ind.wordCount(w1ID) == 2);
+    assert(ind.wordCount(w2ID) == 1);
+    assert(ind.wordCount(w3ID) == 0);
     assert(ind.maxCount() == 2);
     assert(ind.numWords() == 2);
 }

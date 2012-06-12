@@ -49,7 +49,7 @@ public:
     bool hasWord(const Word &word) const;
 
     void findWords(const Word &query, const ErrorValues &e, const int max_error, IndexMatches &matches) const;
-    size_t wordCount(const Word &query) const;
+    size_t wordCount(const WordID queryID) const;
     size_t maxCount() const;
     size_t numNodes() const;
     size_t numWords() const;

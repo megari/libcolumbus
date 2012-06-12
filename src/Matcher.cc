@@ -101,8 +101,7 @@ static void addMatches(MatcherPrivate *p, BestIndexMatches &bestIndexMatches, co
 static double calculateRelevancy(MatcherPrivate *p, const WordID wID, const WordID indexID, int error) {
     const LevenshteinIndex * const ind = p->indexes[indexID];
     double errorMultiplier = 100.0/(100.0+error); // Should be adjusted for maxError or word length.
-//    size_t totalCount = p->;
-    size_t indexCount = ind->wordCount(p->store.getWord(wID));
+    size_t indexCount = ind->wordCount(wID);
     size_t indexMaxCount = ind->maxCount();
     assert(indexCount > 0);
     assert(indexMaxCount > 0);

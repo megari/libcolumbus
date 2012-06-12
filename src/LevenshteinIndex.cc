@@ -40,7 +40,7 @@ struct TrieNode {
     WordID currentWord; // The word that ends in this node.
 };
 
-typedef map<Word, size_t> WordCount;
+typedef map<WordID, size_t> WordCount;
 
 struct LevenshteinIndexPrivate {
     TrieNode *root;
@@ -102,15 +102,15 @@ int LevenshteinIndex::getDefaultError() {
 void LevenshteinIndex::insertWord(const Word &word, const WordID wordID) {
     if(word.length() == 0)
         return;
-    WordCount::const_iterator it = p->wordCounts.find(word);
+    WordCount::const_iterator it = p->wordCounts.find(wordID);
     size_t newCount;
     if(it != p->wordCounts.end()) {
-        newCount = p->wordCounts[word] + 1;
+        newCount = p->wordCounts[wordID] + 1;
     } else {
         newCount = 1;
     }
     trieInsert(p->root, word, wordID);
-    p->wordCounts[word] = newCount;
+    p->wordCounts[wordID] = newCount;
     if(p->maxCount < newCount)
         p->maxCount = newCount;
     return;
@@ -218,8 +218,8 @@ void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const 
     }
 }
 
-size_t LevenshteinIndex::wordCount(const Word &query) const {
-    WordCount::const_iterator i = p->wordCounts.find(query);
+size_t LevenshteinIndex::wordCount(const WordID queryID) const {
+    WordCount::const_iterator i = p->wordCounts.find(queryID);
     if(i == p->wordCounts.end())
         return 0;
     return i->second;
