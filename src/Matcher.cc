@@ -36,7 +36,7 @@
 using namespace std;
 
 struct MatcherPrivate {
-    map<Word, LevenshteinIndex*> indexes;
+    map<WordID, LevenshteinIndex*> indexes;
     map<Word, map<WordID, set<string> > > reverseIndex; // Index name, word, documents.
     ErrorValues e;
     IndexWeights weights;
@@ -44,21 +44,21 @@ struct MatcherPrivate {
     WordStore store;
 };
 
-typedef map<Word, LevenshteinIndex*>::iterator IndIterator;
+typedef map<WordID, LevenshteinIndex*>::iterator IndIterator;
 typedef map<Word, map<WordID, set<string> > >::iterator RevIndIterator;
 typedef map<WordID, set<string> >::iterator RevIterator;
 
-typedef map<Word, int> MatchErrorMap;
+typedef map<WordID, int> MatchErrorMap;
 
-typedef map<Word, MatchErrorMap> BestIndexMatches;
+typedef map<WordID, MatchErrorMap> BestIndexMatches;
 
 struct ResultGathererPrivate {
     // For each index list matched words and the smallest error with which they were matched.
     map<Word, MatchErrorMap> bestIndexMatches;
 };
 
-typedef map<Word, MatchErrorMap>::iterator MatchIndIterator;
-typedef map<Word, int>::iterator MatchIterator;
+typedef map<WordID, MatchErrorMap>::iterator MatchIndIterator;
+typedef map<WordID, int>::iterator MatchIterator;
 
 /*
  * These are helper functions for Matcher. They are not member functions to avoid polluting the header
@@ -73,25 +73,24 @@ static int getDynamicError(const Word &w) {
         return int(len/4.0*LevenshteinIndex::getDefaultError()); // Permit a typo for every fourth letter.
 }
 
-static void addMatches(MatcherPrivate *p, map<Word, MatchErrorMap> &bestIndexMatches, const Word &queryWord, const Word &indexName, IndexMatches &matches) {
-    MatchIndIterator it = bestIndexMatches.find(indexName);
-    map<Word, int> *indexMatches;
+static void addMatches(MatcherPrivate *p, BestIndexMatches &bestIndexMatches, const Word &queryWord, const WordID indexID, IndexMatches &matches) {
+    MatchIndIterator it = bestIndexMatches.find(indexID);
+    map<WordID, int> *indexMatches;
     if(it == bestIndexMatches.end()) {
-        map<Word, int> tmp;
-        bestIndexMatches[indexName] = tmp;
-        it = bestIndexMatches.find(indexName);
+        map<WordID, int> tmp;
+        bestIndexMatches[indexID] = tmp;
+        it = bestIndexMatches.find(indexID);
     }
     indexMatches = &(it->second);
     for(size_t i=0; i < matches.size(); i++) {
         const WordID matchWordID = matches.getMatch(i);
-        const Word &matchWord = p->store.getWord(matchWordID);
         const int matchError = matches.getMatchError(i);
-        MatchIterator mIt = indexMatches->find(matchWord);
+        MatchIterator mIt = indexMatches->find(matchWordID);
         if(mIt == indexMatches->end()) {
-            (*indexMatches)[matchWord] = matchError;
+            (*indexMatches)[matchWordID] = matchError;
         } else {
             if(mIt->second > matchError)
-                (*indexMatches)[matchWord] = matchError;
+                (*indexMatches)[matchWordID] = matchError;
         }
 
     }
@@ -102,16 +101,16 @@ static void addMatches(MatcherPrivate *p, map<Word, MatchErrorMap> &bestIndexMat
  * http://en.wikipedia.org/wiki/TF_IDF
  * http://en.wikipedia.org/wiki/Okapi_BM25
  */
-static double calculateRelevancy(MatcherPrivate *p, const Word &w, const Word &index, int error) {
-    const LevenshteinIndex * const ind = p->indexes[index];
+static double calculateRelevancy(MatcherPrivate *p, const WordID wID, const WordID indexID, int error) {
+    const LevenshteinIndex * const ind = p->indexes[indexID];
     double errorMultiplier = 100.0/(100.0+error); // Should be adjusted for maxError or word length.
 //    size_t totalCount = p->;
-    size_t indexCount = ind->wordCount(w);
+    size_t indexCount = ind->wordCount(p->store.getWord(wID));
     size_t indexMaxCount = ind->maxCount();
     assert(indexCount > 0);
     assert(indexMaxCount > 0);
     double frequencyMultiplier = 1.0 - double(indexCount)/(indexMaxCount+1);
-    double indexWeightMultiplier = p->weights.getWeight(index);
+    double indexWeightMultiplier = p->weights.getWeight(p->store.getWord(indexID));
     return errorMultiplier*frequencyMultiplier*indexWeightMultiplier;
 }
 
@@ -144,18 +143,19 @@ static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dy
             it->second->findWords(w, p->e, maxError, m);
             addMatches(p, bestIndexMatches, w, it->first, m);
             debugMessage("Matched word %s in index %s with error %d and got %ld matches.\n",
-                    w.asUtf8(), it->first.asUtf8(), maxError, m.size());
+                    w.asUtf8(), p->store.getWord(it->first).asUtf8(), maxError, m.size());
         }
     }
 }
 
-static void gatherMatchedDocuments(MatcherPrivate *p,  map<Word, MatchErrorMap> &bestIndexMatches, map<string, double> &matchedDocuments) {
+static void gatherMatchedDocuments(MatcherPrivate *p,  map<WordID, MatchErrorMap> &bestIndexMatches, map<string, double> &matchedDocuments) {
     for(MatchIndIterator it = bestIndexMatches.begin(); it != bestIndexMatches.end(); it++) {
         for(MatchIterator mIt = it->second.begin(); mIt != it->second.end(); mIt++) {
             vector<string> tmp;
-            findDocuments(p, p->store.getID(mIt->first), it->first, tmp);
+            findDocuments(p, mIt->first, p->store.getWord(it->first), tmp);
             debugMessage("Exact searched \"%s\" in field \"%s\", which was found in %ld documents.\n",
-                    mIt->first.asUtf8(), it->first.asUtf8(), tmp.size());
+                    p->store.getWord(mIt->first).asUtf8(),
+                    p->store.getWord(it->first).asUtf8(), tmp.size());
             for(size_t i=0; i<tmp.size(); i++) {
                 string curDoc = tmp[i];
                 // At this point we know the matched word, and which index and field
@@ -184,7 +184,7 @@ void Matcher::index(const Corpus &c) {
             c.size(), p->indexes.size(), buildEnd - buildStart);
     for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
         debugMessage("Index \"%s\" has %ld words and %ld nodes.\n",
-                it->first.asUtf8(), it->second->numWords(), it->second->numNodes());
+                p->store.getWord(it->first).asUtf8(), it->second->numWords(), it->second->numNodes());
     }
 }
 
@@ -202,13 +202,14 @@ void Matcher::buildIndexes(const Corpus &c) {
         d.getFieldNames(textNames);
         for(size_t ti=0; ti < textNames.size(); ti++) {
             const Word &fieldName = textNames[ti];
+            const WordID fieldID = p->store.getID(fieldName);
             //const WordID fieldID = p->store.getID(fieldName);
             const WordList &text = d.getText(fieldName);
             for(size_t wi=0; wi<text.size(); wi++) {
                 const Word &word = text[wi];
                 const WordID wordID = p->store.getID(word);
                 p->stats.wordProcessed(wordID);
-                addToIndex(word, wordID, fieldName);
+                addToIndex(word, wordID, fieldID);
                 p->stats.addedWordToIndex(wordID, fieldName);
                 addToReverseIndex(wordID, fieldName, &d);
             }
@@ -216,12 +217,12 @@ void Matcher::buildIndexes(const Corpus &c) {
     }
 }
 
-void Matcher::addToIndex(const Word &word, WordID wordID, const Word &indexName) {
+void Matcher::addToIndex(const Word &word, const WordID wordID, const WordID indexID) {
     LevenshteinIndex *target;
-    IndIterator it = p->indexes.find(indexName);
+    IndIterator it = p->indexes.find(indexID);
     if(it == p->indexes.end()) {
         target = new LevenshteinIndex();
-        p->indexes[indexName] = target;
+        p->indexes[indexID] = target;
     } else {
         target = it->second;
     }

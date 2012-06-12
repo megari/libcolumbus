@@ -33,7 +33,7 @@ private:
     MatcherPrivate *p;
 
     void buildIndexes(const Corpus &c);
-    void addToIndex(const Word &word, WordID wordID, const Word &indexName);
+    void addToIndex(const Word &word, const WordID wordID, const WordID indexID);
     void addToReverseIndex(const WordID wordID, const Word &indexName, const Document *d);
     void matchWithRelevancy(const WordList &query, const bool dynamicError, MatchResults &matchedDocuments);
 
