@@ -117,7 +117,7 @@ void testMultiWord() {
     c.addDocument(d2);
     m.index(c);
 
-    m.match("Sara Michel Geller", matches);
+    m.match("Sara Michell Geller", matches);
     assert(strcmp(matches.getDocumentID(0), correct) == 0);
 }
 
