@@ -166,7 +166,7 @@ void build_matcher(app_data &app, const char *dataFile) {
     app.m->index(*c);
     delete c;
     dataReadEnd = hiresTimestamp();
-    printf("Read in %ld documents in %.2f seconds.\n", c->size(), dataReadEnd - dataReadStart);
+    printf("Read in %ld documents in %.2f seconds.\n", i, dataReadEnd - dataReadStart);
 }
 
 void delete_matcher(app_data &app) {
