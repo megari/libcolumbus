@@ -100,8 +100,30 @@ void testRelevancy() {
     assert(strcmp(matches.getDocumentID(0), name1) == 0);
 }
 
+void testMultiWord() {
+    Corpus c;
+    const char *correct = "correct";
+    const char *wrong = "wrong";
+    Document d1(correct);
+    Document d2(wrong);
+    Word fieldName("name");
+    Matcher m;
+    MatchResults matches;
+
+    d1.addText(fieldName, "Sarah Michelle Gellar");
+    d2.addText(fieldName, "Sara Giller");
+
+    c.addDocument(d1);
+    c.addDocument(d2);
+    m.index(c);
+
+    m.match("Sara Michel Geller", matches);
+    assert(strcmp(matches.getDocumentID(0), correct) == 0);
+}
+
 int main(int argc, char **argv) {
     testMatcher();
     testRelevancy();
+    testMultiWord();
     return 0;
 }
