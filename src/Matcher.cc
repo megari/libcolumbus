@@ -52,11 +52,6 @@ typedef map<WordID, int> MatchErrorMap;
 
 typedef map<WordID, MatchErrorMap> BestIndexMatches;
 
-struct ResultGathererPrivate {
-    // For each index list matched words and the smallest error with which they were matched.
-    map<Word, MatchErrorMap> bestIndexMatches;
-};
-
 typedef map<WordID, MatchErrorMap>::iterator MatchIndIterator;
 typedef map<WordID, int>::iterator MatchIterator;
 
