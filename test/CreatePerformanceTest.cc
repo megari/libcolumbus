@@ -50,7 +50,7 @@ Matcher* build_matcher(const char *dataFile, int maxLines) {
         if(line.size() == 0)
             continue;
         totalDocs++;
-        Document d(line.c_str());
+        Document d(""); // We don't need to distinguish between documents. Give them all the same name to cut down memory usage.
         d.addText(field, line.c_str());
         c->addDocument(d);
         i++;
