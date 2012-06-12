@@ -35,9 +35,11 @@
 
 using namespace std;
 
+typedef map<WordID, map<WordID, set<string> > > ReverseIndex; // Index name, word, documents.
+
 struct MatcherPrivate {
     map<WordID, LevenshteinIndex*> indexes;
-    map<Word, map<WordID, set<string> > > reverseIndex; // Index name, word, documents.
+    ReverseIndex reverseIndex;
     ErrorValues e;
     IndexWeights weights;
     MatcherStatistics stats;
@@ -45,7 +47,7 @@ struct MatcherPrivate {
 };
 
 typedef map<WordID, LevenshteinIndex*>::iterator IndIterator;
-typedef map<Word, map<WordID, set<string> > >::iterator RevIndIterator;
+typedef ReverseIndex::iterator RevIndIterator;
 typedef map<WordID, set<string> >::iterator RevIterator;
 
 typedef map<WordID, int> MatchErrorMap;
@@ -109,9 +111,9 @@ static double calculateRelevancy(MatcherPrivate *p, const WordID wID, const Word
     return errorMultiplier*frequencyMultiplier*indexWeightMultiplier;
 }
 
-static void findDocuments(MatcherPrivate *p, const WordID wordID, const Word &fieldName, std::vector<string> &result) {
+static void findDocuments(MatcherPrivate *p, const WordID wordID, const WordID fieldID, std::vector<string> &result) {
     IndexMatches im;
-    RevIndIterator it = p->reverseIndex.find(fieldName);
+    RevIndIterator it = p->reverseIndex.find(fieldID);
     if(it == p->reverseIndex.end())
         return;
     map<WordID, set<string> > &rind = it->second;
@@ -147,7 +149,7 @@ static void gatherMatchedDocuments(MatcherPrivate *p,  map<WordID, MatchErrorMap
     for(MatchIndIterator it = bestIndexMatches.begin(); it != bestIndexMatches.end(); it++) {
         for(MatchIterator mIt = it->second.begin(); mIt != it->second.end(); mIt++) {
             vector<string> tmp;
-            findDocuments(p, mIt->first, p->store.getWord(it->first), tmp);
+            findDocuments(p, mIt->first, it->first, tmp);
             debugMessage("Exact searched \"%s\" in field \"%s\", which was found in %ld documents.\n",
                     p->store.getWord(mIt->first).asUtf8(),
                     p->store.getWord(it->first).asUtf8(), tmp.size());
@@ -198,7 +200,6 @@ void Matcher::buildIndexes(const Corpus &c) {
         for(size_t ti=0; ti < textNames.size(); ti++) {
             const Word &fieldName = textNames[ti];
             const WordID fieldID = p->store.getID(fieldName);
-            //const WordID fieldID = p->store.getID(fieldName);
             const WordList &text = d.getText(fieldName);
             for(size_t wi=0; wi<text.size(); wi++) {
                 const Word &word = text[wi];
@@ -206,7 +207,7 @@ void Matcher::buildIndexes(const Corpus &c) {
                 p->stats.wordProcessed(wordID);
                 addToIndex(word, wordID, fieldID);
                 p->stats.addedWordToIndex(wordID, fieldName);
-                addToReverseIndex(wordID, fieldName, &d);
+                addToReverseIndex(wordID, fieldID, &d);
             }
         }
     }
@@ -224,12 +225,12 @@ void Matcher::addToIndex(const Word &word, const WordID wordID, const WordID ind
     target->insertWord(word, wordID);
 }
 
-void Matcher::addToReverseIndex(const WordID wordID, const Word &indexName, const Document *d) {
-    RevIndIterator rit = p->reverseIndex.find(indexName);
+void Matcher::addToReverseIndex(const WordID wordID, const WordID indexID, const Document *d) {
+    RevIndIterator rit = p->reverseIndex.find(indexID);
     if(rit == p->reverseIndex.end()) {
         map<WordID, set<string> > tmp;
-        p->reverseIndex[indexName] = tmp;
-        rit = p->reverseIndex.find(indexName);
+        p->reverseIndex[indexID] = tmp;
+        rit = p->reverseIndex.find(indexID);
     }
     map<WordID, set<string> > &indexRind = rit->second;
     RevIterator revIt = indexRind.find(wordID);
