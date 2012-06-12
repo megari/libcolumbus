@@ -207,9 +207,9 @@ void Matcher::buildIndexes(const Corpus &c) {
             for(size_t wi=0; wi<text.size(); wi++) {
                 const Word &word = text[wi];
                 const WordID wordID = p->store.getID(word);
-                p->stats.wordProcessed(word);
+                p->stats.wordProcessed(wordID);
                 addToIndex(word, wordID, fieldName);
-                p->stats.addedWordToIndex(word, fieldName);
+                p->stats.addedWordToIndex(wordID, fieldName);
                 addToReverseIndex(word, fieldName, &d);
             }
         }

@@ -21,7 +21,7 @@
 using namespace std;
 
 struct MatcherStatisticsPrivate {
-    map<Word, size_t> totalWordCounts;
+    map<WordID, size_t> totalWordCounts;
 };
 
 MatcherStatistics::MatcherStatistics() {
@@ -33,8 +33,8 @@ MatcherStatistics::~MatcherStatistics() {
     delete p;
 }
 
-void MatcherStatistics::wordProcessed(const Word &w) {
-    map<Word, size_t>::iterator it = p->totalWordCounts.find(w);
+void MatcherStatistics::wordProcessed(const WordID w) {
+    map<WordID, size_t>::iterator it = p->totalWordCounts.find(w);
     if(it == p->totalWordCounts.end()) {
         p->totalWordCounts[w] = 1;
     } else {
@@ -42,8 +42,8 @@ void MatcherStatistics::wordProcessed(const Word &w) {
     }
 }
 
-size_t MatcherStatistics::getTotalWordCount(const Word &w) const {
-    map<Word, size_t>::iterator it = p->totalWordCounts.find(w);
+size_t MatcherStatistics::getTotalWordCount(const WordID w) const {
+    map<WordID, size_t>::iterator it = p->totalWordCounts.find(w);
     if(it == p->totalWordCounts.end()) {
         return 0;
     } else {
@@ -52,6 +52,6 @@ size_t MatcherStatistics::getTotalWordCount(const Word &w) const {
 
 }
 
-void MatcherStatistics::addedWordToIndex(const Word &word, const Word &fieldName) {
+void MatcherStatistics::addedWordToIndex(const WordID word, const Word &fieldName) {
     // Doesn't do anything yet.
 }

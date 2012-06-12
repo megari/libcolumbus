@@ -17,6 +17,8 @@
 #ifndef MATCHERSTATISTICS_HH_
 #define MATCHERSTATISTICS_HH_
 
+#include "ColumbusCore.hh"
+
 struct MatcherStatisticsPrivate;
 class Word;
 
@@ -29,9 +31,9 @@ public:
     MatcherStatistics();
     ~MatcherStatistics();
 
-    void wordProcessed(const Word &w);
-    size_t getTotalWordCount(const Word &w) const;
-    void addedWordToIndex(const Word &word, const Word &fieldName);
+    void wordProcessed(const WordID w);
+    size_t getTotalWordCount(const WordID w) const;
+    void addedWordToIndex(const WordID word, const Word &fieldName);
 };
 
 #endif /* MATCHERSTATISTICS_HH_ */
