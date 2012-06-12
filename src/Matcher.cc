@@ -37,7 +37,7 @@ using namespace std;
 
 struct MatcherPrivate {
     map<Word, LevenshteinIndex*> indexes;
-    map<Word, map<Word, set<string> > > reverseIndex; // Index name, word, documents.
+    map<Word, map<WordID, set<string> > > reverseIndex; // Index name, word, documents.
     ErrorValues e;
     IndexWeights weights;
     MatcherStatistics stats;
@@ -45,8 +45,8 @@ struct MatcherPrivate {
 };
 
 typedef map<Word, LevenshteinIndex*>::iterator IndIterator;
-typedef map<Word, map<Word, set<string> > >::iterator RevIndIterator;
-typedef map<Word, set<string> >::iterator RevIterator;
+typedef map<Word, map<WordID, set<string> > >::iterator RevIndIterator;
+typedef map<WordID, set<string> >::iterator RevIterator;
 
 typedef map<Word, int> MatchErrorMap;
 
@@ -115,13 +115,13 @@ static double calculateRelevancy(MatcherPrivate *p, const Word &w, const Word &i
     return errorMultiplier*frequencyMultiplier*indexWeightMultiplier;
 }
 
-static void findDocuments(MatcherPrivate *p, const Word &word, const Word &fieldName, std::vector<string> &result) {
+static void findDocuments(MatcherPrivate *p, const WordID wordID, const Word &fieldName, std::vector<string> &result) {
     IndexMatches im;
     RevIndIterator it = p->reverseIndex.find(fieldName);
     if(it == p->reverseIndex.end())
         return;
-    map<Word, set<string> > &rind = it->second;
-    RevIterator s = rind.find(word);
+    map<WordID, set<string> > &rind = it->second;
+    RevIterator s = rind.find(wordID);
     if(s == rind.end())
         return;
     set<string> &docSet = s->second;
@@ -153,7 +153,7 @@ static void gatherMatchedDocuments(MatcherPrivate *p,  map<Word, MatchErrorMap> 
     for(MatchIndIterator it = bestIndexMatches.begin(); it != bestIndexMatches.end(); it++) {
         for(MatchIterator mIt = it->second.begin(); mIt != it->second.end(); mIt++) {
             vector<string> tmp;
-            findDocuments(p, mIt->first, it->first, tmp);
+            findDocuments(p, p->store.getID(mIt->first), it->first, tmp);
             debugMessage("Exact searched \"%s\" in field \"%s\", which was found in %ld documents.\n",
                     mIt->first.asUtf8(), it->first.asUtf8(), tmp.size());
             for(size_t i=0; i<tmp.size(); i++) {
@@ -210,7 +210,7 @@ void Matcher::buildIndexes(const Corpus &c) {
                 p->stats.wordProcessed(wordID);
                 addToIndex(word, wordID, fieldName);
                 p->stats.addedWordToIndex(wordID, fieldName);
-                addToReverseIndex(word, fieldName, &d);
+                addToReverseIndex(wordID, fieldName, &d);
             }
         }
     }
@@ -228,19 +228,19 @@ void Matcher::addToIndex(const Word &word, WordID wordID, const Word &indexName)
     target->insertWord(word, wordID);
 }
 
-void Matcher::addToReverseIndex(const Word &word, const Word &indexName, const Document *d) {
+void Matcher::addToReverseIndex(const WordID wordID, const Word &indexName, const Document *d) {
     RevIndIterator rit = p->reverseIndex.find(indexName);
     if(rit == p->reverseIndex.end()) {
-        map<Word, set<string> > tmp;
+        map<WordID, set<string> > tmp;
         p->reverseIndex[indexName] = tmp;
         rit = p->reverseIndex.find(indexName);
     }
-    map<Word, set<string> > &indexRind = rit->second;
-    RevIterator revIt = indexRind.find(word);
+    map<WordID, set<string> > &indexRind = rit->second;
+    RevIterator revIt = indexRind.find(wordID);
     if(revIt == indexRind.end()) {
         set<string> tmp;
         tmp.insert(d->getID());
-        indexRind[word] = tmp;
+        indexRind[wordID] = tmp;
     } else {
         string tmp = d->getID();
         revIt->second.insert(tmp);

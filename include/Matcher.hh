@@ -34,7 +34,7 @@ private:
 
     void buildIndexes(const Corpus &c);
     void addToIndex(const Word &word, WordID wordID, const Word &indexName);
-    void addToReverseIndex(const Word &word, const Word &indexName, const Document *d);
+    void addToReverseIndex(const WordID wordID, const Word &indexName, const Document *d);
     void matchWithRelevancy(const WordList &query, const bool dynamicError, MatchResults &matchedDocuments);
 
 public:
