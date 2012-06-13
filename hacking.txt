@@ -5,4 +5,29 @@ Data model
 
 The Columbus library has a very simple view of the world.  The basic
 unit of data it deals with is the Corpus. A corpus is a collection of
-Documents. A document is a named collection of texts.
+Documents. A document is a named collection of texts and an
+ID. Columbus indexes these texts and allows the user to search through
+them efficiently.
+
+To make thing more clear, let's examine a simple music database. In it
+every song is a document. A corpus with three songs could look like
+this:
+
+song0
+  Author: Britney Spears
+  Name: Toxic
+  Album: In the Zone
+
+song1
+  Author: Micheal Jackson
+  Name: Billie Jean
+  Album: Thriller
+
+song2
+  Author: The Beatles
+  Name: Lucy in the Sky with Diamonds
+  Album: Yellow Submarine Soundtrack
+
+Noticed the typo? That's intentional. Very, very few real world data
+sources are clean. Errors like this happen all the time, and it is the
+job of the search engine to deal with them.
