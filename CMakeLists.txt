@@ -55,6 +55,12 @@ find_library(ICONV_LIBRARIES iconv)
 include(FindPkgConfig)
 pkg_search_module(GTK3 gtk+-3.0)
 
+if(GTK3_FOUND)
+  message(STATUS "GTK+ 3.0 found, building GUI apps.")
+else()
+  message(STATUS "GTK+ 3.0 not found, not building GUI apps.")
+endif()
+
 include_directories(include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
