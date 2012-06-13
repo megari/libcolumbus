@@ -1,0 +1,8 @@
+A quick overview of the internals of Columbus
+
+
+Data model
+
+The Columbus library has a very simple view of the world.  The basic
+unit of data it deals with is the Corpus. A corpus is a collection of
+Documents. A document is a named collection of texts.
