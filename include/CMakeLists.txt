@@ -3,9 +3,10 @@ install(FILES
 ${CMAKE_CURRENT_BINARY_DIR}/ColumbusCore.hh
 Matcher.hh
 columbus.h
-WordList.hh
 Word.hh
 ErrorValues.hh
+Document.hh
+ColumbusHelpers.hh
 DESTINATION include/columbus)
 
 # Build and install a pkg-config file
