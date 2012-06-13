@@ -28,9 +28,9 @@ song2
   Name: Lucy in the Sky with Diamonds
   Album: Yellow Submarine Soundtrack
 
-Noticed the typo? That's intentional. Very, very few real world data
-sources are clean. Errors like this happen all the time, and it is the
-job of the search engine to deal with them.
+Did you notice the typo? That's intentional. Very, very few real world
+data sources are clean. Errors like this happen all the time, and it
+is the job of the search engine to deal with them.
 
 
 Error tolerant word matching
