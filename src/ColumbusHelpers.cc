@@ -67,15 +67,17 @@ Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize) {
     }
     bytesWritten = outBytesOriginal - outBytes;
     resultStringSize = bytesWritten/sizeof(Letter);
+
     if(bytesWritten < inputLen) {
         // Shrink allocated memory size to exactly the produced string.
-        char *newtxt = new char[bytesWritten + sizeof(Letter)];
-        memcpy(newtxt, txt, bytesWritten*sizeof(Letter));
+        size_t newArraySize = bytesWritten + sizeof(Letter);
+        char *newtxt = new char[newArraySize];
+        memcpy(newtxt, txt, newArraySize);
         delete []txt;
         txt = newtxt;
     }
     Letter* text = reinterpret_cast<Letter*>(txt);
-    text[resultStringSize] = 0; // Null terminated, just in case.
+    text[resultStringSize] = 0; // Null terminated.
     // Now convert all letters to lower case, because we don't care about case difference when matching.
     for(size_t i=0; i<resultStringSize; i++) {
         text[i] = lowerLetter(text[i]);

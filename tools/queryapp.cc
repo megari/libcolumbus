@@ -152,11 +152,9 @@ void build_matcher(app_data &app, const char *dataFile) {
     app.m = new Matcher();
     // Build Corpus.
     dataReadStart = hiresTimestamp();
-    printf("Foofoo\n");
     while(getline(ifile, line)) {
         if(line.size() == 0)
             continue;
-        printf("%s\n", line.c_str());
         Document d(line.c_str());
         d.addText(field, line.c_str());
         c->addDocument(d);
