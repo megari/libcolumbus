@@ -48,7 +48,7 @@ Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize) {
     }
 
     unsigned int inputLen = strlen((const char*)(utf8Text));
-    txt = new char[(inputLen+1)*sizeof(Letter)];
+    txt = (char*)new Letter[inputLen+1];
     tmp = strdup((const char*)(utf8Text)); // Iconv should take a const pointer but does not. Protect against it screwing up.
     assert(tmp);
     inBytes = inputLen;
