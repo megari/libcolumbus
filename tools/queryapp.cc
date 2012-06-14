@@ -156,6 +156,9 @@ void build_matcher(app_data &app, const char *dataFile) {
         if(line.size() == 0)
             continue;
         Document d(line.c_str());
+        // Remove possible DOS line ending garbage.
+        if(line[line.size()-2] == '\r')
+            line[line.size()-2] = '\0';
         d.addText(field, line.c_str());
         c->addDocument(d);
         i++;
