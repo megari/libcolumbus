@@ -16,6 +16,10 @@ if(${full_warnings})
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic")
 endif()
 
+if(${debug_messages})
+  add_definitions(-DDEBUG_MESSAGES)
+endif()
+
 set(SO_VERSION_MAJOR "0")
 set(SO_VERSION_MINOR "2")
 set(SO_VERSION_PATCH "0")
@@ -63,10 +67,6 @@ endif()
 
 include_directories(include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
-
-if(${debug_messages})
-  add_definitions(-DDEBUG_MESSAGES)
-endif()
 
 # Remove this once we go full C++1x and the compiler will shut up.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-variadic-macros")
