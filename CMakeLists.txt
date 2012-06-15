@@ -17,14 +17,14 @@ if(${full_warnings})
 endif()
 
 set(SO_VERSION_MAJOR "0")
-set(SO_VERSION_MINOR "1")
+set(SO_VERSION_MINOR "2")
 set(SO_VERSION_PATCH "0")
 
 set(SO_VERSION "${SO_VERSION_MAJOR}.${SO_VERSION_MINOR}.${SO_VERSION_PATCH}")
 
 # Increment this manually whenever breaking ABI.
 # http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html#AEN135
-set(ABI_VERSION 0)
+set(ABI_VERSION 1)
 
 # Should be lib64 on some platforms.
 set(LIBDIR "lib")
