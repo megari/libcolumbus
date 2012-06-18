@@ -20,10 +20,12 @@
 #include "ColumbusCore.hh"
 
 struct ErrorValuesPrivate;
+class Word;
 
 class ErrorValues {
 private:
     static const int DEFAULT_ERROR = 100;
+    static const int DEFAULT_GROUP_ERROR = 30;
 
     int insertion_error;
     int deletion_error;
@@ -43,8 +45,11 @@ public:
     int getSubstituteError(Letter l1, Letter l2) const;
 
     static int getDefaultError() { return ErrorValues::DEFAULT_ERROR; }
+    static int getDefaultGroupError() { return ErrorValues::DEFAULT_GROUP_ERROR; }
 
     void setError(Letter l1, Letter l2, int error);
+    void setGroupError(const Word &groupLetters, int error);
+    void addDefaultAccents();
     void clearErrors();
 };
 

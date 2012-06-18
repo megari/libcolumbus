@@ -23,6 +23,10 @@ add_executable(custom_error CustomErrorTest.cc)
 target_link_libraries(custom_error columbus)
 add_test(custom_error custom_error)
 
+add_executable(error_values ErrorValuesTest.cc)
+target_link_libraries(error_values columbus)
+add_test(error_values error_values)
+
 add_executable(word WordTest.cc)
 target_link_libraries(word columbus)
 add_test(word word)
