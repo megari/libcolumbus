@@ -15,13 +15,17 @@
  */
 
 #include <map>
+#include <vector>
+#include <stdexcept>
 #include "ErrorValues.hh"
 #include "Word.hh"
 
 using namespace std;
 
 struct ErrorValuesPrivate {
-    std::map<pair<Letter, Letter>, int> errors;
+    map<pair<Letter, Letter>, int> singleErrors;
+    map<Letter, size_t> groupMap;
+    vector<unsigned int> groupErrors;
 };
 
 ErrorValues::ErrorValues() :
@@ -43,7 +47,7 @@ void ErrorValues::setError(Letter l1, Letter l2, int error) {
         l2 = tmp;
     }
     pair<Letter, Letter> in(l1, l2);
-    p->errors[in] = error;
+    p->singleErrors[in] = error;
 }
 
 int ErrorValues::getSubstituteError(Letter l1, Letter l2) const {
@@ -55,18 +59,37 @@ int ErrorValues::getSubstituteError(Letter l1, Letter l2) const {
         l2 = tmp;
     }
     pair<Letter, Letter> in(l1, l2);
-    std::map<pair<Letter, Letter>, int>::iterator f = p->errors.find(in);
-    if(f == p->errors.end())
-        return substitute_error;
-    return f->second;
+    std::map<pair<Letter, Letter>, int>::iterator f = p->singleErrors.find(in);
+    if(f != p->singleErrors.end())
+        return f->second;
+
+    // Are the letters in the same error group?
+    map<Letter, size_t>::const_iterator g1 = p->groupMap.find(l1);
+    if(g1 != p->groupMap.end()) {
+        map<Letter, size_t>::const_iterator g2 = p->groupMap.find(l2);
+        if(g2 != p->groupMap.end()) {
+            if(g1->second == g2->second) {
+                return p->groupErrors[g1->second];
+            }
+        }
+    }
+    return substitute_error;
 }
 
 void ErrorValues::clearErrors() {
-    p->errors.clear();
+    p->singleErrors.clear();
 }
 
 void ErrorValues::setGroupError(const Word &groupLetters, int error) {
-
+    size_t newGroupID = p->groupErrors.size();
+    p->groupErrors.push_back(error);
+    for(size_t i = 0; i < groupLetters.length(); i++) {
+        Letter curLetter = groupLetters[i];
+        if(p->groupMap.find(curLetter) != p->groupMap.end()) {
+            throw runtime_error("Tried to add letter to two different error groups.");
+        }
+        p->groupMap[curLetter] = newGroupID;
+    }
 }
 
 void ErrorValues::addDefaultAccents() {

@@ -20,7 +20,7 @@
 
 void testGroupError() {
     ErrorValues ev;
-    Letter e = 69;
+    Letter e = 101;
     Letter eacute = 0xe9;
     Letter ebreve = 0x115;
 
