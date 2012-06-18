@@ -88,9 +88,11 @@ void ErrorValues::setGroupError(const Word &groupLetters, int error) {
     for(size_t i = 0; i < groupLetters.length(); i++) {
         Letter curLetter = groupLetters[i];
         if(isInGroup(curLetter)) {
-            throw runtime_error("Tried to add letter to two different error groups.");
+            if(p->groupMap.find(curLetter)->second != newGroupID)
+                throw runtime_error("Tried to add letter to two different error groups.");
+        } else {
+            p->groupMap[curLetter] = newGroupID;
         }
-        p->groupMap[curLetter] = newGroupID;
     }
     debugMessage("Added error group: %s\n", groupLetters.asUtf8());
 }
