@@ -18,6 +18,24 @@
 #include "Word.hh"
 #include <cassert>
 
+void testError() {
+    int smallError = 1;
+    Letter l1 = 16;
+    Letter l2 = 17;
+    ErrorValues ev;
+    ErrorValues ev2;
+
+    assert(ev.getSubstituteError(l1, l2) == ErrorValues::getDefaultError());
+    ev.setError(l1, l2, smallError);
+    assert(ev.getSubstituteError(l1, l2) == smallError);
+    assert(ev.getSubstituteError(l2, l1) == smallError);
+
+    assert(ev2.getSubstituteError(l2, l1) == ErrorValues::getDefaultError());
+    ev2.setError(l2, l1, smallError);
+    assert(ev2.getSubstituteError(l1, l2) == smallError);
+    assert(ev2.getSubstituteError(l2, l1) == smallError);
+}
+
 void testGroupError() {
     ErrorValues ev;
     Letter e = 101;
@@ -33,6 +51,7 @@ void testGroupError() {
 }
 
 int main(int argc, char **argv) {
+    testError();
     testGroupError();
     return 0;
 }
