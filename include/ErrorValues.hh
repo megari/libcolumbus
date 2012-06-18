@@ -53,6 +53,7 @@ public:
     void setGroupError(const Word &groupLetters, int error);
     void addLatinAccents();
     void addKeyboardErrors();
+    void addStandardErrors() { addLatinAccents(); addKeyboardErrors(); }
     bool isInGroup(Letter l);
     void clearErrors();
 };

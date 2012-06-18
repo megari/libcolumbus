@@ -81,7 +81,7 @@ void runTest(vector<Word> &a, int querySize) {
     buildTime = buildEnd - buildStart;
     plainQueryTime = queryEnd - queryStart;
 
-    e.addLatinAccents();
+    e.addStandardErrors();
     queryStart = hiresTimestamp();
     runQueries(querySize, defaultError, a, e, ind, matches);
     queryEnd = hiresTimestamp();
