@@ -70,9 +70,22 @@ void testGroupError() {
     assert(ev.getSubstituteError(eacute, aacute) == ErrorValues::getDefaultError());
 }
 
+void testKeyboardErrors() {
+    ErrorValues ev;
+    const int defaultError = ErrorValues::getDefaultError();
+    const int typoError = ErrorValues::getDefaultTypoError();
+
+    assert(ev.getSubstituteError('q', 'a') == defaultError);
+
+    ev.addKeyboardErrors();
+    assert(ev.getSubstituteError('q', 'a') == typoError);
+    assert(ev.getSubstituteError('w', 'a') == typoError);
+}
+
 int main(int argc, char **argv) {
     testError();
     testGroupError();
+    testKeyboardErrors();
     return 0;
 }
 

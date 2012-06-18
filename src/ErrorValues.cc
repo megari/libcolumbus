@@ -124,3 +124,30 @@ void ErrorValues::addLatinAccents() {
         setGroupError(group, getDefaultGroupError());
     }
 }
+
+void ErrorValues::addKeyboardErrors() {
+    int error = getDefaultTypoError();
+    // Yes, this is a Finnish keyboard.
+    const Letter line1[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '+'};
+    const Letter line2[] = {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 0xe5};
+    const Letter line3[] = {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 0xf6, 0xe4, '\''};
+    const Letter line4[] = {'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '-'};
+
+    const Letter *keyboard_layout[4] = {line1, line2, line3, line4};
+    const size_t lineLens[] = {11, 11, 12, 11};
+    for(size_t i = 0; i < 3; i++) {
+        const Letter *cur_row = keyboard_layout[i];
+        const Letter *next_row = keyboard_layout[i+1];
+        for(size_t j1=0; j1 < lineLens[i]; j1++) {
+            Letter l1 = cur_row[j1];
+            if(j1 + 1 < lineLens[i])
+                setError(l1, cur_row[j1+1], error);
+            if(j1 > 0 && j1-1 < lineLens[i+1])
+                setError(l1, next_row[j1-1], error);
+            if(j1 < lineLens[i+1])
+                setError(l1, next_row[j1], error);
+        }
+    }
+
+
+}
