@@ -61,32 +61,39 @@ void runQueries(int query_size, const int defaultError, vector<Word> &a, ErrorVa
     }
 }
 
-void runTest(vector<Word> &a, int query_size) {
-    double build_start, build_end, query_start, query_end;
-    double query_time, build_time;
+void runTest(vector<Word> &a, int querySize) {
+    double buildStart, buildEnd, queryStart, queryEnd;
+    double plainQueryTime, fullErrorQueryTime, buildTime;
     LevenshteinIndex ind;
     WordStore store;
     IndexMatches matches;
     ErrorValues e;
     const int defaultError = LevenshteinIndex::getDefaultError();
 
-    build_start = hiresTimestamp();
+    buildStart = hiresTimestamp();
     for(size_t i=0; i < a.size(); i++)
         ind.insertWord(a[i], store.getID(a[i]));
-    build_end = hiresTimestamp();
+    buildEnd = hiresTimestamp();
 
-    query_start = hiresTimestamp();
-    runQueries(query_size, defaultError, a, e, ind, matches);
-    query_end = hiresTimestamp();
-    build_time = build_end - build_start;
-    query_time = query_end - query_start;
-    printf("Index built in %f seconds. Words per second %.2f.\n", build_time, a.size()/build_time);
-    printf("Queries done in %f seconds. Queries per second %.2f.\n", query_time, query_size/query_time);
+    queryStart = hiresTimestamp();
+    runQueries(querySize, defaultError, a, e, ind, matches);
+    queryEnd = hiresTimestamp();
+    buildTime = buildEnd - buildStart;
+    plainQueryTime = queryEnd - queryStart;
+
+    e.addLatinAccents();
+    queryStart = hiresTimestamp();
+    runQueries(querySize, defaultError, a, e, ind, matches);
+    queryEnd = hiresTimestamp();
+    fullErrorQueryTime = queryEnd - queryStart;
+    printf("Index built in %f seconds. Words per second %.2f.\n", buildTime, a.size()/buildTime);
+    printf("Simple queries done in %f seconds. Queries per second %.2f.\n", plainQueryTime, querySize/plainQueryTime);
+    printf("Heavy queries done in %f seconds. Queries per second %.2f.\n", fullErrorQueryTime, querySize/fullErrorQueryTime);
 }
 
 int main(int argc, char **argv) {
     vector<Word> a;
-    int query_size;
+    int querySize;
     const char *ifile;
 
     if(argc == 1) {
@@ -97,10 +104,10 @@ int main(int argc, char **argv) {
     readData(a, ifile);
     printf("Read in %ld words.\n", a.size());
     if(argc > 2)
-        query_size = atoi(argv[2]);
+        querySize = atoi(argv[2]);
     else
-        query_size = a.size();
-    printf("Querying %d elements.\n", query_size);
-    runTest(a, query_size);
+        querySize = a.size();
+    printf("Querying %d elements.\n", querySize);
+    runTest(a, querySize);
     return 0;
 }
