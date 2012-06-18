@@ -1,3 +1,3 @@
 install(FILES
-esses.txt
+latinAccentedLetterGroups.txt
 DESTINATION share/columbus)

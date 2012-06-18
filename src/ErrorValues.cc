@@ -87,17 +87,20 @@ void ErrorValues::setGroupError(const Word &groupLetters, int error) {
     p->groupErrors.push_back(error);
     for(size_t i = 0; i < groupLetters.length(); i++) {
         Letter curLetter = groupLetters[i];
-        if(p->groupMap.find(curLetter) != p->groupMap.end()) {
+        if(isInGroup(curLetter)) {
             throw runtime_error("Tried to add letter to two different error groups.");
         }
         p->groupMap[curLetter] = newGroupID;
     }
+    debugMessage("Added error group: %s\n", groupLetters.asUtf8());
 }
 
-#include<cstdio>
+bool ErrorValues::isInGroup(Letter l) {
+    return p->groupMap.find(l) != p->groupMap.end();
+}
 
 void ErrorValues::addLatinAccents() {
-    const char *baseName = "esses.txt";
+    const char *baseName = "latinAccentedLetterGroups.txt";
     string dataFile = findDataFile(baseName);
     string line;
     if(dataFile.length() == 0) {
@@ -111,7 +114,10 @@ void ErrorValues::addLatinAccents() {
         s += dataFile;
         throw runtime_error(s);
     }
-    getline(ifile, line);
-    Word esWord(line.c_str());
-    setGroupError(esWord, getDefaultGroupError());
+    while(getline(ifile, line)) {
+        Word group(line.c_str());
+        if(group.length() == 0)
+            continue;
+        setGroupError(group, getDefaultGroupError());
+    }
 }

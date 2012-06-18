@@ -38,16 +38,36 @@ void testError() {
 
 void testGroupError() {
     ErrorValues ev;
-    Letter e = 101;
+    Letter e = 'e'; // These must be in lower case.
     Letter eacute = 0xe9;
     Letter ebreve = 0x115;
+    Letter a = 'a';
+    Letter aacute = 0xe1;
+    Letter abreve = 0x103;
 
     assert(ev.getSubstituteError(e, eacute) == ErrorValues::getDefaultError());
+    assert(ev.getSubstituteError(a, aacute) == ErrorValues::getDefaultError());
+    assert(ev.getSubstituteError(e, aacute) == ErrorValues::getDefaultError());
+
     ev.addLatinAccents();
+    assert(ev.isInGroup(e));
+    assert(ev.isInGroup(eacute));
+    assert(ev.isInGroup(ebreve));
+    assert(ev.isInGroup(a));
+    assert(ev.isInGroup(aacute));
+    assert(ev.isInGroup(abreve));
+
+
     assert(ev.getSubstituteError(e, eacute) == ErrorValues::getDefaultGroupError());
     assert(ev.getSubstituteError(eacute, e) == ErrorValues::getDefaultGroupError());
     assert(ev.getSubstituteError(eacute, ebreve) == ErrorValues::getDefaultGroupError());
     assert(ev.getSubstituteError(e, ebreve) == ErrorValues::getDefaultGroupError());
+
+    assert(ev.getSubstituteError(a, e) == ErrorValues::getDefaultError());
+    assert(ev.getSubstituteError(a, aacute) == ErrorValues::getDefaultGroupError());
+    assert(ev.getSubstituteError(abreve, aacute) == ErrorValues::getDefaultGroupError());
+
+    assert(ev.getSubstituteError(eacute, aacute) == ErrorValues::getDefaultError());
 }
 
 int main(int argc, char **argv) {
