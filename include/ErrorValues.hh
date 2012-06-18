@@ -49,7 +49,7 @@ public:
 
     void setError(Letter l1, Letter l2, int error);
     void setGroupError(const Word &groupLetters, int error);
-    void addDefaultAccents();
+    void addLatinAccents();
     void clearErrors();
 };
 

@@ -15,6 +15,8 @@
 
 #define COLUMBUS_VERSION_STRING "${SO_VERSION}"
 #define COLUMBUS_ABI_VERSION ${ABI_VERSION}
+#define COLUMBUS_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}"
+#define COLUMBUS_DATADIR COLUMBUS_INSTALL_PREFIX "/share/columbus/"
 
 #define COL_ASSERT(value) if(!(value)) exit(127);
 
@@ -23,5 +25,6 @@ typedef ${LETTER_TYPE} Letter;
 
 typedef size_t WordID;
 #define INVALID_WORDCODE (std::numeric_limits<std::size_t>::max())
+
 
 #endif

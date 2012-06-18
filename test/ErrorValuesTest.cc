@@ -43,7 +43,7 @@ void testGroupError() {
     Letter ebreve = 0x115;
 
     assert(ev.getSubstituteError(e, eacute) == ErrorValues::getDefaultError());
-    ev.addDefaultAccents();
+    ev.addLatinAccents();
     assert(ev.getSubstituteError(e, eacute) == ErrorValues::getDefaultGroupError());
     assert(ev.getSubstituteError(eacute, e) == ErrorValues::getDefaultGroupError());
     assert(ev.getSubstituteError(eacute, ebreve) == ErrorValues::getDefaultGroupError());
