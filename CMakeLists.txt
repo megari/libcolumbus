@@ -77,6 +77,7 @@ find_library(icu2 icudata)
 add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(tools)
+add_subdirectory(share)
 
 if(${enable_tests})
   enable_testing()

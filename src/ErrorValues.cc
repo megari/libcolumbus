@@ -17,8 +17,10 @@
 #include <map>
 #include <vector>
 #include <stdexcept>
+#include <fstream>
 #include "ErrorValues.hh"
 #include "Word.hh"
+#include "ColumbusSlow.hh"
 
 using namespace std;
 
@@ -92,14 +94,24 @@ void ErrorValues::setGroupError(const Word &groupLetters, int error) {
     }
 }
 
+#include<cstdio>
+
 void ErrorValues::addLatinAccents() {
-    const unsigned char esses[] =
-    {0x65, 0xc3, 0xa9, 0xc3, 0xa8, 0xc4, 0x95, 0xc3, 0xaa, 0xe1, 0xba, 0xbf, 0xe1, 0xbb, 0x81, 0xe1,
-     0xbb, 0x85, 0xe1, 0xbb, 0x83, 0xc4, 0x9b, 0xc3, 0xab, 0xe1, 0xba, 0xbd, 0xc4, 0x97, 0xc8, 0xa9,
-     0xe1, 0xb8, 0x9d, 0xc4, 0x99, 0xc4, 0x93, 0xe1, 0xb8, 0x97, 0xe1, 0xb8, 0x95, 0xe1, 0xba, 0xbb,
-     0xc8, 0x85, 0xc8, 0x87, 0xe1, 0xba, 0xb9, 0xe1, 0xbb, 0x87, 0xe1, 0xb8, 0x99, 0xe1, 0xb8, 0x9b,
-     0xc9, 0x87, 0
-    };
-    Word esWord((const char*) esses);
+    const char *baseName = "esses.txt";
+    string dataFile = findDataFile(baseName);
+    string line;
+    if(dataFile.length() == 0) {
+        string s = "Could not find file ";
+        s += baseName;
+        throw runtime_error(s);
+    }
+    ifstream ifile(dataFile.c_str());
+    if(ifile.fail()) {
+        string s = "Could not open data file ";
+        s += dataFile;
+        throw runtime_error(s);
+    }
+    getline(ifile, line);
+    Word esWord(line.c_str());
     setGroupError(esWord, getDefaultGroupError());
 }

@@ -5,6 +5,7 @@ IndexMatches.cc
 ErrorValues.cc
 Word.cc
 ColumbusHelpers.cc
+ColumbusSlow.cc
 WordList.cc
 Document.cc
 Corpus.cc
