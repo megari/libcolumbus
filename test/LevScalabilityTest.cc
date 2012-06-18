@@ -50,29 +50,41 @@ void readData(vector<Word> &a, const char *ifilename) {
     fclose(f);
 }
 
-void runTest(vector<Word> &a, int query_size, double *build_start, double *build_end, double *query_start, double *query_end) {
+/*
+ * Separate function so it stands out in Callgrind.
+ */
+
+void runQueries(int query_size, const int defaultError, vector<Word> &a, ErrorValues &e, LevenshteinIndex &ind, IndexMatches &matches) {
+    for(size_t i=0; i < (size_t)query_size; i++) {
+        ind.findWords(a[i], e, 2*defaultError, matches);
+        matches.clear();
+    }
+}
+
+void runTest(vector<Word> &a, int query_size) {
+    double build_start, build_end, query_start, query_end;
+    double query_time, build_time;
     LevenshteinIndex ind;
     WordStore store;
     IndexMatches matches;
     ErrorValues e;
     const int defaultError = LevenshteinIndex::getDefaultError();
 
-    *build_start = hiresTimestamp();
+    build_start = hiresTimestamp();
     for(size_t i=0; i < a.size(); i++)
         ind.insertWord(a[i], store.getID(a[i]));
-    *build_end = hiresTimestamp();
+    build_end = hiresTimestamp();
 
-    *query_start = hiresTimestamp();
-    for(size_t i=0; i < (size_t)query_size; i++) {
-        ind.findWords(a[i], e, 2*defaultError, matches);
-        matches.clear();
-    }
-    *query_end = hiresTimestamp();
+    query_start = hiresTimestamp();
+    runQueries(query_size, defaultError, a, e, ind, matches);
+    query_end = hiresTimestamp();
+    build_time = build_end - build_start;
+    query_time = query_end - query_start;
+    printf("Index built in %f seconds. Words per second %.2f.\n", build_time, a.size()/build_time);
+    printf("Queries done in %f seconds. Queries per second %.2f.\n", query_time, query_size/query_time);
 }
 
 int main(int argc, char **argv) {
-    double build_start, build_end, query_start, query_end;
-    double query_time, build_time;
     vector<Word> a;
     int query_size;
     const char *ifile;
@@ -89,10 +101,6 @@ int main(int argc, char **argv) {
     else
         query_size = a.size();
     printf("Querying %d elements.\n", query_size);
-    runTest(a, query_size, &build_start, &build_end, &query_start, &query_end);
-    build_time = build_end - build_start;
-    query_time = query_end - query_start;
-    printf("Index built in %f seconds. Words per second %.2f.\n", build_time, a.size()/build_time);
-    printf("Queries done in %f seconds. Queries per second %.2f.\n", query_time, query_size/query_time);
+    runTest(a, query_size);
     return 0;
 }
