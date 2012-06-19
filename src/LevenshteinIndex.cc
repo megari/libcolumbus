@@ -86,7 +86,7 @@ LevenshteinIndex::LevenshteinIndex() {
     p = new LevenshteinIndexPrivate();
     p->root = new TrieNode();
     p->root->parent = 0;
-    p->root->currentWord = INVALID_WORDCODE;
+    p->root->currentWord = INVALID_WORDID;
     p->maxCount = 0;
 }
 
@@ -132,7 +132,7 @@ void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word, const WordID
             pair<Letter, TrieNode*> n;
             c = new TrieNode();
             c->parent = node;
-            c->currentWord = INVALID_WORDCODE;
+            c->currentWord = INVALID_WORDID;
             n.first = l;
             n.second = c;
             node->children.push_back(n);
@@ -144,7 +144,7 @@ void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word, const WordID
         node = c;
         i++;
     }
-    if(node->currentWord == INVALID_WORDCODE) {
+    if(node->currentWord == INVALID_WORDID) {
         node->currentWord = wordID;
         p->numWords++;
     }
@@ -171,7 +171,7 @@ bool LevenshteinIndex::hasWord(const Word &word) const {
         i++;
     }
 
-    if(node->currentWord != INVALID_WORDCODE) {
+    if(node->currentWord != INVALID_WORDID) {
          //assert(node->current_word == word); FIXME, re-enable this.
          return true;
      }
@@ -211,7 +211,7 @@ void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const 
     }
 
     // Error row evaluated. Now check if a word was found and continue recursively.
-    if(currentRow->totalError() <= max_error && node->currentWord != INVALID_WORDCODE) {
+    if(currentRow->totalError() <= max_error && node->currentWord != INVALID_WORDID) {
         matches.addMatch(query, node->currentWord, currentRow->totalError());
     }
     if(currentRow->minError() <= max_error) {

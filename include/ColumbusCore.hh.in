@@ -51,7 +51,10 @@ typedef ${LETTER_TYPE} Letter;
 #define INTERNAL_ENCODING "${INTERNAL_ENCODING}"
 
 typedef size_t WordID;
-#define INVALID_WORDCODE ((size_t)-1)
+#define INVALID_WORDID ((size_t)-1)
+
+typedef size_t DocumentID;
+#define INVALID_DOCID ((size_t)-1)
 
 
 #endif
