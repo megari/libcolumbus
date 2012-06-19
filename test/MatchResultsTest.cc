@@ -23,11 +23,11 @@
 
 void testMatchResult() {
     MatchResults r;
-    const char *w1 = "abc";
+    DocumentID w1 = 0;
     double r1 = 1;
-    const char *w2 = "def";
+    DocumentID w2 = 1;
     double r2 = 2;
-    const char *w3 = "geh";
+    DocumentID w3 = 2;
     double r3 = 0.5;
 
     assert(r.size() == 0);

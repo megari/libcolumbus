@@ -23,21 +23,20 @@
 #include "ColumbusHelpers.hh"
 #include <map>
 #include <stdexcept>
-#include <string>
 
 using namespace std;
 
 struct DocumentPrivate {
-    string id;
+    DocumentID id;
     map<Word, WordList> texts;
 };
 
 typedef map<Word, WordList>::iterator TextIter;
 typedef map<Word, WordList>::const_iterator TextIterC;
 
-Document::Document(const char *id_) {
+Document::Document(DocumentID id) {
     p = new DocumentPrivate();
-    p->id = id_;
+    p->id = id;
 }
 
 Document::Document(const Document& d) {
@@ -72,8 +71,8 @@ size_t Document::fieldCount() const {
     return p->texts.size();
 }
 
-const char* Document::getID() const {
-    return p->id.c_str();
+DocumentID Document::getID() const {
+    return p->id;
 }
 
 void Document::getFieldNames(WordList &list) const {

@@ -24,7 +24,7 @@
 #include <stdexcept>
 
 void testDoc() {
-    const char* docId = "tester";
+    DocumentID docId = 42;
     Document d(docId);
 
     Word w1("abc");
@@ -48,7 +48,7 @@ void testDoc() {
 }
 
 void testIndexNames() {
-    const char * docId = "tester";
+    DocumentID docId = 102;
     Document d(docId);
 
     Word w1("abc");
@@ -98,7 +98,7 @@ void testCounts() {
     Word f2("field2");
     Word f3("field3");
     WordList l1, l2, l3;
-    Document d("testdoc");
+    Document d(2);
 
     l1.addWord(w1);
     l1.addWord(w2);

@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 #include <string>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -40,6 +41,7 @@ struct app_data {
     GtkWidget *matchView;
     GtkWidget *queryTimeLabel;
     GtkWidget *resultCountLabel;
+    vector<string> source;
 };
 
 static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) {
@@ -70,10 +72,10 @@ static void doSearch(GtkWidget *widget, gpointer data) {
     }
     gtk_list_store_clear(app->matchStore);
     for(size_t i=0; i<matches.size(); i++) {
-        const char *title = matches.getDocumentID(i);
+        DocumentID id = matches.getDocumentID(i);
         gtk_list_store_append(app->matchStore, &iter);
         gtk_list_store_set(app->matchStore, &iter,
-                0, title,
+                0, app->source[id].c_str(),
                 1, matches.getRelevancy(i),
                 -1);
     }
@@ -158,12 +160,13 @@ void build_matcher(app_data &app, const char *dataFile) {
     while(getline(ifile, line)) {
         if(line.size() == 0)
             continue;
-        Document d(line.c_str());
         // Remove possible DOS line ending garbage.
         if(line[line.size()-2] == '\r')
             line[line.size()-2] = '\0';
+        Document d(app.source.size());
         d.addText(field, line.c_str());
         c->addDocument(d);
+        app.source.push_back(line);
         i++;
         if(i % batchSize == 0) {
             app.m->index(*c);

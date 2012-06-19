@@ -22,7 +22,6 @@
 #include "Document.hh"
 #include "WordList.hh"
 #include <cassert>
-#include <cstring>
 #include <cstdio>
 
 void testCorpus() {
@@ -31,8 +30,8 @@ void testCorpus() {
     Word w2("def");
     Word w3("test1");
     Word w4("test2");
-    const char *name1 = "first";
-    const char *name2 = "second";
+    DocumentID name1 = 0;
+    DocumentID name2 = 0;
     Word textName("title");
 
     WordList wl1, wl2;
@@ -52,14 +51,14 @@ void testCorpus() {
     c.addDocument(*d2);
     assert(c.size() == 2);
 
-    assert(strcmp(c.getDocument(0).getID(), name1) == 0);
+    assert(c.getDocument(0).getID() == name1);
     const Document &dNew = c.getDocument(1);
-    assert(strcmp(dNew.getID(), name2) == 0);
+    assert(dNew.getID() == name2);
 
     delete d2;
     assert(c.size() == 2);
     const Document &dNew2 = c.getDocument(1);
-    assert(strcmp(dNew2.getID(), name2) == 0);
+    assert(dNew2.getID() == name2);
     const WordList &lNew = dNew.getText(textName);
     assert(lNew[0] == w3);
     assert(lNew[1] == w4);

@@ -20,7 +20,7 @@
 #ifndef MATCHRESULTS_HH_
 #define MATCHRESULTS_HH_
 
-#include <cstddef>
+#include "ColumbusCore.hh"
 
 struct MatchResultsPrivate;
 class Word;
@@ -34,9 +34,9 @@ public:
     MatchResults();
     ~MatchResults();
 
-    void addResult(const char *documentID, double relevancy);
+    void addResult(DocumentID docID, double relevancy);
     size_t size() const;
-    const char* getDocumentID(size_t i) const;
+    DocumentID getDocumentID(size_t i) const;
     double getRelevancy(size_t i) const;
 };
 

@@ -24,7 +24,6 @@
 #include "Document.hh"
 #include "MatchResults.hh"
 #include <cassert>
-#include <cstring>
 
 using namespace std;
 
@@ -36,9 +35,9 @@ Corpus * testCorpus() {
     Word w4("test");
     Word w5("faraway");
     Word w6("donotmatchme");
-    const char *name1 = "doc1";
-    const char *name2 = "doc2";
-    const char *name3 = "distantdoc";
+    DocumentID name1 = 0;
+    DocumentID name2 = 10;
+    DocumentID name3 = 1000;
     Word textName("title");
 
     WordList wl1, wl2, wlFar;
@@ -68,8 +67,8 @@ void testMatcher() {
     MatchResults matches;
     WordList queryList;
     Word w1("abc");
-    const char *dFarName = "distantdoc";
-    const char *name1("doc1");
+    DocumentID dFarName = 1000;
+    DocumentID name1 = 0;
 
     m.index(*c);
     delete(c);
@@ -77,10 +76,10 @@ void testMatcher() {
     queryList.addWord(w1);
     m.match(queryList, matches);
     assert(matches.size() == 2);
-    assert(strcmp(matches.getDocumentID(0), dFarName) != 0);
-    assert(strcmp(matches.getDocumentID(1), dFarName) != 0);
-    assert(strcmp(matches.getDocumentID(0), name1) == 0 ||
-           strcmp(matches.getDocumentID(1),name1) == 0);
+    assert(matches.getDocumentID(0) != dFarName);
+    assert(matches.getDocumentID(1) != dFarName);
+    assert(matches.getDocumentID(0) == name1 ||
+           matches.getDocumentID(1) == name1);
 }
 
 void testRelevancy() {
@@ -90,7 +89,7 @@ void testRelevancy() {
     WordList queryList;
     Word w1("abc");
     Word dFarName("distantdoc");
-    const char *name1 = "doc1";
+    DocumentID name1 = 0;
 
     m.index(*c);
     delete c;
@@ -100,13 +99,13 @@ void testRelevancy() {
     assert(matches.size() == 2);
     // Document doc1 has an exact match, so it should be the best match.
     assert(matches.getRelevancy(0) > matches.getRelevancy(1));
-    assert(strcmp(matches.getDocumentID(0), name1) == 0);
+    assert(matches.getDocumentID(0) == name1);
 }
 
 void testMultiWord() {
     Corpus c;
-    const char *correct = "correct";
-    const char *wrong = "wrong";
+    DocumentID correct = 0;
+    DocumentID wrong = 1;
     Document d1(correct);
     Document d2(wrong);
     Word fieldName("name");
@@ -121,7 +120,7 @@ void testMultiWord() {
     m.index(c);
 
     m.match("Sara Michell Geller", matches);
-    assert(strcmp(matches.getDocumentID(0), correct) == 0);
+    assert(matches.getDocumentID(0) == correct);
 }
 
 int main(int argc, char **argv) {

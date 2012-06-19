@@ -26,7 +26,7 @@
 using namespace std;
 
 struct MatchResultsPrivate {
-    vector<pair<double, const char*> > results; // Having ID as char* means that this result is only valid for as long as the original data source exists.
+    vector<pair<double, DocumentID> > results; // Having ID as char* means that this result is only valid for as long as the original data source exists.
     bool sorted;
 };
 
@@ -39,10 +39,10 @@ MatchResults::~MatchResults() {
     delete p;
 }
 
-void MatchResults::addResult(const char *documentID, double relevancy) {
-    pair<double, const char*> n;
+void MatchResults::addResult(DocumentID id, double relevancy) {
+    pair<double, DocumentID> n;
     n.first = -relevancy; // To make std::sort put the result in descending order.
-    n.second = documentID;
+    n.second = id;
     p->results.push_back(n);
     p->sorted = false;
 }
@@ -59,7 +59,7 @@ void MatchResults::sortIfRequired() const {
     me->p->sorted = true;
 }
 
-const char* MatchResults::getDocumentID(size_t i) const {
+DocumentID MatchResults::getDocumentID(size_t i) const {
     if(i>=p->results.size()) {
         throw out_of_range("Access out of bounds in MatchResults::getDocumentID.");
     }

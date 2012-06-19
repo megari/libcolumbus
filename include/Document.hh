@@ -20,7 +20,7 @@
 #ifndef DOCUMENT_HH_
 #define DOCUMENT_HH_
 
-#include <cstddef>
+#include "ColumbusCore.hh"
 
 class Word;
 class WordList;
@@ -32,7 +32,7 @@ private:
     DocumentPrivate *p;
 
 public:
-    Document(const char *id_);
+    Document(DocumentID id);
     Document(const Document &d);
     ~Document();
 
@@ -41,7 +41,7 @@ public:
     void addText(const Word &field, const char *textAsUtf8);
     const WordList& getText(const Word &field) const;
     size_t fieldCount() const;
-    const char* getID() const;
+    DocumentID getID() const;
     void getFieldNames(WordList &list) const;
     size_t wordCount(const Word &w, const Word field) const;
     size_t totalWordCount(const Word &w) const;
