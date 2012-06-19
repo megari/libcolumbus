@@ -20,15 +20,23 @@
 #ifndef COLUMBUSCORE_H
 #define COLUMBUSCORE_H
 
-#include <cstdlib>
-#include <stdint.h> // Change to <cstdint> once we go c++0x. GCC will not permit it earlier.
-#include <limits>
+#ifdef __cplusplus
+  #include <cstdlib>
+  #include <stdint.h> // Change to <cstdint> once we go c++0x. GCC will not permit it earlier.
+#else
+  #include <stdlib.h>
+  #include <stdint.h>
+#endif
 
 #ifdef DEBUG_MESSAGES
-#include<cstdio>
-#define debugMessage(...) printf(__VA_ARGS__);
+  #ifdef __cplusplus
+    #include<cstdio>
+  #else
+    #include<stdio.h>
+  #endif
+  #define debugMessage(...) printf(__VA_ARGS__);
 #else
-#define debugMessage(...)
+  #define debugMessage(...)
 #endif
 
 
@@ -43,7 +51,7 @@ typedef ${LETTER_TYPE} Letter;
 #define INTERNAL_ENCODING "${INTERNAL_ENCODING}"
 
 typedef size_t WordID;
-#define INVALID_WORDCODE (std::numeric_limits<std::size_t>::max())
+#define INVALID_WORDCODE ((size_t)-1)
 
 
 #endif
