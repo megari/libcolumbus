@@ -18,23 +18,15 @@
  */
 
 #include "columbus.h"
-#include "Document.hh"
+#include <assert.h>
 
-using namespace Columbus;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
-ColDocument col_document_new(DocumentID id) {
-    return reinterpret_cast<ColDocument>(new Document(id));
-}
-void col_document_delete(ColDocument doc) {
-    delete reinterpret_cast<Document*>(doc);
+void testDocument() {
+    ColDocument d = col_document_new(0);
+    assert(d);
+    col_document_delete(d);
 }
 
-
-#ifdef __cplusplus
+int main(int argc, char **argv) {
+    testDocument();
+    return 0;
 }
-#endif

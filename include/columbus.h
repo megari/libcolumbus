@@ -35,6 +35,11 @@
 extern "C" {
 #endif
 
+typedef void* ColDocument;
+
+ColDocument col_document_new(DocumentID id);
+void col_document_delete(ColDocument doc);
+
 #ifdef __cplusplus
 }
 #endif

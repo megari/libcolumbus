@@ -68,7 +68,8 @@ endif()
 include_directories(include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
-# Remove this once we go full C++1x and the compiler will shut up.
+# Remove this once we go full C++1x/C99 and the compiler will shut up.
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wno-variadic-macros")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-variadic-macros")
 
 find_library(icu1 icuuc)

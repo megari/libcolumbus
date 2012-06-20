@@ -65,3 +65,7 @@ add_test(indexweights indexweights)
 add_executable(wordstore WordStoreTest.cc)
 target_link_libraries(wordstore columbus)
 add_test(wordstore wordstore)
+
+add_executable(capi CAPITest.c)
+target_link_libraries(capi columbus)
+add_test(capi capi)
