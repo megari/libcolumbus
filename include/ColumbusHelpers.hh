@@ -22,6 +22,8 @@
 
 #include "ColumbusCore.hh"
 
+COL_NAMESPACE_START
+
 class Word;
 class WordList;
 
@@ -30,6 +32,8 @@ void internalToUtf8(const Letter *source, unsigned int characters, char *buf, un
 double hiresTimestamp();
 void splitToWords(const char *utf8Text, WordList &list);
 bool isWhitespace(Letter l);
+
+COL_NAMESPACE_END
 
 #endif
 

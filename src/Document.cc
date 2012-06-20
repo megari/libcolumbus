@@ -24,6 +24,7 @@
 #include <map>
 #include <stdexcept>
 
+COL_NAMESPACE_START
 using namespace std;
 
 struct DocumentPrivate {
@@ -108,3 +109,5 @@ size_t Document::totalWordCount(const Word &w) const {
     }
     return count;
 }
+
+COL_NAMESPACE_END

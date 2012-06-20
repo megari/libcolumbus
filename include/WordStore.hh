@@ -22,6 +22,8 @@
 
 #include "ColumbusCore.hh"
 
+COL_NAMESPACE_START
+
 /*
  * We will get words multiple times. This class assigns each word a unique
  * ID. This deduplicates data and ensures we only keep one copy
@@ -46,5 +48,7 @@ public:
     WordID getID(const Word &w);
     const Word& getWord(const WordID id) const;
 };
+
+COL_NAMESPACE_END
 
 #endif /* WORDSTORE_HH_ */

@@ -22,6 +22,8 @@
 
 #include "ColumbusCore.hh"
 
+COL_NAMESPACE_START
+
 struct MatchResultsPrivate;
 class Word;
 
@@ -39,5 +41,7 @@ public:
     DocumentID getDocumentID(size_t i) const;
     double getRelevancy(size_t i) const;
 };
+
+COL_NAMESPACE_END
 
 #endif /* MATCHRESULTS_HH_ */

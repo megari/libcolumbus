@@ -22,6 +22,8 @@
 #include <vector>
 #include <stdexcept>
 
+COL_NAMESPACE_START
+
 using namespace std;
 
 struct WordListPrivate {
@@ -69,3 +71,5 @@ bool WordList::operator==(const WordList &l) const {
 bool WordList::operator!=(const WordList &l) const {
     return p->words != l.p->words;
 }
+
+COL_NAMESPACE_END

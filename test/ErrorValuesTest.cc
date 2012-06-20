@@ -21,6 +21,8 @@
 #include "Word.hh"
 #include <cassert>
 
+using namespace Columbus;
+
 void testError() {
     int smallError = 1;
     Letter l1 = 16;

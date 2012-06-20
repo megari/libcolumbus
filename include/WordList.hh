@@ -20,7 +20,10 @@
 #ifndef WORDLIST_HH_
 #define WORDLIST_HH_
 
-#include <cstddef>
+#include "ColumbusCore.hh"
+
+COL_NAMESPACE_START
+
 struct WordListPrivate;
 class Word;
 
@@ -42,5 +45,7 @@ public:
 
     // Add proper iterators here.
 };
+
+COL_NAMESPACE_END
 
 #endif /* WORDLIST_HH_ */

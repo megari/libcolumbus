@@ -17,6 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * This file contains the most basic definitions in Columbus.
+ * Almost every single source file includes this, so it must be fast.
+ * It must work as such when included either from C or C++.
+ *
+ */
+
 #ifndef COLUMBUSCORE_H
 #define COLUMBUSCORE_H
 
@@ -26,6 +33,11 @@
 #else
   #include <stdlib.h>
   #include <stdint.h>
+#endif
+
+#ifdef __cplusplus
+  #define COL_NAMESPACE_START namespace Columbus {
+  #define COL_NAMESPACE_END }
 #endif
 
 #ifdef DEBUG_MESSAGES

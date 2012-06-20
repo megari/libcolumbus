@@ -21,6 +21,8 @@
 #include "Word.hh"
 #include <cassert>
 
+using namespace Columbus;
+
 void testMatchResult() {
     MatchResults r;
     DocumentID w1 = 0;

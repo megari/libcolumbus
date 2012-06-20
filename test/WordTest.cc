@@ -26,6 +26,8 @@
 #include <stdexcept>
 #include "Word.hh"
 
+using namespace Columbus;
+
 void testEmpty() {
     Word w1;
     assert(w1.length() == 0);

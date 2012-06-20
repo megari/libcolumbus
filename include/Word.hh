@@ -22,6 +22,8 @@
 
 #include "ColumbusCore.hh"
 
+COL_NAMESPACE_START
+
 /**
  * A word encapsulates a single word. That is,
  * there is no whitespace in it.
@@ -53,5 +55,7 @@ public:
     bool operator<(const Word &w) const;
     Word& operator=(const Word &w); // Should we allow assignment? Is it the proper semantic thing to do?
 };
+
+COL_NAMESPACE_END
 
 #endif /* WORD_HH_ */

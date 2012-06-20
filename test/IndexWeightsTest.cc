@@ -21,6 +21,8 @@
 #include "Word.hh"
 #include <cassert>
 
+using namespace Columbus;
+
 void testWeights() {
     IndexWeights w;
     Word w1("abc");

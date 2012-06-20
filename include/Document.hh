@@ -22,6 +22,8 @@
 
 #include "ColumbusCore.hh"
 
+COL_NAMESPACE_START
+
 class Word;
 class WordList;
 
@@ -48,5 +50,7 @@ public:
 
     // Needs iterators to browse through text names.
 };
+
+COL_NAMESPACE_END
 
 #endif /* DOCUMENT_HH_ */

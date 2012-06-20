@@ -22,6 +22,8 @@
 
 #include "ColumbusCore.hh"
 
+COL_NAMESPACE_START
+
 struct MatcherStatisticsPrivate;
 class Word;
 
@@ -38,5 +40,7 @@ public:
     size_t getTotalWordCount(const WordID w) const;
     void addedWordToIndex(const WordID word, const Word &fieldName);
 };
+
+COL_NAMESPACE_END
 
 #endif /* MATCHERSTATISTICS_HH_ */

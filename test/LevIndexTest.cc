@@ -26,6 +26,7 @@
 #include "Word.hh"
 #include "ErrorValues.hh"
 
+using namespace Columbus;
 using namespace std;
 
 void testTrivial() {

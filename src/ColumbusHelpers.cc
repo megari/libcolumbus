@@ -33,6 +33,8 @@
 #include <sys/time.h>
 #include <unicode/uchar.h>
 
+COL_NAMESPACE_START
+
 static Letter lowerLetter(Letter l) {
     return Letter(u_tolower(l)); // Have to use ICU because towlower libc function does not work.
 }
@@ -163,3 +165,5 @@ bool isWhitespace(Letter l) {
         return true;
     return false;
 }
+
+COL_NAMESPACE_END

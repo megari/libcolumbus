@@ -23,6 +23,7 @@
 #include <vector>
 #include <stdexcept>
 
+COL_NAMESPACE_START
 using namespace std;
 
 struct WordStorePrivate {
@@ -55,3 +56,5 @@ const Word& WordStore::getWord(const WordID id) const {
     }
     return p->wordIndex[id];
 }
+
+COL_NAMESPACE_END

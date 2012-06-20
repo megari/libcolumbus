@@ -21,6 +21,7 @@
 #include <map>
 #include "MatcherStatistics.hh"
 
+COL_NAMESPACE_START
 using namespace std;
 
 struct MatcherStatisticsPrivate {
@@ -58,3 +59,5 @@ size_t MatcherStatistics::getTotalWordCount(const WordID w) const {
 void MatcherStatistics::addedWordToIndex(const WordID word, const Word &fieldName) {
     // Doesn't do anything yet.
 }
+
+COL_NAMESPACE_END

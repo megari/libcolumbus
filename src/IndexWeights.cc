@@ -21,6 +21,7 @@
 #include "Word.hh"
 #include <map>
 
+COL_NAMESPACE_START
 using namespace std;
 
 struct IndexWeightsPrivate {
@@ -47,3 +48,5 @@ double IndexWeights::getWeight(const Word &w) const {
         return 1.0;
     return it->second;
 }
+
+COL_NAMESPACE_END

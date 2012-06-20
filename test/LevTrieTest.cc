@@ -26,6 +26,8 @@
 #include "LevenshteinIndex.hh"
 #include "Word.hh"
 
+using namespace Columbus;
+
 void basicTest() {
     LevenshteinIndex ind;
     Word word1("word");

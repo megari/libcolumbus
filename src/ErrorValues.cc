@@ -25,6 +25,7 @@
 #include "Word.hh"
 #include "ColumbusSlow.hh"
 
+COL_NAMESPACE_START
 using namespace std;
 
 struct ErrorValuesPrivate {
@@ -154,3 +155,5 @@ void ErrorValues::addKeyboardErrors() {
 
 
 }
+
+COL_NAMESPACE_END

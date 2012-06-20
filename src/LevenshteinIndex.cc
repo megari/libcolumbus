@@ -26,6 +26,7 @@
 #include "ErrorValues.hh"
 #include "Word.hh"
 
+COL_NAMESPACE_START
 using namespace std;
 
 typedef vector<pair<Letter, TrieNode*> > ChildList;
@@ -239,3 +240,5 @@ size_t LevenshteinIndex::numNodes() const {
 size_t LevenshteinIndex::numWords() const {
     return p->numWords;
 }
+
+COL_NAMESPACE_END

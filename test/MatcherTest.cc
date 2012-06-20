@@ -25,6 +25,7 @@
 #include "MatchResults.hh"
 #include <cassert>
 
+using namespace Columbus;
 using namespace std;
 
 Corpus * testCorpus() {

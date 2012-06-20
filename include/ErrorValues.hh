@@ -22,6 +22,8 @@
 
 #include "ColumbusCore.hh"
 
+COL_NAMESPACE_START
+
 struct ErrorValuesPrivate;
 class Word;
 
@@ -60,5 +62,7 @@ public:
     bool isInGroup(Letter l);
     void clearErrors();
 };
+
+COL_NAMESPACE_END
 
 #endif /* ERRORVALUES_HH_ */

@@ -22,6 +22,8 @@
 #include <limits.h>
 #include "MatchRow.hh"
 
+COL_NAMESPACE_START
+
 MatchRow::MatchRow(size_t rowsize_, int error) : parent(0), rowsize(rowsize_) {
     values = new int[rowsize];
     for(size_t i=0; i<rowsize; i++)
@@ -59,3 +61,5 @@ void MatchRow::print() const {
     }
     printf("\n");
 }
+
+COL_NAMESPACE_END

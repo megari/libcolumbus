@@ -20,6 +20,10 @@
 #ifndef INDEXWEIGHTS_HH_
 #define INDEXWEIGHTS_HH_
 
+#include "ColumbusCore.hh"
+
+COL_NAMESPACE_START
+
 struct IndexWeightsPrivate;
 class Word;
 
@@ -32,5 +36,7 @@ public:
     void setWeight(const Word &w, double weigth);
     double getWeight(const Word &w) const;
 };
+
+COL_NAMESPACE_END
 
 #endif /* INDEXWEIGHTS_HH_ */

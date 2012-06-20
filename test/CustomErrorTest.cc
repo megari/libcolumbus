@@ -27,6 +27,7 @@
 #include "Word.hh"
 
 using namespace std;
+using namespace Columbus;
 
 void testCustomError() {
     LevenshteinIndex ind;

@@ -20,6 +20,10 @@
 #ifndef MATCHROW_H_
 #define MATCHROW_H_
 
+#include "ColumbusCore.hh"
+
+COL_NAMESPACE_START
+
 class MatchRow {
 
 private:
@@ -40,5 +44,7 @@ public:
     void print() const;
     MatchRow* getParent() { return parent; }
 };
+
+COL_NAMESPACE_END
 
 #endif /* MATCHROW_H_ */

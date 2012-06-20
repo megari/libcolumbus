@@ -22,6 +22,8 @@
 #include <cassert>
 #include <stdexcept>
 
+using namespace Columbus;
+
 void testList() {
     WordList l;
     bool gotException;

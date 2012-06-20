@@ -34,6 +34,7 @@
 #include "ErrorValues.hh"
 #include "WordStore.hh"
 
+using namespace Columbus;
 using namespace std;
 
 void readData(vector<Word> &a, const char *ifilename) {

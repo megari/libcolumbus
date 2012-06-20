@@ -27,6 +27,7 @@
 #include <fstream>
 #include <vector>
 
+using namespace Columbus;
 using namespace std;
 
 const char *queryTime = "Query time: ";

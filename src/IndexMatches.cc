@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <cassert>
 
+COL_NAMESPACE_START
 using namespace std;
 
 struct MatchData {
@@ -103,3 +104,5 @@ void IndexMatches::clear() {
 void IndexMatches::sort() {
     std::sort(p->matches.begin(), p->matches.end());
 }
+
+COL_NAMESPACE_END

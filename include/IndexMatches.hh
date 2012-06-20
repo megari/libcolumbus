@@ -22,6 +22,9 @@
 
 #include <cstddef>
 #include "ColumbusCore.hh"
+
+COL_NAMESPACE_START
+
 class LevenshteinIndex;
 struct IndexMatchesPrivate;
 class Word;
@@ -56,5 +59,7 @@ public:
     void clear();
 
 };
+
+COL_NAMESPACE_END
 
 #endif /* INDEXMATCHES_H_ */

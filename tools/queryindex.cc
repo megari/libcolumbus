@@ -28,6 +28,8 @@
 #include <cstring>
 #include <cassert>
 
+using namespace Columbus;
+
 void load_data(LevenshteinIndex &ind, WordStore &s, char *file) {
     FILE *f = fopen(file, "r");
     char buffer[1024];

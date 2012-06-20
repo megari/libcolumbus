@@ -31,6 +31,7 @@
 #include <cassert>
 #include <cstring>
 
+using namespace Columbus;
 using namespace std;
 
 const char *queryTime = "Query time: ";

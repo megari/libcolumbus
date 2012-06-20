@@ -22,6 +22,8 @@
 #include "WordList.hh"
 #include <cassert>
 
+using namespace Columbus;
+
 bool splitCorrectly(const char *txt, const WordList &l) {
     WordList result;
     splitToWords(txt, result);

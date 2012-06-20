@@ -22,6 +22,8 @@
 
 #include "ColumbusCore.hh"
 
+COL_NAMESPACE_START
+
 class Corpus;
 struct MatcherPrivate;
 class Word;
@@ -50,5 +52,7 @@ public:
     ErrorValues& getErrorValues();
     IndexWeights& getIndexWeights();
 };
+
+COL_NAMESPACE_END
 
 #endif /* MATCHER_HH_ */

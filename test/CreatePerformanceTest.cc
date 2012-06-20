@@ -28,6 +28,7 @@
 #include <climits>
 
 using namespace std;
+using namespace Columbus;
 
 Matcher* build_matcher(const char *dataFile, int maxLines) {
     Matcher *m = 0;

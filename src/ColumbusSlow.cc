@@ -22,6 +22,7 @@
 #include <cstdlib>
 #include <sys/stat.h>
 
+COL_NAMESPACE_START
 using namespace std;
 
 static bool fileExists(const char *fname) {
@@ -49,3 +50,5 @@ string findDataFile(string baseName) {
 
     return empty;
 }
+
+COL_NAMESPACE_END

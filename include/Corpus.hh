@@ -20,7 +20,9 @@
 #ifndef CORPUS_HH_
 #define CORPUS_HH_
 
-#include <cstddef>
+#include "ColumbusCore.hh"
+
+COL_NAMESPACE_START
 
 struct CorpusPrivate;
 class Document;
@@ -41,5 +43,7 @@ public:
 
     // Add iterators here. This class should really only expose them.
 };
+
+COL_NAMESPACE_END
 
 #endif /* CORPUS_HH_ */

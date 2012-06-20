@@ -24,6 +24,8 @@
 #include "ColumbusCore.hh"
 #include "IndexMatches.hh"
 
+COL_NAMESPACE_START
+
 struct LevenshteinIndexPrivate;
 struct TrieNode;
 class MatchRow;
@@ -57,5 +59,7 @@ public:
     size_t numNodes() const;
     size_t numWords() const;
 };
+
+COL_NAMESPACE_END
 
 #endif

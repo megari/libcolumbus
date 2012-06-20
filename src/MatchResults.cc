@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <stdexcept>
 
+COL_NAMESPACE_START
 using namespace std;
 
 struct MatchResultsPrivate {
@@ -74,3 +75,5 @@ double MatchResults::getRelevancy(size_t i) const {
     sortIfRequired();
     return -p->results[i].first;
 }
+
+COL_NAMESPACE_END

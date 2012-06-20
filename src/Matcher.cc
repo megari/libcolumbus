@@ -36,6 +36,7 @@
 #include <cassert>
 #include <string>
 
+COL_NAMESPACE_START
 using namespace std;
 
 typedef map<WordID, map<WordID, set<DocumentID> > > ReverseIndex; // Index name, word, documents.
@@ -283,3 +284,5 @@ ErrorValues& Matcher::getErrorValues() {
 IndexWeights& Matcher::getIndexWeights() {
     return p->weights;
 }
+
+COL_NAMESPACE_END

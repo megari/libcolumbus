@@ -24,6 +24,8 @@
 #include <cassert>
 #include <cstdio>
 
+using namespace Columbus;
+
 void testCorpus() {
     Corpus c;
     Word w1("abc");

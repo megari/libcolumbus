@@ -22,6 +22,7 @@
 #include <vector>
 #include <stdexcept>
 
+COL_NAMESPACE_START
 using namespace std;
 
 struct CorpusPrivate {
@@ -49,3 +50,5 @@ const Document& Corpus::getDocument(size_t i) const {
         throw out_of_range("Out of bounds access in Document.");
     return p->documents[i];
 }
+
+COL_NAMESPACE_END

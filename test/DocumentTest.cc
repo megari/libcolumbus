@@ -23,6 +23,8 @@
 #include <cassert>
 #include <stdexcept>
 
+using namespace Columbus;
+
 void testDoc() {
     DocumentID docId = 42;
     Document d(docId);

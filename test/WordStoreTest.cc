@@ -22,6 +22,8 @@
 #include <cassert>
 #include <stdexcept>
 
+using namespace Columbus;
+
 void testStore() {
     WordStore s;
     Word w1("abc");

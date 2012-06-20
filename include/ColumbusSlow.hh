@@ -28,8 +28,14 @@
 #ifndef COLUMBUSSLOW_HH
 #define COLUMBUSSLOW_HH
 
+#include "ColumbusCore.hh"
+
 #include<string>
 
+COL_NAMESPACE_START
+
 std::string findDataFile(std::string baseName);
+
+COL_NAMESPACE_END
 
 #endif

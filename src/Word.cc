@@ -25,6 +25,8 @@
 #include "ColumbusHelpers.hh"
 
 
+COL_NAMESPACE_START
+
 Word::Word() : text(0), len(0), utf8Repr(0) {
 
 }
@@ -135,3 +137,5 @@ const char* Word::asUtf8() const {
     const_cast<Word*>(this)->utf8Repr = u8;
     return utf8Repr;
 }
+
+COL_NAMESPACE_END
