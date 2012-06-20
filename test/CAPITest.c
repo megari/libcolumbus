@@ -19,10 +19,12 @@
 
 #include "columbus.h"
 #include <assert.h>
-
+#include <string.h>
 void testWord() {
     ColWord w = col_word_new("abc");
     assert(w);
+    assert(col_word_length(w) == 3);
+    assert(strcmp("abc", col_word_as_utf8(w)) == 0);
     col_word_delete(w);
 }
 

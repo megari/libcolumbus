@@ -41,6 +41,8 @@ typedef void* ColDocument;
 
 ColWord col_word_new(const char *utf8_word);
 void col_word_delete(ColWord w);
+size_t col_word_length(ColWord w);
+const char* col_word_as_utf8(ColWord w);
 
 ColDocument col_document_new(DocumentID id);
 void col_document_delete(ColDocument doc);

@@ -44,6 +44,14 @@ void col_word_delete(ColWord w) {
     delete reinterpret_cast<Word*>(w);
 }
 
+size_t col_word_length(ColWord w) {
+    return reinterpret_cast<Word*>(w)->length();
+}
+
+const char* col_word_as_utf8(ColWord w) {
+    return reinterpret_cast<Word*>(w)->asUtf8();
+}
+
 ColDocument col_document_new(DocumentID id) {
     return reinterpret_cast<ColDocument>(new Document(id));
 }
