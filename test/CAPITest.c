@@ -20,6 +20,12 @@
 #include "columbus.h"
 #include <assert.h>
 
+void testWord() {
+    ColWord w = col_word_new("abc");
+    assert(w);
+    col_word_delete(w);
+}
+
 void testDocument() {
     ColDocument d = col_document_new(0);
     assert(d);
@@ -27,6 +33,7 @@ void testDocument() {
 }
 
 int main(int argc, char **argv) {
+    testWord();
     testDocument();
     return 0;
 }

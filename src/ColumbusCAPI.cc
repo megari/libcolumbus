@@ -18,14 +18,31 @@
  */
 
 #include "columbus.h"
+#include "Word.hh"
 #include "Document.hh"
+#include <stdexcept>
+#include <cstdio>
 
 using namespace Columbus;
+using namespace std;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+ColWord col_word_new(const char *utf8_word) {
+    try {
+        Word *w = new Word(utf8_word);
+        return reinterpret_cast<ColWord>(w);
+    } catch(exception &e) {
+        fprintf(stderr, "Error creating Word: %s\n", e.what());
+        return 0;
+    }
+}
+
+void col_word_delete(ColWord w) {
+    delete reinterpret_cast<Word*>(w);
+}
 
 ColDocument col_document_new(DocumentID id) {
     return reinterpret_cast<ColDocument>(new Document(id));

@@ -35,7 +35,12 @@
 extern "C" {
 #endif
 
+typedef void* ColWord;
 typedef void* ColDocument;
+
+
+ColWord col_word_new(const char *utf8_word);
+void col_word_delete(ColWord w);
 
 ColDocument col_document_new(DocumentID id);
 void col_document_delete(ColDocument doc);
