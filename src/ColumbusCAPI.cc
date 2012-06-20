@@ -21,6 +21,7 @@
 #include "Word.hh"
 #include "Document.hh"
 #include "Matcher.hh"
+#include "MatchResults.hh"
 #include <stdexcept>
 #include <cstdio>
 
@@ -76,6 +77,14 @@ ColMatcher col_matcher_new() {
 void col_matcher_delete(ColMatcher m) {
     delete reinterpret_cast<Matcher*>(m);
 }
+
+ColMatchResults col_match_results_new() {
+    return reinterpret_cast<ColMatchResults>(new MatchResults());
+}
+void col_match_results_delete(ColMatchResults mr) {
+    delete reinterpret_cast<MatchResults*>(mr);
+}
+
 
 #ifdef __cplusplus
 }

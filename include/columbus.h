@@ -38,6 +38,7 @@ extern "C" {
 typedef void* ColWord;
 typedef void* ColDocument;
 typedef void* ColMatcher;
+typedef void* ColMatchResults;
 
 ColWord col_word_new(const char *utf8_word);
 void col_word_delete(ColWord w);
@@ -51,6 +52,9 @@ void col_document_add_text(ColDocument doc, ColWord field_name, const char *text
 
 ColMatcher col_matcher_new();
 void col_matcher_delete(ColMatcher m);
+
+ColMatchResults col_match_results_new();
+void col_match_results_delete(ColMatchResults mr);
 
 #ifdef __cplusplus
 }
