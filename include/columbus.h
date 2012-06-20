@@ -39,6 +39,7 @@ typedef void* ColWord;
 typedef void* ColDocument;
 typedef void* ColMatcher;
 typedef void* ColMatchResults;
+typedef void* ColCorpus;
 
 ColWord col_word_new(const char *utf8_word);
 void col_word_delete(ColWord w);
@@ -55,6 +56,9 @@ void col_matcher_delete(ColMatcher m);
 
 ColMatchResults col_match_results_new();
 void col_match_results_delete(ColMatchResults mr);
+
+ColCorpus col_corpus_new();
+void col_corpus_delete(ColCorpus c);
 
 #ifdef __cplusplus
 }

@@ -54,10 +54,22 @@ void testMatchResults() {
     col_match_results_delete(mr);
 }
 
+void testCorpus() {
+    ColCorpus c = col_corpus_new();
+    assert(c);
+    col_corpus_delete(c);
+}
+
+void testMatching() {
+    /* Eventually. */
+}
+
 int main(int argc, char **argv) {
     testWord();
     testDocument();
     testMatcher();
     testMatchResults();
+    testCorpus();
+    testMatching();
     return 0;
 }

@@ -22,6 +22,7 @@
 #include "Document.hh"
 #include "Matcher.hh"
 #include "MatchResults.hh"
+#include "Corpus.hh"
 #include <stdexcept>
 #include <cstdio>
 
@@ -83,6 +84,13 @@ ColMatchResults col_match_results_new() {
 }
 void col_match_results_delete(ColMatchResults mr) {
     delete reinterpret_cast<MatchResults*>(mr);
+}
+
+ColCorpus col_corpus_new() {
+    return reinterpret_cast<ColCorpus>(new Corpus());
+}
+void col_corpus_delete(ColCorpus c) {
+    delete reinterpret_cast<Corpus*>(c);
 }
 
 
