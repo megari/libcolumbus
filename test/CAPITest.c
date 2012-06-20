@@ -42,8 +42,15 @@ void testDocument() {
     col_document_delete(d);
 }
 
+void testMatcher() {
+    ColMatcher m = col_matcher_new();
+    assert(m);
+    col_matcher_delete(m);
+}
+
 int main(int argc, char **argv) {
     testWord();
     testDocument();
+    testMatcher();
     return 0;
 }

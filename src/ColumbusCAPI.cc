@@ -20,6 +20,7 @@
 #include "columbus.h"
 #include "Word.hh"
 #include "Document.hh"
+#include "Matcher.hh"
 #include <stdexcept>
 #include <cstdio>
 
@@ -68,6 +69,13 @@ void col_document_add_text(ColDocument doc, ColWord field_name, const char *text
     d->addText(*w, text_as_utf8);
 }
 
+ColMatcher col_matcher_new() {
+    return reinterpret_cast<ColMatcher>(new Matcher());
+}
+
+void col_matcher_delete(ColMatcher m) {
+    delete reinterpret_cast<Matcher*>(m);
+}
 
 #ifdef __cplusplus
 }
