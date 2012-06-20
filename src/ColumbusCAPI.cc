@@ -59,6 +59,15 @@ void col_document_delete(ColDocument doc) {
     delete reinterpret_cast<Document*>(doc);
 }
 
+DocumentID col_document_get_id(ColDocument doc) {
+    return reinterpret_cast<Document*>(doc)->getID();
+}
+void col_document_add_text(ColDocument doc, ColWord field_name, const char *text_as_utf8) {
+    Document *d = reinterpret_cast<Document*>(doc);
+    Word *w = reinterpret_cast<Word*>(field_name);
+    d->addText(*w, text_as_utf8);
+}
+
 
 #ifdef __cplusplus
 }

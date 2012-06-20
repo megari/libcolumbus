@@ -46,6 +46,8 @@ const char* col_word_as_utf8(ColWord w);
 
 ColDocument col_document_new(DocumentID id);
 void col_document_delete(ColDocument doc);
+DocumentID col_document_get_id(ColDocument doc);
+void col_document_add_text(ColDocument doc, ColWord field_name, const char *text_as_utf8);
 
 #ifdef __cplusplus
 }

@@ -20,6 +20,7 @@
 #include "columbus.h"
 #include <assert.h>
 #include <string.h>
+
 void testWord() {
     ColWord w = col_word_new("abc");
     assert(w);
@@ -29,8 +30,15 @@ void testWord() {
 }
 
 void testDocument() {
-    ColDocument d = col_document_new(0);
+    ColDocument d = col_document_new(55);
+    ColWord w = col_word_new("abc");
+
     assert(d);
+    assert(col_document_get_id(d) == 55);
+
+    col_document_add_text(d, w, "this is just some text");
+
+    col_word_delete(w);
     col_document_delete(d);
 }
 
