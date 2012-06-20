@@ -14,14 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
+/*
  * Columbus is an error tolerant matcher system.
  *
- * Include only this file. Including other headers is not
- * guaranteed to work.
+ * Include this file to use the C++ API to Columbus.
+ *
+ * If you need a C api, include columbus.h instead.
+ * It is not guaranteed to have all functionality, though.
  */
 
-#include "ColumbusCore.hh"
 #include <Matcher.hh>
 #include <MatchResults.hh>
 #include <Corpus.hh>

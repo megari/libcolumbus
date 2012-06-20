@@ -22,7 +22,7 @@
  * memory consumption of Index building.
  */
 
-#include "columbus.h" // This app should only need public API from Columbus.
+#include "columbus.hh" // This app should only need public API from Columbus.
 #include <fstream>
 #include <string>
 #include <climits>

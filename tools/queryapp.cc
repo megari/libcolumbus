@@ -21,7 +21,7 @@
  * A simple GUI application to search the database.
  */
 
-#include "columbus.h" // This app should only need public API from Columbus.
+#include "columbus.hh" // This app should only need public API from Columbus.
 #include <gtk/gtk.h>
 #include <string>
 #include <fstream>
