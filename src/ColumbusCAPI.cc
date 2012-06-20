@@ -93,6 +93,12 @@ void col_corpus_delete(ColCorpus c) {
     delete reinterpret_cast<Corpus*>(c);
 }
 
+void col_corpus_add_document(ColCorpus c, ColDocument d) {
+    Corpus *corp = reinterpret_cast<Corpus*>(c);
+    Document *doc = reinterpret_cast<Document*>(d);
+    corp->addDocument(*doc);
+}
+
 
 #ifdef __cplusplus
 }

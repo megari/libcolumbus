@@ -59,6 +59,7 @@ void col_match_results_delete(ColMatchResults mr);
 
 ColCorpus col_corpus_new();
 void col_corpus_delete(ColCorpus c);
+void col_corpus_add_document(ColCorpus c, ColDocument d);
 
 #ifdef __cplusplus
 }

@@ -56,7 +56,14 @@ void testMatchResults() {
 
 void testCorpus() {
     ColCorpus c = col_corpus_new();
+    ColDocument d = col_document_new(42);
+    ColWord w = col_word_new("abc");
+    col_document_add_text(d, w, "this is just some text");
+    col_word_delete(w);
+
     assert(c);
+    col_corpus_add_document(c, d);
+    col_document_delete(d);
     col_corpus_delete(c);
 }
 
