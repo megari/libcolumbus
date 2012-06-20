@@ -18,26 +18,25 @@
  */
 
 /*
- * Columbus is an error tolerant matcher system.
- *
- * Include this file to use the C++ API to Columbus.
- *
- * If you need a C api, include columbus.h instead.
- * It is not guaranteed to have all functionality, though.
+ * This file defines the C API of Columbus. If you can, it is strongly
+ * recommended to use the C++ API of columbus.hh instead.
  */
 
-#ifndef COLUMBUS_HH_
-#define COLUMBUS_HH_
+#ifndef COLUMBUS_H_
+#define COLUMBUS_H_
 
-#ifdef COLUMBUS_H_
+#ifdef COLUMBUS_HH_
 #error "Mixing C and C++ public header includes. You can only use one or the other."
 #endif
 
-#include <Matcher.hh>
-#include <MatchResults.hh>
-#include <Corpus.hh>
-#include <Word.hh>
-#include <Document.hh>
-#include <ColumbusHelpers.hh>
+#include "ColumbusCore.hh"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -14,6 +14,7 @@ MatchResults.cc
 IndexWeights.cc
 MatcherStatistics.cc
 WordStore.cc
+ColumbusCAPI.cc
 )
 
 if(ICONV_LIBRARIES)
