@@ -79,11 +79,55 @@ void col_matcher_delete(ColMatcher m) {
     delete reinterpret_cast<Matcher*>(m);
 }
 
+void col_matcher_index(ColMatcher m, ColCorpus c) {
+    try {
+        Matcher *matcher = reinterpret_cast<Matcher*>(m);
+        Corpus *corp = reinterpret_cast<Corpus*>(c);
+        matcher->index(*corp);
+    } catch(exception &e) {
+        fprintf(stderr, "Exception when indexing: %s\n", e.what());
+    }
+}
+
+void col_matcher_match(ColMatcher m, const char *query_as_utf8, ColMatchResults mr) {
+    try {
+        Matcher *matcher = reinterpret_cast<Matcher*>(m);
+        MatchResults *results = reinterpret_cast<MatchResults*>(mr);
+        matcher->match(query_as_utf8, *results);
+    } catch(exception &e) {
+        fprintf(stderr, "Exception when matching: %s\n", e.what());
+    }
+}
+
 ColMatchResults col_match_results_new() {
     return reinterpret_cast<ColMatchResults>(new MatchResults());
 }
 void col_match_results_delete(ColMatchResults mr) {
     delete reinterpret_cast<MatchResults*>(mr);
+}
+
+size_t col_match_results_size(ColMatchResults mr) {
+    return reinterpret_cast<MatchResults*>(mr)->size();
+}
+
+DocumentID col_match_results_get_id(ColMatchResults mr, size_t i) {
+    try {
+        MatchResults *results = reinterpret_cast<MatchResults*>(mr);
+        return results->getDocumentID(i);
+    } catch(exception &e) {
+        fprintf(stderr, "Exception when getting result document ID: %s\n", e.what());
+        return INVALID_DOCID;
+    }
+}
+
+double col_match_results_get_relevancy(ColMatchResults mr, size_t i) {
+    try {
+        MatchResults *results = reinterpret_cast<MatchResults*>(mr);
+        return results->getDocumentID(i);
+    } catch(exception &e) {
+        fprintf(stderr, "Exception when getting result document ID: %s\n", e.what());
+        return -1.0;
+    }
 }
 
 ColCorpus col_corpus_new() {

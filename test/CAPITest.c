@@ -67,8 +67,49 @@ void testCorpus() {
     col_corpus_delete(c);
 }
 
+ColCorpus buildCorpus() {
+    ColCorpus c = col_corpus_new();
+    DocumentID name1 = 0;
+    DocumentID name2 = 10;
+    DocumentID name3 = 1000;
+    ColWord textName = col_word_new("title");
+
+    ColDocument d1, d2, dFar;
+    d1 = col_document_new(name1);
+    col_document_add_text(d1, textName, "abc def");
+    d2 = col_document_new(name2);
+    col_document_add_text(d2, textName, "abe test");
+    dFar = col_document_new(name3);
+    col_document_add_text(dFar, textName, "faraway donotmatchme");
+    col_corpus_add_document(c, d1);
+    col_corpus_add_document(c, d2);
+    col_corpus_add_document(c, dFar);
+
+    col_word_delete(textName);
+    col_document_delete(d1);
+    col_document_delete(d2);
+    col_document_delete(dFar);
+    return c;
+}
+
 void testMatching() {
-    /* Eventually. */
+    ColCorpus c = buildCorpus();
+    ColMatcher m = col_matcher_new();
+    ColMatchResults matches = col_match_results_new();
+    DocumentID dFarName = 1000;
+    DocumentID name1 = 0;
+
+    col_matcher_index(m, c);
+    col_corpus_delete(c);
+
+    col_matcher_match(m, "abe", matches);
+    assert(col_match_results_size(matches) == 2);
+    assert(col_match_results_get_id(matches, 0) != dFarName);
+    assert(col_match_results_get_id(matches, 1) != dFarName);
+    assert(col_match_results_get_id(matches, 0) == name1 ||
+            col_match_results_get_id(matches, 1) == name1);
+    col_match_results_delete(matches);
+    col_matcher_delete(m);
 }
 
 int main(int argc, char **argv) {

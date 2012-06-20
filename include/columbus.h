@@ -53,9 +53,14 @@ void col_document_add_text(ColDocument doc, ColWord field_name, const char *text
 
 ColMatcher col_matcher_new();
 void col_matcher_delete(ColMatcher m);
+size_t col_match_results_size(ColMatchResults mr);
+void col_matcher_index(ColMatcher m, ColCorpus c);
+void col_matcher_match(ColMatcher m, const char *query_as_utf8, ColMatchResults mr);
 
 ColMatchResults col_match_results_new();
 void col_match_results_delete(ColMatchResults mr);
+DocumentID col_match_results_get_id(ColMatchResults mr, size_t i);
+double col_match_results_get_relevancy(ColMatchResults mr, size_t i);
 
 ColCorpus col_corpus_new();
 void col_corpus_delete(ColCorpus c);
