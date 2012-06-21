@@ -78,20 +78,21 @@ void runTest(vector<Word> &a, int querySize) {
     for(size_t i=0; i < a.size(); i++)
         ind.insertWord(a[i], store.getID(a[i]));
     buildEnd = hiresTimestamp();
+    buildTime = buildEnd - buildStart;
+
+    printf("Index built in %f seconds. Words per second %.2f.\n", buildTime, a.size()/buildTime);
 
     queryStart = hiresTimestamp();
-    runQueries(querySize, defaultError, a, e, ind, matches);
+    //runQueries(querySize, defaultError, a, e, ind, matches);
     queryEnd = hiresTimestamp();
-    buildTime = buildEnd - buildStart;
     plainQueryTime = queryEnd - queryStart;
+    printf("Simple queries done in %f seconds. Queries per second %.2f.\n", plainQueryTime, querySize/plainQueryTime);
 
     e.addStandardErrors();
     queryStart = hiresTimestamp();
     runQueries(querySize, defaultError, a, e, ind, matches);
     queryEnd = hiresTimestamp();
     fullErrorQueryTime = queryEnd - queryStart;
-    printf("Index built in %f seconds. Words per second %.2f.\n", buildTime, a.size()/buildTime);
-    printf("Simple queries done in %f seconds. Queries per second %.2f.\n", plainQueryTime, querySize/plainQueryTime);
     printf("Heavy queries done in %f seconds. Queries per second %.2f.\n", fullErrorQueryTime, querySize/fullErrorQueryTime);
 }
 
