@@ -83,6 +83,11 @@ int ErrorValues::getSubstituteError(Letter l1, Letter l2) const {
     if(f != p->singleErrors.end())
         return f->second;
 
+    // The common case is that both letters are from basic latin.
+    // Assume none of them share a group, so skip check.
+    if(l1 >= '1' && l2 <= 'z')
+        return substitute_error;
+
     // Are the letters in the same error group? Check the bigger
     // value first, because it is probably a more uncommon letter.
     auto g1 = p->groupMap.find(l2);
