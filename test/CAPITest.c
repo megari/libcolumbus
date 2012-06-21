@@ -98,6 +98,7 @@ void testMatching() {
     ColMatchResults matches = col_match_results_new();
     DocumentID dFarName = 1000;
     DocumentID name1 = 0;
+    DocumentID name2 = 10;
 
     col_matcher_index(m, c);
     col_corpus_delete(c);
@@ -108,6 +109,8 @@ void testMatching() {
     assert(col_match_results_get_id(matches, 1) != dFarName);
     assert(col_match_results_get_id(matches, 0) == name1 ||
             col_match_results_get_id(matches, 1) == name1);
+    assert(col_match_results_get_id(matches, 0) == name2 ||
+            col_match_results_get_id(matches, 1) == name2);
     col_match_results_delete(matches);
     col_matcher_delete(m);
 }

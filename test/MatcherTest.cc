@@ -70,6 +70,7 @@ void testMatcher() {
     Word w1("abc");
     DocumentID dFarName = 1000;
     DocumentID name1 = 0;
+    DocumentID name2 = 10;
 
     m.index(*c);
     delete(c);
@@ -81,6 +82,8 @@ void testMatcher() {
     assert(matches.getDocumentID(1) != dFarName);
     assert(matches.getDocumentID(0) == name1 ||
            matches.getDocumentID(1) == name1);
+    assert(matches.getDocumentID(0) == name2 ||
+           matches.getDocumentID(1) == name2);
 }
 
 void testRelevancy() {
