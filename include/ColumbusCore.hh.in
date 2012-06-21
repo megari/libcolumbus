@@ -29,7 +29,7 @@
 
 #ifdef __cplusplus
   #include <cstdlib>
-  #include <stdint.h> /* Change to <cstdint> once we go c++0x. GCC will not permit it earlier. */
+  #include <cstdint>
 #else
   #include <stdlib.h>
   #include <stdint.h>
