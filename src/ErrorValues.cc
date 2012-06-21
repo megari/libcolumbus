@@ -65,15 +65,15 @@ int ErrorValues::getSubstituteError(Letter l1, Letter l2) const {
         l2 = tmp;
     }
     pair<Letter, Letter> in(l1, l2);
-    std::map<pair<Letter, Letter>, int>::iterator f = p->singleErrors.find(in);
+    auto f = p->singleErrors.find(in);
     if(f != p->singleErrors.end())
         return f->second;
 
     // Are the letters in the same error group? Check the bigger
     // value first, because it is probably a more uncommon letter.
-    map<Letter, size_t>::const_iterator g1 = p->groupMap.find(l2);
+    auto g1 = p->groupMap.find(l2);
     if(g1 != p->groupMap.end()) {
-        map<Letter, size_t>::const_iterator g2 = p->groupMap.find(l1);
+        auto g2 = p->groupMap.find(l1);
         if(g2 != p->groupMap.end()) {
             if(g1->second == g2->second) {
                 return p->groupErrors[g1->second];
