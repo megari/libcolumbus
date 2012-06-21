@@ -21,12 +21,26 @@
 #include <vector>
 #include <stdexcept>
 #include <fstream>
+#include <cassert>
 #include "ErrorValues.hh"
 #include "Word.hh"
 #include "ColumbusSlow.hh"
 
 COL_NAMESPACE_START
 using namespace std;
+
+/*
+ * This is an experiment into using unordered_map instead
+ * of regular map. It turned out to be massively slower.
+ */
+struct Hasher {
+    size_t operator()(const pair<Letter, Letter> &p) const {
+        const size_t shift = sizeof(size_t)*4;
+        assert(shift == 32);
+        // The simplest possible hash, just pack the elements together.
+        return (size_t(p.first) << shift) | p.second;
+    }
+};
 
 struct ErrorValuesPrivate {
     map<pair<Letter, Letter>, int> singleErrors;
