@@ -180,6 +180,10 @@ bool LevenshteinIndex::hasWord(const Word &word) const {
 }
 
 void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int max_error, IndexMatches &matches) const {
+    findWords(query, e, max_error, matches, false);
+}
+
+void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int max_error, IndexMatches &matches, const bool useEndError) const {
     MemoryCleaner cleaner;
     MatchRow *first_row = new MatchRow(query.length()+1, e.getInsertionError());
     cleaner.addRow(first_row);
@@ -187,18 +191,25 @@ void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const 
     if(query.length() > 0)
         assert(first_row->getValue(1) == e.getInsertionError());
     for(ChildListIter i = p->root->children.begin(); i != p->root->children.end(); i++) {
-        searchRecursive(query, i->second, e, i->first, 0, first_row, matches, max_error, cleaner);
+        searchRecursive(query, i->second, e, i->first, 0, first_row, matches, max_error, cleaner, useEndError);
     }
     matches.sort();
 }
 
-void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e, const Letter letter, const Letter previousLetter, const MatchRow *previousRow, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const {
+void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e,
+        const Letter letter, const Letter previousLetter, const MatchRow *previousRow,
+        IndexMatches &matches, const int max_error, MemoryCleaner &cleaner, const bool useEndError) const {
     MatchRow *currentRow = new MatchRow(previousRow, e.getDeletionError());
     cleaner.addRow(currentRow);
 
     for(size_t i = 1; i < query.length()+1; i++) {
         int insertError = currentRow->getValue(i-1) + e.getInsertionError();
-        int deleteError = previousRow->getValue(i) + e.getDeletionError();
+        int deleteError;
+        if(i >= query.length())
+            deleteError = previousRow->getValue(i) + e.getEndDeletionError();
+        else
+            deleteError = previousRow->getValue(i) + e.getDeletionError();
+
         int substituteError = previousRow->getValue(i-1) + e.getSubstituteError(query[i-1], letter);
 
         int transposeError;
@@ -217,7 +228,7 @@ void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const 
     }
     if(currentRow->minError() <= max_error) {
         for(ChildListIter i = node->children.begin(); i != node->children.end(); i++) {
-            searchRecursive(query, i->second, e, i->first, letter, currentRow, matches, max_error, cleaner);
+            searchRecursive(query, i->second, e, i->first, letter, currentRow, matches, max_error, cleaner, useEndError);
         }
     }
 }

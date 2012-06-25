@@ -219,6 +219,46 @@ void testTranspose() {
     matches.clear();
 }
 
+void testEndError() {
+    LevenshteinIndex trie;
+    ErrorValues e;
+    IndexMatches matches;
+    const int endError = e.getEndDeletionError();
+    const int defaultError = ErrorValues::getDefaultError();
+    Word w1("abcdef");
+    Word w2("abcdefghijkl"); // Should never be matched in these tests.
+    WordID w1ID = 1;
+    WordID w2ID = 2;
+    Word query1("abcde");
+    Word query2("bcdef");
+    Word query3("abdef");
+    Word query4("abcd");
+    assert(2*endError < defaultError);
+
+    trie.insertWord(w1, w1ID);
+    trie.insertWord(w2, w2ID);
+
+    assert(endError < defaultError);
+    trie.findWords(query1, e, defaultError, matches);
+    assert(matches.size() == 1);
+    assert(matches.getMatch(0) == w1ID);
+
+    matches.clear();
+    trie.findWords(query1, e, endError, matches, true);
+    assert(matches.size() == 1);
+    assert(matches.getMatch(0) == w1ID);
+
+    matches.clear();
+    trie.findWords(query2, e, endError, matches, true);
+    assert(matches.size() == 0);
+
+    trie.findWords(query3, e, endError, matches, true);
+    assert(matches.size() == 0);
+
+    trie.findWords(query4, e, 2*endError, matches, true);
+    assert(matches.size() == 1);
+    assert(matches.getMatch(0) == w1ID);
+}
 
 int main(int argc, char **argv) {
     testTrivial();
@@ -228,5 +268,6 @@ int main(int argc, char **argv) {
     testEmptyQuery();
     testExact();
     testTranspose();
+    testEndError();
     return 0;
 }
