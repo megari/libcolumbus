@@ -95,12 +95,8 @@ void ErrorValues::setError(Letter l1, Letter l2, int error) {
 }
 
 int ErrorValues::getSubstituteError(Letter l1, Letter l2) const {
-
     if(l1 < LUT_LETTERS && l2 < LUT_LETTERS) {
-        int lutValue = getLUT(l1, l2);
-        int normalValue = getSubstituteErrorSlow(l1, l2);
-        assert(lutValue == normalValue);
-        return lutValue;
+        return getLUT(l1, l2);
     }
     return getSubstituteErrorSlow(l1, l2);
 }

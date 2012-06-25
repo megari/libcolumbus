@@ -83,7 +83,7 @@ void runTest(vector<Word> &a, int querySize) {
     printf("Index built in %f seconds. Words per second %.2f.\n", buildTime, a.size()/buildTime);
 
     queryStart = hiresTimestamp();
-    //runQueries(querySize, defaultError, a, e, ind, matches);
+    runQueries(querySize, defaultError, a, e, ind, matches);
     queryEnd = hiresTimestamp();
     plainQueryTime = queryEnd - queryStart;
     printf("Simple queries done in %f seconds. Queries per second %.2f.\n", plainQueryTime, querySize/plainQueryTime);
