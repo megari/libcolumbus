@@ -33,10 +33,10 @@ private:
     static const int DEFAULT_GROUP_ERROR = 30;
     static const int DEFAULT_TYPO_ERROR = 70;
 
-    int insertion_error;
-    int deletion_error;
-    int substitute_error;
-    int transpose_error;
+    int insertionError;
+    int deletionError;
+    int substituteError;
+    int transposeError;
 
     ErrorValuesPrivate *p;
 
@@ -49,9 +49,9 @@ public:
     ErrorValues();
     ~ErrorValues();
 
-    int getInsertionError() const { return insertion_error; }
-    int getDeletionError() const { return deletion_error; }
-    int getTransposeError() const { return transpose_error; }
+    int getInsertionError() const { return insertionError; }
+    int getDeletionError() const { return deletionError; }
+    int getTransposeError() const { return transposeError; }
     int getSubstituteError(Letter l1, Letter l2) const;
 
     static int getDefaultError() { return ErrorValues::DEFAULT_ERROR; }

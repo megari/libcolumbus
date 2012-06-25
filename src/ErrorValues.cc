@@ -61,10 +61,10 @@ struct ErrorValuesPrivate {
 };
 
 ErrorValues::ErrorValues() :
-    insertion_error(DEFAULT_ERROR),
-    deletion_error(DEFAULT_ERROR),
-    substitute_error(DEFAULT_ERROR),
-    transpose_error(DEFAULT_ERROR) {
+    insertionError(DEFAULT_ERROR),
+    deletionError(DEFAULT_ERROR),
+    substituteError(DEFAULT_ERROR),
+    transposeError(DEFAULT_ERROR) {
     p = new ErrorValuesPrivate;
     p->lut = new int[LUT_SIZE];
     clearLUT();
@@ -78,7 +78,7 @@ ErrorValues::~ErrorValues() {
 void ErrorValues::clearLUT() {
     for(int i=0; i<LUT_LETTERS; i++) {
         for(int j=0; j<LUT_LETTERS; j++) {
-            p->lut[LUT_OFFSET(i, j)] = i == j ? 0 : substitute_error;
+            p->lut[LUT_OFFSET(i, j)] = i == j ? 0 : substituteError;
         }
     }
 }
@@ -125,7 +125,7 @@ int ErrorValues::getSubstituteErrorSlow(Letter l1, Letter l2) const {
             }
         }
     }
-    return substitute_error;
+    return substituteError;
 }
 
 void ErrorValues::clearErrors() {
