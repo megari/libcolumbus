@@ -63,6 +63,7 @@ struct ErrorValuesPrivate {
 ErrorValues::ErrorValues() :
     insertionError(DEFAULT_ERROR),
     deletionError(DEFAULT_ERROR),
+    endDeletionError(DEFAULT_END_DELETION_ERROR),
     substituteError(DEFAULT_ERROR),
     transposeError(DEFAULT_ERROR) {
     p = new ErrorValuesPrivate;

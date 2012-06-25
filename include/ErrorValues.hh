@@ -32,9 +32,11 @@ private:
     static const int DEFAULT_ERROR = 100;
     static const int DEFAULT_GROUP_ERROR = 30;
     static const int DEFAULT_TYPO_ERROR = 70;
+    static const int DEFAULT_END_DELETION_ERROR = 20;
 
     int insertionError;
     int deletionError;
+    int endDeletionError;
     int substituteError;
     int transposeError;
 
@@ -51,12 +53,14 @@ public:
 
     int getInsertionError() const { return insertionError; }
     int getDeletionError() const { return deletionError; }
+    int getEndDeletionError() const { return endDeletionError; }
     int getTransposeError() const { return transposeError; }
     int getSubstituteError(Letter l1, Letter l2) const;
 
     static int getDefaultError() { return ErrorValues::DEFAULT_ERROR; }
     static int getDefaultGroupError() { return ErrorValues::DEFAULT_GROUP_ERROR; }
     static int getDefaultTypoError() { return ErrorValues::DEFAULT_TYPO_ERROR; }
+    static int getDefaultEndDeletionError() { return ErrorValues::DEFAULT_END_DELETION_ERROR; }
 
     void setError(Letter l1, Letter l2, int error);
     void setGroupError(const Word &groupLetters, int error);
