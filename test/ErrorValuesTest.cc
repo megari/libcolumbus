@@ -25,20 +25,24 @@ using namespace Columbus;
 
 void testError() {
     int smallError = 1;
+    int defaultError = ErrorValues::getDefaultError();
     Letter l1 = 16;
     Letter l2 = 17;
     ErrorValues ev;
     ErrorValues ev2;
 
-    assert(ev.getSubstituteError(l1, l2) == ErrorValues::getDefaultError());
+    assert(ev.getSubstituteError(l1, l2) == defaultError);
     ev.setError(l1, l2, smallError);
     assert(ev.getSubstituteError(l1, l2) == smallError);
     assert(ev.getSubstituteError(l2, l1) == smallError);
 
-    assert(ev2.getSubstituteError(l2, l1) == ErrorValues::getDefaultError());
+    assert(ev2.getSubstituteError(l2, l1) == defaultError);
     ev2.setError(l2, l1, smallError);
     assert(ev2.getSubstituteError(l1, l2) == smallError);
     assert(ev2.getSubstituteError(l2, l1) == smallError);
+
+    ev.clearErrors();
+    assert(ev.getSubstituteError(l1, l2) == defaultError);
 }
 
 void testGroupError() {
@@ -49,10 +53,13 @@ void testGroupError() {
     Letter a = 'a';
     Letter aacute = 0xe1;
     Letter abreve = 0x103;
+    const int defaultError = ErrorValues::getDefaultError();
+    const int defaultGroupError = ErrorValues::getDefaultGroupError();
+    assert(defaultError != defaultGroupError);
 
-    assert(ev.getSubstituteError(e, eacute) == ErrorValues::getDefaultError());
-    assert(ev.getSubstituteError(a, aacute) == ErrorValues::getDefaultError());
-    assert(ev.getSubstituteError(e, aacute) == ErrorValues::getDefaultError());
+    assert(ev.getSubstituteError(e, eacute) == defaultError);
+    assert(ev.getSubstituteError(a, aacute) == defaultError);
+    assert(ev.getSubstituteError(e, aacute) == defaultError);
 
     ev.addLatinAccents();
     assert(ev.isInGroup(e));
@@ -63,16 +70,19 @@ void testGroupError() {
     assert(ev.isInGroup(abreve));
 
 
-    assert(ev.getSubstituteError(e, eacute) == ErrorValues::getDefaultGroupError());
-    assert(ev.getSubstituteError(eacute, e) == ErrorValues::getDefaultGroupError());
-    assert(ev.getSubstituteError(eacute, ebreve) == ErrorValues::getDefaultGroupError());
-    assert(ev.getSubstituteError(e, ebreve) == ErrorValues::getDefaultGroupError());
+    assert(ev.getSubstituteError(e, eacute) == defaultGroupError);
+    assert(ev.getSubstituteError(eacute, e) == defaultGroupError);
+    assert(ev.getSubstituteError(eacute, ebreve) == defaultGroupError);
+    assert(ev.getSubstituteError(e, ebreve) == defaultGroupError);
 
-    assert(ev.getSubstituteError(a, e) == ErrorValues::getDefaultError());
-    assert(ev.getSubstituteError(a, aacute) == ErrorValues::getDefaultGroupError());
-    assert(ev.getSubstituteError(abreve, aacute) == ErrorValues::getDefaultGroupError());
+    assert(ev.getSubstituteError(a, e) == defaultError);
+    assert(ev.getSubstituteError(a, aacute) == defaultGroupError);
+    assert(ev.getSubstituteError(abreve, aacute) == defaultGroupError);
 
-    assert(ev.getSubstituteError(eacute, aacute) == ErrorValues::getDefaultError());
+    assert(ev.getSubstituteError(eacute, aacute) == defaultError);
+
+    ev.clearErrors();
+    assert(ev.getSubstituteError(e, eacute) == defaultError);
 }
 
 void testKeyboardErrors() {

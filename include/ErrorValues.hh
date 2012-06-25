@@ -40,6 +40,11 @@ private:
 
     ErrorValuesPrivate *p;
 
+    void clearLUT();
+    void addToLUT(Letter l1, Letter l2, int value);
+    int getLUT(Letter l1, Letter l2) const;
+    int getSubstituteErrorSlow(Letter l1, Letter l2) const;
+
 public:
 
     ErrorValues();

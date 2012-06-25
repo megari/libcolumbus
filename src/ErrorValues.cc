@@ -17,6 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * This class implements an error lookup system.
+ * It is in the hottest of the hot paths in the entire system.
+ * Use of crazy optimization techniques is approved.
+ */
+
 #include <map>
 #include <vector>
 #include <stdexcept>
@@ -42,10 +48,16 @@ struct Hasher {
     }
 };
 
+const int LUT_LETTERS = 512;
+const int LUT_SIZE = (LUT_LETTERS*LUT_LETTERS);
+const int LUT_SHIFT = (9);
+#define LUT_OFFSET(l1, l2) ((l1) << LUT_SHIFT | (l2))
+
 struct ErrorValuesPrivate {
     map<pair<Letter, Letter>, int> singleErrors;
     map<Letter, size_t> groupMap;
     vector<unsigned int> groupErrors;
+    int *lut;
 };
 
 ErrorValues::ErrorValues() :
@@ -54,10 +66,21 @@ ErrorValues::ErrorValues() :
     substitute_error(DEFAULT_ERROR),
     transpose_error(DEFAULT_ERROR) {
     p = new ErrorValuesPrivate;
+    p->lut = new int[LUT_SIZE];
+    clearLUT();
 }
 
 ErrorValues::~ErrorValues() {
+    delete []p->lut;
     delete p;
+}
+
+void ErrorValues::clearLUT() {
+    for(int i=0; i<LUT_LETTERS; i++) {
+        for(int j=0; j<LUT_LETTERS; j++) {
+            p->lut[LUT_OFFSET(i, j)] = i == j ? 0 : substitute_error;
+        }
+    }
 }
 
 void ErrorValues::setError(Letter l1, Letter l2, int error) {
@@ -68,9 +91,21 @@ void ErrorValues::setError(Letter l1, Letter l2, int error) {
     }
     pair<Letter, Letter> in(l1, l2);
     p->singleErrors[in] = error;
+    addToLUT(l1, l2, error);
 }
 
 int ErrorValues::getSubstituteError(Letter l1, Letter l2) const {
+
+    if(l1 < LUT_LETTERS && l2 < LUT_LETTERS) {
+        int lutValue = getLUT(l1, l2);
+        int normalValue = getSubstituteErrorSlow(l1, l2);
+        assert(lutValue == normalValue);
+        return lutValue;
+    }
+    return getSubstituteErrorSlow(l1, l2);
+}
+
+int ErrorValues::getSubstituteErrorSlow(Letter l1, Letter l2) const {
     if(l1 == l2)
         return 0;
     if(l1 > l2) {
@@ -82,11 +117,6 @@ int ErrorValues::getSubstituteError(Letter l1, Letter l2) const {
     auto f = p->singleErrors.find(in);
     if(f != p->singleErrors.end())
         return f->second;
-
-    // The common case is that both letters are from basic latin.
-    // Assume none of them share a group, so skip check.
-    if(l1 >= '1' && l2 <= 'z')
-        return substitute_error;
 
     // Are the letters in the same error group? Check the bigger
     // value first, because it is probably a more uncommon letter.
@@ -104,6 +134,9 @@ int ErrorValues::getSubstituteError(Letter l1, Letter l2) const {
 
 void ErrorValues::clearErrors() {
     p->singleErrors.clear();
+    p->groupErrors.clear();
+    p->groupMap.clear();
+    clearLUT();
 }
 
 void ErrorValues::setGroupError(const Word &groupLetters, int error) {
@@ -116,6 +149,15 @@ void ErrorValues::setGroupError(const Word &groupLetters, int error) {
                 throw runtime_error("Tried to add letter to two different error groups.");
         } else {
             p->groupMap[curLetter] = newGroupID;
+        }
+    }
+    for(size_t i=0; i<groupLetters.length(); i++) {
+        for(size_t j=i; j<groupLetters.length(); j++) {
+            Letter l1 = groupLetters[i];
+            Letter l2 = groupLetters[j];
+            if(l1 == l2)
+                continue;
+            addToLUT(l1, l2, error);
         }
     }
     debugMessage("Added error group: %s\n", groupLetters.asUtf8());
@@ -173,6 +215,19 @@ void ErrorValues::addKeyboardErrors() {
     }
 
 
+}
+
+
+void ErrorValues::addToLUT(Letter l1, Letter l2, int value) {
+    if(l1 < LUT_LETTERS && l2 < LUT_LETTERS) {
+        p->lut[LUT_OFFSET(l1, l2)] = value;
+        p->lut[LUT_OFFSET(l2, l1)] = value;
+    }
+}
+
+int ErrorValues::getLUT(Letter l1, Letter l2) const {
+    // No bounds checking because this needs to be crazy fast.
+    return p->lut[LUT_OFFSET(l1, l2)];
 }
 
 COL_NAMESPACE_END
