@@ -96,7 +96,7 @@ void ErrorValues::setError(Letter l1, Letter l2, int error) {
 
 int ErrorValues::getSubstituteError(Letter l1, Letter l2) const {
     if(l1 < LUT_LETTERS && l2 < LUT_LETTERS) {
-        return getLUT(l1, l2);
+        return p->lut[LUT_OFFSET(l1, l2)];
     }
     return getSubstituteErrorSlow(l1, l2);
 }
@@ -219,11 +219,6 @@ void ErrorValues::addToLUT(Letter l1, Letter l2, int value) {
         p->lut[LUT_OFFSET(l1, l2)] = value;
         p->lut[LUT_OFFSET(l2, l1)] = value;
     }
-}
-
-int ErrorValues::getLUT(Letter l1, Letter l2) const {
-    // No bounds checking because this needs to be crazy fast.
-    return p->lut[LUT_OFFSET(l1, l2)];
 }
 
 COL_NAMESPACE_END
