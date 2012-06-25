@@ -29,7 +29,7 @@ MatchRow::MatchRow(size_t rowsize_, int error) : parent(0), rowsize(rowsize_) {
     for(size_t i=0; i<rowsize; i++)
         values[i] = i*error;
 }
-MatchRow::MatchRow(MatchRow *parent_, int deletion_error) : parent(parent_), rowsize(parent->rowsize){
+MatchRow::MatchRow(const MatchRow *parent_, int deletion_error) : parent(parent_), rowsize(parent->rowsize){
     values = new int[rowsize];
     values[0] = parent->values[0] + deletion_error;
     for(size_t i=1; i<rowsize; i++) {

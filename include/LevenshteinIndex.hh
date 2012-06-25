@@ -37,7 +37,7 @@ class LevenshteinIndex {
 private:
     LevenshteinIndexPrivate *p;
 
-    void searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e, Letter letter, Letter previousLetter, MatchRow *previous_row, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const;
+    void searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e, const Letter letter, const Letter previousLetter, const MatchRow *previous_row, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const;
     void trieInsert(TrieNode *node, const Word &word, const WordID wordID);
 
     // Disable copy and move.

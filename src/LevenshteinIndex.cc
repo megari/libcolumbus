@@ -192,7 +192,7 @@ void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const 
     matches.sort();
 }
 
-void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e, Letter letter, Letter previousLetter, MatchRow *previousRow, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const {
+void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e, const Letter letter, const Letter previousLetter, const MatchRow *previousRow, IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const {
     MatchRow *currentRow = new MatchRow(previousRow, e.getDeletionError());
     cleaner.addRow(currentRow);
 

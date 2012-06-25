@@ -27,13 +27,13 @@ COL_NAMESPACE_START
 class MatchRow {
 
 private:
-    MatchRow *parent;
+    const MatchRow *parent;
     int *values;
     size_t rowsize;
 
 public:
     MatchRow(size_t rowsize_, int error);
-    MatchRow(MatchRow *parent_, int deletion_error);
+    MatchRow(const MatchRow *parent_, int deletion_error);
     ~MatchRow();
 
     int getValue(size_t i) const { return values[i]; }
@@ -42,7 +42,7 @@ public:
     int minError() const;
 
     void print() const;
-    MatchRow* getParent() { return parent; }
+    const MatchRow* getParent() const { return parent; }
 };
 
 COL_NAMESPACE_END
