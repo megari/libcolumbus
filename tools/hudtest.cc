@@ -24,6 +24,7 @@
 #include "columbus.hh"
 #include "ColumbusHelpers.hh"
 #include "WordList.hh"
+#include "IndexWeights.hh"
 #include <gtk/gtk.h>
 #include <string>
 #include <cstring>
@@ -162,6 +163,7 @@ void build_matcher(app_data &app, const char *dataFile) {
     Word commandField("command");
     const size_t batchSize = 100000;
     size_t i=0;
+    const double pathWeight = 0.3;
     double dataReadStart, dataReadEnd;
 
     ifstream ifile(dataFile);
@@ -198,6 +200,7 @@ void build_matcher(app_data &app, const char *dataFile) {
     }
     app.m->index(*c);
     delete c;
+    app.m->getIndexWeights().setWeight(pathField, pathWeight);
     dataReadEnd = hiresTimestamp();
     printf("Read in %ld documents in %.2f seconds.\n", i, dataReadEnd - dataReadStart);
 }
