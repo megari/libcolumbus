@@ -21,11 +21,15 @@
  * A simple GUI application to test HUD matching.
  */
 
-#include "columbus.hh" // This app should only need public API from Columbus.
+#include "columbus.hh"
+#include "ColumbusHelpers.hh"
+#include "WordList.hh"
 #include <gtk/gtk.h>
 #include <string>
+#include <cstring>
 #include <fstream>
 #include <vector>
+#include <cassert>
 
 using namespace Columbus;
 using namespace std;
@@ -141,9 +145,28 @@ void build_gui(app_data &app) {
     gtk_widget_show_all(app.window);
 }
 
+void splitToParts(string &line, WordList &path, WordList &command) {
+    const char *splitToken = ">";
+    WordList list;
+    bool tokenFound = false;
+    splitToWords(line.c_str(), list);
+    for(size_t i=0; i<list.size(); i++) {
+        if(strcmp(list[i].asUtf8(), splitToken) == 0) {
+            tokenFound = true;
+            continue;
+        }
+        if(!tokenFound)
+            path.addWord(list[i]);
+        else
+            command.addWord(list[i]);
+    }
+    assert(tokenFound);
+}
+
 void build_matcher(app_data &app, const char *dataFile) {
     Corpus *c = new Corpus();
-    Word field("name");
+    Word pathField("path");
+    Word commandField("command");
     const size_t batchSize = 100000;
     size_t i=0;
     double dataReadStart, dataReadEnd;
@@ -159,13 +182,18 @@ void build_matcher(app_data &app, const char *dataFile) {
     // Build Corpus.
     dataReadStart = hiresTimestamp();
     while(getline(ifile, line)) {
+        WordList path, command;
         if(line.size() == 0)
             continue;
         // Remove possible DOS line ending garbage.
         if(line[line.size()-2] == '\r')
             line[line.size()-2] = '\0';
+        splitToParts(line, path, command);
+        if(command.size() == 0)
+            continue;
         Document d(app.source.size());
-        d.addText(field, line.c_str());
+        d.addText(pathField, path);
+        d.addText(commandField, command);
         c->addDocument(d);
         app.source.push_back(line);
         i++;
