@@ -94,10 +94,8 @@ static void doSearch(GtkWidget *widget, gpointer data) {
 
 void build_gui(app_data &app) {
     GtkWidget *vbox;
-    GtkWidget *hbox;
     GtkWidget *scroller;
     GtkWidget *quitButton;
-    GtkWidget *searchButton;
     GtkTreeViewColumn *textColumn;
     GtkTreeViewColumn *relevancyColumn;
     app.window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -109,12 +107,9 @@ void build_gui(app_data &app) {
     gtk_window_set_title(GTK_WINDOW(app.window), "Columbus query tool");
     vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add(GTK_CONTAINER(app.window), vbox);
-    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     app.entry = gtk_entry_new();
     gtk_widget_set_tooltip_text(app.entry, "Word to search, must not contain whitespace.");
-    searchButton = gtk_button_new_with_label("Search");
-    g_signal_connect(searchButton, "clicked", G_CALLBACK(doSearch), &app);
-    g_signal_connect(app.entry, "activate", G_CALLBACK(doSearch), &app); // GTK+ docs say not to connect to "activate" but it seems to work.
+    g_signal_connect(app.entry, "changed", G_CALLBACK(doSearch), &app);
 
     app.matchStore = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_DOUBLE);
     app.matchView = gtk_tree_view_new_with_model(GTK_TREE_MODEL(app.matchStore));
@@ -135,9 +130,7 @@ void build_gui(app_data &app) {
     quitButton = gtk_button_new_with_label("Quit");
     g_signal_connect(quitButton, "clicked", G_CALLBACK(destroy), NULL);
 
-    gtk_box_pack_start(GTK_BOX(hbox), app.entry, TRUE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(hbox), searchButton, FALSE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), app.entry, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), scroller, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), app.queryTimeLabel, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), app.resultCountLabel, FALSE, TRUE, 0);
