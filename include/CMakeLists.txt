@@ -9,6 +9,7 @@ Corpus.hh
 ErrorValues.hh
 Document.hh
 ColumbusHelpers.hh
+IndexWeights.hh
 DESTINATION include/columbus)
 
 # Build and install a pkg-config file

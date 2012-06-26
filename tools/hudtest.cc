@@ -22,9 +22,7 @@
  */
 
 #include "columbus.hh"
-#include "ColumbusHelpers.hh"
 #include "WordList.hh"
-#include "IndexWeights.hh"
 #include <gtk/gtk.h>
 #include <string>
 #include <cstring>

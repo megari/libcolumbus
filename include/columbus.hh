@@ -39,5 +39,6 @@
 #include <Word.hh>
 #include <Document.hh>
 #include <ColumbusHelpers.hh>
+#include <IndexWeights.hh>
 
 #endif
