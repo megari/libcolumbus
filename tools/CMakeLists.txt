@@ -9,6 +9,9 @@ if(GTK3_FOUND)
   add_executable(queryapp queryapp.cc)
   target_link_libraries(queryapp columbus ${GTK3_LIBRARIES})
 
+  add_executable(hudtest hudtest.cc)
+  target_link_libraries(hudtest columbus ${GTK3_LIBRARIES})
+
   install(
     TARGETS singleword queryapp
     ARCHIVE DESTINATION ${LIBDIR}
