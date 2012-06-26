@@ -108,7 +108,7 @@ void build_gui(app_data &app) {
     vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add(GTK_CONTAINER(app.window), vbox);
     app.entry = gtk_entry_new();
-    gtk_widget_set_tooltip_text(app.entry, "Word to search, must not contain whitespace.");
+    gtk_widget_set_tooltip_text(app.entry, "You type your search phrase in, you blank your search phrase out. That's what it's all about.");
     g_signal_connect(app.entry, "changed", G_CALLBACK(doSearch), &app);
 
     app.matchStore = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_DOUBLE);
