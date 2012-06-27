@@ -124,8 +124,7 @@ static void findDocuments(MatcherPrivate *p, const WordID wordID, const WordID f
     if(s == rind.end())
         return;
     set<DocumentID> &docSet = s->second;
-    set<DocumentID>::iterator foo;
-    for(set<DocumentID>::iterator docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
+    for(auto docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
         result.push_back(*docIter);
     }
 }
@@ -168,7 +167,7 @@ static void gatherMatchedDocuments(MatcherPrivate *p,  map<WordID, MatchErrorMap
                 // At this point we know the matched word, and which index and field
                 // it matched in. Now we can just increment the relevancy of said document.
                 double relevancy = calculateRelevancy(p, mIt->first, it->first, mIt->second);
-                map<DocumentID, double>::iterator doc = matchedDocuments.find(curDoc);
+                auto doc = matchedDocuments.find(curDoc);
                 if(doc == matchedDocuments.end())
                     matchedDocuments[curDoc] = relevancy;
                 else
