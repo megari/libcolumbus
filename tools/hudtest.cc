@@ -45,7 +45,7 @@ struct app_data {
     GtkWidget *matchView;
     GtkWidget *queryTimeLabel;
     GtkWidget *resultCountLabel;
-    vector<string> source;
+    vector<string> pathSource, commandSource;
 };
 
 static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) {
@@ -79,8 +79,9 @@ static void doSearch(GtkWidget *widget, gpointer data) {
         DocumentID id = matches.getDocumentID(i);
         gtk_list_store_append(app->matchStore, &iter);
         gtk_list_store_set(app->matchStore, &iter,
-                0, app->source[id].c_str(),
-                1, matches.getRelevancy(i),
+                0, app->pathSource[id].c_str(),
+                1, app->commandSource[id].c_str(),
+                2, matches.getRelevancy(i),
                 -1);
     }
     char buf[1024];
@@ -95,7 +96,8 @@ void build_gui(app_data &app) {
     GtkWidget *vbox;
     GtkWidget *scroller;
     GtkWidget *quitButton;
-    GtkTreeViewColumn *textColumn;
+    GtkTreeViewColumn *pathColumn;
+    GtkTreeViewColumn *commandColumn;
     GtkTreeViewColumn *relevancyColumn;
     app.window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     g_signal_connect (app.window, "delete-event",
@@ -110,13 +112,16 @@ void build_gui(app_data &app) {
     gtk_widget_set_tooltip_text(app.entry, "You type your search phrase in, you blank your search phrase out. That's what it's all about.");
     g_signal_connect(app.entry, "changed", G_CALLBACK(doSearch), &app);
 
-    app.matchStore = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_DOUBLE);
+    app.matchStore = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_DOUBLE);
     app.matchView = gtk_tree_view_new_with_model(GTK_TREE_MODEL(app.matchStore));
-    textColumn = gtk_tree_view_column_new_with_attributes("Match",
+    pathColumn = gtk_tree_view_column_new_with_attributes("Path",
             gtk_cell_renderer_text_new(), "text", 0, NULL);
-    gtk_tree_view_append_column(GTK_TREE_VIEW(app.matchView), textColumn);
-    relevancyColumn = gtk_tree_view_column_new_with_attributes("Relevancy",
+    gtk_tree_view_append_column(GTK_TREE_VIEW(app.matchView), pathColumn);
+    commandColumn = gtk_tree_view_column_new_with_attributes("Command",
             gtk_cell_renderer_text_new(), "text", 1, NULL);
+    gtk_tree_view_append_column(GTK_TREE_VIEW(app.matchView), commandColumn);
+    relevancyColumn = gtk_tree_view_column_new_with_attributes("Relevancy",
+            gtk_cell_renderer_text_new(), "text", 2, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(app.matchView), relevancyColumn);
     scroller = gtk_scrolled_window_new(NULL, NULL);
     gtk_container_add(GTK_CONTAINER(scroller), app.matchView);
@@ -155,6 +160,13 @@ void splitToParts(string &line, WordList &path, WordList &command) {
     assert(tokenFound);
 }
 
+void splitShowableParts(const string &line, string &pathText, string &commandText) {
+    size_t tokenLoc = line.find('>', 0);
+    pathText.assign(line, 0, tokenLoc);
+    commandText.assign(line, tokenLoc+1, line.length());
+}
+
+
 void build_matcher(app_data &app, const char *dataFile) {
     Corpus *c = new Corpus();
     Word pathField("path");
@@ -176,19 +188,22 @@ void build_matcher(app_data &app, const char *dataFile) {
     dataReadStart = hiresTimestamp();
     while(getline(ifile, line)) {
         WordList path, command;
+        string pathText, commandText;
         if(line.size() == 0)
             continue;
         // Remove possible DOS line ending garbage.
         if(line[line.size()-2] == '\r')
             line[line.size()-2] = '\0';
+        splitShowableParts(line, pathText, commandText);
         splitToParts(line, path, command);
         if(command.size() == 0)
             continue;
-        Document d(app.source.size());
+        Document d(app.pathSource.size());
         d.addText(pathField, path);
         d.addText(commandField, command);
         c->addDocument(d);
-        app.source.push_back(line);
+        app.pathSource.push_back(pathText);
+        app.commandSource.push_back(commandText);
         i++;
         if(i % batchSize == 0) {
             app.m->index(*c);
