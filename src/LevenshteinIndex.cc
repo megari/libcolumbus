@@ -67,7 +67,7 @@ private:
 public:
     MemoryCleaner() {}
     ~MemoryCleaner() {
-        for(vector<MatchRow*>::iterator i=l.begin(); i != l.end(); i++)
+        for(auto i=l.begin(); i != l.end(); i++)
             delete *i;
     }
 
@@ -106,7 +106,7 @@ int LevenshteinIndex::getDefaultError() {
 void LevenshteinIndex::insertWord(const Word &word, const WordID wordID) {
     if(word.length() == 0)
         return;
-    WordCount::const_iterator it = p->wordCounts.find(wordID);
+    auto it = p->wordCounts.find(wordID);
     size_t newCount;
     if(it != p->wordCounts.end()) {
         newCount = p->wordCounts[wordID] + 1;
@@ -234,7 +234,7 @@ void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const 
 }
 
 size_t LevenshteinIndex::wordCount(const WordID queryID) const {
-    WordCount::const_iterator i = p->wordCounts.find(queryID);
+    auto i = p->wordCounts.find(queryID);
     if(i == p->wordCounts.end())
         return 0;
     return i->second;
