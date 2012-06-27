@@ -40,10 +40,11 @@ COL_NAMESPACE_START
 using namespace std;
 
 typedef set<DocumentID> DocumentSet;
+typedef map<WordID, LevenshteinIndex*> IndexMap;
 typedef map<WordID, map<WordID, DocumentSet > > ReverseIndex; // Index name, word, documents.
 
 struct MatcherPrivate {
-    map<WordID, LevenshteinIndex*> indexes;
+    IndexMap indexes;
     ReverseIndex reverseIndex;
     ErrorValues e;
     IndexWeights weights;
@@ -51,7 +52,7 @@ struct MatcherPrivate {
     WordStore store;
 };
 
-typedef map<WordID, LevenshteinIndex*>::iterator IndIterator;
+typedef IndexMap::iterator IndIterator;
 typedef ReverseIndex::iterator RevIndIterator;
 typedef map<WordID, DocumentSet >::iterator RevIterator;
 
