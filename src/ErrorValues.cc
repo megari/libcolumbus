@@ -84,7 +84,7 @@ void ErrorValues::clearLUT() {
     }
 }
 
-void ErrorValues::setError(Letter l1, Letter l2, int error) {
+void ErrorValues::setError(Letter l1, Letter l2, const int error) {
     if(l1 > l2) {
         Letter tmp = l1;
         l1 = l2;
@@ -136,7 +136,7 @@ void ErrorValues::clearErrors() {
     clearLUT();
 }
 
-void ErrorValues::setGroupError(const Word &groupLetters, int error) {
+void ErrorValues::setGroupError(const Word &groupLetters, const int error) {
     size_t newGroupID = p->groupErrors.size();
     p->groupErrors.push_back(error);
     for(size_t i = 0; i < groupLetters.length(); i++) {
@@ -148,6 +148,12 @@ void ErrorValues::setGroupError(const Word &groupLetters, int error) {
             p->groupMap[curLetter] = newGroupID;
         }
     }
+    addGroupErrorToLUT(groupLetters, error);
+
+    debugMessage("Added error group: %s\n", groupLetters.asUtf8());
+}
+
+void ErrorValues::addGroupErrorToLUT(const Word &groupLetters, const int error) {
     for(size_t i=0; i<groupLetters.length(); i++) {
         for(size_t j=i; j<groupLetters.length(); j++) {
             Letter l1 = groupLetters[i];
@@ -157,7 +163,6 @@ void ErrorValues::setGroupError(const Word &groupLetters, int error) {
             addToLUT(l1, l2, error);
         }
     }
-    debugMessage("Added error group: %s\n", groupLetters.asUtf8());
 }
 
 bool ErrorValues::isInGroup(Letter l) {

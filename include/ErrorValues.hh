@@ -44,6 +44,7 @@ private:
 
     void clearLUT();
     void addToLUT(Letter l1, Letter l2, int value);
+    void addGroupErrorToLUT(const Word &groupLetters, const int error);
     int getSubstituteErrorSlow(Letter l1, Letter l2) const;
 
 public:
@@ -62,8 +63,8 @@ public:
     static int getDefaultTypoError() { return ErrorValues::DEFAULT_TYPO_ERROR; }
     static int getDefaultEndDeletionError() { return ErrorValues::DEFAULT_END_DELETION_ERROR; }
 
-    void setError(Letter l1, Letter l2, int error);
-    void setGroupError(const Word &groupLetters, int error);
+    void setError(Letter l1, Letter l2, const int error);
+    void setGroupError(const Word &groupLetters, const int error);
     void addLatinAccents();
     void addKeyboardErrors();
     void addStandardErrors() { addLatinAccents(); addKeyboardErrors(); }
