@@ -37,6 +37,7 @@ public:
     ~MatchResults();
 
     void addResult(DocumentID docID, double relevancy);
+    void addResults(const MatchResults &r);
     size_t size() const;
     DocumentID getDocumentID(size_t i) const;
     double getRelevancy(size_t i) const;

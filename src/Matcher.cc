@@ -131,7 +131,7 @@ static void findDocuments(MatcherPrivate *p, const WordID wordID, const WordID f
     }
 }
 
-static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dynamicError, BestIndexMatches &bestIndexMatches) {
+static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dynamicError, const int extraError, BestIndexMatches &bestIndexMatches) {
     const size_t endErrorCutoff = 3;
     for(size_t i=0; i<query.size(); i++) {
         const Word &w = query[i];
@@ -141,6 +141,7 @@ static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dy
             maxError = getDynamicError(w);
         else
             maxError = 2*LevenshteinIndex::getDefaultError();
+        maxError += extraError;
         // Allow extra error at the end of the last query word.
         if(i == query.size()-1 && w.length() >= endErrorCutoff)
             useEndError = true;
@@ -255,13 +256,13 @@ void Matcher::addToReverseIndex(const WordID wordID, const WordID indexID, const
     }
 }
 
-void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError, MatchResults &matchedDocuments) {
+void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError, const int extraError, MatchResults &matchedDocuments) {
     map<DocumentID, double> docs;
     BestIndexMatches bestIndexMatches;
     double start, indexMatchEnd, gatherEnd, finish;
 
     start = hiresTimestamp();
-    matchIndexes(p, query, dynamicError, bestIndexMatches);
+    matchIndexes(p, query, dynamicError, extraError, bestIndexMatches);
     indexMatchEnd = hiresTimestamp();
     // Now we know all matched words in all indexes. Gather up the corresponding documents.
     gatherMatchedDocuments(p, bestIndexMatches, docs);
@@ -276,7 +277,20 @@ void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError,
 }
 
 void Matcher::match(const WordList &query, MatchResults &matchedDocuments) {
-    matchWithRelevancy(query, true, matchedDocuments);
+    const int maxIterations = 1;
+    const int increment = LevenshteinIndex::getDefaultError();
+    const size_t minMatches = 10;
+
+    // Try to search with ever growing error until we find enough matches.
+    for(int i=0; i<maxIterations; i++) {
+        MatchResults matches;
+        matchWithRelevancy(query, true, i*increment, matches);
+        if(matches.size() >= minMatches || i == maxIterations-1) {
+            matchedDocuments.addResults(matches);
+            return;
+        }
+    }
+
 }
 
 void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments) {

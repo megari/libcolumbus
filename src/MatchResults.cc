@@ -48,6 +48,12 @@ void MatchResults::addResult(DocumentID id, double relevancy) {
     p->sorted = false;
 }
 
+void MatchResults::addResults(const MatchResults &r) {
+    p->results.insert(p->results.end(), r.p->results.begin(), r.p->results.end());
+    p->sorted = false;
+}
+
+
 size_t MatchResults::size() const {
     return p->results.size();
 }
