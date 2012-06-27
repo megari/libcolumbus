@@ -267,7 +267,7 @@ void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError,
     // Now we know all matched words in all indexes. Gather up the corresponding documents.
     gatherMatchedDocuments(p, bestIndexMatches, docs);
     gatherEnd = hiresTimestamp();
-    for(map<DocumentID, double>::iterator it=docs.begin(); it != docs.end(); it++) {
+    for(auto it=docs.begin(); it != docs.end(); it++) {
         matchedDocuments.addResult(it->first, it->second);
     }
     debugMessage("Found a total of %ld documents.\n", matchedDocuments.size());
