@@ -38,7 +38,7 @@ MatcherStatistics::~MatcherStatistics() {
 }
 
 void MatcherStatistics::wordProcessed(const WordID w) {
-    map<WordID, size_t>::iterator it = p->totalWordCounts.find(w);
+    auto it = p->totalWordCounts.find(w);
     if(it == p->totalWordCounts.end()) {
         p->totalWordCounts[w] = 1;
     } else {
@@ -47,7 +47,7 @@ void MatcherStatistics::wordProcessed(const WordID w) {
 }
 
 size_t MatcherStatistics::getTotalWordCount(const WordID w) const {
-    map<WordID, size_t>::iterator it = p->totalWordCounts.find(w);
+    auto it = p->totalWordCounts.find(w);
     if(it == p->totalWordCounts.end()) {
         return 0;
     } else {
