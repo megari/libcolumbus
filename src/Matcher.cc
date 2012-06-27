@@ -39,7 +39,8 @@
 COL_NAMESPACE_START
 using namespace std;
 
-typedef map<WordID, map<WordID, set<DocumentID> > > ReverseIndex; // Index name, word, documents.
+typedef set<DocumentID> DocumentSet;
+typedef map<WordID, map<WordID, DocumentSet > > ReverseIndex; // Index name, word, documents.
 
 struct MatcherPrivate {
     map<WordID, LevenshteinIndex*> indexes;
@@ -52,7 +53,7 @@ struct MatcherPrivate {
 
 typedef map<WordID, LevenshteinIndex*>::iterator IndIterator;
 typedef ReverseIndex::iterator RevIndIterator;
-typedef map<WordID, set<DocumentID> >::iterator RevIterator;
+typedef map<WordID, DocumentSet >::iterator RevIterator;
 
 typedef map<WordID, int> MatchErrorMap;
 
@@ -119,11 +120,11 @@ static void findDocuments(MatcherPrivate *p, const WordID wordID, const WordID f
     RevIndIterator it = p->reverseIndex.find(fieldID);
     if(it == p->reverseIndex.end())
         return;
-    map<WordID, set<DocumentID> > &rind = it->second;
+    map<WordID, DocumentSet > &rind = it->second;
     RevIterator s = rind.find(wordID);
     if(s == rind.end())
         return;
-    set<DocumentID> &docSet = s->second;
+    DocumentSet &docSet = s->second;
     for(auto docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
         result.push_back(*docIter);
     }
@@ -237,14 +238,14 @@ void Matcher::addToIndex(const Word &word, const WordID wordID, const WordID ind
 void Matcher::addToReverseIndex(const WordID wordID, const WordID indexID, const Document *d) {
     RevIndIterator rit = p->reverseIndex.find(indexID);
     if(rit == p->reverseIndex.end()) {
-        map<WordID, set<DocumentID> > tmp;
+        map<WordID, DocumentSet > tmp;
         p->reverseIndex[indexID] = tmp;
         rit = p->reverseIndex.find(indexID);
     }
-    map<WordID, set<DocumentID> > &indexRind = rit->second;
+    map<WordID, DocumentSet > &indexRind = rit->second;
     RevIterator revIt = indexRind.find(wordID);
     if(revIt == indexRind.end()) {
-        set<DocumentID> tmp;
+        DocumentSet tmp;
         tmp.insert(d->getID());
         indexRind[wordID] = tmp;
     } else {
