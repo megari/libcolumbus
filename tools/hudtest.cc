@@ -142,24 +142,6 @@ void build_gui(app_data &app) {
     gtk_widget_show_all(app.window);
 }
 
-void splitToParts(string &line, WordList &path, WordList &command) {
-    const char *splitToken = ">";
-    WordList list;
-    bool tokenFound = false;
-    splitToWords(line.c_str(), list);
-    for(size_t i=0; i<list.size(); i++) {
-        if(strcmp(list[i].asUtf8(), splitToken) == 0) {
-            tokenFound = true;
-            continue;
-        }
-        if(!tokenFound)
-            path.addWord(list[i]);
-        else
-            command.addWord(list[i]);
-    }
-    assert(tokenFound);
-}
-
 void splitShowableParts(const string &line, string &pathText, string &commandText) {
     size_t tokenLoc = line.find('>', 0);
     pathText.assign(line, 0, tokenLoc);
@@ -195,7 +177,8 @@ void build_matcher(app_data &app, const char *dataFile) {
         if(line[line.size()-2] == '\r')
             line[line.size()-2] = '\0';
         splitShowableParts(line, pathText, commandText);
-        splitToParts(line, path, command);
+        splitToWords(pathText.c_str(), path);
+        splitToWords(commandText.c_str(), command);
         if(command.size() == 0)
             continue;
         Document d(app.pathSource.size());
