@@ -40,5 +40,6 @@
 #include <Document.hh>
 #include <ColumbusHelpers.hh>
 #include <IndexWeights.hh>
+#include <ErrorValues.hh>
 
 #endif

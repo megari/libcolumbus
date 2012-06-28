@@ -166,6 +166,7 @@ void build_matcher(app_data &app, const char *dataFile) {
     string line;
 
     app.m = new Matcher();
+    app.m->getErrorValues().setSubstringMode();
     // Build Corpus.
     dataReadStart = hiresTimestamp();
     while(getline(ifile, line)) {
