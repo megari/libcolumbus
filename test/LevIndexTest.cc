@@ -246,18 +246,18 @@ void testEndError() {
     assert(matches.getMatch(0) == w1ID);
 
     matches.clear();
-    trie.findWords(query1, e, endError, matches, true);
+    trie.findWords(query1, e, endError, matches);
     assert(matches.size() == 1);
     assert(matches.getMatch(0) == w1ID);
 
     matches.clear();
-    trie.findWords(query2, e, endError, matches, true);
+    trie.findWords(query2, e, endError, matches);
     assert(matches.size() == 0);
 
-    trie.findWords(query3, e, endError, matches, true);
+    trie.findWords(query3, e, endError, matches);
     assert(matches.size() == 0);
 
-    trie.findWords(query4, e, 2*endError, matches, true);
+    trie.findWords(query4, e, 2*endError, matches);
     assert(matches.size() == 1);
     assert(matches.getMatch(0) == w1ID);
 }
@@ -289,18 +289,18 @@ void testStartError() {
     assert(matches.getMatch(0) == w1ID);
 
     matches.clear();
-    trie.findWords(query1, e, startError, matches, true);
+    trie.findWords(query1, e, startError, matches);
     assert(matches.size() == 1);
     assert(matches.getMatch(0) == w1ID);
 
     matches.clear();
-    trie.findWords(query2, e, startError, matches, true);
+    trie.findWords(query2, e, startError, matches);
     assert(matches.size() == 0);
 
-    trie.findWords(query3, e, startError, matches, true);
+    trie.findWords(query3, e, startError, matches);
     assert(matches.size() == 0);
 
-    trie.findWords(query4, e, 2*startError, matches, true);
+    trie.findWords(query4, e, 2*startError, matches);
     assert(matches.size() == 1);
     assert(matches.getMatch(0) == w1ID);
 }

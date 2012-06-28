@@ -132,24 +132,18 @@ static void findDocuments(MatcherPrivate *p, const WordID wordID, const WordID f
 }
 
 static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dynamicError, const int extraError, BestIndexMatches &bestIndexMatches) {
-    const size_t endErrorCutoff = 3;
     for(size_t i=0; i<query.size(); i++) {
         const Word &w = query[i];
         int maxError;
-        bool useEndError;
         if(dynamicError)
             maxError = getDynamicError(w);
         else
             maxError = 2*LevenshteinIndex::getDefaultError();
         maxError += extraError;
-        // Allow extra error at the end of the last query word.
-        if(i == query.size()-1 && w.length() >= endErrorCutoff)
-            useEndError = true;
-        else
-            useEndError = false;
+
         for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
             IndexMatches m;
-            it->second->findWords(w, p->e, maxError, m, useEndError);
+            it->second->findWords(w, p->e, maxError, m);
             addMatches(p, bestIndexMatches, w, it->first, m);
             debugMessage("Matched word %s in index %s with error %d and got %ld matches.\n",
                     w.asUtf8(), p->store.getWord(it->first).asUtf8(), maxError, m.size());
