@@ -31,9 +31,9 @@ class ErrorValues {
 private:
     static const int DEFAULT_ERROR = 100;
     static const int DEFAULT_GROUP_ERROR = 30;
-    static const int DEFAULT_TYPO_ERROR = 70;
-    static const int DEFAULT_SUBSTRING_END_DELETION_ERROR = 20;
-    static const int DEFAULT_SUBSTRING_START_INSERTION_ERROR = 20;
+    static const int DEFAULT_TYPO_ERROR = 30;
+    static const int DEFAULT_SUBSTRING_END_DELETION_ERROR = 15;
+    static const int DEFAULT_SUBSTRING_START_INSERTION_ERROR = 15;
 
     int insertionError;
     int deletionError;
