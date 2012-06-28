@@ -32,11 +32,13 @@ private:
     static const int DEFAULT_ERROR = 100;
     static const int DEFAULT_GROUP_ERROR = 30;
     static const int DEFAULT_TYPO_ERROR = 70;
-    static const int DEFAULT_END_DELETION_ERROR = 20;
+    static const int DEFAULT_SUBSTRING_END_DELETION_ERROR = 20;
+    static const int DEFAULT_SUBSTRING_START_INSERTION_ERROR = 20;
 
     int insertionError;
     int deletionError;
     int endDeletionError;
+    int startInsertionError;
     int substituteError;
     int transposeError;
 
@@ -55,13 +57,23 @@ public:
     int getInsertionError() const { return insertionError; }
     int getDeletionError() const { return deletionError; }
     int getEndDeletionError() const { return endDeletionError; }
+    int getStartInsertionError() const { return startInsertionError; }
     int getTransposeError() const { return transposeError; }
+
+    void setInsertionError(const int e) { insertionError = e; }
+    void setDeletionError(const int e) { deletionError = e; }
+    void setEndDeletionError(const int e) { endDeletionError = e; }
+    void setStartInsertionError(const int e) { startInsertionError = e; }
+    void setTransposeError(const int e) { transposeError = e; }
+
+
     int getSubstituteError(Letter l1, Letter l2) const;
 
     static int getDefaultError() { return ErrorValues::DEFAULT_ERROR; }
     static int getDefaultGroupError() { return ErrorValues::DEFAULT_GROUP_ERROR; }
     static int getDefaultTypoError() { return ErrorValues::DEFAULT_TYPO_ERROR; }
-    static int getDefaultEndDeletionError() { return ErrorValues::DEFAULT_END_DELETION_ERROR; }
+    static int getSubstringDefaultEndDeletionError() { return ErrorValues::DEFAULT_SUBSTRING_END_DELETION_ERROR; }
+    static int getSubstringDefaultStartInsertionError() { return ErrorValues::DEFAULT_SUBSTRING_START_INSERTION_ERROR; }
 
     void setError(Letter l1, Letter l2, const int error);
     void setGroupError(const Word &groupLetters, const int error);
@@ -70,6 +82,7 @@ public:
     void addStandardErrors() { addLatinAccents(); addKeyboardErrors(); }
     bool isInGroup(Letter l);
     void clearErrors();
+    void setSubstringMode();
 };
 
 COL_NAMESPACE_END

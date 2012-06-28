@@ -185,7 +185,7 @@ void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const 
 
 void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int max_error, IndexMatches &matches, const bool useEndError) const {
     MemoryCleaner cleaner;
-    MatchRow *first_row = new MatchRow(query.length()+1, e.getInsertionError());
+    MatchRow *first_row = new MatchRow(query.length()+1, e.getStartInsertionError());
     cleaner.addRow(first_row);
     assert(first_row->getValue(0) == 0);
     if(query.length() > 0)

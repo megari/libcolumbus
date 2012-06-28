@@ -223,8 +223,10 @@ void testEndError() {
     LevenshteinIndex trie;
     ErrorValues e;
     IndexMatches matches;
-    const int endError = e.getEndDeletionError();
+    const int endError = ErrorValues::getSubstringDefaultEndDeletionError();
+    e.setEndDeletionError(endError);
     const int defaultError = ErrorValues::getDefaultError();
+
     Word w1("abcdef");
     Word w2("abcdefghijkl"); // Should never be matched in these tests.
     WordID w1ID = 1;

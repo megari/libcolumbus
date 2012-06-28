@@ -63,7 +63,8 @@ struct ErrorValuesPrivate {
 ErrorValues::ErrorValues() :
     insertionError(DEFAULT_ERROR),
     deletionError(DEFAULT_ERROR),
-    endDeletionError(DEFAULT_END_DELETION_ERROR),
+    endDeletionError(DEFAULT_ERROR),
+    startInsertionError(DEFAULT_ERROR),
     substituteError(DEFAULT_ERROR),
     transposeError(DEFAULT_ERROR) {
     p = new ErrorValuesPrivate;
@@ -226,5 +227,11 @@ void ErrorValues::addToLUT(Letter l1, Letter l2, int value) {
         p->lut[LUT_OFFSET(l2, l1)] = value;
     }
 }
+
+void ErrorValues::setSubstringMode() {
+    startInsertionError = getSubstringDefaultStartInsertionError();
+    endDeletionError = getSubstringDefaultEndDeletionError();
+}
+
 
 COL_NAMESPACE_END
