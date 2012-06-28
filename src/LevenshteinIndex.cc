@@ -205,7 +205,7 @@ void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const 
     for(size_t i = 1; i < query.length()+1; i++) {
         int insertError = currentRow->getValue(i-1) + e.getInsertionError();
         int deleteError;
-        if(i >= query.length())
+        if(useEndError && i >= query.length())
             deleteError = previousRow->getValue(i) + e.getEndDeletionError();
         else
             deleteError = previousRow->getValue(i) + e.getDeletionError();
