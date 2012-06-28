@@ -185,7 +185,7 @@ void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const 
 
 void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int max_error, IndexMatches &matches, const bool useEndError) const {
     MemoryCleaner cleaner;
-    MatchRow *first_row = new MatchRow(query.length()+1, e.getStartInsertionError());
+    MatchRow *first_row = new MatchRow(query.length()+1, e.getInsertionError());
     cleaner.addRow(first_row);
     assert(first_row->getValue(0) == 0);
     if(query.length() > 0)
@@ -199,7 +199,7 @@ void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const 
 void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e,
         const Letter letter, const Letter previousLetter, const MatchRow *previousRow,
         IndexMatches &matches, const int max_error, MemoryCleaner &cleaner, const bool useEndError) const {
-    MatchRow *currentRow = new MatchRow(previousRow, e.getDeletionError());
+    MatchRow *currentRow = new MatchRow(previousRow, e.getStartInsertionError());
     cleaner.addRow(currentRow);
 
     for(size_t i = 1; i < query.length()+1; i++) {
