@@ -34,7 +34,7 @@ ErrorMatrix::ErrorMatrix(const size_t rows_, const size_t columns_, const int in
 }
 
 ErrorMatrix::~ErrorMatrix() {
-    for(size_t i=0; i<=columns; i++) {
+    for(size_t i=0; i<=rows; i++) {
         delete []m[i];
     }
     delete []m;
