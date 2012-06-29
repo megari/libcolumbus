@@ -174,6 +174,15 @@ static void gatherMatchedDocuments(MatcherPrivate *p,  map<WordID, MatchErrorMap
     }
 }
 
+static void expandQuery(const WordList &query, WordList &expandedQuery) {
+    for(size_t i=0; i<query.size(); i++)
+        expandedQuery.addWord(query[i]);
+
+    for(size_t i=0; i<query.size()-1; i++) {
+        expandedQuery.addWord(query[i].join(query[i+1]));
+    }
+}
+
 Matcher::Matcher() {
     p = new MatcherPrivate();
 }
@@ -274,11 +283,13 @@ void Matcher::match(const WordList &query, MatchResults &matchedDocuments) {
     const int maxIterations = 1;
     const int increment = LevenshteinIndex::getDefaultError();
     const size_t minMatches = 10;
+    WordList expandedQuery;
 
+    expandQuery(query, expandedQuery);
     // Try to search with ever growing error until we find enough matches.
     for(int i=0; i<maxIterations; i++) {
         MatchResults matches;
-        matchWithRelevancy(query, true, i*increment, matches);
+        matchWithRelevancy(expandedQuery, true, i*increment, matches);
         if(matches.size() >= minMatches || i == maxIterations-1) {
             matchedDocuments.addResults(matches);
             return;
