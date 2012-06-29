@@ -22,9 +22,10 @@
 #include <map>
 #include <vector>
 #include "LevenshteinIndex.hh"
-#include "MatchRow.hh"
 #include "ErrorValues.hh"
+#include "MatchRow.hh"
 #include "Word.hh"
+#include "ErrorMatrix.hh"
 
 COL_NAMESPACE_START
 using namespace std;
@@ -52,6 +53,7 @@ struct LevenshteinIndexPrivate {
     size_t maxCount; // How many times the most common word has been added.
     size_t numNodes;
     size_t numWords; // How many words are in this index in total.
+    size_t longestWordLength; // Longest word that has been added. Same as tree depth.
 };
 
 /**
@@ -89,6 +91,7 @@ LevenshteinIndex::LevenshteinIndex() {
     p->root->parent = 0;
     p->root->currentWord = INVALID_WORDID;
     p->maxCount = 0;
+    p->longestWordLength = 0;
 }
 
 LevenshteinIndex::~LevenshteinIndex() {
@@ -115,6 +118,8 @@ void LevenshteinIndex::insertWord(const Word &word, const WordID wordID) {
     }
     trieInsert(p->root, word, wordID);
     p->wordCounts[wordID] = newCount;
+    if(word.length() > p->longestWordLength)
+        p->longestWordLength = word.length();
     if(p->maxCount < newCount)
         p->maxCount = newCount;
     return;
@@ -180,51 +185,52 @@ bool LevenshteinIndex::hasWord(const Word &word) const {
 }
 
 void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int max_error, IndexMatches &matches) const {
-    MemoryCleaner cleaner;
-    MatchRow *first_row = new MatchRow(query.length()+1, e.getInsertionError());
-    cleaner.addRow(first_row);
-    assert(first_row->getValue(0) == 0);
+    ErrorMatrix em(p->longestWordLength+1, query.length()+1, e.getInsertionError());
+//    MatchRow *first_row = new MatchRow(query.length()+1, e.getInsertionError());
+//    cleaner.addRow(first_row);
+    assert(em.get(0, 0) == 0);
     if(query.length() > 0)
-        assert(first_row->getValue(1) == e.getInsertionError());
+        assert(em.get(0, 1) == e.getInsertionError());
     for(ChildListIter i = p->root->children.begin(); i != p->root->children.end(); i++) {
-        searchRecursive(query, i->second, e, i->first, 0, first_row, matches, max_error, cleaner);
+        searchRecursive(query, i->second, e, i->first, (Letter)0, 1, em, matches, max_error);
     }
     matches.sort();
 }
 
 void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e,
-        const Letter letter, const Letter previousLetter, const MatchRow *previousRow,
-        IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const {
-    MatchRow *currentRow = new MatchRow(previousRow, e.getStartInsertionError());
-    cleaner.addRow(currentRow);
+        const Letter letter, const Letter previousLetter, const size_t depth, ErrorMatrix &em,
+        IndexMatches &matches, const int maxError) const {
+//    MatchRow *currentRow = new MatchRow(previousRow, e.getStartInsertionError());
+//    cleaner.addRow(currentRow);
+    em.initRow(depth, e.getStartInsertionError());
 
     for(size_t i = 1; i < query.length()+1; i++) {
-        int insertError = currentRow->getValue(i-1) + e.getInsertionError();
+        int insertError = em.get(depth, i-1) + e.getInsertionError();
         int deleteError;
         if(i >= query.length())
-            deleteError = previousRow->getValue(i) + e.getEndDeletionError();
+            deleteError = em.get(depth-1, i) + e.getEndDeletionError();
         else
-            deleteError = previousRow->getValue(i) + e.getDeletionError();
+            deleteError = em.get(depth-1, i) + e.getDeletionError();
 
-        int substituteError = previousRow->getValue(i-1) + e.getSubstituteError(query[i-1], letter);
+        int substituteError = em.get(depth-1, i-1) + e.getSubstituteError(query[i-1], letter);
 
         int transposeError;
         if(i > 1 && query[i - 1] == previousLetter && query[i - 2] == letter) {
-            transposeError = previousRow->getParent()->getValue(i-2) + e.getTransposeError();
+            transposeError = em.get(depth-2, i-2) + e.getTransposeError();
         } else {
             transposeError = insertError + 10000; // Ensures this will not be chosen.
         }
-        int min_error = min(insertError, min(deleteError, min(substituteError, transposeError)));
-        currentRow->setValue(i, min_error);
+        int minError = min(insertError, min(deleteError, min(substituteError, transposeError)));
+        em.set(depth, i, minError);
     }
 
     // Error row evaluated. Now check if a word was found and continue recursively.
-    if(currentRow->totalError() <= max_error && node->currentWord != INVALID_WORDID) {
-        matches.addMatch(query, node->currentWord, currentRow->totalError());
+    if(em.totalError(depth) <= maxError && node->currentWord != INVALID_WORDID) {
+        matches.addMatch(query, node->currentWord, em.totalError(depth));
     }
-    if(currentRow->minError() <= max_error) {
+    if(em.minError(depth) <= maxError) {
         for(ChildListIter i = node->children.begin(); i != node->children.end(); i++) {
-            searchRecursive(query, i->second, e, i->first, letter, currentRow, matches, max_error, cleaner);
+            searchRecursive(query, i->second, e, i->first, letter, depth+1, em, matches, maxError);
         }
     }
 }

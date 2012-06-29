@@ -28,8 +28,7 @@ COL_NAMESPACE_START
 
 struct LevenshteinIndexPrivate;
 struct TrieNode;
-class MatchRow;
-class MemoryCleaner;
+class ErrorMatrix;
 class Word;
 class ErrorValues;
 
@@ -38,8 +37,8 @@ private:
     LevenshteinIndexPrivate *p;
 
     void searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e,
-            const Letter letter, const Letter previousLetter, const MatchRow *previous_row,
-            IndexMatches &matches, const int max_error, MemoryCleaner &cleaner) const;
+            const Letter letter, const Letter previousLetter, const size_t depth, ErrorMatrix &em,
+            IndexMatches &matches, const int max_error) const;
     void trieInsert(TrieNode *node, const Word &word, const WordID wordID);
 
     // Disable copy and move.
