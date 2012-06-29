@@ -214,6 +214,9 @@ void testJoin() {
     assert(result == w1);
     result = w2.join(empty);
     assert(result == w2);
+
+    result = empty.join(empty);
+    assert(result == empty);
 }
 
 int main(int argc, char **argv) {

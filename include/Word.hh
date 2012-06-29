@@ -35,13 +35,15 @@ private:
 
     Letter *text; // Change this to a shared pointer to save memory.
     unsigned int len;
+    char *utf8Repr; // Only created on demand to save space.
+
     bool hasWhitespace();
     void duplicateFrom(const Word &w);
-    char *utf8Repr; // Only created on demand to save space.
 
 public:
     Word();
     Word(const Word &w);
+    Word(Word &&w);
     explicit Word(const char *utf8Word);
     ~Word();
 
@@ -55,7 +57,8 @@ public:
     bool operator==(const Word &w) const;
     bool operator!=(const Word &w) const;
     bool operator<(const Word &w) const;
-    Word& operator=(const Word &w); // Should we allow assignment? Is it the proper semantic thing to do?
+    Word& operator=(const Word &w);
+    Word& operator=(Word &&w);
 };
 
 COL_NAMESPACE_END

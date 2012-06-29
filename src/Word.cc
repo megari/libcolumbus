@@ -44,6 +44,15 @@ Word::Word(const Word &w) : text(0), len(0), utf8Repr(0) {
     duplicateFrom(w);
 }
 
+Word::Word(Word &&w) :
+    text(w.text),
+    len(w.len),
+    utf8Repr(w.utf8Repr) {
+    w.len = 0;
+    w.text = 0;
+    w.utf8Repr = 0;
+}
+
 Word::~Word() {
     delete []text;
     delete []utf8Repr;
@@ -79,6 +88,20 @@ Letter Word::operator[](unsigned int i) const {
 
 Word& Word::operator=(const Word &w) {
     duplicateFrom(w);
+    return *this;
+}
+
+Word& Word::operator=(Word &&w) {
+    delete []text;
+    delete []utf8Repr;
+
+    text = w.text;
+    len = w.len;
+    utf8Repr = w.utf8Repr;
+
+    w.text = 0;
+    w.len = 0;
+    w.utf8Repr = 0;
     return *this;
 }
 
