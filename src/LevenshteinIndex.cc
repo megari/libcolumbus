@@ -162,14 +162,14 @@ bool LevenshteinIndex::hasWord(const Word &word) const {
      return false;
 }
 
-void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int max_error, IndexMatches &matches) const {
+void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int maxError, IndexMatches &matches) const {
     ErrorMatrix em(p->longestWordLength+1, query.length()+1, e.getInsertionError());
 
     assert(em.get(0, 0) == 0);
     if(query.length() > 0)
         assert(em.get(0, 1) == e.getInsertionError());
     for(ChildListIter i = p->root->children.begin(); i != p->root->children.end(); i++) {
-        searchRecursive(query, i->second, e, i->first, (Letter)0, 1, em, matches, max_error);
+        searchRecursive(query, i->second, e, i->first, (Letter)0, 1, em, matches, maxError);
     }
     matches.sort();
 }

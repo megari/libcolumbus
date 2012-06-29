@@ -54,7 +54,7 @@ public:
     void insertWord(const Word &word, const WordID wordID);
     bool hasWord(const Word &word) const;
 
-    void findWords(const Word &query, const ErrorValues &e, const int max_error, IndexMatches &matches) const;
+    void findWords(const Word &query, const ErrorValues &e, const int maxError, IndexMatches &matches) const;
     size_t wordCount(const WordID queryID) const;
     size_t maxCount() const;
     size_t numNodes() const;
