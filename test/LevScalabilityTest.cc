@@ -80,20 +80,20 @@ void runTest(vector<Word> &a, int querySize) {
     buildEnd = hiresTimestamp();
     buildTime = buildEnd - buildStart;
 
-    printf("Index built in %f seconds. Words per second %.2f.\n", buildTime, a.size()/buildTime);
+    printf("Index built in %.3f seconds. Words per second %.2f.\n", buildTime, a.size()/buildTime);
 
     queryStart = hiresTimestamp();
     runQueries(querySize, defaultError, a, e, ind, matches);
     queryEnd = hiresTimestamp();
     plainQueryTime = queryEnd - queryStart;
-    printf("Simple queries done in %f seconds. Queries per second %.2f.\n", plainQueryTime, querySize/plainQueryTime);
+    printf("Simple queries done in %.3f seconds. Queries per second %.2f.\n", plainQueryTime, querySize/plainQueryTime);
 
     e.addStandardErrors();
     queryStart = hiresTimestamp();
     runQueries(querySize, defaultError, a, e, ind, matches);
     queryEnd = hiresTimestamp();
     fullErrorQueryTime = queryEnd - queryStart;
-    printf("Heavy queries done in %f seconds. Queries per second %.2f.\n", fullErrorQueryTime, querySize/fullErrorQueryTime);
+    printf("Heavy queries done in %.3f seconds. Queries per second %.2f.\n", fullErrorQueryTime, querySize/fullErrorQueryTime);
 }
 
 int main(int argc, char **argv) {
