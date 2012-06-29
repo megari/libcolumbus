@@ -17,7 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdexcept>
 #include "ErrorMatrix.hh"
+
+using namespace std;
 
 COL_NAMESPACE_START
 
@@ -44,11 +47,11 @@ ErrorMatrix::~ErrorMatrix() {
 }
 
 void ErrorMatrix::set(const size_t rowNum, const size_t colNum, const int error) {
+    if(rowNum > rows)
+        throw out_of_range("Illegal row number.");
+    if(colNum > columns)
+        throw out_of_range("Illegal column number.");
     m[rowNum][colNum] = error;
-}
-
-int ErrorMatrix::get(const size_t rowNum, const size_t colNum) const {
-    return m[rowNum][colNum];
 }
 
 int ErrorMatrix::totalError(const size_t rowNum) const {

@@ -43,7 +43,8 @@ public:
     ~ErrorMatrix();
 
     void set(const size_t rowNum, const size_t colNum, const int error);
-    int get(const size_t rowNum, const size_t colNum) const;
+    // No bounds checking because this is in the hot path.
+    inline int get(const size_t rowNum, const size_t colNum) const { return m[rowNum][colNum]; }
     int totalError(const size_t rowNum) const;
     int minError(const size_t rowNum) const;
 
