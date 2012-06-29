@@ -44,6 +44,8 @@ private:
     // Disable copy and move.
     LevenshteinIndex(const LevenshteinIndex &other);
     LevenshteinIndex& operator=(const LevenshteinIndex &other);
+    int findOptimalError(const Letter letter, const Letter previousLetter, const Word &query,
+            const size_t i, const size_t depth, const ErrorMatrix &em, const ErrorValues &e) const;
 
 public:
     LevenshteinIndex();

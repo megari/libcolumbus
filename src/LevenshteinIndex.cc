@@ -175,27 +175,32 @@ void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const 
     matches.sort();
 }
 
+int LevenshteinIndex::findOptimalError(const Letter letter, const Letter previousLetter, const Word &query,
+        const size_t i, const size_t depth, const ErrorMatrix &em, const ErrorValues &e) const {
+    int insertError = em.get(depth, i-1) + e.getInsertionError();
+    int deleteError;
+    if(i >= query.length())
+        deleteError = em.get(depth-1, i) + e.getEndDeletionError();
+    else
+        deleteError = em.get(depth-1, i) + e.getDeletionError();
+
+    int substituteError = em.get(depth-1, i-1) + e.getSubstituteError(query.text[i-1], letter);
+
+    int transposeError;
+    if(i > 1 && query.text[i - 1] == previousLetter && query.text[i - 2] == letter) {
+        transposeError = em.get(depth-2, i-2) + e.getTransposeError();
+    } else {
+        transposeError = insertError + 10000; // Ensures this will not be chosen.
+    }
+    return min(insertError, min(deleteError, min(substituteError, transposeError)));
+}
+
 void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e,
         const Letter letter, const Letter previousLetter, const size_t depth, ErrorMatrix &em,
         IndexMatches &matches, const int maxError) const {
 
     for(size_t i = 1; i < query.length()+1; i++) {
-        int insertError = em.get(depth, i-1) + e.getInsertionError();
-        int deleteError;
-        if(i >= query.length())
-            deleteError = em.get(depth-1, i) + e.getEndDeletionError();
-        else
-            deleteError = em.get(depth-1, i) + e.getDeletionError();
-
-        int substituteError = em.get(depth-1, i-1) + e.getSubstituteError(query.text[i-1], letter);
-
-        int transposeError;
-        if(i > 1 && query.text[i - 1] == previousLetter && query.text[i - 2] == letter) {
-            transposeError = em.get(depth-2, i-2) + e.getTransposeError();
-        } else {
-            transposeError = insertError + 10000; // Ensures this will not be chosen.
-        }
-        int minError = min(insertError, min(deleteError, min(substituteError, transposeError)));
+        int minError = findOptimalError(letter, previousLetter, query, i, depth, em, e);
         em.set(depth, i, minError);
     }
 
