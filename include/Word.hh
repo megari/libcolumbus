@@ -49,6 +49,8 @@ public:
     void toUtf8(char *buf, unsigned int bufSize) const;
     const char* asUtf8() const;
 
+    Word join(const Word &w) const;
+
     Letter operator[](unsigned int i) const;
     bool operator==(const Word &w) const;
     bool operator!=(const Word &w) const;

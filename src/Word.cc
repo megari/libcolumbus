@@ -138,4 +138,9 @@ const char* Word::asUtf8() const {
     return utf8Repr;
 }
 
+Word Word::join(const Word &w) const {
+    Word result;
+    return result;
+}
+
 COL_NAMESPACE_END

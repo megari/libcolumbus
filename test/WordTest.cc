@@ -194,6 +194,17 @@ void testAutoLower() {
 
 }
 
+void testJoin() {
+    Word w1("abc");
+    Word w2("def");
+    Word r1("abcdef");
+    Word empty;
+    Word result;
+
+    result = w1.join(w2);
+    assert(result == r1);
+}
+
 int main(int argc, char **argv) {
     testEmpty();
     testIndexing();
@@ -203,5 +214,6 @@ int main(int argc, char **argv) {
     testEncoding();
     testLessThan();
     testAutoLower();
+    testJoin();
 }
 
