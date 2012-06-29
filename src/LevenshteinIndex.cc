@@ -23,7 +23,6 @@
 #include <vector>
 #include "LevenshteinIndex.hh"
 #include "ErrorValues.hh"
-#include "MatchRow.hh"
 #include "Word.hh"
 #include "ErrorMatrix.hh"
 
@@ -56,27 +55,6 @@ struct LevenshteinIndexPrivate {
     size_t longestWordLength; // Longest word that has been added. Same as tree depth.
 };
 
-/**
- * Store all rows allocated during search to this and then
- * free them all at once.
- *
- * Replace with memory pool when more performance is required.
- */
-class MemoryCleaner {
-private:
-    vector<MatchRow*> l;
-
-public:
-    MemoryCleaner() {}
-    ~MemoryCleaner() {
-        for(auto i=l.begin(); i != l.end(); i++)
-            delete *i;
-    }
-
-    void addRow(MatchRow *m) {
-        l.push_back(m);
-    }
-};
 
 void gather_all_nodes(TrieNode *root, vector<TrieNode*> &nodes) {
     nodes.push_back(root);
@@ -186,8 +164,7 @@ bool LevenshteinIndex::hasWord(const Word &word) const {
 
 void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int max_error, IndexMatches &matches) const {
     ErrorMatrix em(p->longestWordLength+1, query.length()+1, e.getInsertionError());
-//    MatchRow *first_row = new MatchRow(query.length()+1, e.getInsertionError());
-//    cleaner.addRow(first_row);
+
     assert(em.get(0, 0) == 0);
     if(query.length() > 0)
         assert(em.get(0, 1) == e.getInsertionError());

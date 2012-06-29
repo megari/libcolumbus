@@ -1,6 +1,5 @@
 add_library(columbus SHARED
 LevenshteinIndex.cc
-MatchRow.cc
 IndexMatches.cc
 ErrorValues.cc
 Word.cc
