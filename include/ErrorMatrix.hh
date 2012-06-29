@@ -22,6 +22,16 @@
 
 #include"ColumbusCore.hh"
 
+/*
+ * A helper class for LevenshteinIndex to keep track of the
+ * error values.
+ *
+ * This class only works because LevenshteinIndex does depth
+ * first search. Breadth first search will break it completely.
+ *
+ * So don't use that then.
+ */
+
 COL_NAMESPACE_START
 
 class ErrorMatrix {
@@ -29,10 +39,8 @@ class ErrorMatrix {
     int **m;
 
 public:
-    ErrorMatrix(const size_t rows_, const size_t columns_, const int insertError);
+    ErrorMatrix(const size_t rows_, const size_t columns_, const int insertError, const int deletionError);
     ~ErrorMatrix();
-
-    void initRow(const size_t row, const int deletionError);
 
     void set(const size_t rowNum, const size_t colNum, const int error);
     int get(const size_t rowNum, const size_t colNum) const;

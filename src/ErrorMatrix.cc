@@ -21,16 +21,18 @@
 
 COL_NAMESPACE_START
 
-ErrorMatrix::ErrorMatrix(const size_t rows_, const size_t columns_, const int insertError) :
+ErrorMatrix::ErrorMatrix(const size_t rows_, const size_t columns_, const int insertError, const int deletionError) :
     rows(rows_),
     columns(columns_) {
     m = new int*[rows+1];
     for(size_t i=0; i<=rows; i++) {
         m[i] = new int[columns+1];
     }
-    for(size_t i=0; i<columns; i++) {
+    for(size_t i=0; i<=columns; i++) {
         m[0][i] = i*insertError;
     }
+    for(size_t i=1; i<=rows; i++)
+        m[i][0] = m[i-1][0] + deletionError;
 }
 
 ErrorMatrix::~ErrorMatrix() {
@@ -39,10 +41,6 @@ ErrorMatrix::~ErrorMatrix() {
     }
     delete []m;
 
-}
-
-void ErrorMatrix::initRow(const size_t row, const int deletionError) {
-    m[row][0] = m[row-1][0] + deletionError;
 }
 
 void ErrorMatrix::set(const size_t rowNum, const size_t colNum, const int error) {

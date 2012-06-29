@@ -163,7 +163,8 @@ bool LevenshteinIndex::hasWord(const Word &word) const {
 }
 
 void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int maxError, IndexMatches &matches) const {
-    ErrorMatrix em(p->longestWordLength+1, query.length()+1, e.getInsertionError());
+    ErrorMatrix em(p->longestWordLength+1, query.length()+1,
+            e.getInsertionError(), e.getStartInsertionError());
 
     assert(em.get(0, 0) == 0);
     if(query.length() > 0)
@@ -177,9 +178,6 @@ void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const 
 void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e,
         const Letter letter, const Letter previousLetter, const size_t depth, ErrorMatrix &em,
         IndexMatches &matches, const int maxError) const {
-//    MatchRow *currentRow = new MatchRow(previousRow, e.getStartInsertionError());
-//    cleaner.addRow(currentRow);
-    em.initRow(depth, e.getStartInsertionError());
 
     for(size_t i = 1; i < query.length()+1; i++) {
         int insertError = em.get(depth, i-1) + e.getInsertionError();
