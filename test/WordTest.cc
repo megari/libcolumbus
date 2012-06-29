@@ -198,11 +198,22 @@ void testJoin() {
     Word w1("abc");
     Word w2("def");
     Word r1("abcdef");
+    Word r2("defabc");
     Word empty;
     Word result;
 
     result = w1.join(w2);
     assert(result == r1);
+    // Test that it is properly null terminated.
+    assert(strcmp(result.asUtf8(), "abcdef") == 0);
+
+    result = w2.join(w1);
+    assert(result == r2);
+
+    result = empty.join(w1);
+    assert(result == w1);
+    result = w2.join(empty);
+    assert(result == w2);
 }
 
 int main(int argc, char **argv) {

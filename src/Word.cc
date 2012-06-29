@@ -140,6 +140,12 @@ const char* Word::asUtf8() const {
 
 Word Word::join(const Word &w) const {
     Word result;
+    size_t newLen = length() + w.length();
+    result.len = newLen;
+    result.text = new Letter[newLen+1];
+    memcpy(result.text, text, len*sizeof(Letter));
+    memcpy(result.text + len, w.text, w.len*sizeof(Letter));
+    result.text[newLen] = '\0';
     return result;
 }
 
