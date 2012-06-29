@@ -187,10 +187,10 @@ void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const 
         else
             deleteError = em.get(depth-1, i) + e.getDeletionError();
 
-        int substituteError = em.get(depth-1, i-1) + e.getSubstituteError(query[i-1], letter);
+        int substituteError = em.get(depth-1, i-1) + e.getSubstituteError(query.text[i-1], letter);
 
         int transposeError;
-        if(i > 1 && query[i - 1] == previousLetter && query[i - 2] == letter) {
+        if(i > 1 && query.text[i - 1] == previousLetter && query.text[i - 2] == letter) {
             transposeError = em.get(depth-2, i-2) + e.getTransposeError();
         } else {
             transposeError = insertError + 10000; // Ensures this will not be chosen.

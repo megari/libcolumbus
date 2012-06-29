@@ -59,6 +59,8 @@ public:
     bool operator<(const Word &w) const;
     Word& operator=(const Word &w);
     Word& operator=(Word &&w);
+
+    friend class LevenshteinIndex;
 };
 
 COL_NAMESPACE_END
