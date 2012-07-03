@@ -23,6 +23,7 @@
 #include "Matcher.hh"
 #include "MatchResults.hh"
 #include "Corpus.hh"
+#include "ErrorValues.hh"
 #include <stdexcept>
 #include <cstdio>
 
@@ -39,8 +40,8 @@ ColWord col_word_new(const char *utf8_word) {
         return reinterpret_cast<ColWord>(w);
     } catch(exception &e) {
         fprintf(stderr, "Error creating Word: %s\n", e.what());
-        return 0;
     }
+    return 0;
 }
 
 void col_word_delete(ColWord w) {
@@ -99,6 +100,11 @@ void col_matcher_match(ColMatcher m, const char *query_as_utf8, ColMatchResults 
     }
 }
 
+ColErrorValues col_matcher_get_error_values(ColMatcher m) {
+    Matcher *matcher = reinterpret_cast<Matcher*>(m);
+    return reinterpret_cast<ColErrorValues>(&matcher->getErrorValues());
+}
+
 ColMatchResults col_match_results_new() {
     return reinterpret_cast<ColMatchResults>(new MatchResults());
 }
@@ -116,8 +122,8 @@ DocumentID col_match_results_get_id(ColMatchResults mr, size_t i) {
         return results->getDocumentID(i);
     } catch(exception &e) {
         fprintf(stderr, "Exception when getting result document ID: %s\n", e.what());
-        return INVALID_DOCID;
     }
+    return INVALID_DOCID;
 }
 
 double col_match_results_get_relevancy(ColMatchResults mr, size_t i) {
@@ -126,8 +132,8 @@ double col_match_results_get_relevancy(ColMatchResults mr, size_t i) {
         return results->getDocumentID(i);
     } catch(exception &e) {
         fprintf(stderr, "Exception when getting result document ID: %s\n", e.what());
-        return -1.0;
     }
+    return -1.0;
 }
 
 ColCorpus col_corpus_new() {
@@ -143,6 +149,16 @@ void col_corpus_add_document(ColCorpus c, ColDocument d) {
     corp->addDocument(*doc);
 }
 
+void col_error_values_add_standard_errors(ColErrorValues ev) {
+    ErrorValues *results = reinterpret_cast<ErrorValues*>(ev);
+    results->addStandardErrors();
+}
+
+
+void col_error_values_set_substring_mode(ColErrorValues ev) {
+    ErrorValues *results = reinterpret_cast<ErrorValues*>(ev);
+    results->setSubstringMode();
+}
 
 #ifdef __cplusplus
 }

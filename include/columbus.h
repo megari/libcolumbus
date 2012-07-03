@@ -40,6 +40,7 @@ typedef void* ColDocument;
 typedef void* ColMatcher;
 typedef void* ColMatchResults;
 typedef void* ColCorpus;
+typedef void* ColErrorValues;
 
 ColWord col_word_new(const char *utf8_word);
 void col_word_delete(ColWord w);
@@ -53,18 +54,22 @@ void col_document_add_text(ColDocument doc, ColWord field_name, const char *text
 
 ColMatcher col_matcher_new();
 void col_matcher_delete(ColMatcher m);
-size_t col_match_results_size(ColMatchResults mr);
 void col_matcher_index(ColMatcher m, ColCorpus c);
 void col_matcher_match(ColMatcher m, const char *query_as_utf8, ColMatchResults mr);
+ColErrorValues col_matcher_get_error_values(ColMatcher m);
 
 ColMatchResults col_match_results_new();
 void col_match_results_delete(ColMatchResults mr);
+size_t col_match_results_size(ColMatchResults mr);
 DocumentID col_match_results_get_id(ColMatchResults mr, size_t i);
 double col_match_results_get_relevancy(ColMatchResults mr, size_t i);
 
 ColCorpus col_corpus_new();
 void col_corpus_delete(ColCorpus c);
 void col_corpus_add_document(ColCorpus c, ColDocument d);
+
+void col_error_values_add_standard_errors(ColErrorValues ev);
+void col_error_values_set_substring_mode(ColErrorValues ev);
 
 #ifdef __cplusplus
 }
