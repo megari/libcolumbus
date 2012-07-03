@@ -177,6 +177,7 @@ void ErrorValues::addLatinAccents() {
     if(dataFile.length() == 0) {
         string s = "Could not find file ";
         s += baseName;
+        s += ". Run make install or set COLUMBUS_DATADIR env var to your data directory.";
         throw runtime_error(s);
     }
     ifstream ifile(dataFile.c_str());
