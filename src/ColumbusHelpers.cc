@@ -164,10 +164,15 @@ void split(const char *utf8Text, WordList &list, const Letter *splitChars, int n
         }
         memcpy(word, utf8Text+begin, wordLen);
         word[wordLen] = '\0';
-        Word w(word);
-        list.addWord(w);
+        try {
+            Word w(word);
+            list.addWord(w);
+        } catch(std::exception &e) {
+            delete []word;
+            throw e;
+        }
     } while(end < strSize);
-    delete []word; // Leaks if Word constructor throws (i.e. invalid UTF-8 string).
+    delete []word;
 }
 
 bool isWhitespace(Letter l) {
