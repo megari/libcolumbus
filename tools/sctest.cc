@@ -26,6 +26,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <dirent.h>
 
 using namespace Columbus;
 using namespace std;
@@ -141,9 +142,31 @@ void build_gui(app_data &app) {
     gtk_widget_show_all(app.window);
 }
 
+void processFile(string fname) {
+    printf("%s\n", fname.c_str());
+}
+
 void buildCorpus(Corpus &c) {
-    const char *dataDir = "/usr/share/app-install/desktop";
-    throw "BoredNow.";
+    string dataDir = "/usr/share/app-install/desktop";
+    DIR *dp;
+    struct dirent *dirp;
+
+    dp = opendir(dataDir.c_str());
+    if(!dp) {
+        throw "Could not open data dir.";
+    }
+
+    while((dirp = readdir(dp))) {
+        if(dirp->d_name[0] == '.')
+            continue;
+        string fullPath = dataDir;
+        fullPath += "/";
+        fullPath += dirp->d_name;
+        processFile(fullPath);
+    }
+
+    closedir(dp);
+    exit(1);
 }
 
 void build_matcher(app_data &app) {
