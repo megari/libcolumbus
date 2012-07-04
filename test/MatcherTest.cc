@@ -108,8 +108,8 @@ void testRelevancy() {
 
 void testMultiWord() {
     Corpus c;
-    DocumentID correct = 0;
-    DocumentID wrong = 1;
+    DocumentID correct = 1;
+    DocumentID wrong = 0;
     Document d1(correct);
     Document d2(wrong);
     Word fieldName("name");
