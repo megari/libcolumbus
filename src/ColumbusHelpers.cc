@@ -35,6 +35,9 @@
 
 COL_NAMESPACE_START
 
+static const Letter whitespaceLetters[] = {' ', '\t', '\n', '\r', '\0'};
+static const int numWhitespaceLetters = 4;
+
 static Letter lowerLetter(Letter l) {
     return Letter(u_tolower(l)); // Have to use ICU because towlower libc function does not work.
 }
@@ -122,6 +125,17 @@ double hiresTimestamp() {
 }
 
 void splitToWords(const char *utf8Text, WordList &list) {
+    split(utf8Text, list, whitespaceLetters, numWhitespaceLetters);
+}
+
+static bool isInList(const Letter l, const Letter *chars, int numChars) {
+    for(int i=0; i<numChars;i++)
+        if(chars[i] == l)
+            return true;
+    return false;
+}
+
+void split(const char *utf8Text, WordList &list, const Letter *splitChars, int numChars) {
     unsigned int strSize = strlen(utf8Text);
     size_t begin, end;
     end = 0;
@@ -130,7 +144,7 @@ void splitToWords(const char *utf8Text, WordList &list) {
 
     do {
         begin = end;
-        while(isWhitespace(utf8Text[begin]) && begin < strSize) {
+        while(isInList(utf8Text[begin], splitChars, numChars) && begin < strSize) {
             begin++;
         }
         if(begin >= strSize) {
@@ -138,7 +152,7 @@ void splitToWords(const char *utf8Text, WordList &list) {
             return;
         }
         end = begin+1;
-        while(!isWhitespace(utf8Text[end]) && end < strSize) {
+        while(!isInList(utf8Text[end], splitChars, numChars) && end < strSize) {
             end++;
         }
         // End points to one past the last letter.
@@ -157,13 +171,7 @@ void splitToWords(const char *utf8Text, WordList &list) {
 }
 
 bool isWhitespace(Letter l) {
-    const Letter space = ' ';
-    const Letter tab = '\t';
-    const Letter linefeed = '\n';
-    const Letter carriage = '\r';
-    if(l == space || l == tab || l == linefeed || l == carriage)
-        return true;
-    return false;
+    return isInList(l, whitespaceLetters, numWhitespaceLetters);
 }
 
 COL_NAMESPACE_END
