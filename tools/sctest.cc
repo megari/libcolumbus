@@ -21,12 +21,14 @@
  * A simple GUI application to search application list data.
  */
 
-#include "columbus.hh" // This app should only need public API from Columbus.
+#include "columbus.hh"
+#include "WordList.hh"
 #include <gtk/gtk.h>
 #include <string>
 #include <fstream>
 #include <vector>
 #include <dirent.h>
+#include <stdexcept>
 
 using namespace Columbus;
 using namespace std;
@@ -142,8 +144,26 @@ void build_gui(app_data &app) {
     gtk_widget_show_all(app.window);
 }
 
-void processFile(string fname) {
+void processFile(string &fname) {
+    const Letter splitChars[] = {'=', '\n', '\r', '\0'};
+    const int numSplitChars = 3;
+    ifstream ifile(fname.c_str());
+    Word f("GenericName");
+
+    if(ifile.fail()) {
+        printf("Could not open file %s.\n", fname.c_str());
+        exit(1);
+    }
+    string line;
+
     printf("%s\n", fname.c_str());
+    while(getline(ifile, line)) {
+        WordList l;
+        split(line.c_str(), l, splitChars, numSplitChars);
+        if(l[0] == f) {
+            printf("%s: %s\n", l[0].asUtf8(), l[1].asUtf8());
+        }
+    }
 }
 
 void buildCorpus(Corpus &c) {
@@ -153,7 +173,7 @@ void buildCorpus(Corpus &c) {
 
     dp = opendir(dataDir.c_str());
     if(!dp) {
-        throw "Could not open data dir.";
+        throw runtime_error("Could not open data dir.");
     }
 
     while((dirp = readdir(dp))) {
@@ -193,12 +213,16 @@ int main(int argc, char **argv) {
     double buildStart, buildEnd;
     gtk_init(&argc, &argv);
 
-    build_gui(app);
-    buildStart = hiresTimestamp();
-    build_matcher(app);
-    buildEnd = hiresTimestamp();
-    printf("Building the matcher took %.2f seconds.\n", buildEnd - buildStart);
-    gtk_main();
-    delete_matcher(app);
+    try {
+        build_gui(app);
+        buildStart = hiresTimestamp();
+        build_matcher(app);
+        buildEnd = hiresTimestamp();
+        printf("Building the matcher took %.2f seconds.\n", buildEnd - buildStart);
+        gtk_main();
+        delete_matcher(app);
+    } catch(std::exception &e) {
+        printf("Exception: %s\n", e.what());
+    }
     return 0;
 }

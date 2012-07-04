@@ -167,9 +167,9 @@ void split(const char *utf8Text, WordList &list, const Letter *splitChars, int n
         try {
             Word w(word);
             list.addWord(w);
-        } catch(std::exception &e) {
+        } catch(std::invalid_argument &ex) {
             delete []word;
-            throw e;
+            throw ex;
         }
     } while(end < strSize);
     delete []word;
