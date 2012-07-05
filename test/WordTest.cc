@@ -222,15 +222,17 @@ void testJoin() {
 void testAssignment() {
     Word w;
     const char *txt = "abc";
-    const char *txt2 = "def";
-    const char *txtError = "g g";
+    const char *txt2 = "defg";
+    const char *txtError = "h h";
     bool gotAssertion;
 
     w = txt;
     assert(strcmp(txt, w.asUtf8()) == 0);
+    assert(w.length() == 3);
 
     w = txt2;
     assert(strcmp(txt2, w.asUtf8()) == 0);
+    assert(w.length() == 4);
 
     try {
         w = txtError;
