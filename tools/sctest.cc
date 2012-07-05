@@ -49,7 +49,7 @@ struct app_data {
     GtkWidget *matchView;
     GtkWidget *queryTimeLabel;
     GtkWidget *resultCountLabel;
-    vector<string> source;
+    vector<string> names;
 };
 
 static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) {
@@ -83,7 +83,7 @@ static void doSearch(GtkWidget *widget, gpointer data) {
         DocumentID id = matches.getDocumentID(i);
         gtk_list_store_append(app->matchStore, &iter);
         gtk_list_store_set(app->matchStore, &iter,
-                0, app->source[id].c_str(),
+                0, app->names[id].c_str(),
                 1, matches.getRelevancy(i),
                 -1);
     }
@@ -148,7 +148,7 @@ void build_gui(app_data &app) {
     gtk_widget_show_all(app.window);
 }
 
-void processFile(string &fname, WordList &name, WordList &genericName, WordList comment) {
+void processFile(string &fname, WordList &name, WordList &genericName, WordList &comment) {
     ifstream ifile(fname.c_str());
     Word f("GenericName");
 
@@ -184,7 +184,7 @@ void processFile(string &fname, WordList &name, WordList &genericName, WordList 
     }
 }
 
-void buildCorpus(Corpus &c) {
+void buildCorpus(Corpus &c, app_data &app) {
     string dataDir = "/usr/share/app-install/desktop";
     DIR *dp;
     struct dirent *dirp;
@@ -210,12 +210,12 @@ void buildCorpus(Corpus &c) {
             if(comment.size() > 0)
                 d.addText(commentField, comment);
             c.addDocument(d);
+            app.names.push_back(dirp->d_name);
         }
     }
 
     printf("Read in %ld documents.\n", c.size());
     closedir(dp);
-    exit(1);
 }
 
 void build_matcher(app_data &app) {
@@ -227,7 +227,7 @@ void build_matcher(app_data &app) {
     app.m = new Matcher();
     // Build Corpus.
     dataReadStart = hiresTimestamp();
-    buildCorpus(c);
+    buildCorpus(c, app);
     dataReadEnd = hiresTimestamp();
     printf("Read in %ld documents in %.2f seconds.\n", i, dataReadEnd - dataReadStart);
     app.m->index(c);
