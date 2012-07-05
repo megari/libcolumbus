@@ -61,10 +61,34 @@ static void destroy(GtkWidget *widget, gpointer data) {
     gtk_main_quit ();
 }
 
+void updateModel(app_data *app, MatchResults &matches) {
+    GtkTreeIter iter;
+    gtk_widget_freeze_child_notify(app->matchView);
+    /*
+        self.match_list.freeze_child_notify()
+        self.match_list.set_model(None)
+        self.update_model(doc_matches, relevancies)
+        self.match_list.set_model(self.match_store)
+        self.match_list.thaw_child_notify()
+    */
+    gtk_tree_view_set_model(GTK_TREE_VIEW(app->matchView), 0);
+    gtk_list_store_clear(app->matchStore);
+    for(size_t i=0; i<matches.size(); i++) {
+        DocumentID id = matches.getDocumentID(i);
+        gtk_list_store_append(app->matchStore, &iter);
+        gtk_list_store_set(app->matchStore, &iter,
+                0, app->names[id].c_str(),
+                1, matches.getRelevancy(i),
+                -1);
+    }
+    gtk_tree_view_set_model(GTK_TREE_VIEW(app->matchView), GTK_TREE_MODEL(app->matchStore));
+    gtk_widget_thaw_child_notify(app->matchView);
+}
+
+
 static void doSearch(GtkWidget *widget, gpointer data) {
     app_data *app = (app_data*) data;
     MatchResults matches;
-    GtkTreeIter iter;
     double queryStart, queryEnd;
     try {
         queryStart = hiresTimestamp();
@@ -78,15 +102,7 @@ static void doSearch(GtkWidget *widget, gpointer data) {
         gtk_entry_set_text(GTK_ENTRY(app->entry), "");
         return;
     }
-    gtk_list_store_clear(app->matchStore);
-    for(size_t i=0; i<matches.size(); i++) {
-        DocumentID id = matches.getDocumentID(i);
-        gtk_list_store_append(app->matchStore, &iter);
-        gtk_list_store_set(app->matchStore, &iter,
-                0, app->names[id].c_str(),
-                1, matches.getRelevancy(i),
-                -1);
-    }
+    updateModel(app, matches);
     char buf[1024];
     sprintf(buf, "%s%.2f", queryTime, queryEnd - queryStart);
     gtk_label_set_text(GTK_LABEL(app->queryTimeLabel), buf);
