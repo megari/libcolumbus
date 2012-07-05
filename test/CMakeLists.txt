@@ -1,10 +1,3 @@
-add_executable(assert_fail AssertFailTest.cc)
-add_test(assert_fail assert_fail)
-set_tests_properties(assert_fail PROPERTIES WILL_FAIL TRUE)
-
-add_executable(assert_succ AssertSuccTest.cc)
-add_test(assert_succ assert_succ)
-
 add_executable(levtrie LevTrieTest.cc)
 target_link_libraries(levtrie columbus)
 add_test(levtrie levtrie)
