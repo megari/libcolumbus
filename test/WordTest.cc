@@ -219,6 +219,28 @@ void testJoin() {
     assert(result == empty);
 }
 
+void testAssignment() {
+    Word w;
+    const char *txt = "abc";
+    const char *txt2 = "def";
+    const char *txtError = "g g";
+    bool gotAssertion;
+
+    w = txt;
+    assert(strcmp(txt, w.asUtf8()) == 0);
+
+    w = txt2;
+    assert(strcmp(txt2, w.asUtf8()) == 0);
+
+    try {
+        w = txtError;
+        gotAssertion = false;
+    } catch(std::invalid_argument &e) {
+        gotAssertion = true;
+    }
+    assert(gotAssertion);
+}
+
 int main(int argc, char **argv) {
     testEmpty();
     testIndexing();
@@ -229,5 +251,6 @@ int main(int argc, char **argv) {
     testLessThan();
     testAutoLower();
     testJoin();
+    testAssignment();
 }
 

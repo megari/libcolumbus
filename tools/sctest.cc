@@ -145,8 +145,6 @@ void build_gui(app_data &app) {
 }
 
 void processFile(string &fname) {
-    const Letter splitChars[] = {'=', '\n', '\r', '\0'};
-    const int numSplitChars = 3;
     ifstream ifile(fname.c_str());
     Word f("GenericName");
 
@@ -158,11 +156,17 @@ void processFile(string &fname) {
 
     printf("%s\n", fname.c_str());
     while(getline(ifile, line)) {
-        WordList l;
-        split(line.c_str(), l, splitChars, numSplitChars);
-        if(l[0] == f) {
-            printf("%s: %s\n", l[0].asUtf8(), l[1].asUtf8());
+        WordList vals;
+        Word name;
+        size_t equalsLoc = line.find('=', 0);
+        if(equalsLoc < line.length()) {
+            splitToWords(line.c_str() + equalsLoc, vals);
+            line[equalsLoc] = '\0';
+            name = line.c_str();
+        } else {
+            continue;
         }
+        printf("%s: %s\n", name.asUtf8(), vals[0].asUtf8());
     }
 }
 

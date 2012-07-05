@@ -39,6 +39,7 @@ private:
 
     bool hasWhitespace();
     void duplicateFrom(const Word &w);
+    void convertString(const char *utf8Word);
 
 public:
     Word();
@@ -59,6 +60,7 @@ public:
     bool operator<(const Word &w) const;
     Word& operator=(const Word &w);
     Word& operator=(Word &&w);
+    Word& operator=(const char *utf8Word);
 
     friend class LevenshteinIndex;
 };

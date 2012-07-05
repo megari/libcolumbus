@@ -32,14 +32,9 @@ Word::Word() : text(0), len(0), utf8Repr(0) {
 }
 
 Word::Word(const char *utf8Word) : text(0), len(0), utf8Repr(0) {
-    text = utf8ToInternal(utf8Word, len);
-    if(hasWhitespace()) {
-        delete []text;
-        std::string err("Tried to create a word with whitespace in it: ");
-        err += (const char*)utf8Word;
-        throw std::invalid_argument(err);
-    }
+    convertString(utf8Word);
 }
+
 Word::Word(const Word &w) : text(0), len(0), utf8Repr(0) {
     duplicateFrom(w);
 }
@@ -56,6 +51,17 @@ Word::Word(Word &&w) :
 Word::~Word() {
     delete []text;
     delete []utf8Repr;
+}
+
+void Word::convertString(const char *utf8Word) {
+    text = utf8ToInternal(utf8Word, len);
+    if(hasWhitespace()) {
+        delete []text;
+        text = nullptr;
+        std::string err("Tried to create a word with whitespace in it: ");
+        err += (const char*)utf8Word;
+        throw std::invalid_argument(err);
+    }
 }
 
 void Word::duplicateFrom(const Word &w) {
@@ -170,6 +176,16 @@ Word Word::join(const Word &w) const {
     memcpy(result.text + len, w.text, w.len*sizeof(Letter));
     result.text[newLen] = '\0';
     return result;
+}
+
+Word& Word::operator=(const char *utf8Word) {
+    delete []text;
+    delete []utf8Repr;
+    text = nullptr;
+    utf8Repr = nullptr;
+    len = 0;
+    convertString(utf8Word);
+    return *this;
 }
 
 COL_NAMESPACE_END
