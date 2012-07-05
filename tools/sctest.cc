@@ -144,7 +144,7 @@ void build_gui(app_data &app) {
     gtk_widget_show_all(app.window);
 }
 
-void processFile(string &fname) {
+void processFile(string &fname, WordList &name, WordList &genericName, WordList comment) {
     ifstream ifile(fname.c_str());
     Word f("GenericName");
 
@@ -154,24 +154,29 @@ void processFile(string &fname) {
     }
     string line;
 
-    printf("%s\n", fname.c_str());
     while(getline(ifile, line)) {
         WordList vals;
-        Word name;
+        Word n;
         size_t equalsLoc = line.find('=', 0);
         if(equalsLoc < line.length()) {
             splitToWords(line.c_str() + equalsLoc + 1, vals);
             line[equalsLoc] = '\0';
             try {
-                name = line.c_str();
+                n = line.c_str();
             } catch (invalid_argument &e) {
                 continue;
             }
         } else {
             continue;
         }
-        if(vals.size() > 0)
-            printf(" %s: %s\n", name.asUtf8(), vals[0].asUtf8());
+        if(vals.size() > 0) {
+            if(n == "name")
+                name = vals;
+            if(n == "genericname")
+                genericName = vals;
+            if(n == "comment")
+                comment = vals;
+        }
     }
 }
 
@@ -179,6 +184,9 @@ void buildCorpus(Corpus &c) {
     string dataDir = "/usr/share/app-install/desktop";
     DIR *dp;
     struct dirent *dirp;
+    Word nameField("name");
+    Word genericField("genericname");
+    Word commentField("comment");
 
     dp = opendir(dataDir.c_str());
     if(!dp) {
@@ -186,14 +194,25 @@ void buildCorpus(Corpus &c) {
     }
 
     while((dirp = readdir(dp))) {
+        WordList name, genericName, comment;
         if(dirp->d_name[0] == '.')
             continue;
         string fullPath = dataDir;
         fullPath += "/";
         fullPath += dirp->d_name;
-        processFile(fullPath);
+        processFile(fullPath, name, genericName, comment);
+        if(name.size() > 0) {
+            Document d(c.size());
+            d.addText(nameField, name);
+            if(genericName.size() > 0)
+                d.addText(genericField, genericName);
+            if(comment.size() > 0)
+                d.addText(commentField, comment);
+            c.addDocument(d);
+        }
     }
 
+    printf("Read in %ld documents.\n", c.size());
     closedir(dp);
     exit(1);
 }
