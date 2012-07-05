@@ -37,6 +37,10 @@ const char *queryTime = "Query time: ";
 const char *resultCount = "Total results: ";
 const int DEFAULT_ERROR = 200;
 
+const Word nameField("name");
+const Word genericField("genericname");
+const Word commentField("comment");
+
 struct app_data {
     Matcher *m;
     GtkWidget *window;
@@ -184,9 +188,6 @@ void buildCorpus(Corpus &c) {
     string dataDir = "/usr/share/app-install/desktop";
     DIR *dp;
     struct dirent *dirp;
-    Word nameField("name");
-    Word genericField("genericname");
-    Word commentField("comment");
 
     dp = opendir(dataDir.c_str());
     if(!dp) {
@@ -230,6 +231,8 @@ void build_matcher(app_data &app) {
     dataReadEnd = hiresTimestamp();
     printf("Read in %ld documents in %.2f seconds.\n", i, dataReadEnd - dataReadStart);
     app.m->index(c);
+    app.m->getIndexWeights().setWeight(genericField, 0.6);
+    app.m->getIndexWeights().setWeight(commentField, 0.3);
 }
 
 void delete_matcher(app_data &app) {
