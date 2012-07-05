@@ -30,6 +30,7 @@
 #include <vector>
 #include <cassert>
 #include <cstring>
+#include <cstdlib>
 
 using namespace Columbus;
 using namespace std;

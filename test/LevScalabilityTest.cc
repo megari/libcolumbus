@@ -24,15 +24,16 @@
  */
 
 
-#include <vector>
-#include <cstdio>
-#include <cstring>
-#include <cassert>
 #include "LevenshteinIndex.hh"
 #include "Word.hh"
 #include "ColumbusHelpers.hh"
 #include "ErrorValues.hh"
 #include "WordStore.hh"
+#include <vector>
+#include <cstdio>
+#include <cstring>
+#include <cassert>
+#include <cstdlib>
 
 using namespace Columbus;
 using namespace std;
