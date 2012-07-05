@@ -56,7 +56,9 @@ public:
 
     Letter operator[](unsigned int i) const;
     bool operator==(const Word &w) const;
+    bool operator==(const char *utf8Word) const;
     bool operator!=(const Word &w) const;
+    bool operator!=(const char *utf8Word) const;
     bool operator<(const Word &w) const;
     Word& operator=(const Word &w);
     Word& operator=(Word &&w);

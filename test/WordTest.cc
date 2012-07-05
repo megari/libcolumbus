@@ -227,10 +227,14 @@ void testAssignment() {
     bool gotAssertion;
 
     w = txt;
+    assert(w == txt);
+    assert(w != txt2);
     assert(strcmp(txt, w.asUtf8()) == 0);
     assert(w.length() == 3);
 
     w = txt2;
+    assert(w != txt);
+    assert(w == txt2);
     assert(strcmp(txt2, w.asUtf8()) == 0);
     assert(w.length() == 4);
 

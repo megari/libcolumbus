@@ -134,8 +134,17 @@ bool Word::operator==(const Word &w) const {
     return true;
 }
 
+bool Word::operator==(const char *utf8Word) const {
+    return strcmp(asUtf8(), utf8Word) == 0;
+}
+
+
 bool Word::operator!=(const Word &w) const {
     return !(*this == w);
+}
+
+bool Word::operator!=(const char *utf8Word) const {
+    return !(*this == utf8Word);
 }
 
 bool Word::operator<(const Word &w) const {
