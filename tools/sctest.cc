@@ -160,13 +160,18 @@ void processFile(string &fname) {
         Word name;
         size_t equalsLoc = line.find('=', 0);
         if(equalsLoc < line.length()) {
-            splitToWords(line.c_str() + equalsLoc, vals);
+            splitToWords(line.c_str() + equalsLoc + 1, vals);
             line[equalsLoc] = '\0';
-            name = line.c_str();
+            try {
+                name = line.c_str();
+            } catch (invalid_argument &e) {
+                continue;
+            }
         } else {
             continue;
         }
-        printf("%s: %s\n", name.asUtf8(), vals[0].asUtf8());
+        if(vals.size() > 0)
+            printf(" %s: %s\n", name.asUtf8(), vals[0].asUtf8());
     }
 }
 
