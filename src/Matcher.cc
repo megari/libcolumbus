@@ -285,6 +285,8 @@ void Matcher::match(const WordList &query, MatchResults &matchedDocuments) {
     const size_t minMatches = 10;
     WordList expandedQuery;
 
+    if(query.size() == 0)
+        return;
     expandQuery(query, expandedQuery);
     // Try to search with ever growing error until we find enough matches.
     for(int i=0; i<maxIterations; i++) {
