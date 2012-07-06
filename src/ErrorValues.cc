@@ -66,7 +66,8 @@ ErrorValues::ErrorValues() :
     endDeletionError(DEFAULT_ERROR),
     startInsertionError(DEFAULT_ERROR),
     substituteError(DEFAULT_ERROR),
-    transposeError(DEFAULT_ERROR) {
+    transposeError(DEFAULT_ERROR),
+    substringStartLimit(0) {
     p = new ErrorValuesPrivate;
     p->lut = new int[LUT_SIZE];
     clearLUT();
@@ -232,6 +233,7 @@ void ErrorValues::addToLUT(Letter l1, Letter l2, int value) {
 void ErrorValues::setSubstringMode() {
     startInsertionError = getSubstringDefaultStartInsertionError();
     endDeletionError = getSubstringDefaultEndDeletionError();
+    substringStartLimit = DEFAULT_SUBSTRING_START_LENGTH;
 }
 
 

@@ -164,7 +164,7 @@ bool LevenshteinIndex::hasWord(const Word &word) const {
 
 void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int maxError, IndexMatches &matches) const {
     ErrorMatrix em(p->longestWordLength+1, query.length()+1,
-            e.getInsertionError(), e.getStartInsertionError());
+            e.getDeletionError(), e.getStartInsertionError(query.length()));
 
     assert(em.get(0, 0) == 0);
     if(query.length() > 0)

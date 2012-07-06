@@ -34,6 +34,7 @@ private:
     static const int DEFAULT_TYPO_ERROR = 30;
     static const int DEFAULT_SUBSTRING_END_DELETION_ERROR = 15;
     static const int DEFAULT_SUBSTRING_START_INSERTION_ERROR = 15;
+    static const size_t DEFAULT_SUBSTRING_START_LENGTH = 3;
 
     int insertionError;
     int deletionError;
@@ -41,6 +42,7 @@ private:
     int startInsertionError;
     int substituteError;
     int transposeError;
+    size_t substringStartLimit;
 
     ErrorValuesPrivate *p;
 
@@ -57,7 +59,8 @@ public:
     int getInsertionError() const { return insertionError; }
     int getDeletionError() const { return deletionError; }
     int getEndDeletionError() const { return endDeletionError; }
-    int getStartInsertionError() const { return startInsertionError; }
+    int getStartInsertionError(const size_t queryTermLength) const {
+        return queryTermLength >= substringStartLimit ? startInsertionError : insertionError; }
     int getTransposeError() const { return transposeError; }
 
     void setInsertionError(const int e) { insertionError = e; }
@@ -65,7 +68,7 @@ public:
     void setEndDeletionError(const int e) { endDeletionError = e; }
     void setStartInsertionError(const int e) { startInsertionError = e; }
     void setTransposeError(const int e) { transposeError = e; }
-
+    void setSubstringStartLimit(const size_t e) { substringStartLimit = e; }
 
     int getSubstituteError(Letter l1, Letter l2) const;
 
