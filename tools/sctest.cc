@@ -34,6 +34,7 @@ using namespace Columbus;
 using namespace std;
 
 const char *queryTime = "Query time: ";
+const char *updateTime = "GUI update time: ";
 const char *resultCount = "Total results: ";
 const int DEFAULT_ERROR = 200;
 
@@ -49,6 +50,7 @@ struct app_data {
     GtkWidget *matchView;
     GtkWidget *queryTimeLabel;
     GtkWidget *resultCountLabel;
+    GtkWidget *updateTimeLabel;
     vector<string> names;
 };
 
@@ -64,13 +66,6 @@ static void destroy(GtkWidget *widget, gpointer data) {
 void updateModel(app_data *app, MatchResults &matches) {
     GtkTreeIter iter;
     gtk_widget_freeze_child_notify(app->matchView);
-    /*
-        self.match_list.freeze_child_notify()
-        self.match_list.set_model(None)
-        self.update_model(doc_matches, relevancies)
-        self.match_list.set_model(self.match_store)
-        self.match_list.thaw_child_notify()
-    */
     gtk_tree_view_set_model(GTK_TREE_VIEW(app->matchView), 0);
     gtk_list_store_clear(app->matchStore);
     for(size_t i=0; i<matches.size(); i++) {
@@ -89,6 +84,7 @@ void updateModel(app_data *app, MatchResults &matches) {
 static void doSearch(GtkWidget *widget, gpointer data) {
     app_data *app = (app_data*) data;
     MatchResults matches;
+    double updateStart, updateEnd;
     double queryStart, queryEnd;
     try {
         queryStart = hiresTimestamp();
@@ -99,13 +95,18 @@ static void doSearch(GtkWidget *widget, gpointer data) {
         gtk_list_store_clear(app->matchStore);
         gtk_label_set_text(GTK_LABEL(app->queryTimeLabel), queryTime);
         gtk_label_set_text(GTK_LABEL(app->resultCountLabel), resultCount);
+        gtk_label_set_text(GTK_LABEL(app->updateTimeLabel), updateTime);
         gtk_entry_set_text(GTK_ENTRY(app->entry), "");
         return;
     }
+    updateStart = hiresTimestamp();
     updateModel(app, matches);
+    updateEnd = hiresTimestamp();
     char buf[1024];
     sprintf(buf, "%s%.2f", queryTime, queryEnd - queryStart);
     gtk_label_set_text(GTK_LABEL(app->queryTimeLabel), buf);
+    sprintf(buf, "%s%.2f", updateTime, updateEnd - updateStart);
+    gtk_label_set_text(GTK_LABEL(app->updateTimeLabel), buf);
     sprintf(buf, "%s%ld", resultCount, matches.size());
     gtk_label_set_text(GTK_LABEL(app->resultCountLabel), buf);
 
@@ -145,6 +146,8 @@ void build_gui(app_data &app) {
     gtk_label_set_justify(GTK_LABEL(app.queryTimeLabel), GTK_JUSTIFY_LEFT);
     app.resultCountLabel = gtk_label_new(resultCount);
     gtk_label_set_justify(GTK_LABEL(app.resultCountLabel), GTK_JUSTIFY_LEFT);
+    app.updateTimeLabel = gtk_label_new(updateTime);
+    gtk_label_set_justify(GTK_LABEL(app.updateTimeLabel), GTK_JUSTIFY_LEFT);
 
     quitButton = gtk_button_new_with_label("Quit");
     g_signal_connect(quitButton, "clicked", G_CALLBACK(destroy), NULL);
@@ -152,6 +155,7 @@ void build_gui(app_data &app) {
     gtk_box_pack_start(GTK_BOX(vbox), app.entry, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), scroller, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), app.queryTimeLabel, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), app.updateTimeLabel, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), app.resultCountLabel, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), quitButton, FALSE, TRUE, 0);
     gtk_widget_show_all(app.window);
