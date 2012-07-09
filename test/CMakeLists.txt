@@ -1,10 +1,23 @@
-add_executable(levtrie LevTrieTest.cc)
-target_link_libraries(levtrie columbus)
-add_test(levtrie levtrie)
+macro(coltest tname tfilename)
+  add_executable(${tname} ${tfilename})
+  target_link_libraries(${tname} columbus)
+  add_test(${tname} ${tname})
+endmacro()
 
-add_executable(levindex LevIndexTest.cc)
-target_link_libraries(levindex columbus)
-add_test(levindex levindex)
+coltest(levtrie LevTrieTest.cc)
+coltest(levindex LevIndexTest.cc)
+coltest(custom_error CustomErrorTest.cc)
+coltest(error_values ErrorValuesTest.cc)
+coltest(word WordTest.cc)
+coltest(wordlist WordListTest.cc)
+coltest(document DocumentTest.cc)
+coltest(corpus CorpusTest.cc)
+coltest(matcher MatcherTest.cc)
+coltest(matchresults MatchResultsTest.cc)
+coltest(helpers HelpersTest.cc)
+coltest(indexweights IndexWeightsTest.cc)
+coltest(wordstore WordStoreTest.cc)
+coltest(capi CAPITest.c)
 
 add_executable(lev_scalability LevScalabilityTest.cc)
 target_link_libraries(lev_scalability columbus)
@@ -12,53 +25,5 @@ if(${enable_scalability_tests})
   add_test(lev_scalability lev_scalability /usr/share/dict/words)
 endif()
 
-add_executable(custom_error CustomErrorTest.cc)
-target_link_libraries(custom_error columbus)
-add_test(custom_error custom_error)
-
-add_executable(error_values ErrorValuesTest.cc)
-target_link_libraries(error_values columbus)
-add_test(error_values error_values)
-
-add_executable(word WordTest.cc)
-target_link_libraries(word columbus)
-add_test(word word)
-
-add_executable(wordlist WordListTest.cc)
-target_link_libraries(wordlist columbus)
-add_test(wordlist wordlist)
-
-add_executable(document DocumentTest.cc)
-target_link_libraries(document columbus)
-add_test(document document)
-
-add_executable(corpus CorpusTest.cc)
-target_link_libraries(corpus columbus)
-add_test(corpus corpus)
-
-add_executable(matcher MatcherTest.cc)
-target_link_libraries(matcher columbus)
-add_test(matcher matcher)
-
-add_executable(matchresults MatchResultsTest.cc)
-target_link_libraries(matchresults columbus)
-add_test(matchresults matchresults)
-
-add_executable(helpers HelpersTest.cc)
-target_link_libraries(helpers columbus)
-add_test(helpers helpers)
-
 add_executable(create_performance CreatePerformanceTest.cc)
 target_link_libraries(create_performance columbus)
-
-add_executable(indexweights IndexWeightsTest.cc)
-target_link_libraries(indexweights columbus)
-add_test(indexweights indexweights)
-
-add_executable(wordstore WordStoreTest.cc)
-target_link_libraries(wordstore columbus)
-add_test(wordstore wordstore)
-
-add_executable(capi CAPITest.c)
-target_link_libraries(capi columbus)
-add_test(capi capi)
