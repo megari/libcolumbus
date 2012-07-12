@@ -4,6 +4,7 @@ ${CMAKE_CURRENT_BINARY_DIR}/ColumbusCore.hh
 Matcher.hh
 MatchResults.hh
 columbus.h
+columbus.hh
 Word.hh
 Corpus.hh
 ErrorValues.hh
