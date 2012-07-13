@@ -87,7 +87,7 @@ static void doSearch(GtkWidget *widget, gpointer data) {
     char buf[1024];
     sprintf(buf, "%s%.2f", queryTime, queryEnd - queryStart);
     gtk_label_set_text(GTK_LABEL(app->queryTimeLabel), buf);
-    sprintf(buf, "%s%ld", resultCount, matches.size());
+    sprintf(buf, "%s%lu", resultCount, (unsigned long) matches.size());
     gtk_label_set_text(GTK_LABEL(app->resultCountLabel), buf);
 
 }
@@ -200,7 +200,7 @@ void build_matcher(app_data &app, const char *dataFile) {
     delete c;
     app.m->getIndexWeights().setWeight(pathField, pathWeight);
     dataReadEnd = hiresTimestamp();
-    printf("Read in %ld documents in %.2f seconds.\n", i, dataReadEnd - dataReadStart);
+    printf("Read in %lu documents in %.2f seconds.\n", (unsigned long) i, dataReadEnd - dataReadStart);
 }
 
 void delete_matcher(app_data &app) {

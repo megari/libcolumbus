@@ -69,7 +69,7 @@ Matcher* build_matcher(const char *dataFile, int maxLines) {
     m->index(*c);
     dataReadEnd = hiresTimestamp();
     delete c;
-    printf("Read in %ld documents in %.2f seconds.\n", totalDocs, dataReadEnd - dataReadStart);
+    printf("Read in %lu documents in %.2f seconds.\n", (unsigned long)totalDocs, dataReadEnd - dataReadStart);
     return m;
 }
 

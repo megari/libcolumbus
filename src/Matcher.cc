@@ -145,8 +145,8 @@ static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dy
             IndexMatches m;
             it->second->findWords(w, p->e, maxError, m);
             addMatches(p, bestIndexMatches, w, it->first, m);
-            debugMessage("Matched word %s in index %s with error %d and got %ld matches.\n",
-                    w.asUtf8(), p->store.getWord(it->first).asUtf8(), maxError, m.size());
+            debugMessage("Matched word %s in index %s with error %d and got %lu matches.\n",
+                    w.asUtf8(), p->store.getWord(it->first).asUtf8(), maxError, (unsigned long) m.size());
         }
     }
 }
@@ -156,9 +156,9 @@ static void gatherMatchedDocuments(MatcherPrivate *p,  map<WordID, MatchErrorMap
         for(MatchIterator mIt = it->second.begin(); mIt != it->second.end(); mIt++) {
             vector<DocumentID> tmp;
             findDocuments(p, mIt->first, it->first, tmp);
-            debugMessage("Exact searched \"%s\" in field \"%s\", which was found in %ld documents.\n",
+            debugMessage("Exact searched \"%s\" in field \"%s\", which was found in %lu documents.\n",
                     p->store.getWord(mIt->first).asUtf8(),
-                    p->store.getWord(it->first).asUtf8(), tmp.size());
+                    p->store.getWord(it->first).asUtf8(), (unsigned long)tmp.size());
             for(size_t i=0; i<tmp.size(); i++) {
                 DocumentID curDoc = tmp[i];
                 // At this point we know the matched word, and which index and field
@@ -192,11 +192,12 @@ void Matcher::index(const Corpus &c) {
     buildStart = hiresTimestamp();
     buildIndexes(c);
     buildEnd = hiresTimestamp();
-    debugMessage("Added %ld documents to matcher. It now has %ld indexes. Index population took %.2f seconds.\n",
-            c.size(), p->indexes.size(), buildEnd - buildStart);
+    debugMessage("Added %lu documents to matcher. It now has %lu indexes. Index population took %.2f seconds.\n",
+            (unsigned long) c.size(), (unsigned long) p->indexes.size(), buildEnd - buildStart);
     for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
-        debugMessage("Index \"%s\" has %ld words and %ld nodes.\n",
-                p->store.getWord(it->first).asUtf8(), it->second->numWords(), it->second->numNodes());
+        debugMessage("Index \"%s\" has %lu words and %lu nodes.\n",
+                p->store.getWord(it->first).asUtf8(), (unsigned long) it->second->numWords(),
+                (unsigned long) it->second->numNodes());
     }
 }
 
@@ -273,7 +274,7 @@ void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError,
     for(auto it=docs.begin(); it != docs.end(); it++) {
         matchedDocuments.addResult(it->first, it->second);
     }
-    debugMessage("Found a total of %ld documents.\n", matchedDocuments.size());
+    debugMessage("Found a total of %lu documents.\n", (unsigned long) matchedDocuments.size());
     finish = hiresTimestamp();
     debugMessage("Query finished. Index lookups took %.2fs, result gathering %.2fs, result building %.2fs.\n",
             indexMatchEnd - start, gatherEnd - indexMatchEnd, finish - gatherEnd);

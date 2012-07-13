@@ -107,7 +107,7 @@ static void doSearch(GtkWidget *widget, gpointer data) {
     gtk_label_set_text(GTK_LABEL(app->queryTimeLabel), buf);
     sprintf(buf, "%s%.2f", updateTime, updateEnd - updateStart);
     gtk_label_set_text(GTK_LABEL(app->updateTimeLabel), buf);
-    sprintf(buf, "%s%ld", resultCount, matches.size());
+    sprintf(buf, "%s%lu", resultCount, (unsigned long) matches.size());
     gtk_label_set_text(GTK_LABEL(app->resultCountLabel), buf);
 
 }
@@ -227,7 +227,7 @@ void buildCorpus(Corpus &c, app_data &app) {
         }
     }
 
-    printf("Read in %ld documents.\n", c.size());
+    printf("Read in %lu documents.\n", (unsigned long)c.size());
     closedir(dp);
 }
 
@@ -242,7 +242,7 @@ void build_matcher(app_data &app) {
     dataReadStart = hiresTimestamp();
     buildCorpus(c, app);
     dataReadEnd = hiresTimestamp();
-    printf("Read in %ld documents in %.2f seconds.\n", i, dataReadEnd - dataReadStart);
+    printf("Read in %lu documents in %.2f seconds.\n", (unsigned long) i, dataReadEnd - dataReadStart);
     app.m->index(c);
     app.m->getIndexWeights().setWeight(genericField, 0.6);
     app.m->getIndexWeights().setWeight(commentField, 0.3);

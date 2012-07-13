@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
     }
     ifile = argv[1];
     readData(a, ifile);
-    printf("Read in %ld words.\n", a.size());
+    printf("Read in %lu words.\n", (unsigned long) a.size());
     if(argc > 2)
         querySize = atoi(argv[2]);
     else
