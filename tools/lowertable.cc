@@ -21,9 +21,9 @@
 #include <limits.h>
 #include <cstdio>
 
-int main(int argc, char **argv) {
-    unsigned int biggest = 0;
-    unsigned int smallest = UINT_MAX;
+void findLimits(unsigned int &biggest, unsigned int &smallest) {
+    biggest = 0;
+    smallest = UINT_MAX;
     for(unsigned int i=0; i<UINT_MAX; i++) {
         unsigned int conv = u_tolower(i);
         if (conv != i) {
@@ -33,6 +33,23 @@ int main(int argc, char **argv) {
                 biggest = i;
         }
     }
-    printf("Smallest: %u\nBiggest: %u\n", smallest, biggest);
+}
+
+void findCrossings() {
+    UChar32 i;
+    for(i=0; i+1<65535; i++) {
+        bool ch1 = u_tolower(i) != i ? 1 : 0;
+        bool ch2 = u_tolower(i+1) != i+1 ? 1 : 0;
+        if(ch1 != ch2) {
+           printf("Crossing at %u.\n", i);
+        }
+    }
+}
+
+int main(int argc, char **argv) {
+    unsigned int biggest, smallest;
+    //findLimits(biggest, smallest);
+    //printf("Smallest: %u\nBiggest: %u\n", smallest, biggest);
+    findCrossings();
     return 0;
 }
