@@ -22,3 +22,8 @@ if(GTK3_FOUND)
     LIBRARY DESTINATION ${LIBDIR}
   )
 endif()
+
+if(icu1)
+  add_executable(lowertable lowertable.cc)
+  target_link_libraries(lowertable ${icu1} ${icu2})
+endif()
