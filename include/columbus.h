@@ -41,6 +41,7 @@ typedef void* ColMatcher;
 typedef void* ColMatchResults;
 typedef void* ColCorpus;
 typedef void* ColErrorValues;
+typedef void* ColIndexWeights;
 
 ColWord col_word_new(const char *utf8_word);
 void col_word_delete(ColWord w);
@@ -57,6 +58,7 @@ void col_matcher_delete(ColMatcher m);
 void col_matcher_index(ColMatcher m, ColCorpus c);
 void col_matcher_match(ColMatcher m, const char *query_as_utf8, ColMatchResults mr);
 ColErrorValues col_matcher_get_error_values(ColMatcher m);
+ColIndexWeights col_matcher_get_index_weights(ColMatcher m);
 
 ColMatchResults col_match_results_new();
 void col_match_results_delete(ColMatchResults mr);
@@ -67,6 +69,9 @@ double col_match_results_get_relevancy(ColMatchResults mr, size_t i);
 ColCorpus col_corpus_new();
 void col_corpus_delete(ColCorpus c);
 void col_corpus_add_document(ColCorpus c, ColDocument d);
+
+void col_index_weights_set_weight(ColIndexWeights weights, const ColWord field, const double new_weight);
+double col_index_weights_get_weight(ColIndexWeights weights, const ColWord field);
 
 void col_error_values_add_standard_errors(ColErrorValues ev);
 void col_error_values_set_substring_mode(ColErrorValues ev);

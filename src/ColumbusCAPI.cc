@@ -24,6 +24,7 @@
 #include "MatchResults.hh"
 #include "Corpus.hh"
 #include "ErrorValues.hh"
+#include "IndexWeights.hh"
 #include <stdexcept>
 #include <cstdio>
 
@@ -105,6 +106,11 @@ ColErrorValues col_matcher_get_error_values(ColMatcher m) {
     return reinterpret_cast<ColErrorValues>(&matcher->getErrorValues());
 }
 
+ColIndexWeights col_matcher_get_index_weights(ColMatcher m) {
+    Matcher *matcher = reinterpret_cast<Matcher*>(m);
+    return reinterpret_cast<ColIndexWeights>(&matcher->getIndexWeights());
+}
+
 ColMatchResults col_match_results_new() {
     return reinterpret_cast<ColMatchResults>(new MatchResults());
 }
@@ -159,6 +165,19 @@ void col_error_values_set_substring_mode(ColErrorValues ev) {
     ErrorValues *results = reinterpret_cast<ErrorValues*>(ev);
     results->setSubstringMode();
 }
+
+void col_index_weights_set_weight(ColIndexWeights weights, const ColWord field, const double new_weight) {
+    IndexWeights *cweight = reinterpret_cast<IndexWeights*>(weights);
+    Word *w = reinterpret_cast<Word*>(field);
+    cweight->setWeight(*w, new_weight);
+}
+
+double col_index_weights_get_weight(ColIndexWeights weights, const ColWord field) {
+    IndexWeights *cweight = reinterpret_cast<IndexWeights*>(weights);
+    Word *w = reinterpret_cast<Word*>(field);
+    return cweight->getWeight(*w);
+}
+
 
 #ifdef __cplusplus
 }
