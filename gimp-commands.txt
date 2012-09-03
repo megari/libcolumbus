@@ -1,0 +1,459 @@
+ File New From Clipboard > Round Button
+ File New From Clipboard > Simple Beveled Button
+ File New From Clipboard > Empty
+ File New From Clipboard > 3D Outline
+ File New From Clipboard > Alien Glow
+ File New From Clipboard > Alien Neon
+ File New From Clipboard > Basic II
+ File New From Clipboard > Basic I
+ File New From Clipboard > Blended
+ File New From Clipboard > Bovination
+ File New From Clipboard > Carved
+ File New From Clipboard > Chalk
+ File New From Clipboard > Chip Away
+ File New From Clipboard > Chrome
+ File New From Clipboard > Comic Book
+ File New From Clipboard > Cool Metal
+ File New From Clipboard > Crystal
+ File New From Clipboard > Frosty
+ File New From Clipboard > Glossy
+ File New From Clipboard > Glowing Hot
+ File New From Clipboard > Gradient Bevel
+ File New From Clipboard > Imigre-26
+ File New From Clipboard > Neon
+ File New From Clipboard > Newsprint Text
+ File New From Clipboard > Particle Trace
+ File New From Clipboard > SOTA Chrome
+ File New From Clipboard > Speed Text
+ File New From Clipboard > Starscape
+ File New From Clipboard > Text Circle
+ File New From Clipboard > Textured
+ File New From Clipboard > Web Title Header
+ File New From Clipboard > Empty
+ File New From Clipboard > 3D Truchet
+ File New From Clipboard > Camouflage
+ File New From Clipboard > Flatland
+ File New From Clipboard > Land
+ File New From Clipboard > Render Map
+ File New From Clipboard > Swirl-Tile
+ File New From Clipboard > Swirly
+ File New From Clipboard > Truchet
+ File New From Clipboard > Empty
+ File New From Clipboard Alien Glow > Arrow
+ File New From Clipboard Alien Glow > Bullet
+ File New From Clipboard Alien Glow > Button
+ File New From Clipboard Alien Glow > Hrule
+ File New From Clipboard Alien Glow > Empty
+ File New From Clipboard Alien Glow > Arrow
+ File New From Clipboard Alien Glow > Bullet
+ File New From Clipboard Alien Glow > Button
+ File New From Clipboard Alien Glow > Heading
+ File New From Clipboard Alien Glow > Hrule
+ File New From Clipboard Alien Glow > Empty
+ File New From Clipboard Alien Glow > Big Header
+ File New From Clipboard Alien Glow > General Tube Labels
+ File New From Clipboard Alien Glow > Small Header
+ File New From Clipboard Alien Glow > Tube Button Label
+ File New From Clipboard Alien Glow > Tube Sub-Button Label
+ File New From Clipboard Alien Glow > Tube Sub-Sub-Button Label
+ File New From Clipboard Alien Glow > Empty
+ File New > käsiä.jpg
+ File New > file-open-recent-02
+ File New > file-open-recent-03
+ File New > file-open-recent-04
+ File New > file-open-recent-05
+ File New > file-open-recent-06
+ File New > file-open-recent-07
+ File New > file-open-recent-08
+ File New > file-open-recent-09
+ File New > file-open-recent-10
+ File New > Document History
+ File New > Empty
+ File Undo > New Image
+ File Undo > New Layer
+ File Undo > New Brush
+ File Undo > New Pattern
+ File Undo > Empty
+ File Undo > Cut Named
+ File Undo > Copy Named
+ File Undo > Copy Visible Named
+ File Undo > Paste Named
+ File Undo > Empty
+ File > All
+ File > None
+ File > Invert
+ File > Float
+ File > By Color
+ File > From Path
+ File > Selection Editor
+ File > Feather
+ File > Sharpen
+ File > Shrink
+ File > Grow
+ File > Border
+ File > Distort
+ File > Rounded Rectangle
+ File > Toggle Quick Mask
+ File > Save to Channel
+ File > To Path
+ File > Empty
+ File New View > Revert Zoom (100%)
+ File New View > Zoom Out
+ File New View > Zoom In
+ File New View > Fit Image in Window
+ File New View > Fill Window
+ File New View > 16:1  (1600%)
+ File New View > 8:1  (800%)
+ File New View > 4:1  (400%)
+ File New View > 2:1  (200%)
+ File New View > 1:1  (100%)
+ File New View > 1:2  (50%)
+ File New View > 1:4  (25%)
+ File New View > 1:8  (12.5%)
+ File New View > 1:16  (6.25%)
+ File New View > Other
+ File New View > Empty
+ File New View > Open Display
+ File New View > Screen :0.0
+ File New View > Empty
+ File New View > From Theme
+ File New View > Light Check Color
+ File New View > Dark Check Color
+ File New View > Select Custom Color
+ File New View > As in Preferences
+ File New View > Empty
+ File Duplicate > RGB
+ File Duplicate > Grayscale
+ File Duplicate > Indexed
+ File Duplicate > Assign Color Profile
+ File Duplicate > Convert to Color Profile
+ File Duplicate > Empty
+ File Duplicate > Flip Horizontally
+ File Duplicate > Flip Vertically
+ File Duplicate > Rotate 90° clockwise
+ File Duplicate > Rotate 90° counter-clockwise
+ File Duplicate > Rotate 180°
+ File Duplicate > Guillotine
+ File Duplicate > Empty
+ File Duplicate > New Guide (by Percent)
+ File Duplicate > New Guide
+ File Duplicate > New Guides from Selection
+ File Duplicate > Remove all Guides
+ File Duplicate > Empty
+ File New Layer > Text to Selection
+ File New Layer > Add to Selection
+ File New Layer > Subtract from Selection
+ File New Layer > Intersect with Selection
+ File New Layer > Empty
+ File New Layer > Select Previous Layer
+ File New Layer > Select Next Layer
+ File New Layer > Select Top Layer
+ File New Layer > Select Bottom Layer
+ File New Layer > Raise Layer
+ File New Layer > Lower Layer
+ File New Layer > Layer to Top
+ File New Layer > Layer to Bottom
+ File New Layer > Reverse Layer Order
+ File New Layer > Empty
+ File New Layer > Add Layer Mask
+ File New Layer > Apply Layer Mask
+ File New Layer > Delete Layer Mask
+ File New Layer > Show Layer Mask
+ File New Layer > Edit Layer Mask
+ File New Layer > Disable Layer Mask
+ File New Layer > Mask to Selection
+ File New Layer > Add to Selection
+ File New Layer > Subtract from Selection
+ File New Layer > Intersect with Selection
+ File New Layer > Empty
+ File New Layer > Add Alpha Channel
+ File New Layer > Remove Alpha Channel
+ File New Layer > Color to Alpha
+ File New Layer > Semi-Flatten
+ File New Layer > Threshold Alpha
+ File New Layer > Alpha to Selection
+ File New Layer > Add to Selection
+ File New Layer > Subtract from Selection
+ File New Layer > Intersect with Selection
+ File New Layer > Empty
+ File New Layer > Flip Horizontally
+ File New Layer > Flip Vertically
+ File New Layer > Rotate 90° clockwise
+ File New Layer > Rotate 90° counter-clockwise
+ File New Layer > Rotate 180°
+ File New Layer > Arbitrary Rotation
+ File New Layer > Offset
+ File New Layer > Empty
+ File Color Balance > Equalize
+ File Color Balance > White Balance
+ File Color Balance > Color Enhance
+ File Color Balance > Normalize
+ File Color Balance > Stretch Contrast
+ File Color Balance > Stretch HSV
+ File Color Balance > Empty
+ File Color Balance > Channel Mixer
+ File Color Balance > Compose
+ File Color Balance > Decompose
+ File Color Balance > Recompose
+ File Color Balance > Empty
+ File Color Balance > Rearrange Colormap
+ File Color Balance > Set Colormap
+ File Color Balance > Alien Map
+ File Color Balance > Color Exchange
+ File Color Balance > Gradient Map
+ File Color Balance > Palette Map
+ File Color Balance > Rotate Colors
+ File Color Balance > Sample Colorize
+ File Color Balance > Empty
+ File Color Balance > Histogram
+ File Color Balance > Border Average
+ File Color Balance > Colorcube Analysis
+ File Color Balance > Smooth Palette
+ File Color Balance > Empty
+ File Selection Tools > Rectangle Select
+ File Selection Tools > Ellipse Select
+ File Selection Tools > Free Select
+ File Selection Tools > Foreground Select
+ File Selection Tools > Fuzzy Select
+ File Selection Tools > By Color Select
+ File Selection Tools > Intelligent Scissors
+ File Selection Tools > Empty
+ File Selection Tools > Bucket Fill
+ File Selection Tools > Blend
+ File Selection Tools > Pencil
+ File Selection Tools > Paintbrush
+ File Selection Tools > Eraser
+ File Selection Tools > Airbrush
+ File Selection Tools > Ink
+ File Selection Tools > Clone
+ File Selection Tools > Heal
+ File Selection Tools > Perspective Clone
+ File Selection Tools > Blur / Sharpen
+ File Selection Tools > Smudge
+ File Selection Tools > Dodge / Burn
+ File Selection Tools > Empty
+ File Selection Tools > Align
+ File Selection Tools > Move
+ File Selection Tools > Crop
+ File Selection Tools > Rotate
+ File Selection Tools > Scale
+ File Selection Tools > Shear
+ File Selection Tools > Perspective
+ File Selection Tools > Flip
+ File Selection Tools > Empty
+ File Selection Tools > Color Balance
+ File Selection Tools > Hue-Saturation
+ File Selection Tools > Colorize
+ File Selection Tools > Brightness-Contrast
+ File Selection Tools > Threshold
+ File Selection Tools > Levels
+ File Selection Tools > Curves
+ File Selection Tools > Posterize
+ File Selection Tools > Desaturate
+ File Selection Tools > Empty
+ File Repeat Last > 
+ File Repeat Last > 
+ File Repeat Last > 
+ File Repeat Last > 
+ File Repeat Last > 
+ File Repeat Last > 
+ File Repeat Last > 
+ File Repeat Last > 
+ File Repeat Last > 
+ File Repeat Last > 
+ File Repeat Last > Empty
+ File Repeat Last > Blur
+ File Repeat Last > Gaussian Blur
+ File Repeat Last > Motion Blur
+ File Repeat Last > Pixelize
+ File Repeat Last > Selective Gaussian Blur
+ File Repeat Last > Tileable Blur
+ File Repeat Last > Empty
+ File Repeat Last > Antialias
+ File Repeat Last > Deinterlace
+ File Repeat Last > Despeckle
+ File Repeat Last > Destripe
+ File Repeat Last > NL Filter
+ File Repeat Last > Red Eye Removal
+ File Repeat Last > Sharpen
+ File Repeat Last > Unsharp Mask
+ File Repeat Last > Empty
+ File Repeat Last > Blinds
+ File Repeat Last > Curve Bend
+ File Repeat Last > Emboss
+ File Repeat Last > Engrave
+ File Repeat Last > Erase Every Other Row
+ File Repeat Last > IWarp
+ File Repeat Last > Lens Distortion
+ File Repeat Last > Mosaic
+ File Repeat Last > Newsprint
+ File Repeat Last > Pagecurl
+ File Repeat Last > Polar Coordinates
+ File Repeat Last > Ripple
+ File Repeat Last > Shift
+ File Repeat Last > Value Propagate
+ File Repeat Last > Video
+ File Repeat Last > Waves
+ File Repeat Last > Whirl and Pinch
+ File Repeat Last > Wind
+ File Repeat Last > Empty
+ File Repeat Last > Gradient Flare
+ File Repeat Last > Lens Flare
+ File Repeat Last > Lighting Effects
+ File Repeat Last > Sparkle
+ File Repeat Last > Supernova
+ File Repeat Last > Drop Shadow
+ File Repeat Last > Perspective
+ File Repeat Last > Xach-Effect
+ File Repeat Last > Apply Lens
+ File Repeat Last > Glass Tile
+ File Repeat Last > Empty
+ File Repeat Last > HSV Noise
+ File Repeat Last > Hurl
+ File Repeat Last > Pick
+ File Repeat Last > RGB Noise
+ File Repeat Last > Slur
+ File Repeat Last > Spread
+ File Repeat Last > Empty
+ File Repeat Last > Difference of Gaussians
+ File Repeat Last > Edge
+ File Repeat Last > Laplace
+ File Repeat Last > Neon
+ File Repeat Last > Sobel
+ File Repeat Last > Empty
+ File Repeat Last > Convolution Matrix
+ File Repeat Last > Dilate
+ File Repeat Last > Erode
+ File Repeat Last > Empty
+ File Repeat Last > Depth Merge
+ File Repeat Last > Filmstrip
+ File Repeat Last > Empty
+ File Repeat Last > Apply Canvas
+ File Repeat Last > Cartoon
+ File Repeat Last > Clothify
+ File Repeat Last > Cubism
+ File Repeat Last > GIMPressionist
+ File Repeat Last > Oilify
+ File Repeat Last > Photocopy
+ File Repeat Last > Predator
+ File Repeat Last > Softglow
+ File Repeat Last > Van Gogh (LIC)
+ File Repeat Last > Weave
+ File Repeat Last > Empty
+ File Repeat Last > Add Bevel
+ File Repeat Last > Add Border
+ File Repeat Last > Coffee Stain
+ File Repeat Last > Fuzzy Border
+ File Repeat Last > Old Photo
+ File Repeat Last > Round Corners
+ File Repeat Last > Slide
+ File Repeat Last > Stencil Carve
+ File Repeat Last > Stencil Chrome
+ File Repeat Last > Empty
+ File Repeat Last > Bump Map
+ File Repeat Last > Displace
+ File Repeat Last > Fractal Trace
+ File Repeat Last > Illusion
+ File Repeat Last > Make Seamless
+ File Repeat Last > Map Object
+ File Repeat Last > Paper Tile
+ File Repeat Last > Small Tiles
+ File Repeat Last > Tile
+ File Repeat Last > Warp
+ File Repeat Last > Empty
+ File Repeat Last Clouds > Difference Clouds
+ File Repeat Last Clouds > Fog
+ File Repeat Last Clouds > Plasma
+ File Repeat Last Clouds > Solid Noise
+ File Repeat Last Clouds > Empty
+ File Repeat Last Clouds > Flame
+ File Repeat Last Clouds > IFS Fractal
+ File Repeat Last Clouds > Empty
+ File Repeat Last Clouds > Checkerboard
+ File Repeat Last Clouds > CML Explorer
+ File Repeat Last Clouds > Diffraction Patterns
+ File Repeat Last Clouds > Grid
+ File Repeat Last Clouds > Jigsaw
+ File Repeat Last Clouds > Maze
+ File Repeat Last Clouds > Qbist
+ File Repeat Last Clouds > Sinus
+ File Repeat Last Clouds > Empty
+ File Repeat Last > Image Map
+ File Repeat Last > Semi-Flatten
+ File Repeat Last > Slice
+ File Repeat Last > Empty
+ File Repeat Last > Blend
+ File Repeat Last > Burn-In
+ File Repeat Last > Rippling
+ File Repeat Last > Spinning Globe
+ File Repeat Last > Waves
+ File Repeat Last > Optimize (Difference)
+ File Repeat Last > Optimize (for GIF)
+ File Repeat Last > Playback
+ File Repeat Last > Unoptimize
+ File Repeat Last > Empty
+ File Repeat Last > 3D Outline
+ File Repeat Last > Alien Glow
+ File Repeat Last > Alien Neon
+ File Repeat Last > Basic II
+ File Repeat Last > Basic I
+ File Repeat Last > Blended
+ File Repeat Last > Bovination
+ File Repeat Last > Chalk
+ File Repeat Last > Chip Away
+ File Repeat Last > Chrome
+ File Repeat Last > Comic Book
+ File Repeat Last > Cool Metal
+ File Repeat Last > Frosty
+ File Repeat Last > Glossy
+ File Repeat Last > Glowing Hot
+ File Repeat Last > Gradient Bevel
+ File Repeat Last > Neon
+ File Repeat Last > Particle Trace
+ File Repeat Last > Textured
+ File Repeat Last > Empty
+ File Repeat Last > Console
+ File Repeat Last > Empty
+ File Repeat Last > Console
+ File Repeat Last > Refresh Scripts
+ File Repeat Last > Start Server
+ File Repeat Last > Empty
+ File Recently Closed Docks > Empty
+ File Recently Closed Docks > Tool Options
+ File Recently Closed Docks > Device Status
+ File Recently Closed Docks > Layers
+ File Recently Closed Docks > Channels
+ File Recently Closed Docks > Paths
+ File Recently Closed Docks > Colormap
+ File Recently Closed Docks > Histogram
+ File Recently Closed Docks > Selection Editor
+ File Recently Closed Docks > Navigation
+ File Recently Closed Docks > Undo History
+ File Recently Closed Docks > Pointer
+ File Recently Closed Docks > Sample Points
+ File Recently Closed Docks > Colors
+ File Recently Closed Docks > Brushes
+ File Recently Closed Docks > Patterns
+ File Recently Closed Docks > Gradients
+ File Recently Closed Docks > Palettes
+ File Recently Closed Docks > Fonts
+ File Recently Closed Docks > Buffers
+ File Recently Closed Docks > Images
+ File Recently Closed Docks > Document History
+ File Recently Closed Docks > Templates
+ File Recently Closed Docks > Tools
+ File Recently Closed Docks > Error Console
+ File Recently Closed Docks > Empty
+ File Help > Developer Web Site
+ File Help > Main Web Site
+ File Help > Plug-in Registry
+ File Help > User Manual Web Site
+ File Help > Empty
+ File Help > Basic Concepts
+ File Help > Create, Open and Save Files
+ File Help > Drawing Simple Objects
+ File Help > How to Use Dialogs
+ File Help > Preparing your Images for the Web
+ File Help > Using Paths
+ File Help > Working with Digital Camera Photos
+ File Help > Empty

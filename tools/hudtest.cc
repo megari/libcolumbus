@@ -153,9 +153,11 @@ void build_matcher(app_data &app, const char *dataFile) {
     Corpus *c = new Corpus();
     Word pathField("path");
     Word commandField("command");
+    Word aliasField("alias");
     const size_t batchSize = 100000;
     size_t i=0;
     const double pathWeight = 0.3;
+    const double aliasWeight = 0.8;
     double dataReadStart, dataReadEnd;
 
     ifstream ifile(dataFile);
@@ -186,6 +188,9 @@ void build_matcher(app_data &app, const char *dataFile) {
         Document d(app.pathSource.size());
         d.addText(pathField, path);
         d.addText(commandField, command);
+        if(commandText.find("Fuzzy Select") != -1) {
+            d.addText(aliasField, "magnetic lasso");
+        }
         c->addDocument(d);
         app.pathSource.push_back(pathText);
         app.commandSource.push_back(commandText);
@@ -199,6 +204,7 @@ void build_matcher(app_data &app, const char *dataFile) {
     app.m->index(*c);
     delete c;
     app.m->getIndexWeights().setWeight(pathField, pathWeight);
+    app.m->getIndexWeights().setWeight(aliasField, aliasWeight);
     dataReadEnd = hiresTimestamp();
     printf("Read in %lu documents in %.2f seconds.\n", (unsigned long) i, dataReadEnd - dataReadStart);
 }
