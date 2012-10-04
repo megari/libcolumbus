@@ -17,11 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef USE_PCH
+#include "columbus_pch.hh"
+#else
+#include <map>
+#endif
+
 #include "Document.hh"
 #include "Word.hh"
 #include "WordList.hh"
 #include "ColumbusHelpers.hh"
-#include <map>
 #include <stdexcept>
 
 COL_NAMESPACE_START

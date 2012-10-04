@@ -41,11 +41,6 @@ function(add_pch_linux header_filename target_name)
   add_custom_target(${gch_target_name} DEPENDS ${gch_filename})
   add_dependencies(${target_name} ${gch_target_name})
   
-  # Add the PCH to every source file's include list.
-  # This is cleaner than #including it manually, since every
-  # one of them uses the same file.
-  set_property(TARGET ${target_name} APPEND_STRING PROPERTY COMPILE_FLAGS "-include ${header_basename}")
-  
   # Each directory should have only one precompiled header
   # for simplicity. If there are several, the current dir
   # gets added to the search path several times.
@@ -62,6 +57,7 @@ endif()
 if(use_pch)
   message(STATUS "Using precompiled headers.")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Winvalid-pch")
+  add_definitions(-DUSE_PCH)
   macro(add_pch _header_filename _target_name)
     add_pch_linux(${_header_filename} ${_target_name})
   endmacro()

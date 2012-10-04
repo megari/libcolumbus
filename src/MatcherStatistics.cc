@@ -17,8 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Word.hh"
+#ifdef USE_PCH
+#include "columbus_pch.hh"
+#else
 #include <map>
+#endif
+
+#include "Word.hh"
 #include "MatcherStatistics.hh"
 
 COL_NAMESPACE_START

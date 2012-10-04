@@ -17,10 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "WordStore.hh"
-#include "Word.hh"
+#ifdef USE_PCH
+#include "columbus_pch.hh"
+#else
 #include <map>
 #include <vector>
+#endif
+
+#include "WordStore.hh"
+#include "Word.hh"
 #include <stdexcept>
 
 COL_NAMESPACE_START

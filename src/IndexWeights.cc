@@ -17,9 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef USE_PCH
+#include "columbus_pch.hh"
+#else
+#include <map>
+#endif
+
 #include "IndexWeights.hh"
 #include "Word.hh"
-#include <map>
 
 COL_NAMESPACE_START
 using namespace std;

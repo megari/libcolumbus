@@ -24,7 +24,7 @@ target_link_libraries(columbus ${icu1} ${icu2})
 
 set_target_properties(columbus PROPERTIES VERSION ${SO_VERSION} SOVERSION ${ABI_VERSION})
 
-add_pch(pch/columbus_pch.h columbus)
+add_pch(pch/columbus_pch.hh columbus)
 
 install(
   TARGETS columbus

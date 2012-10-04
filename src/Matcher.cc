@@ -17,6 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef USE_PCH
+#include "columbus_pch.hh"
+#else
+#include <vector>
+#include <map>
+#include <set>
+#include <string>
+#endif
+
 #include "Matcher.hh"
 #include "Corpus.hh"
 #include "LevenshteinIndex.hh"
@@ -30,11 +39,7 @@
 #include "IndexWeights.hh"
 #include "MatcherStatistics.hh"
 #include "WordStore.hh"
-#include <vector>
-#include <map>
-#include <set>
 #include <cassert>
-#include <string>
 
 COL_NAMESPACE_START
 using namespace std;
