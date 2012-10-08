@@ -17,6 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * This file implements a fast Levenshtein matcher for a dictionary of
+ * words. It is a re-implementation of code placed in the public domain
+ * here:
+ *
+ * http://stevehanov.ca/blog/index.php?id=114
+ */
+
 #ifdef USE_PCH
 #include "columbus_pch.hh"
 #else
