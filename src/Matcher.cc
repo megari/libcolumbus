@@ -334,28 +334,29 @@ ErrorValues& Matcher::getErrorValues() {
     return p->e;
 }
 
+static bool subtermsMatch(MatcherPrivate *p, const ResultFilter &filter, size_t term, DocumentID id) {
+    for(size_t subTerm=0; subTerm < filter.numSubTerms(term); subTerm++) {
+        const Word &filterName = filter.getField(term, subTerm);
+        const Word &value = filter.getWord(term, subTerm);
+        bool termFound = documentHasTerm(p, id, filterName, value);
+        if(!termFound) {
+            return false;
+        }
+    }
+    return true;
+
+}
+
 void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments, const ResultFilter &filter) {
     MatchResults allMatches;
     match(queryAsUtf8, allMatches);
     for(size_t i=0; i<allMatches.size(); i++) {
         DocumentID id = allMatches.getDocumentID(i);
-        bool termFailed = false;
         for(size_t term=0; term < filter.numTerms(); term++) {
-            for(size_t subTerm=0; subTerm < filter.numSubTerms(term); subTerm++) {
-                const Word &filterName = filter.getField(term, subTerm);
-                const Word &value = filter.getWord(term, subTerm);
-                bool termFound = documentHasTerm(p, id, filterName, value);
-                if(!termFound) {
-                    termFailed = true;
-                    break;
-                }
-            }
-            if(termFailed) {
+            if(subtermsMatch(p, filter, term, id)) {
+                matchedDocuments.copyResult(allMatches, i);
                 break;
             }
-        }
-        if(!termFailed) {
-            matchedDocuments.copyResult(allMatches, i);
         }
     }
 }

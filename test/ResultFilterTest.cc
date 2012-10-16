@@ -24,6 +24,7 @@
 #include "MatchResults.hh"
 #include "Matcher.hh"
 #include <cassert>
+#include <cstdio>
 
 using namespace Columbus;
 using namespace std;
@@ -32,22 +33,27 @@ void testFiltering() {
     Word textField("text");
     const char *txt = "something";
     Word filterField1("field1");
+    Word filterField2("field2");
     const char *val1str = "one";
     const char *val2str = "two";
+    const char *val3str = "three";
     Word val1(val1str);
     Word val2(val2str);
+    Word val3(val3str);
     Document d1(1);
     Document d2(2);
     Corpus c;
     Matcher m;
     ResultFilter emptyFilter;
-    ResultFilter onlyTakeOne;
+    ResultFilter onlyTakeFirst, onlyTakeSecond, orTest, andTest;
 
     d1.addText(textField, txt);
     d1.addText(filterField1, val1str);
+    d1.addText(filterField2, val3str);
     c.addDocument(d1);
     d2.addText(textField, txt);
     d2.addText(filterField1, val2str);
+    d2.addText(filterField2, val3str);
     c.addDocument(d2);
 
     m.index(c);
@@ -55,11 +61,24 @@ void testFiltering() {
     m.match(txt, r1, emptyFilter);
     assert(r1.size() == 2);
 
-    onlyTakeOne.addNewSubTerm(filterField1, val1);
+    onlyTakeFirst.addNewSubTerm(filterField1, val1);
     MatchResults r2;
-    m.match(txt, r2, onlyTakeOne);
-    assert(r1.size() == 1);
-    assert(r1.getDocumentID(0) == 1);
+    m.match(txt, r2, onlyTakeFirst);
+    assert(r2.size() == 1);
+    assert(r2.getDocumentID(0) == 1);
+
+    onlyTakeSecond.addNewSubTerm(filterField1, val2);
+    MatchResults r3;
+    m.match(txt, r3, onlyTakeSecond);
+    assert(r3.size() == 1);
+    assert(r3.getDocumentID(0) == 2);
+
+    orTest.addNewSubTerm(filterField1, val1);
+    orTest.addNewTerm();
+    orTest.addNewSubTerm(filterField1, val2);
+    MatchResults orResults;
+    m.match(txt, orResults, orTest);
+    assert(orResults.size() == 2);
 }
 
 int main(int argc, char **argv) {
