@@ -63,6 +63,14 @@ size_t MatchResults::size() const {
     return p->results.size();
 }
 
+void MatchResults::copyResult(const MatchResults &other, const size_t i) {
+    if(i >= other.p->results.size()) {
+        throw out_of_range("Tried to copy an out-of-range result.");
+    }
+    p->results.push_back(other.p->results[i]);
+    p->sorted = false;
+}
+
 void MatchResults::sortIfRequired() const {
     if(p->sorted)
         return;

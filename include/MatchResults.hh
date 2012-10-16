@@ -38,6 +38,7 @@ public:
 
     void addResult(DocumentID docID, double relevancy);
     void addResults(const MatchResults &r);
+    void copyResult(const MatchResults &other, const size_t i);
     size_t size() const;
     DocumentID getDocumentID(size_t i) const;
     double getRelevancy(size_t i) const;

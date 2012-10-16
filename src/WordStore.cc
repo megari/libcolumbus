@@ -56,10 +56,14 @@ WordID WordStore::getID(const Word &w) {
 }
 
 const Word& WordStore::getWord(const WordID id) const {
-    if(id >= p->wordIndex.size()) {
+    if(!hasWord(id)) {
         throw out_of_range("Tried to access non-existing WordID in WordStore.");
     }
     return p->wordIndex[id];
+}
+
+bool WordStore::hasWord(const WordID id) const {
+    return id < p->wordIndex.size();
 }
 
 COL_NAMESPACE_END

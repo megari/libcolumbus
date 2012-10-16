@@ -41,6 +41,7 @@
 #include "WordStore.hh"
 #include "ResultFilter.hh"
 #include <cassert>
+#include <stdexcept>
 
 COL_NAMESPACE_START
 using namespace std;
@@ -73,6 +74,22 @@ typedef map<WordID, int>::iterator MatchIterator;
  * These are helper functions for Matcher. They are not member functions to avoid polluting the header
  * with STL includes.
  */
+
+static bool documentHasTerm(MatcherPrivate *p, DocumentID id, const Word &indexName, const Word &value) {
+    try {
+        WordID indexID = p->store.getID(indexName);
+        WordID valueID = p->store.getID(value);
+        RevIndIterator rind = p->reverseIndex.find(indexID);
+        if(rind == p->reverseIndex.end())
+            return false;
+        RevIterator rev = rind->second.find(valueID);
+        if(rev == rind->second.end())
+            return false;
+        return rev->second.find(id) != rev->second.end();
+    } catch(out_of_range &e) {
+        return false;
+    }
+}
 
 static int getDynamicError(const Word &w) {
     size_t len = w.length();
@@ -318,7 +335,29 @@ ErrorValues& Matcher::getErrorValues() {
 }
 
 void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments, const ResultFilter &filter) {
-    match(queryAsUtf8, matchedDocuments);
+    MatchResults allMatches;
+    match(queryAsUtf8, allMatches);
+    for(size_t i=0; i<allMatches.size(); i++) {
+        DocumentID id = allMatches.getDocumentID(i);
+        bool termFailed = false;
+        for(size_t term=0; term < filter.numTerms(); term++) {
+            for(size_t subTerm=0; subTerm < filter.numSubTerms(term); subTerm++) {
+                const Word &filterName = filter.getField(term, subTerm);
+                const Word &value = filter.getWord(term, subTerm);
+                bool termFound = documentHasTerm(p, id, filterName, value);
+                if(!termFound) {
+                    termFailed = true;
+                    break;
+                }
+            }
+            if(termFailed) {
+                break;
+            }
+        }
+        if(!termFailed) {
+            matchedDocuments.copyResult(allMatches, i);
+        }
+    }
 }
 
 IndexWeights& Matcher::getIndexWeights() {

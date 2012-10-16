@@ -40,7 +40,7 @@ void testFiltering() {
     Document d2(2);
     Corpus c;
     Matcher m;
-    ResultFilter emtpyFilter;
+    ResultFilter emptyFilter;
     ResultFilter onlyTakeOne;
 
     d1.addText(textField, txt);
@@ -52,7 +52,7 @@ void testFiltering() {
 
     m.index(c);
     MatchResults r1;
-    m.match(txt, r1, emtpyFilter);
+    m.match(txt, r1, emptyFilter);
     assert(r1.size() == 2);
 
     onlyTakeOne.addNewSubTerm(filterField1, val1);

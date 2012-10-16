@@ -47,6 +47,7 @@ public:
 
     WordID getID(const Word &w);
     const Word& getWord(const WordID id) const;
+    bool hasWord(const WordID id) const;
 };
 
 COL_NAMESPACE_END
