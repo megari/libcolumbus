@@ -21,12 +21,28 @@
 #define RESULTFILTER_HH_
 
 #include "ColumbusCore.hh"
+
 COL_NAMESPACE_START
 
+struct ResultFilterPrivate;
+class Word;
+
 class ResultFilter {
+private:
+
+    ResultFilterPrivate *p;
+
 public:
     ResultFilter();
     ~ResultFilter();
+
+    void addNewTerm();
+    void addNewSubTerm(const Word &field, const Word &word);
+    size_t numTerms() const;
+    size_t numSubTerms(const size_t term) const;
+
+    const Word& getField(const size_t term, const size_t subTerm) const;
+    const Word& getWord(const size_t term, const size_t subTerm) const;
 };
 
 COL_NAMESPACE_END
