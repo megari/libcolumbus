@@ -39,6 +39,7 @@
 #include "IndexWeights.hh"
 #include "MatcherStatistics.hh"
 #include "WordStore.hh"
+#include "ResultFilter.hh"
 #include <cassert>
 
 COL_NAMESPACE_START
@@ -314,6 +315,10 @@ void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments) {
 
 ErrorValues& Matcher::getErrorValues() {
     return p->e;
+}
+
+void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments, const ResultFilter &filter) {
+    match(queryAsUtf8, matchedDocuments);
 }
 
 IndexWeights& Matcher::getIndexWeights() {

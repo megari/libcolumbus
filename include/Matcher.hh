@@ -32,6 +32,7 @@ class WordList;
 class MatchResults;
 class ErrorValues;
 class IndexWeights;
+class ResultFilter;
 
 class Matcher {
 private:
@@ -48,6 +49,7 @@ public:
 
     void match(const WordList &query, MatchResults &matchedDocuments);
     void match(const char *queryAsUtf8, MatchResults &matchedDocuments);
+    void match(const char *queryAsUtf8, MatchResults &matchedDocuments, const ResultFilter &filter);
     void index(const Corpus &c);
     ErrorValues& getErrorValues();
     IndexWeights& getIndexWeights();
