@@ -17,6 +17,7 @@ coltest(matchresults MatchResultsTest.cc)
 coltest(helpers HelpersTest.cc)
 coltest(indexweights IndexWeightsTest.cc)
 coltest(wordstore WordStoreTest.cc)
+coltest(filtering ResultFilterTest.cc)
 coltest(capi CAPITest.c)
 
 add_executable(lev_scalability LevScalabilityTest.cc)

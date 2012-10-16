@@ -15,6 +15,7 @@ MatcherStatistics.cc
 WordStore.cc
 ColumbusCAPI.cc
 ErrorMatrix.cc
+ResultFilter.cc
 )
 
 if(ICONV_LIBRARIES)
