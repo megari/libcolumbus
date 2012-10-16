@@ -79,6 +79,12 @@ void testFiltering() {
     MatchResults orResults;
     m.match(txt, orResults, orTest);
     assert(orResults.size() == 2);
+
+    andTest.addNewSubTerm(filterField2, val2);
+    andTest.addNewSubTerm(filterField1, val1);
+    MatchResults andResults;
+    m.match(txt, andResults, andTest);
+    assert(andResults.size() == 0);
 }
 
 int main(int argc, char **argv) {
