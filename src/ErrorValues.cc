@@ -23,13 +23,8 @@
  * Use of crazy optimization techniques is approved.
  */
 
-#ifdef USE_PCH
-#include "columbus_pch.hh"
-#else
 #include <map>
 #include <vector>
-#endif
-
 #include <stdexcept>
 #include <fstream>
 #include <cassert>

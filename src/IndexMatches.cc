@@ -17,16 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef USE_PCH
-#include "columbus_pch.hh"
-#else
-#include <vector>
-#endif
-
 #include "IndexMatches.hh"
 #include "Word.hh"
 
 #include <stdexcept>
+#include <vector>
 #include <algorithm>
 #include <cassert>
 

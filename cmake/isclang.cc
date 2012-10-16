@@ -17,36 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "IndexWeights.hh"
-#include "Word.hh"
-#include <map>
-
-COL_NAMESPACE_START
-using namespace std;
-
-struct IndexWeightsPrivate {
-    map<Word, double> weigths;
-};
-
-IndexWeights::IndexWeights() {
-    p = new IndexWeightsPrivate();
-
+int main(int argc, char **argv) {
+#ifdef __clang__
+    return 1; // This gets assigned to a CMake variable so "1" means "true".
+#else
+    return 0;
+#endif
 }
-
-IndexWeights::~IndexWeights() {
-    delete p;
-}
-
-
-void IndexWeights::setWeight(const Word &w, double weigth) {
-    p->weigths[w] = weigth;
-}
-
-double IndexWeights::getWeight(const Word &w) const {
-    map<Word, double>::iterator it = p->weigths.find(w);
-    if(it == p->weigths.end())
-        return 1.0;
-    return it->second;
-}
-
-COL_NAMESPACE_END

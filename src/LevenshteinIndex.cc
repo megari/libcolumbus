@@ -25,11 +25,6 @@
  * http://stevehanov.ca/blog/index.php?id=114
  */
 
-#ifdef USE_PCH
-#include "columbus_pch.hh"
-#else
-#endif
-
 #include <stdio.h>
 #include <cassert>
 #include <map>

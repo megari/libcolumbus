@@ -27,10 +27,10 @@ function(get_gcc_flags target_name)
   #message(STATUS ${compile_args})
 endfunction()
 
-function(add_pch_linux header_filename target_name)
+function(add_pch_linux header_filename target_name pch_suffix)
   set(gch_target_name "${target_name}_pch")
   get_filename_component(header_basename ${header_filename} NAME)
-  set(gch_filename "${CMAKE_CURRENT_BINARY_DIR}/${header_basename}.gch")
+  set(gch_filename "${CMAKE_CURRENT_BINARY_DIR}/${header_basename}.${pch_suffix}")
   get_gcc_flags(${target_name}) # Sets compile_args in this scope. It's even better than Intercal's COME FROM!
   #message(STATUS ${compile_args})
   list(APPEND compile_args -c ${CMAKE_CURRENT_SOURCE_DIR}/${header_filename} -o ${gch_filename})
@@ -41,12 +41,18 @@ function(add_pch_linux header_filename target_name)
   add_custom_target(${gch_target_name} DEPENDS ${gch_filename})
   add_dependencies(${target_name} ${gch_target_name})
   
+  # Add the PCH to every source file's include list.
+  # This is the only way that is supported by both GCC and Clang.
+  set_property(TARGET ${target_name} APPEND_STRING PROPERTY COMPILE_FLAGS "-include ${header_basename}")
+  
   # Each directory should have only one precompiled header
   # for simplicity. If there are several, the current dir
   # gets added to the search path several times.
   # It should not be an issue, though.
   include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 endfunction()
+
+try_run(IS_CLANG did_build ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/isclang.cc)
 
 if(UNIX)
   if(NOT APPLE)
@@ -57,9 +63,13 @@ endif()
 if(use_pch)
   message(STATUS "Using precompiled headers.")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Winvalid-pch")
-  add_definitions(-DUSE_PCH)
+  if(IS_CLANG)
+    set(precompiled_header_extension pch)
+  else()
+    set(precompiled_header_extension gch)
+  endif()
   macro(add_pch _header_filename _target_name)
-    add_pch_linux(${_header_filename} ${_target_name})
+      add_pch_linux(${_header_filename} ${_target_name} ${precompiled_header_extension})
   endmacro()
 else()
   message(STATUS "Not using precompiled headers.")
