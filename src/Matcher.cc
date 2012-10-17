@@ -78,8 +78,11 @@ static bool documentHasTerm(MatcherPrivate *p, DocumentID id, const Word &indexN
             return false;
         return rev->second.find(id) != rev->second.end();
     } catch(out_of_range &e) {
-        return false;
+        // The return command would be here, but it had to be moved
+        // below outside this block to shut the compiler up about
+        // this function not having a return statement.
     }
+    return false;
 }
 
 static int getDynamicError(const Word &w) {
