@@ -33,6 +33,8 @@
 #include "ResultFilter.hh"
 #include <cassert>
 #include <stdexcept>
+#include <set>
+#include <map>
 
 COL_NAMESPACE_START
 using namespace std;
