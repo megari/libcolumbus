@@ -95,6 +95,7 @@ static void padPress(GtkWidget *widget, gpointer data) {
     txt[1] = 0;
     gtk_entry_buffer_insert_text(gtk_entry_get_buffer(GTK_ENTRY(app->entry)),
             1000, txt, 1);
+    doSearch(NULL, app);
 }
 
 GtkWidget* build_numberpad(app_data *app) {
@@ -227,7 +228,7 @@ void build_matcher(app_data &app, const char *dataFile) {
 
     app.m = new Matcher();
     app.m->getErrorValues().addNumberpadErrors();
-
+    app.m->getErrorValues().setSubstringMode();
     // Build Corpus.
     dataReadStart = hiresTimestamp();
     while(getline(ifile, line)) {
