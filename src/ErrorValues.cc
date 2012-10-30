@@ -222,6 +222,91 @@ void ErrorValues::addKeyboardErrors() {
 
 }
 
+void ErrorValues::addNumberpadErrors() {
+    const int sameButton = 0;
+    const int adjacentButton = 50;
+    //const int diagonalButton = 80;
+
+    setError('1', 'a', adjacentButton);
+    setError('1', 'b', adjacentButton);
+    setError('1', 'c', adjacentButton);
+    setError('1', 'g', adjacentButton);
+    setError('1', 'h', adjacentButton);
+    setError('1', 'i', adjacentButton);
+
+
+    setError('2', 'a', sameButton);
+    setError('2', 'b', sameButton);
+    setError('2', 'c', sameButton);
+    setError('2', 'd', adjacentButton);
+    setError('2', 'e', adjacentButton);
+    setError('2', 'f', adjacentButton);
+    setError('2', 'j', adjacentButton);
+    setError('2', 'k', adjacentButton);
+    setError('2', 'l', adjacentButton);
+
+    setError('3', 'd', sameButton);
+    setError('3', 'e', sameButton);
+    setError('3', 'f', sameButton);
+    setError('3', 'm', adjacentButton);
+    setError('3', 'n', adjacentButton);
+    setError('3', 'o', adjacentButton);
+
+    setError('4', 'g', sameButton);
+    setError('4', 'h', sameButton);
+    setError('4', 'i', sameButton);
+    setError('4', 'j', adjacentButton);
+    setError('4', 'k', adjacentButton);
+    setError('4', 'l', adjacentButton);
+    setError('4', 'p', adjacentButton);
+    setError('4', 'q', adjacentButton);
+    setError('4', 'r', adjacentButton);
+    setError('4', 's', adjacentButton);
+
+    setError('5', 'j', sameButton);
+    setError('5', 'k', sameButton);
+    setError('5', 'l', sameButton);
+    setError('5', 'm', adjacentButton);
+    setError('5', 'n', adjacentButton);
+    setError('5', 'o', adjacentButton);
+    setError('5', 't', adjacentButton);
+    setError('5', 'u', adjacentButton);
+    setError('5', 'v', adjacentButton);
+
+    setError('6', 'm', sameButton);
+    setError('6', 'n', sameButton);
+    setError('6', 'o', sameButton);
+    setError('6', 'w', adjacentButton);
+    setError('6', 'x', adjacentButton);
+    setError('6', 'y', adjacentButton);
+    setError('6', 'z', adjacentButton);
+
+    setError('7', 'p', sameButton);
+    setError('7', 'q', sameButton);
+    setError('7', 'r', sameButton);
+    setError('7', 's', sameButton);
+    setError('7', 't', adjacentButton);
+    setError('7', 'u', adjacentButton);
+    setError('7', 'v', adjacentButton);
+
+    setError('8', 't', sameButton);
+    setError('8', 'u', sameButton);
+    setError('8', 'v', sameButton);
+    setError('8', 'w', adjacentButton);
+    setError('8', 'x', adjacentButton);
+    setError('8', 'y', adjacentButton);
+    setError('8', 'z', adjacentButton);
+
+    setError('9', 'w', sameButton);
+    setError('9', 'x', sameButton);
+    setError('9', 'y', sameButton);
+    setError('9', 'z', sameButton);
+
+    setError('0', 't', adjacentButton);
+    setError('0', 'u', adjacentButton);
+    setError('0', 'v', adjacentButton);
+}
+
 
 void ErrorValues::addToLUT(Letter l1, Letter l2, int value) {
     if(l1 < LUT_LETTERS && l2 < LUT_LETTERS) {
