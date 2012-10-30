@@ -97,10 +97,20 @@ void testKeyboardErrors() {
     assert(ev.getSubstituteError('w', 'a') == typoError);
 }
 
+void testNumberpadErrors() {
+    ErrorValues ev;
+    ev.addNumberpadErrors();
+
+    assert(ev.getSubstituteError('2', 'a') == 0);
+    assert(ev.getSubstituteError('5', 'm') < ErrorValues::getDefaultError());
+    assert(ev.getSubstituteError('j', '6') < ErrorValues::getDefaultError());
+}
+
 int main(int argc, char **argv) {
     testError();
     testGroupError();
     testKeyboardErrors();
+    testNumberpadErrors();
     return 0;
 }
 

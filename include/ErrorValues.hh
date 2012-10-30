@@ -50,6 +50,7 @@ private:
     void addToLUT(Letter l1, Letter l2, int value);
     void addGroupErrorToLUT(const Word &groupLetters, const int error);
     int getSubstituteErrorSlow(Letter l1, Letter l2) const;
+    void setPadError(const Letter number, const char letters[4], int letterCount, int error);
 
 public:
 
