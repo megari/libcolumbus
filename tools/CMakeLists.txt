@@ -15,6 +15,9 @@ if(GTK3_FOUND)
   add_executable(sctest sctest.cc)
   target_link_libraries(sctest columbus ${GTK3_LIBRARIES})
 
+  add_executable(numberpad numberpad.cc)
+  target_link_libraries(numberpad columbus ${GTK3_LIBRARIES})
+
   install(
     TARGETS singleword queryapp
     ARCHIVE DESTINATION ${LIBDIR}
