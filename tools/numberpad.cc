@@ -226,6 +226,8 @@ void build_matcher(app_data &app, const char *dataFile) {
     string line;
 
     app.m = new Matcher();
+    app.m->getErrorValues().addNumberpadErrors();
+
     // Build Corpus.
     dataReadStart = hiresTimestamp();
     while(getline(ifile, line)) {
@@ -255,6 +257,7 @@ void delete_matcher(app_data &app) {
     delete app.m;
     app.m = 0;
 }
+
 int main(int argc, char **argv) {
     app_data app;
     double buildStart, buildEnd;
