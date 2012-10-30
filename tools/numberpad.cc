@@ -88,44 +88,65 @@ static void doSearch(GtkWidget *widget, gpointer data) {
 
 }
 
-GtkWidget* build_numberpad(app_data &app) {
+static void padPress(GtkWidget *widget, gpointer data) {
+    app_data *app = (app_data*) data;
+    char txt[2];
+    txt[0] = gtk_button_get_label(GTK_BUTTON(widget))[0];
+    txt[1] = 0;
+    gtk_entry_buffer_insert_text(gtk_entry_get_buffer(GTK_ENTRY(app->entry)),
+            1000, txt, 1);
+}
+
+GtkWidget* build_numberpad(app_data *app) {
     GtkWidget *padBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     GtkWidget *row;
     GtkWidget *b;
 
     row = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     b = gtk_button_new_with_label("1");
+    g_signal_connect(b, "clicked", G_CALLBACK(padPress), app);
     gtk_box_pack_start(GTK_BOX(row), b, FALSE, TRUE, 0);
     b = gtk_button_new_with_label("2 (abc)");
+    g_signal_connect(b, "clicked", G_CALLBACK(padPress), app);
     gtk_box_pack_start(GTK_BOX(row), b, FALSE, TRUE, 0);
     b = gtk_button_new_with_label("3 (def)");
+    g_signal_connect(b, "clicked", G_CALLBACK(padPress), app);
     gtk_box_pack_start(GTK_BOX(row), b, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(padBox), row, FALSE, TRUE, 0);
 
     row = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     b = gtk_button_new_with_label("4 (ghi)");
+    g_signal_connect(b, "clicked", G_CALLBACK(padPress), app);
     gtk_box_pack_start(GTK_BOX(row), b, FALSE, TRUE, 0);
     b = gtk_button_new_with_label("5 (jkl)");
+    g_signal_connect(b, "clicked", G_CALLBACK(padPress), app);
     gtk_box_pack_start(GTK_BOX(row), b, FALSE, TRUE, 0);
     b = gtk_button_new_with_label("6 (mno)");
+    g_signal_connect(b, "clicked", G_CALLBACK(padPress), app);
     gtk_box_pack_start(GTK_BOX(row), b, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(padBox), row, FALSE, TRUE, 0);
 
     row = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     b = gtk_button_new_with_label("7 (pqrs)");
+    g_signal_connect(b, "clicked", G_CALLBACK(padPress), app);
     gtk_box_pack_start(GTK_BOX(row), b, FALSE, TRUE, 0);
     b = gtk_button_new_with_label("8 (tuv)");
+    g_signal_connect(b, "clicked", G_CALLBACK(padPress), app);
     gtk_box_pack_start(GTK_BOX(row), b, FALSE, TRUE, 0);
     b = gtk_button_new_with_label("9 (wxyz)");
+    g_signal_connect(b, "clicked", G_CALLBACK(padPress), app);
     gtk_box_pack_start(GTK_BOX(row), b, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(padBox), row, FALSE, TRUE, 0);
 
     row = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     b = gtk_button_new_with_label("*");
+    g_signal_connect(b, "clicked", G_CALLBACK(padPress), app);
     gtk_box_pack_start(GTK_BOX(row), b, FALSE, TRUE, 0);
     b = gtk_button_new_with_label("0");
+    g_signal_connect(b, "clicked", G_CALLBACK(padPress), app);
     gtk_box_pack_start(GTK_BOX(row), b, FALSE, TRUE, 0);
     b = gtk_button_new_with_label("#");
+    g_signal_connect(b, "clicked", G_CALLBACK(padPress), app);
     gtk_box_pack_start(GTK_BOX(row), b, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(padBox), row, FALSE, TRUE, 0);
 
@@ -181,7 +202,7 @@ void build_gui(app_data &app) {
     gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), scroller, TRUE, TRUE, 0);
 
-    padBox = build_numberpad(app);
+    padBox = build_numberpad(&app);
 
     gtk_box_pack_start(GTK_BOX(vbox), padBox, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), app.queryTimeLabel, FALSE, TRUE, 0);
