@@ -43,6 +43,7 @@ struct app_data {
     GtkWidget *queryTimeLabel;
     GtkWidget *resultCountLabel;
     vector<string> source;
+    const char *filename;
 };
 
 static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) {
@@ -52,6 +53,33 @@ static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) 
 
 static void destroy(GtkWidget *widget, gpointer data) {
     gtk_main_quit ();
+}
+
+static void doExactMatch(const char *query, const char *fname) {
+    string regex("^");
+    string command("grep ");
+    for(int i=0; query[i] != 0; i++) {
+        switch(query[i]) {
+        case '0' : regex += "0"; break;
+        case '1' : regex += "1"; break;
+        case '2' : regex += "[2abc]"; break;
+        case '3' : regex += "[3def]"; break;
+        case '4' : regex += "[4ghi]"; break;
+        case '5' : regex += "[5jkl]"; break;
+        case '6' : regex += "[6mno]"; break;
+        case '7' : regex += "[7pqrs]"; break;
+        case '8' : regex += "[8tuv]"; break;
+        case '9' : regex += "[9wxyz]"; break;
+        default : regex += query[i]; break;
+        }
+    }
+    command += "'";
+    command += regex;
+    command += "' ";
+    command += fname;
+    printf("\n-------\n");
+    system(command.c_str());
+    printf("\n\n");
 }
 
 static void doSearch(GtkWidget *widget, gpointer data) {
@@ -85,7 +113,7 @@ static void doSearch(GtkWidget *widget, gpointer data) {
     gtk_label_set_text(GTK_LABEL(app->queryTimeLabel), buf);
     sprintf(buf, "%s%lu", resultCount, (unsigned long) matches.size());
     gtk_label_set_text(GTK_LABEL(app->resultCountLabel), buf);
-
+    doExactMatch(gtk_entry_get_text(GTK_ENTRY(app->entry)), app->filename);
 }
 
 static void padPress(GtkWidget *widget, gpointer data) {
@@ -218,6 +246,7 @@ void build_matcher(app_data &app, const char *dataFile) {
     const size_t batchSize = 100000;
     size_t i=0;
     double dataReadStart, dataReadEnd;
+    app.filename = dataFile;
 
     ifstream ifile(dataFile);
     if(ifile.fail()) {
