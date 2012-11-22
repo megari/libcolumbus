@@ -188,7 +188,7 @@ void build_matcher(app_data &app, const char *dataFile) {
         Document d(app.pathSource.size());
         d.addText(pathField, path);
         d.addText(commandField, command);
-        if(commandText.find("Fuzzy Select") != -1) {
+        if(commandText.find("Fuzzy Select") != (size_t)-1) {
             d.addText(aliasField, "magnetic lasso");
         }
         c->addDocument(d);
