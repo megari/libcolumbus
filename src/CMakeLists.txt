@@ -18,6 +18,8 @@ ErrorMatrix.cc
 ResultFilter.cc
 )
 
+#include_directories("home/jpakkane/workspace/columbus/buildclang/src")
+
 if(ICONV_LIBRARIES)
   target_link_libraries(${COL_LIB_BASENAME} ${ICONV_LIBRARIES})
 endif()
