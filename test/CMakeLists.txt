@@ -1,6 +1,6 @@
 macro(coltest tname tfilename)
   add_executable(${tname} ${tfilename})
-  target_link_libraries(${tname} columbus)
+  target_link_libraries(${tname} ${COL_LIB_BASENAME})
   add_test(${tname} ${tname})
 endmacro()
 
@@ -21,10 +21,10 @@ coltest(filtering ResultFilterTest.cc)
 coltest(capi CAPITest.c)
 
 add_executable(lev_scalability LevScalabilityTest.cc)
-target_link_libraries(lev_scalability columbus)
+target_link_libraries(lev_scalability ${COL_LIB_BASENAME})
 if(${enable_scalability_tests})
   add_test(lev_scalability lev_scalability /usr/share/dict/words)
 endif()
 
 add_executable(create_performance CreatePerformanceTest.cc)
-target_link_libraries(create_performance columbus)
+target_link_libraries(create_performance ${COL_LIB_BASENAME})

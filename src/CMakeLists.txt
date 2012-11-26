@@ -1,4 +1,4 @@
-add_library(columbus SHARED
+add_library(${COL_LIB_BASENAME} SHARED
 LevenshteinIndex.cc
 IndexMatches.cc
 ErrorValues.cc
@@ -19,16 +19,16 @@ ResultFilter.cc
 )
 
 if(ICONV_LIBRARIES)
-  target_link_libraries(columbus ${ICONV_LIBRARIES})
+  target_link_libraries(${COL_LIB_BASENAME} ${ICONV_LIBRARIES})
 endif()
-target_link_libraries(columbus ${icu1} ${icu2})
+target_link_libraries(${COL_LIB_BASENAME} ${icu1} ${icu2})
 
-set_target_properties(columbus PROPERTIES VERSION ${SO_VERSION} SOVERSION ${ABI_VERSION})
+set_target_properties(${COL_LIB_BASENAME} PROPERTIES VERSION ${SO_VERSION} SOVERSION ${ABI_VERSION})
 
-add_pch(pch/columbus_pch.hh columbus)
+add_pch(pch/columbus_pch.hh ${COL_LIB_BASENAME})
 
 install(
-  TARGETS columbus
+  TARGETS ${COL_LIB_BASENAME}
   ARCHIVE DESTINATION ${LIBDIR}
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION ${LIBDIR}

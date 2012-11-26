@@ -27,6 +27,8 @@ set(SO_VERSION_PATCH "0")
 
 set(SO_VERSION "${SO_VERSION_MAJOR}.${SO_VERSION_MINOR}.${SO_VERSION_PATCH}")
 
+set(COL_LIB_BASENAME "columbus${SO_VERSION_MAJOR}")
+
 # Increment this manually whenever breaking ABI.
 # http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html#AEN135
 set(ABI_VERSION 2)

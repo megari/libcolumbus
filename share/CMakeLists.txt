@@ -1,3 +1,3 @@
 install(FILES
 latinAccentedLetterGroups.txt
-DESTINATION share/columbus)
+DESTINATION share/${COL_LIB_BASENAME})
