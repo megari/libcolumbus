@@ -1,0 +1,5 @@
+libcolumbus (0.3.0-0ubuntu1) quantal; urgency=low
+
+  * Initial release (Closes: 9999999)
+
+ -- Jussi Pakkanen <jussi.pakkanen@ubuntu.com>  Mon, 26 Nov 2012 17:13:30 +0200

@@ -1,0 +1,32 @@
+Source: libcolumbus
+Priority: extra
+Maintainer: Jussi Pakkanen <jussi.pakkanen@ubuntu.com>
+Build-Depends: debhelper (>= 8.0.0),
+               cmake,
+               libicu-dev,
+               libgtk-3-dev
+Standards-Version: 3.9.3
+Section: libs
+#Homepage: <insert the upstream URL, if relevant>
+#Vcs-Git: git://git.debian.org/collab-maint/libcolumbus.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/libcolumbus.git;a=summary
+
+Package: libcolumbus0-dev
+Section: libdevel
+Architecture: any
+Depends: libcolumbus0 (= ${binary:Version}), ${misc:Depends}
+Description: development files for libcolumbus.
+
+Package: libcolumbus0-utils
+Section: libdevel
+Architecture: any
+Depends: libcolumbus0 (= ${binary:Version}), ${misc:Depends}
+Description: helper utils for libcolumbus.
+
+Package: libcolumbus0
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: error tolerant matching engine.
+ Columbus is a search engine designed to work
+ with unclean data.
