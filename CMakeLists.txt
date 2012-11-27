@@ -31,7 +31,7 @@ set(COL_LIB_BASENAME "columbus${SO_VERSION_MAJOR}")
 
 # Increment this manually whenever breaking ABI.
 # http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html#AEN135
-set(ABI_VERSION 2)
+set(ABI_VERSION 0)
 
 # Should be lib64 on some platforms.
 set(LIBDIR "lib" CACHE PATH "Destination install dir for the library")
