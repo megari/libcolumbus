@@ -27,6 +27,26 @@
 #ifndef COLUMBUSCORE_H
 #define COLUMBUSCORE_H
 
+
+/* Macros that set symbol visibilities in shared libraries properly.
+ * Adapted from http://gcc.gnu.org/wiki/Visibility
+ */
+
+#if defined _WIN32 || defined __CYGWIN__
+  #ifdef BUILDING_COLUMBUS
+    #define COL_PUBLIC __declspec(dllexport)
+  #else
+    #define COL_PUBLIC __declspec(dllimport)
+  #endif
+#else
+  #if defined __GNUC__
+    #define COL_PUBLIC __attribute__ ((visibility("default")))
+  #else
+    #pragma message ("Compiler does not support symbol visibility.")
+    #define COL_PUBLIC
+  #endif
+#endif
+
 #ifdef __cplusplus
   #include <cstddef>
   #include <cstdint>

@@ -36,7 +36,7 @@ COL_NAMESPACE_START
 struct WordStorePrivate;
 class Word;
 
-class WordStore {
+class COL_PUBLIC WordStore {
 private:
 
     WordStorePrivate *p;

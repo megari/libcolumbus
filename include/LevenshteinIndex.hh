@@ -32,7 +32,7 @@ class ErrorMatrix;
 class Word;
 class ErrorValues;
 
-class LevenshteinIndex {
+class COL_PUBLIC LevenshteinIndex {
 private:
     LevenshteinIndexPrivate *p;
 

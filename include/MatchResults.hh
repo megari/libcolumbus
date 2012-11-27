@@ -27,7 +27,7 @@ COL_NAMESPACE_START
 struct MatchResultsPrivate;
 class Word;
 
-class MatchResults {
+class COL_PUBLIC MatchResults {
     MatchResultsPrivate *p;
 
     void sortIfRequired() const;

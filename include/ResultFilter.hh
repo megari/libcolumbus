@@ -27,7 +27,7 @@ COL_NAMESPACE_START
 struct ResultFilterPrivate;
 class Word;
 
-class ResultFilter {
+class COL_PUBLIC ResultFilter {
 private:
 
     ResultFilterPrivate *p;

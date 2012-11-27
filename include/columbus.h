@@ -43,38 +43,38 @@ typedef void* ColCorpus;
 typedef void* ColErrorValues;
 typedef void* ColIndexWeights;
 
-ColWord col_word_new(const char *utf8_word);
-void col_word_delete(ColWord w);
-size_t col_word_length(ColWord w);
-const char* col_word_as_utf8(ColWord w);
+COL_PUBLIC ColWord col_word_new(const char *utf8_word);
+COL_PUBLIC void col_word_delete(ColWord w);
+COL_PUBLIC size_t col_word_length(ColWord w);
+COL_PUBLIC const char* col_word_as_utf8(ColWord w);
 
-ColDocument col_document_new(DocumentID id);
-void col_document_delete(ColDocument doc);
-DocumentID col_document_get_id(ColDocument doc);
-void col_document_add_text(ColDocument doc, ColWord field_name, const char *text_as_utf8);
+COL_PUBLIC ColDocument col_document_new(DocumentID id);
+COL_PUBLIC void col_document_delete(ColDocument doc);
+COL_PUBLIC DocumentID col_document_get_id(ColDocument doc);
+COL_PUBLIC void col_document_add_text(ColDocument doc, ColWord field_name, const char *text_as_utf8);
 
-ColMatcher col_matcher_new();
-void col_matcher_delete(ColMatcher m);
-void col_matcher_index(ColMatcher m, ColCorpus c);
-void col_matcher_match(ColMatcher m, const char *query_as_utf8, ColMatchResults mr);
-ColErrorValues col_matcher_get_error_values(ColMatcher m);
-ColIndexWeights col_matcher_get_index_weights(ColMatcher m);
+COL_PUBLIC ColMatcher col_matcher_new();
+COL_PUBLIC void col_matcher_delete(ColMatcher m);
+COL_PUBLIC void col_matcher_index(ColMatcher m, ColCorpus c);
+COL_PUBLIC void col_matcher_match(ColMatcher m, const char *query_as_utf8, ColMatchResults mr);
+COL_PUBLIC ColErrorValues col_matcher_get_error_values(ColMatcher m);
+COL_PUBLIC ColIndexWeights col_matcher_get_index_weights(ColMatcher m);
 
-ColMatchResults col_match_results_new();
-void col_match_results_delete(ColMatchResults mr);
-size_t col_match_results_size(ColMatchResults mr);
-DocumentID col_match_results_get_id(ColMatchResults mr, size_t i);
-double col_match_results_get_relevancy(ColMatchResults mr, size_t i);
+COL_PUBLIC ColMatchResults col_match_results_new();
+COL_PUBLIC void col_match_results_delete(ColMatchResults mr);
+COL_PUBLIC size_t col_match_results_size(ColMatchResults mr);
+COL_PUBLIC DocumentID col_match_results_get_id(ColMatchResults mr, size_t i);
+COL_PUBLIC double col_match_results_get_relevancy(ColMatchResults mr, size_t i);
 
-ColCorpus col_corpus_new();
-void col_corpus_delete(ColCorpus c);
-void col_corpus_add_document(ColCorpus c, ColDocument d);
+COL_PUBLIC ColCorpus col_corpus_new();
+COL_PUBLIC void col_corpus_delete(ColCorpus c);
+COL_PUBLIC void col_corpus_add_document(ColCorpus c, ColDocument d);
 
-void col_index_weights_set_weight(ColIndexWeights weights, const ColWord field, const double new_weight);
-double col_index_weights_get_weight(ColIndexWeights weights, const ColWord field);
+COL_PUBLIC void col_index_weights_set_weight(ColIndexWeights weights, const ColWord field, const double new_weight);
+COL_PUBLIC double col_index_weights_get_weight(ColIndexWeights weights, const ColWord field);
 
-void col_error_values_add_standard_errors(ColErrorValues ev);
-void col_error_values_set_substring_mode(ColErrorValues ev);
+COL_PUBLIC void col_error_values_add_standard_errors(ColErrorValues ev);
+COL_PUBLIC void col_error_values_set_substring_mode(ColErrorValues ev);
 
 #ifdef __cplusplus
 }

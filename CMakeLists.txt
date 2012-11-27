@@ -21,6 +21,11 @@ if(${debug_messages})
   add_definitions(-DDEBUG_MESSAGES)
 endif()
 
+# Symbol visibility
+add_definitions(-DBUILDING_COLUMBUS)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
+
 set(SO_VERSION_MAJOR "0")
 set(SO_VERSION_MINOR "3")
 set(SO_VERSION_PATCH "0")

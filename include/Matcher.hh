@@ -34,7 +34,7 @@ class ErrorValues;
 class IndexWeights;
 class ResultFilter;
 
-class Matcher {
+class COL_PUBLIC Matcher {
 private:
     MatcherPrivate *p;
 
