@@ -5,5 +5,6 @@ libcolumbus (0.3.0-0ubuntu1) UNRELEASED; urgency=low
 
   [ Didier Roche ]
   * Fix the packaging to be in an acceptable shape to enter ubuntu
+  * Automatic snapshot from revision 1 (bootstrap)
 
  -- Didier Roche <didrocks@ubuntu.com>  Mon, 26 Nov 2012 18:36:15 +0100
