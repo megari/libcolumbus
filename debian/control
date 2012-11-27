@@ -1,32 +1,45 @@
 Source: libcolumbus
-Priority: extra
-Maintainer: Jussi Pakkanen <jussi.pakkanen@ubuntu.com>
-Build-Depends: debhelper (>= 8.0.0),
+Section: libs
+Priority: optional
+Maintainer: Ubuntu Core Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Build-Depends: debhelper (>= 9~),
                cmake,
                libicu-dev,
-               libgtk-3-dev
+               libgtk-3-dev,
 Standards-Version: 3.9.3
-Section: libs
-#Homepage: <insert the upstream URL, if relevant>
-#Vcs-Git: git://git.debian.org/collab-maint/libcolumbus.git
-#Vcs-Browser: http://git.debian.org/?p=collab-maint/libcolumbus.git;a=summary
-
-Package: libcolumbus0-dev
-Section: libdevel
-Architecture: any
-Depends: libcolumbus0 (= ${binary:Version}), ${misc:Depends}
-Description: development files for libcolumbus.
-
-Package: libcolumbus0-utils
-Section: libdevel
-Architecture: any
-Depends: libcolumbus0 (= ${binary:Version}), ${misc:Depends}
-Description: helper utils for libcolumbus.
+Homepage: https://launchpad.net/libcolombus
+# If you aren't a member of ~unity-team but need to upload packaging changes,
+# just go ahead.  ~unity-team will notice and sync up the code again.
+Vcs-Bzr: https://code.launchpad.net/~unity-team/libcolombus/trunk
 
 Package: libcolumbus0
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: error tolerant matching engine.
- Columbus is a search engine designed to work
- with unclean data.
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+Description: error tolerant matching engine - shared library
+ Columbus is a search engine designed to work with unclean data.
+
+Package: libcolumbus0-dev
+Section: libdevel
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: libcolumbus0 (= ${binary:Version}),
+         ${misc:Depends},
+Description: error tolerant matching engine - development files
+ Columbus is a search engine designed to work with unclean data.
+ .
+ This package contains files that are needed to build applications.
+
+Package: libcolumbus0-utils
+Section: libdevel
+Architecture: any
+Depends: libcolumbus0 (= ${binary:Version}),
+         ${shlibs:Depends},
+         ${misc:Depends},
+Description: error tolerant matching engine - debugging tools
+ Columbus is a search engine designed to work with unclean data.
+ .
+ This package contain debugging and helper utils for libcolumbus.
+

@@ -1,5 +1,9 @@
-libcolumbus (0.3.0-0ubuntu1) quantal; urgency=low
+libcolumbus (0.3.0-0ubuntu1) UNRELEASED; urgency=low
 
-  * Initial release (Closes: 9999999)
+  [ Jussi Pakkanen ]
+  * Initial release
 
- -- Jussi Pakkanen <jussi.pakkanen@ubuntu.com>  Mon, 26 Nov 2012 17:13:30 +0200
+  [ Didier Roche ]
+  * Fix the packaging to be in an acceptable shape to enter ubuntu
+
+ -- Didier Roche <didrocks@ubuntu.com>  Mon, 26 Nov 2012 18:36:15 +0100

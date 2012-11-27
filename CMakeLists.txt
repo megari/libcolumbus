@@ -34,7 +34,7 @@ set(COL_LIB_BASENAME "columbus${SO_VERSION_MAJOR}")
 set(ABI_VERSION 2)
 
 # Should be lib64 on some platforms.
-set(LIBDIR "lib")
+set(LIBDIR "lib" CACHE PATH "Destination install dir for the library")
 
 include(TestBigEndian)
 TEST_BIG_ENDIAN(IS_BIG_ENDIAN)
