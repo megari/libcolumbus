@@ -16,10 +16,21 @@ Package: libcolumbus0
 Section: libs
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends},
+Depends: libcolumbus0-common (= ${source:Version}),
+         ${shlibs:Depends},
          ${misc:Depends},
 Description: error tolerant matching engine - shared library
  Columbus is a search engine designed to work with unclean data.
+
+Package: libcolumbus0-common
+Section: libs
+Architecture: all
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+Description: error tolerant matching engine - common files
+ Columbus is a search engine designed to work with unclean data.
+ .
+ This package contains the common files to have the library working.
 
 Package: libcolumbus0-dev
 Section: libdevel
