@@ -82,6 +82,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 find_library(icu1 icuuc)
 find_library(icu2 icudata)
 
+if(NOT icu1)
+  message(FATAL_ERROR "Libicu not found. Please install it and rerun CMake.")
+endif()
+
 add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(tools)
