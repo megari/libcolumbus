@@ -35,19 +35,6 @@
 COL_NAMESPACE_START
 using namespace std;
 
-/*
- * This is an experiment into using unordered_map instead
- * of regular map. It turned out to be massively slower.
- */
-struct Hasher {
-    size_t operator()(const pair<Letter, Letter> &p) const {
-        const size_t shift = sizeof(size_t)*4;
-        assert(shift == 32);
-        // The simplest possible hash, just pack the elements together.
-        return (size_t(p.first) << shift) | p.second;
-    }
-};
-
 const int LUT_LETTERS = 512;
 const int LUT_SIZE = (LUT_LETTERS*LUT_LETTERS);
 const int LUT_SHIFT = (9);
