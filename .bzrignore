@@ -5,3 +5,4 @@ build
 buildclang
 buildrelease
 buildscan
+.pydevproject

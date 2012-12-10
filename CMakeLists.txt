@@ -11,6 +11,7 @@ option(full_warnings "Full compiler warnings." ON)
 option(debug_messages "Print debug messages.")
 option(full_unicode "Enable full Unicode support (takes lots of memory).")
 include(cmake/pch.cmake)
+include(cmake/python.cmake)
 
 if(${full_warnings})
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic")
@@ -90,6 +91,10 @@ add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(tools)
 add_subdirectory(share)
+
+if(build_python)
+  add_subdirectory(python)
+endif()
 
 if(${enable_tests})
   enable_testing()
