@@ -1,5 +1,5 @@
 project(columbus C CXX)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.9)
 
 if(PROJECT_BINARY_DIR STREQUAL PROJECT_SOURCE_DIR)
    message(FATAL_ERROR "In-tree build attempt detected, aborting. Set your build dir outside your source dir, delete CMakeCache.txt from source root and try again.")
@@ -38,7 +38,7 @@ set(COL_LIB_BASENAME "columbus${SO_VERSION_MAJOR}")
 # http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html#AEN135
 set(ABI_VERSION 0)
 
-# Should be lib64 on some platforms.
+# Set as cache variable so packaging can override.
 set(LIBDIR "lib" CACHE PATH "Destination install dir for the library")
 
 include(TestBigEndian)
