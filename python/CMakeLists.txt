@@ -3,3 +3,4 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 
 add_library(_columbus_ext _columbus.cc)
 target_link_libraries(_columbus_ext ${COL_LIB_BASENAME} ${BOOST_PYTHON_HACK} ${PYTHON_LIBRARIES})
+add_pch(pch/colpython_pch.hh _columbus_ext)
