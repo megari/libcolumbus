@@ -106,5 +106,11 @@ class TestCorpus(unittest.TestCase):
         c.add_document(d)
         self.assertEqual(1, len(c))
 
+class TestMatchResults():
+    
+    def test_init(self):
+        mr = columbus.MatchResults()
+        self.assertEqual(len(mr), 0)
+
 if __name__ == '__main__':
     unittest.main()

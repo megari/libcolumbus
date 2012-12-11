@@ -69,4 +69,11 @@ BOOST_PYTHON_MODULE(_columbus)
                     return_internal_reference<1, with_custodian_and_ward<1, 2> >())
             .def("add_text", addAdaptor)
             ;
+
+    class_<MatchResults>("MatchResults")
+            //.def("add_results", &MatchResults::addResults)
+            .def("get_document_id", &MatchResults::getDocumentID)
+            .def("get_relevancy", &MatchResults::getRelevancy)
+            .def("__len__", &MatchResults::size)
+            ;
 }
