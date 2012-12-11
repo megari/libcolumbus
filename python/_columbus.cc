@@ -81,5 +81,17 @@ BOOST_PYTHON_MODULE(_columbus)
     class_<Matcher>("Matcher")
             .def("index", &Matcher::index)
             .def("match", queryAdaptor)
+            .def("get_errorvalues", &Matcher::getErrorValues,
+                    return_internal_reference<1, with_custodian_and_ward<1, 2> >())
+            ;
+
+    class_<ErrorValues>("ErrorValues")
+            .def("add_standard_errors", &ErrorValues::addStandardErrors)
+            .def("set_substring_mode", &ErrorValues::setSubstringMode)
+            .def("set_error", &ErrorValues::setError)
+            .def("get_substitute_error", &ErrorValues::getSubstituteError)
+            .def("get_default_error", &ErrorValues::getDefaultError)
+            .staticmethod("get_default_error")
+            .def("clear_errors", &ErrorValues::clearErrors)
             ;
 }

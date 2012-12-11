@@ -154,6 +154,26 @@ class TestMatcher(unittest.TestCase):
         self.assertTrue(matches.get_document_id(0) == name1 or matches.get_document_id(1) == name1)
         self.assertTrue(matches.get_document_id(0) == name2 or matches.get_document_id(1) == name2)
 
+class TestErrorValues(unittest.TestCase):
+    
+    def test_init(self):
+        ev = columbus.ErrorValues()
+        
+    def test_values(self):
+        small_error = 1;
+        l1 = 16;
+        l2 = 17;
+        ev = columbus.ErrorValues()
+        default_error = columbus.ErrorValues.get_default_error()
+        self.assertLess(small_error, default_error)
+
+        self.assertEqual(ev.get_substitute_error(l1, l2), default_error);
+        ev.set_error(l1, l2, small_error);
+        self.assertEqual(ev.get_substitute_error(l1, l2), small_error);
+        self.assertEqual(ev.get_substitute_error(l2, l1), small_error);
+
+        ev.clear_errors();
+        self.assertEqual(ev.get_substitute_error(l1, l2), default_error);
 
 if __name__ == '__main__':
     unittest.main()
