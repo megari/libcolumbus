@@ -122,5 +122,38 @@ class TestMatchResults():
         self.assertEqual(mr.get_id(0), docid)
         self.assertAlmostEqual(mr.get_relevancy(0), relevancy, 0.01)
 
+class TestMatcher(unittest.TestCase):
+    
+    def test_init(self):
+        m = columbus.Matcher()
+        
+    def test_simple_match(self):
+        c = columbus.Corpus()
+        m = columbus.Matcher()
+        matches = columbus.MatchResults()
+        name1 = 0;
+        name2 = 10;
+        name3 = 1000;
+        textName = columbus.Word("title")
+
+        d1 = columbus.Document(name1)
+        d1.add_text(textName, columbus.split_to_words("abc def"))
+        d2 = columbus.Document(name2)
+        d2.add_text(textName, columbus.split_to_words("abe test"))
+        dFar = columbus.Document(name3)
+        dFar.add_text(textName, columbus.split_to_words("faraway donotmatchme"))
+        c.add_document(d1)
+        c.add_document(d2)
+        c.add_document(dFar)
+        m.index(c)
+        
+        m.match(columbus.split_to_words("abe"), matches)
+        self.assertEqual(len(matches), 2)
+        self.assertNotEqual(matches.get_document_id(0), name3);
+        self.assertNotEqual(matches.get_document_id(1), name3);
+        self.assertTrue(matches.get_document_id(0) == name1 or matches.get_document_id(1) == name1)
+        self.assertTrue(matches.get_document_id(0) == name2 or matches.get_document_id(1) == name2)
+
+
 if __name__ == '__main__':
     unittest.main()

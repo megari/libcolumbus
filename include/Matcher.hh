@@ -44,7 +44,7 @@ private:
     void matchWithRelevancy(const WordList &query, const bool dynamicError, const int extraError, MatchResults &matchedDocuments);
 
 public:
-    Matcher(); // Matcher will delete[] the Corpus object.
+    Matcher();
     ~Matcher();
 
     void match(const WordList &query, MatchResults &matchedDocuments);

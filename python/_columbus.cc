@@ -35,6 +35,7 @@ public:
 };
 
 void (Document::*addAdaptor) (const Word &, const WordList &) = &Document::addText;
+void (Matcher::*queryAdaptor) (const WordList &, MatchResults &) = &Matcher::match;
 
 BOOST_PYTHON_MODULE(_columbus)
 {
@@ -77,4 +78,8 @@ BOOST_PYTHON_MODULE(_columbus)
             .def("__len__", &MatchResults::size)
             ;
 
+    class_<Matcher>("Matcher")
+            .def("index", &Matcher::index)
+            .def("match", queryAdaptor)
+            ;
 }

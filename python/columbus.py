@@ -19,7 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from _columbus import Corpus, Word, WordList, _split_to_words, Document, \
-MatchResults
+MatchResults, Matcher
 
 def split_to_words(text):
     list = WordList()
