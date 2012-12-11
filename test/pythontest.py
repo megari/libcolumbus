@@ -92,5 +92,19 @@ class TestDocument(unittest.TestCase):
         self.assertGreater(len(text), 0)
         self.assertEqual(len(d.get_text(field)), len(text), 'stored text got mangled')
 
+class TestCorpus(unittest.TestCase):
+    
+    def test_init(self):
+        c = columbus.Corpus()
+        
+    def test_insertion(self):
+        c = columbus.Corpus()
+        d = columbus.Document(55)
+        
+        self.assertEqual(0, len(c))
+        
+        c.add_document(d)
+        self.assertEqual(1, len(c))
+
 if __name__ == '__main__':
     unittest.main()

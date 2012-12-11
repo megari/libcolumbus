@@ -40,6 +40,8 @@ BOOST_PYTHON_MODULE(_columbus)
 {
     class_<Corpus, boost::noncopyable>("Corpus", init<>())
         .def("size", &Corpus::size)
+        .def("add_document", &Corpus::addDocument)
+        .def("__len__", &Corpus::size)
     ;
 
     class_<Word, boost::noncopyable>("WordPrivate", no_init)
