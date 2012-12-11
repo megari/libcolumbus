@@ -26,5 +26,10 @@ if(${enable_scalability_tests})
   add_test(lev_scalability lev_scalability /usr/share/dict/words)
 endif()
 
+if(build_python)
+  add_test(pythontest ${CMAKE_CURRENT_SOURCE_DIR}/pythontest.py)
+  set_tests_properties(pythontest PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_SOURCE_DIR}/python:${CMAKE_BINARY_DIR}/python")
+endif()
+
 add_executable(create_performance CreatePerformanceTest.cc)
 target_link_libraries(create_performance ${COL_LIB_BASENAME})

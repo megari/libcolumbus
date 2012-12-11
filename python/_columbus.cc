@@ -23,9 +23,30 @@
 using namespace boost::python;
 using namespace Columbus;
 
+class WordAdaptor : public Word {
+public:
+    WordAdaptor(const std::string &str) : Word(str.c_str()) {
+    }
+
+    std::string getString() {
+        std::string str = asUtf8();
+        return str;
+    }
+};
+
+
+
 BOOST_PYTHON_MODULE(_columbus)
 {
     class_<Corpus, boost::noncopyable>("Corpus", init<>())
         .def("size", &Corpus::size)
     ;
+
+    class_<Word, boost::noncopyable>("WordPrivate", no_init)
+            .def("length", &Word::length)
+            ;
+
+    class_<WordAdaptor, bases<Word>, boost::noncopyable>("Word", init<const std::string&>())
+            .def("get_string", &WordAdaptor::getString)
+            ;
 }

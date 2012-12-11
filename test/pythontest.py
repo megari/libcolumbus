@@ -17,4 +17,14 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from _columbus import Corpus, Word
+import unittest
+import columbus
+
+class BasicTests(unittest.TestCase):
+    
+    def test_init(self):
+        c = columbus.Corpus()
+        d = columbus.Word("hello")
+
+if __name__ == '__main__':
+    unittest.main()
