@@ -175,5 +175,22 @@ class TestErrorValues(unittest.TestCase):
         ev.clear_errors();
         self.assertEqual(ev.get_substitute_error(l1, l2), default_error);
 
+class TestIndexWeights(unittest.TestCase):
+    
+    def test_init(self):
+        w = columbus.IndexWeights()
+
+    def test_weights(self):
+        w = columbus.IndexWeights()
+        original_weight = 1.0
+        new_weight = 2.0
+        accuracy = 4
+        field = columbus.Word("abc")
+        self.assertNotAlmostEqual(original_weight, new_weight, accuracy)
+
+        self.assertAlmostEqual(w.get_weight(field), original_weight, accuracy)
+        w.set_weight(field, 2.0)
+        self.assertAlmostEqual(w.get_weight(field), new_weight, accuracy)
+
 if __name__ == '__main__':
     unittest.main()

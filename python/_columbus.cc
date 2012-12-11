@@ -83,6 +83,8 @@ BOOST_PYTHON_MODULE(_columbus)
             .def("match", queryAdaptor)
             .def("get_errorvalues", &Matcher::getErrorValues,
                     return_internal_reference<1, with_custodian_and_ward<1, 2> >())
+             .def("get_indexweigths", &Matcher::getIndexWeights,
+                    return_internal_reference<1, with_custodian_and_ward<1, 2> >())
             ;
 
     class_<ErrorValues>("ErrorValues")
@@ -93,5 +95,10 @@ BOOST_PYTHON_MODULE(_columbus)
             .def("get_default_error", &ErrorValues::getDefaultError)
             .staticmethod("get_default_error")
             .def("clear_errors", &ErrorValues::clearErrors)
+            ;
+
+    class_<IndexWeights>("IndexWeights")
+            .def("set_weight", &IndexWeights::setWeight)
+            .def("get_weight", &IndexWeights::getWeight)
             ;
 }
