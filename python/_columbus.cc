@@ -43,7 +43,7 @@ BOOST_PYTHON_MODULE(_columbus)
     ;
 
     class_<Word, boost::noncopyable>("WordPrivate", no_init)
-            .def("length", &Word::length)
+            .def("__len__", &Word::length)
             ;
 
     class_<WordAdaptor, bases<Word>, boost::noncopyable>("Word", init<const std::string&>())

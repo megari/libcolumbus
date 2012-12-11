@@ -41,5 +41,15 @@ class TestWord(unittest.TestCase):
         with self.assertRaises(ValueError):
             w1 = columbus.Word(str1)
 
+    def test_length(self):
+        str1 = "hello"
+        str2 = 'abcåäö'
+        
+        w1 = columbus.Word(str1)
+        self.assertEqual(len(str1), len(w1), "plain ASCII Word has incorrect size")
+
+        w2 = columbus.Word(str2)
+        self.assertEqual(len(str2), len(w2), 'non-ASCII Word has incorrect size')
+
 if __name__ == '__main__':
     unittest.main()
