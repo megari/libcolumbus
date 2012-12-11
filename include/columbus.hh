@@ -37,6 +37,7 @@
 #include <MatchResults.hh>
 #include <Corpus.hh>
 #include <Word.hh>
+#include <WordList.hh>
 #include <Document.hh>
 #include <ColumbusHelpers.hh>
 #include <IndexWeights.hh>

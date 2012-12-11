@@ -6,6 +6,7 @@ MatchResults.hh
 columbus.h
 columbus.hh
 Word.hh
+WordList.hh
 Corpus.hh
 ErrorValues.hh
 Document.hh

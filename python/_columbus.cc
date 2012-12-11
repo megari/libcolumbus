@@ -49,4 +49,11 @@ BOOST_PYTHON_MODULE(_columbus)
     class_<WordAdaptor, bases<Word>, boost::noncopyable>("Word", init<const std::string&>())
             .def("get_string", &WordAdaptor::getString)
             ;
+
+    class_<WordList>("WordList", init<>())
+            .def(init<const WordList &>())
+            .def("__len__", &WordList::size)
+            //.def("__getitem__", &WordList::operator[])
+            .def("add_word", &WordList::addWord)
+            ;
 }

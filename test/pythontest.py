@@ -51,5 +51,23 @@ class TestWord(unittest.TestCase):
         w2 = columbus.Word(str2)
         self.assertEqual(len(str2), len(w2), 'non-ASCII Word has incorrect size')
 
+class TestWordList(unittest.TestCase):
+    
+    def test_init(self):
+        l = columbus.WordList()
+        
+    def test_size(self):
+        l = columbus.WordList()
+        self.assertEqual(0, len(l), 'Incorrect size for empty list')
+        w1 = columbus.Word('abc')
+        w2 = columbus.Word('defg')
+        
+        l.add_word(w1)
+        self.assertEqual(1, len(l))
+        l.add_word(w2)
+        self.assertEqual(2, len(l))
+        l.add_word(w1)
+        self.assertEqual(3, len(l))
+
 if __name__ == '__main__':
     unittest.main()
