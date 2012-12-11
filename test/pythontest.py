@@ -110,7 +110,17 @@ class TestMatchResults():
     
     def test_init(self):
         mr = columbus.MatchResults()
+        
+    def test_basic(self):
+        docid = 9
+        relevancy = 1.3
+        mr = columbus.MatchResults()
         self.assertEqual(len(mr), 0)
+        
+        mr.add_match(docid, relevancy)
+        self.assertEqual(len(mr), 1)
+        self.assertEqual(mr.get_id(0), docid)
+        self.assertAlmostEqual(mr.get_relevancy(0), relevancy, 0.01)
 
 if __name__ == '__main__':
     unittest.main()
