@@ -1,4 +1,5 @@
 #!/usr/bin/python3 -tt
+# -*- coding: utf-8 -*-
 
 # Copyright (C) 2012 Canonical, Ltd.
 
