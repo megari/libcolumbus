@@ -56,4 +56,6 @@ BOOST_PYTHON_MODULE(_columbus)
             //.def("__getitem__", &WordList::operator[])
             .def("add_word", &WordList::addWord)
             ;
+
+    def("_split_to_words", splitToWords);
 }

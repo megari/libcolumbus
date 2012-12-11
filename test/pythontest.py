@@ -68,6 +68,10 @@ class TestWordList(unittest.TestCase):
         self.assertEqual(2, len(l))
         l.add_word(w1)
         self.assertEqual(3, len(l))
+        
+    def test_split(self):
+        l = columbus.split_to_words('this is  my text')
+        self.assertEqual(4, len(l), 'text splitting fails')
 
 if __name__ == '__main__':
     unittest.main()
