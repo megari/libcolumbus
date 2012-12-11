@@ -73,5 +73,24 @@ class TestWordList(unittest.TestCase):
         l = columbus.split_to_words('this is  my text')
         self.assertEqual(4, len(l), 'text splitting fails')
 
+class TestDocument(unittest.TestCase):
+    
+    def test_init(self):
+        d = columbus.Document(1)
+        
+    def test_doc(self):
+        docid = 435
+        field = columbus.Word('fieldname')
+        text = columbus.split_to_words('ye olde butcherede englishe')
+        d = columbus.Document(docid)
+        
+        self.assertEqual(d.get_id(), docid, 'Document ID got mangled.')
+        self.assertEqual(d.field_count(), 0)
+        
+        d.add_text(field, text)
+        self.assertEqual(d.field_count(), 1, 'field count did not increase')
+        self.assertGreater(len(text), 0)
+        self.assertEqual(len(d.get_text(field)), len(text), 'stored text got mangled')
+
 if __name__ == '__main__':
     unittest.main()

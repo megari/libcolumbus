@@ -34,7 +34,7 @@ public:
     }
 };
 
-
+void (Document::*addAdaptor) (const Word &, const WordList &) = &Document::addText;
 
 BOOST_PYTHON_MODULE(_columbus)
 {
@@ -58,4 +58,13 @@ BOOST_PYTHON_MODULE(_columbus)
             ;
 
     def("_split_to_words", splitToWords);
+
+    class_<Document>("Document", init<DocumentID>())
+            .def(init<const Document&>())
+            .def("field_count", &Document::fieldCount)
+            .def("get_id", &Document::getID)
+            .def("get_text", &Document::getText,
+                    return_internal_reference<1, with_custodian_and_ward<1, 2> >())
+            .def("add_text", addAdaptor)
+            ;
 }
