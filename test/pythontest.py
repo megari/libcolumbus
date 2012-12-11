@@ -21,11 +21,25 @@
 import unittest
 import columbus
 
-class BasicTests(unittest.TestCase):
+class TestWord(unittest.TestCase):
     
     def test_init(self):
-        c = columbus.Corpus()
         d = columbus.Word("hello")
+        
+    def test_encoding(self):
+        str1 = "hello"
+        str2 = 'abcåäö'
+        
+        w1 = columbus.Word(str1)
+        self.assertEqual(str1, w1.get_string(), "plain ASCII string did not survive round trip")
+
+        w2 = columbus.Word(str2)
+        self.assertEqual(str2, w2.get_string(), 'non-ASCII string did not survive round trip')
+        
+    def test_exception(self):
+        str1 = 'two words'
+        with self.assertRaises(ValueError):
+            w1 = columbus.Word(str1)
 
 if __name__ == '__main__':
     unittest.main()
