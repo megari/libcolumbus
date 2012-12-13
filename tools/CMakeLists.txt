@@ -18,12 +18,6 @@ if(GTK3_FOUND)
   add_executable(numberpad numberpad.cc)
   target_link_libraries(numberpad ${COL_LIB_BASENAME} ${GTK3_LIBRARIES})
 
-  install(
-    TARGETS singleword queryapp
-    ARCHIVE DESTINATION ${LIBDIR}
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION ${LIBDIR}
-  )
 endif()
 
 if(icu1)

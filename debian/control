@@ -5,7 +5,6 @@ Maintainer: Ubuntu Core Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 Build-Depends: debhelper (>= 9~),
                cmake,
                libicu-dev,
-               libgtk-3-dev,
 Standards-Version: 3.9.3
 Homepage: https://launchpad.net/libcolombus
 # If you aren't a member of ~unity-team but need to upload packaging changes,
@@ -42,15 +41,3 @@ Description: error tolerant matching engine - development files
  Columbus is a search engine designed to work with unclean data.
  .
  This package contains files that are needed to build applications.
-
-Package: libcolumbus0-utils
-Section: libdevel
-Architecture: any
-Depends: libcolumbus0 (= ${binary:Version}),
-         ${shlibs:Depends},
-         ${misc:Depends},
-Description: error tolerant matching engine - debugging tools
- Columbus is a search engine designed to work with unclean data.
- .
- This package contain debugging and helper utils for libcolumbus.
-
