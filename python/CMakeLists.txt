@@ -9,3 +9,6 @@ target_link_libraries(_columbus_ext ${COL_LIB_BASENAME} ${BOOST_PYTHON_HACK} ${P
 set_target_properties(_columbus_ext PROPERTIES OUTPUT_NAME ${python_lib_name} PREFIX "")
 
 add_pch(pch/colpython_pch.hh _columbus_ext)
+
+install(TARGETS _columbus_ext DESTINATION ${PYTHONDIR})
+install(FILES columbus.py DESTINATION ${PYTHONDIR})
