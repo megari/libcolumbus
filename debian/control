@@ -5,6 +5,8 @@ Maintainer: Ubuntu Core Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 Build-Depends: debhelper (>= 9~),
                cmake,
                libicu-dev,
+               python3-dev,
+               libboost-python-dev,
 Standards-Version: 3.9.3
 Homepage: https://launchpad.net/libcolombus
 # If you aren't a member of ~unity-team but need to upload packaging changes,
@@ -41,3 +43,12 @@ Description: error tolerant matching engine - development files
  Columbus is a search engine designed to work with unclean data.
  .
  This package contains files that are needed to build applications.
+
+Package: libcolumbus0-python
+Section: libdevel
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: libcolumbus0 (= ${binary:Version}),
+         ${misc:Depends},
+Description: error tolerant matching engine - Python bindings
+ These are the Python bindings of libcolumbus.

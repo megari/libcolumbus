@@ -41,7 +41,7 @@ set(ABI_VERSION 0)
 
 # Set as cache variable so packaging can override.
 set(LIBDIR "lib" CACHE PATH "Destination install dir for the library")
-set(PYTHONDIR "${LIBDIR}/python3/dist-packages" CACHE PATH "Destination install dir for Python module")
+set(PYTHONDIR "lib/python3/dist-packages" CACHE PATH "Destination install dir for Python module")
 
 include(TestBigEndian)
 TEST_BIG_ENDIAN(IS_BIG_ENDIAN)
