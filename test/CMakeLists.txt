@@ -27,8 +27,8 @@ if(${enable_scalability_tests})
 endif()
 
 if(build_python)
-  add_test(pythontest ${CMAKE_CURRENT_SOURCE_DIR}/pythontest.py)
-  set_tests_properties(pythontest PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_SOURCE_DIR}/python:${CMAKE_BINARY_DIR}/python")
+  add_test(python ${CMAKE_CURRENT_SOURCE_DIR}/pythontest.py)
+  set_tests_properties(python PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_SOURCE_DIR}/python:${CMAKE_BINARY_DIR}/python")
 endif()
 
 add_executable(create_performance CreatePerformanceTest.cc)
