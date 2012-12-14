@@ -35,10 +35,10 @@
 COL_NAMESPACE_START
 using namespace std;
 
-const int LUT_LETTERS = 512;
+const int LUT_BITS = 9;
+const int LUT_LETTERS = 1 << LUT_BITS;
 const int LUT_SIZE = (LUT_LETTERS*LUT_LETTERS);
-const int LUT_SHIFT = (9);
-#define LUT_OFFSET(l1, l2) ((l1) << LUT_SHIFT | (l2))
+#define LUT_OFFSET(l1, l2) ((l1) << LUT_BITS | (l2))
 
 struct ErrorValuesPrivate {
     map<pair<Letter, Letter>, int> singleErrors;
