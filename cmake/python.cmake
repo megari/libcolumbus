@@ -15,7 +15,7 @@ else()
     if(NOT ${PYTHON_MAJOR} STREQUAL 3)
       message(WARNING "Not building against Python 3. This is unsupported and probably won't work.")
     endif()
-    message(STATUS "Building against Python version ${PYTHON_MAJOR}.${PYTHON_MINOR}.")
+    message(STATUS "Found Python version ${PYTHON_MAJOR}.${PYTHON_MINOR}.")
 
     # Linking against libboost_python does not work with Python 3.
     # Working around this bug:
