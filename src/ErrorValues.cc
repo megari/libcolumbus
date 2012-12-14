@@ -40,6 +40,8 @@ const int LUT_LETTERS = 1 << LUT_BITS;
 const int LUT_SIZE = (LUT_LETTERS*LUT_LETTERS);
 #define LUT_OFFSET(l1, l2) ((l1) << LUT_BITS | (l2))
 
+static_assert(LUT_BITS > 0, "LUT_BITS must be larger than zero");
+
 struct ErrorValuesPrivate {
     map<pair<Letter, Letter>, int> singleErrors;
     map<Letter, size_t> groupMap;
