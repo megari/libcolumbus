@@ -1,6 +1,7 @@
 set(build_python FALSE)
 
 find_package(Boost 1.49.0 COMPONENTS python)
+pkg_search_module(PYTHONLIBS python3)
 
 if(NOT Boost_FOUND)
   message(STATUS "Boost not found, not building Python bindings.")

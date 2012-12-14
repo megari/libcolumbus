@@ -10,6 +10,7 @@ option(enable_scalability_tests "Additional scalability tests that are potential
 option(full_warnings "Full compiler warnings." ON)
 option(debug_messages "Print debug messages.")
 option(full_unicode "Enable full Unicode support (takes lots of memory).")
+include(FindPkgConfig)
 include(cmake/pch.cmake)
 include(cmake/python.cmake)
 
@@ -66,7 +67,6 @@ endif()
 # If not found, that's ok.
 find_library(ICONV_LIBRARIES iconv)
 
-include(FindPkgConfig)
 pkg_search_module(GTK3 gtk+-3.0)
 
 if(GTK3_FOUND)
