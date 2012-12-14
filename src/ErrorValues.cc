@@ -47,6 +47,9 @@ struct ErrorValuesPrivate {
     map<Letter, size_t> groupMap;
     vector<unsigned int> groupErrors;
     int *lut;
+
+    ErrorValuesPrivate() { lut = new int[LUT_SIZE]; }
+    ~ErrorValuesPrivate() { delete []lut; }
 };
 
 ErrorValues::ErrorValues() :
@@ -58,12 +61,10 @@ ErrorValues::ErrorValues() :
     transposeError(DEFAULT_ERROR),
     substringStartLimit(0) {
     p = new ErrorValuesPrivate;
-    p->lut = new int[LUT_SIZE];
     clearLUT();
 }
 
 ErrorValues::~ErrorValues() {
-    delete []p->lut;
     delete p;
 }
 
