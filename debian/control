@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Ubuntu Core Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 Build-Depends: debhelper (>= 9~),
                cmake,
+               pkg-config,
                libicu-dev,
                python3-dev,
                libboost-python-dev,
