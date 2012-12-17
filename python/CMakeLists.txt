@@ -1,8 +1,7 @@
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(${PYTHONLIBS_INCLUDE_DIRS})
 
-# This is probably architecture specific.
-set(python_lib_name "_columbus.cpython-${PYTHON_MAJOR}${PYTHON_MINOR}mu")
+set(python_lib_name "_columbus.${pysoabi}")
 
 add_library(_columbus_ext SHARED _columbus.cc)
 target_link_libraries(_columbus_ext ${COL_LIB_BASENAME} ${BOOST_PYTHON_HACK} ${PYTHONLIBS_LIBRARIES})

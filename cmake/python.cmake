@@ -16,6 +16,7 @@ else()
       message(WARNING "Not building against Python 3. This is unsupported and probably won't work.")
     endif()
     message(STATUS "Found Python version ${PYTHON_MAJOR}.${PYTHON_MINOR}.")
+    execute_process(COMMAND ${CMAKE_SOURCE_DIR}/cmake/pysoabi.py OUTPUT_VARIABLE pysoabi OUTPUT_STRIP_TRAILING_WHITESPACE)
 
     # Linking against libboost_python does not work with Python 3.
     # Working around this bug:
