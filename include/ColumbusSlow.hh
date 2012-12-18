@@ -34,7 +34,7 @@
 
 COL_NAMESPACE_START
 
-std::string findDataFile(std::string baseName);
+std::string findDataFile(const std::string &baseName);
 
 COL_NAMESPACE_END
 

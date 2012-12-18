@@ -30,7 +30,7 @@ static bool fileExists(const char *fname) {
     return stat(fname, &foo) == 0;
 }
 
-string findDataFile(string baseName) {
+string findDataFile(const string &baseName) {
     string empty, s;
     const char *varname = "COLUMBUS_DATADIR";
     const char *envvarDir;
