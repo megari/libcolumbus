@@ -22,6 +22,7 @@
  * That is, exact matches.
  */
 
+#include <cstdio>
 #include <cassert>
 #include "LevenshteinIndex.hh"
 #include "Word.hh"
@@ -155,6 +156,10 @@ void countTest() {
 }
 
 int main(int argc, char **argv) {
+#ifdef NDEBUG
+    fprintf(stderr, "NDEBUG is defined, tests will not work!\n");
+    return 1;
+#else
     basicTest();
     shortTest();
     prefixTest();
@@ -162,4 +167,5 @@ int main(int argc, char **argv) {
     branchTest();
     countTest();
     return 0;
+#endif
 }
