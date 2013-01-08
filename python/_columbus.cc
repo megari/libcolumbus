@@ -35,7 +35,7 @@ BOOST_PYTHON_MODULE(_columbus)
         .def("__len__", &Corpus::size)
     ;
 
-    class_<Word, boost::noncopyable>("Word", init<const std::string&>())
+    class_<Word>("Word", init<const std::string&>())
             .def("get_string", &Word::asUtf8)
             .def("__len__", &Word::length)
             ;
@@ -43,7 +43,8 @@ BOOST_PYTHON_MODULE(_columbus)
     class_<WordList>("WordList", init<>())
             .def(init<const WordList &>())
             .def("__len__", &WordList::size)
-            //.def("__getitem__", &WordList::operator[])
+            .def("__getitem__", &WordList::operator[],
+                    return_internal_reference<1, with_custodian_and_ward<1, 2> >())
             .def("add_word", &WordList::addWord)
             ;
 

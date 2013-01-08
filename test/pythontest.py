@@ -72,6 +72,14 @@ class TestWordList(unittest.TestCase):
     def test_split(self):
         l = columbus.split_to_words('this is  my text')
         self.assertEqual(4, len(l), 'text splitting fails')
+        
+    def test_indexing(self):
+        l = columbus.split_to_words('this is  my text')
+        self.assertEqual("this", l[0].get_string())
+        self.assertNotEqual("is", l[0].get_string())
+        self.assertEqual("is", l[1].get_string())
+        self.assertEqual("my", l[2].get_string())
+        self.assertEqual("text", l[3].get_string())
 
 class TestDocument(unittest.TestCase):
     
