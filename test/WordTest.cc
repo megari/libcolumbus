@@ -159,17 +159,17 @@ void testEncoding() {
 
     w1.toUtf8(returned, 5);
     assert(strcmp(text, returned) == 0);
-    assert(strcmp(text, w1.asUtf8()) == 0);
+    assert(strcmp(text, w1.asUtf8().c_str()) == 0);
 
     Word wAss("abc");
-    assert(strcmp("abc", wAss.asUtf8()) == 0); // Make it allocate its internal things to check that they are released appropriately
+    assert(strcmp("abc", wAss.asUtf8().c_str()) == 0); // Make it allocate its internal things to check that they are released appropriately
     wAss = w1;
-    assert(strcmp(text, w1.asUtf8()) == 0);
-    assert(strcmp(text, wAss.asUtf8()) == 0);
+    assert(strcmp(text, w1.asUtf8().c_str()) == 0);
+    assert(strcmp(text, wAss.asUtf8().c_str()) == 0);
 
     Word wInit(w1);
-    assert(strcmp(text, w1.asUtf8()) == 0);
-    assert(strcmp(text, wInit.asUtf8()) == 0);
+    assert(strcmp(text, w1.asUtf8().c_str()) == 0);
+    assert(strcmp(text, wInit.asUtf8().c_str()) == 0);
 }
 
 void testLessThan() {
@@ -197,8 +197,8 @@ void testAutoLower() {
     Word wLower(tl);
 
     assert(wUpper == wLower);
-    assert(strcmp(wLower.asUtf8(), tl) == 0);
-    assert(strcmp(wUpper.asUtf8(), tl) == 0);
+    assert(strcmp(wLower.asUtf8().c_str(), tl) == 0);
+    assert(strcmp(wUpper.asUtf8().c_str(), tl) == 0);
 
 }
 
@@ -213,7 +213,7 @@ void testJoin() {
     result = w1.join(w2);
     assert(result == r1);
     // Test that it is properly null terminated.
-    assert(strcmp(result.asUtf8(), "abcdef") == 0);
+    assert(strcmp(result.asUtf8().c_str(), "abcdef") == 0);
 
     result = w2.join(w1);
     assert(result == r2);
@@ -239,25 +239,25 @@ void testAssignment() {
     w = txt;
     assert(w == txt);
     assert(w != txt2);
-    assert(strcmp(txt, w.asUtf8()) == 0);
+    assert(strcmp(txt, w.asUtf8().c_str()) == 0);
     assert(w.length() == 3);
 
     w = txt2;
     assert(w != txt);
     assert(w == txt2);
-    assert(strcmp(txt2, w.asUtf8()) == 0);
+    assert(strcmp(txt2, w.asUtf8().c_str()) == 0);
     assert(w.length() == 4);
 
     w = txt3;
     assert(w == txt3);
     assert(w != txt4);
-    assert(strcmp(txt3.c_str(), w.asUtf8()) == 0);
+    assert(txt3 == w.asUtf8());
     assert(w.length() == 3);
 
     w = txt4;
     assert(w != txt3);
     assert(w == txt4);
-    assert(strcmp(txt4.c_str(), w.asUtf8()) == 0);
+    assert(w == txt4);
     assert(w.length() == 3);
 
     try {

@@ -22,10 +22,13 @@
 #include <string.h>
 
 void testWord() {
+    const int bufSize = 10;
+    char buf[bufSize];
     ColWord w = col_word_new("abc");
     assert(w);
     assert(col_word_length(w) == 3);
-    assert(strcmp("abc", col_word_as_utf8(w)) == 0);
+    col_word_as_utf8(w, buf, bufSize);
+    assert(strcmp("abc", buf) == 0);
     col_word_delete(w);
 }
 

@@ -36,7 +36,6 @@ private:
 
     Letter *text; // Change this to a shared pointer to save memory.
     unsigned int len;
-    char *utf8Repr; // Only created on demand to save space.
 
     bool hasWhitespace();
     void duplicateFrom(const Word &w);
@@ -52,7 +51,7 @@ public:
 
     unsigned int length() const { return len;}
     void toUtf8(char *buf, unsigned int bufSize) const;
-    const char* asUtf8() const;
+    std::string asUtf8() const;
 
     Word join(const Word &w) const;
 

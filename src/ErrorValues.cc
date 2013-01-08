@@ -142,7 +142,7 @@ void ErrorValues::setGroupError(const Word &groupLetters, const int error) {
     }
     addGroupErrorToLUT(groupLetters, error);
 
-    debugMessage("Added error group: %s\n", groupLetters.asUtf8());
+    debugMessage("Added error group: %s\n", groupLetters.asUtf8().c_str());
 }
 
 void ErrorValues::addGroupErrorToLUT(const Word &groupLetters, const int error) {

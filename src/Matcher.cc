@@ -165,7 +165,7 @@ static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dy
             it->second->findWords(w, p->e, maxError, m);
             addMatches(p, bestIndexMatches, w, it->first, m);
             debugMessage("Matched word %s in index %s with error %d and got %lu matches.\n",
-                    w.asUtf8(), p->store.getWord(it->first).asUtf8(), maxError, (unsigned long) m.size());
+                    w.asUtf8().c_str(), p->store.getWord(it->first).asUtf8().c_str(), maxError, (unsigned long) m.size());
         }
     }
 }
@@ -176,8 +176,8 @@ static void gatherMatchedDocuments(MatcherPrivate *p,  map<WordID, MatchErrorMap
             vector<DocumentID> tmp;
             findDocuments(p, mIt->first, it->first, tmp);
             debugMessage("Exact searched \"%s\" in field \"%s\", which was found in %lu documents.\n",
-                    p->store.getWord(mIt->first).asUtf8(),
-                    p->store.getWord(it->first).asUtf8(), (unsigned long)tmp.size());
+                    p->store.getWord(mIt->first).asUtf8().c_str(),
+                    p->store.getWord(it->first).asUtf8().c_str(), (unsigned long)tmp.size());
             for(size_t i=0; i<tmp.size(); i++) {
                 DocumentID curDoc = tmp[i];
                 // At this point we know the matched word, and which index and field
@@ -215,7 +215,7 @@ void Matcher::index(const Corpus &c) {
             (unsigned long) c.size(), (unsigned long) p->indexes.size(), buildEnd - buildStart);
     for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
         debugMessage("Index \"%s\" has %lu words and %lu nodes.\n",
-                p->store.getWord(it->first).asUtf8(), (unsigned long) it->second->numWords(),
+                p->store.getWord(it->first).asUtf8().c_str(), (unsigned long) it->second->numWords(),
                 (unsigned long) it->second->numNodes());
     }
 }

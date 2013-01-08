@@ -46,7 +46,7 @@ typedef void* ColIndexWeights;
 COL_PUBLIC ColWord col_word_new(const char *utf8_word);
 COL_PUBLIC void col_word_delete(ColWord w);
 COL_PUBLIC size_t col_word_length(ColWord w);
-COL_PUBLIC const char* col_word_as_utf8(ColWord w);
+COL_PUBLIC void col_word_as_utf8(ColWord w, char *buf, unsigned int bufSize);
 
 COL_PUBLIC ColDocument col_document_new(DocumentID id);
 COL_PUBLIC void col_document_delete(ColDocument doc);

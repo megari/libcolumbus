@@ -53,8 +53,8 @@ size_t col_word_length(ColWord w) {
     return reinterpret_cast<Word*>(w)->length();
 }
 
-const char* col_word_as_utf8(ColWord w) {
-    return reinterpret_cast<Word*>(w)->asUtf8();
+void col_word_as_utf8(ColWord w, char *buf, unsigned int bufSize) {
+    reinterpret_cast<Word*>(w)->toUtf8(buf, bufSize);
 }
 
 ColDocument col_document_new(DocumentID id) {

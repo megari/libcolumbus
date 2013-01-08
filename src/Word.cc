@@ -28,34 +28,31 @@ using namespace std;
 
 COL_NAMESPACE_START
 
-Word::Word() : text(0), len(0), utf8Repr(0) {
+Word::Word() : text(0), len(0){
 
 }
 
-Word::Word(const char *utf8Word) : text(0), len(0), utf8Repr(0) {
+Word::Word(const char *utf8Word) : text(0), len(0) {
     convertString(utf8Word);
 }
 
-Word::Word(const Word &w) : text(0), len(0), utf8Repr(0) {
+Word::Word(const Word &w) : text(0), len(0) {
     duplicateFrom(w);
 }
 
 Word::Word(Word &&w) :
     text(w.text),
-    len(w.len),
-    utf8Repr(w.utf8Repr) {
+    len(w.len) {
     w.len = 0;
     w.text = 0;
-    w.utf8Repr = 0;
 }
 
-Word::Word(const std::string &w) : text(0), len(0), utf8Repr(0){
+Word::Word(const std::string &w) : text(0), len(0) {
     convertString(w.c_str());
 }
 
 Word::~Word() {
     delete []text;
-    delete []utf8Repr;
 }
 
 void Word::convertString(const char *utf8Word) {
@@ -74,8 +71,6 @@ void Word::duplicateFrom(const Word &w) {
         return;
     }
     delete []text;
-    delete []utf8Repr;
-    utf8Repr = 0;
     len = w.len;
     if(len == 0) {
         text = 0;
@@ -104,15 +99,12 @@ Word& Word::operator=(const Word &w) {
 
 Word& Word::operator=(Word &&w) {
     delete []text;
-    delete []utf8Repr;
 
     text = w.text;
     len = w.len;
-    utf8Repr = w.utf8Repr;
 
     w.text = 0;
     w.len = 0;
-    w.utf8Repr = 0;
     return *this;
 }
 
@@ -140,11 +132,11 @@ bool Word::operator==(const Word &w) const {
 }
 
 bool Word::operator==(const char *utf8Word) const {
-    return strcmp(asUtf8(), utf8Word) == 0;
+    return strcmp(asUtf8().c_str(), utf8Word) == 0;
 }
 
 bool Word::operator==(const string &utf8Str) const {
-    return strcmp(asUtf8(), utf8Str.c_str()) == 0;
+    return *this == utf8Str.c_str();
 }
 
 
@@ -179,14 +171,11 @@ void Word::toUtf8(char *buf, unsigned int bufSize) const {
     internalToUtf8(text, len, buf, bufSize);
 }
 
-const char* Word::asUtf8() const {
-    if(utf8Repr)
-        return utf8Repr;
+string Word::asUtf8() const {
     size_t strSize = 4*(len+1); // One codepoint is max 4 bytes in UTF-8.
     char *u8 = new char[strSize];
     toUtf8(u8, strSize);
-    const_cast<Word*>(this)->utf8Repr = u8;
-    return utf8Repr;
+    return string(u8);
 }
 
 Word Word::join(const Word &w) const {
@@ -202,9 +191,7 @@ Word Word::join(const Word &w) const {
 
 Word& Word::operator=(const char *utf8Word) {
     delete []text;
-    delete []utf8Repr;
     text = nullptr;
-    utf8Repr = nullptr;
     len = 0;
     convertString(utf8Word);
     return *this;
