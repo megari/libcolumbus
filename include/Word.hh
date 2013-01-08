@@ -21,6 +21,7 @@
 #define WORD_HH_
 
 #include "ColumbusCore.hh"
+#include <string>
 
 COL_NAMESPACE_START
 
@@ -45,6 +46,7 @@ public:
     Word();
     Word(const Word &w);
     Word(Word &&w);
+    Word(const std::string &w);
     explicit Word(const char *utf8Word);
     ~Word();
 
@@ -56,13 +58,16 @@ public:
 
     Letter operator[](unsigned int i) const;
     bool operator==(const Word &w) const;
+    bool operator==(const std::string &utf8Str) const;
     bool operator==(const char *utf8Word) const;
     bool operator!=(const Word &w) const;
+    bool operator!=(const std::string &utf8Str) const;
     bool operator!=(const char *utf8Word) const;
     bool operator<(const Word &w) const;
     Word& operator=(const Word &w);
     Word& operator=(Word &&w);
     Word& operator=(const char *utf8Word);
+    Word& operator=(const std::string &utf8Str);
 
     friend class LevenshteinIndex;
 };

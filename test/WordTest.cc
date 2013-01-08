@@ -27,6 +27,7 @@
 #include "Word.hh"
 
 using namespace Columbus;
+using namespace std;
 
 void testEmpty() {
     Word w1;
@@ -88,6 +89,8 @@ void testCreation() {
     Word w2(w1);
     Word empty1;
     Word empty2(empty1);
+    string s("xyz");
+    Word strW(s);
 
     assert(empty1.length() == 0);
     assert(empty2.length() == 0);
@@ -96,6 +99,11 @@ void testCreation() {
     assert(w2[0] == 'a');
     assert(w2[1] == 'b');
     assert(w2[2] == 'c');
+
+    assert(strW.length() == 3);
+    assert(strW[0] == 'x');
+    assert(strW[1] == 'y');
+    assert(strW[2] == 'z');
 
     Word *w3 = new Word(w1);
     assert(w3->length() == 3);
@@ -223,6 +231,8 @@ void testAssignment() {
     Word w;
     const char *txt = "abc";
     const char *txt2 = "defg";
+    string txt3 = "xyz";
+    string txt4 = "lmn";
     const char *txtError = "h h";
     bool gotAssertion;
 
@@ -237,6 +247,18 @@ void testAssignment() {
     assert(w == txt2);
     assert(strcmp(txt2, w.asUtf8()) == 0);
     assert(w.length() == 4);
+
+    w = txt3;
+    assert(w == txt3);
+    assert(w != txt4);
+    assert(strcmp(txt3.c_str(), w.asUtf8()) == 0);
+    assert(w.length() == 3);
+
+    w = txt4;
+    assert(w != txt3);
+    assert(w == txt4);
+    assert(strcmp(txt4.c_str(), w.asUtf8()) == 0);
+    assert(w.length() == 3);
 
     try {
         w = txtError;

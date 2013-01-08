@@ -24,6 +24,7 @@
 #include <cstring>
 #include "ColumbusHelpers.hh"
 
+using namespace std;
 
 COL_NAMESPACE_START
 
@@ -46,6 +47,10 @@ Word::Word(Word &&w) :
     w.len = 0;
     w.text = 0;
     w.utf8Repr = 0;
+}
+
+Word::Word(const std::string &w) : text(0), len(0), utf8Repr(0){
+    convertString(w.c_str());
 }
 
 Word::~Word() {
@@ -138,6 +143,10 @@ bool Word::operator==(const char *utf8Word) const {
     return strcmp(asUtf8(), utf8Word) == 0;
 }
 
+bool Word::operator==(const string &utf8Str) const {
+    return strcmp(asUtf8(), utf8Str.c_str()) == 0;
+}
+
 
 bool Word::operator!=(const Word &w) const {
     return !(*this == w);
@@ -145,6 +154,10 @@ bool Word::operator!=(const Word &w) const {
 
 bool Word::operator!=(const char *utf8Word) const {
     return !(*this == utf8Word);
+}
+
+bool Word::operator!=(const string &utf8Str) const {
+    return !(*this == utf8Str);
 }
 
 bool Word::operator<(const Word &w) const {
@@ -195,6 +208,10 @@ Word& Word::operator=(const char *utf8Word) {
     len = 0;
     convertString(utf8Word);
     return *this;
+}
+
+Word& Word::operator=(const string &utf8Str) {
+    return *this = utf8Str.c_str();
 }
 
 COL_NAMESPACE_END
