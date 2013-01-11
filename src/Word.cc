@@ -175,7 +175,9 @@ string Word::asUtf8() const {
     size_t strSize = 4*(len+1); // One codepoint is max 4 bytes in UTF-8.
     char *u8 = new char[strSize];
     toUtf8(u8, strSize);
-    return string(u8);
+    string result(u8);
+    delete []u8;
+    return result;
 }
 
 Word Word::join(const Word &w) const {
