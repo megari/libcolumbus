@@ -194,7 +194,7 @@ void ErrorValues::addKeyboardErrors() {
     const Letter line4[] = {'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '-'};
 
     const Letter *keyboard_layout[4] = {line1, line2, line3, line4};
-    const size_t lineLens[] = {11, 11, 12, 11};
+    const size_t lineLens[] = {11, 11, 12, 10};
     for(size_t i = 0; i < 3; i++) {
         const Letter *cur_row = keyboard_layout[i];
         const Letter *next_row = keyboard_layout[i+1];
