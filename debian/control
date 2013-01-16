@@ -14,17 +14,17 @@ Homepage: https://launchpad.net/libcolombus
 # just go ahead.  ~unity-team will notice and sync up the code again.
 Vcs-Bzr: https://code.launchpad.net/~unity-team/libcolombus/trunk
 
-Package: libcolumbus0
+Package: libcolumbus0-0
 Section: libs
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
-Depends: libcolumbus0-common (= ${source:Version}),
+Depends: libcolumbus0-0-common (= ${source:Version}),
          ${shlibs:Depends},
          ${misc:Depends},
 Description: error tolerant matching engine - shared library
  Columbus is a search engine designed to work with unclean data.
 
-Package: libcolumbus0-common
+Package: libcolumbus0-0-common
 Section: libs
 Architecture: all
 Depends: ${shlibs:Depends},
@@ -38,18 +38,18 @@ Package: libcolumbus0-dev
 Section: libdevel
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
-Depends: libcolumbus0 (= ${binary:Version}),
+Depends: libcolumbus0-0 (= ${binary:Version}),
          ${misc:Depends},
 Description: error tolerant matching engine - development files
  Columbus is a search engine designed to work with unclean data.
  .
  This package contains files that are needed to build applications.
 
-Package: libcolumbus0-python
+Package: libcolumbus0-0-python
 Section: libdevel
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
-Depends: libcolumbus0 (= ${binary:Version}),
+Depends: libcolumbus0-0 (= ${binary:Version}),
          ${misc:Depends},
 Description: error tolerant matching engine - Python bindings
  These are the Python bindings of libcolumbus.
