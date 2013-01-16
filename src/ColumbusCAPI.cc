@@ -42,7 +42,7 @@ ColWord col_word_new(const char *utf8_word) {
     } catch(exception &e) {
         fprintf(stderr, "Error creating Word: %s\n", e.what());
     }
-    return 0;
+    return nullptr;
 }
 
 void col_word_delete(ColWord w) {
@@ -68,13 +68,22 @@ DocumentID col_document_get_id(ColDocument doc) {
     return reinterpret_cast<Document*>(doc)->getID();
 }
 void col_document_add_text(ColDocument doc, ColWord field_name, const char *text_as_utf8) {
-    Document *d = reinterpret_cast<Document*>(doc);
-    Word *w = reinterpret_cast<Word*>(field_name);
-    d->addText(*w, text_as_utf8);
+    try {
+        Document *d = reinterpret_cast<Document*>(doc);
+        Word *w = reinterpret_cast<Word*>(field_name);
+        d->addText(*w, text_as_utf8);
+    } catch(exception &e) {
+        fprintf(stderr, "Error adding text: %s\n", e.what());
+    }
 }
 
 ColMatcher col_matcher_new() {
-    return reinterpret_cast<ColMatcher>(new Matcher());
+    try {
+        return reinterpret_cast<ColMatcher>(new Matcher());
+    } catch(exception &e) {
+        fprintf(stderr, "Error creating Matcher: %s\n", e.what());
+    }
+    return nullptr;
 }
 
 void col_matcher_delete(ColMatcher m) {
@@ -102,24 +111,44 @@ void col_matcher_match(ColMatcher m, const char *query_as_utf8, ColMatchResults 
 }
 
 ColErrorValues col_matcher_get_error_values(ColMatcher m) {
-    Matcher *matcher = reinterpret_cast<Matcher*>(m);
-    return reinterpret_cast<ColErrorValues>(&matcher->getErrorValues());
+    try {
+        Matcher *matcher = reinterpret_cast<Matcher*>(m);
+        return reinterpret_cast<ColErrorValues>(&matcher->getErrorValues());
+    } catch(exception &e) {
+        fprintf(stderr, "Error getting ErrorValues: %s\n", e.what());
+    }
+    return nullptr;
 }
 
 ColIndexWeights col_matcher_get_index_weights(ColMatcher m) {
-    Matcher *matcher = reinterpret_cast<Matcher*>(m);
-    return reinterpret_cast<ColIndexWeights>(&matcher->getIndexWeights());
+    try {
+        Matcher *matcher = reinterpret_cast<Matcher*>(m);
+        return reinterpret_cast<ColIndexWeights>(&matcher->getIndexWeights());
+    } catch(exception &e) {
+        fprintf(stderr, "Error getting IndexWeights: %s\n", e.what());
+    }
+    return nullptr;
 }
 
 ColMatchResults col_match_results_new() {
-    return reinterpret_cast<ColMatchResults>(new MatchResults());
+    try {
+        return reinterpret_cast<ColMatchResults>(new MatchResults());
+    } catch(exception &e) {
+        fprintf(stderr, "Error creating MatchResults: %s\n", e.what());
+    }
+    return nullptr;
 }
 void col_match_results_delete(ColMatchResults mr) {
     delete reinterpret_cast<MatchResults*>(mr);
 }
 
 size_t col_match_results_size(ColMatchResults mr) {
-    return reinterpret_cast<MatchResults*>(mr)->size();
+    try {
+        return reinterpret_cast<MatchResults*>(mr)->size();
+    } catch(exception &e) {
+        fprintf(stderr, "Error getting match size: %s\n", e.what());
+    }
+    return 0;
 }
 
 DocumentID col_match_results_get_id(ColMatchResults mr, size_t i) {
@@ -143,39 +172,66 @@ double col_match_results_get_relevancy(ColMatchResults mr, size_t i) {
 }
 
 ColCorpus col_corpus_new() {
-    return reinterpret_cast<ColCorpus>(new Corpus());
+    try {
+        return reinterpret_cast<ColCorpus>(new Corpus());
+    } catch(exception &e) {
+        fprintf(stderr, "Error creating Corpus: %s\n", e.what());
+    }
+    return nullptr;
 }
+
+
 void col_corpus_delete(ColCorpus c) {
     delete reinterpret_cast<Corpus*>(c);
 }
 
 void col_corpus_add_document(ColCorpus c, ColDocument d) {
-    Corpus *corp = reinterpret_cast<Corpus*>(c);
-    Document *doc = reinterpret_cast<Document*>(d);
-    corp->addDocument(*doc);
+    try {
+        Corpus *corp = reinterpret_cast<Corpus*>(c);
+        Document *doc = reinterpret_cast<Document*>(d);
+        corp->addDocument(*doc);
+    } catch(exception &e) {
+        fprintf(stderr, "Error adding document: %s\n", e.what());
+    }
 }
 
 void col_error_values_add_standard_errors(ColErrorValues ev) {
-    ErrorValues *results = reinterpret_cast<ErrorValues*>(ev);
-    results->addStandardErrors();
+    try {
+        ErrorValues *results = reinterpret_cast<ErrorValues*>(ev);
+        results->addStandardErrors();
+    } catch(exception &e) {
+        fprintf(stderr, "Error adding standard errors: %s\n", e.what());
+    }
 }
 
-
 void col_error_values_set_substring_mode(ColErrorValues ev) {
-    ErrorValues *results = reinterpret_cast<ErrorValues*>(ev);
-    results->setSubstringMode();
+    try {
+        ErrorValues *results = reinterpret_cast<ErrorValues*>(ev);
+        results->setSubstringMode();
+    } catch(exception &e) {
+        fprintf(stderr, "Error setting substring mode: %s\n", e.what());
+    }
 }
 
 void col_index_weights_set_weight(ColIndexWeights weights, const ColWord field, const double new_weight) {
-    IndexWeights *cweight = reinterpret_cast<IndexWeights*>(weights);
-    Word *w = reinterpret_cast<Word*>(field);
-    cweight->setWeight(*w, new_weight);
+    try {
+        IndexWeights *cweight = reinterpret_cast<IndexWeights*>(weights);
+        Word *w = reinterpret_cast<Word*>(field);
+        cweight->setWeight(*w, new_weight);
+    } catch(exception &e) {
+        fprintf(stderr, "Error setting weight: %s\n", e.what());
+    }
 }
 
 double col_index_weights_get_weight(ColIndexWeights weights, const ColWord field) {
-    IndexWeights *cweight = reinterpret_cast<IndexWeights*>(weights);
-    Word *w = reinterpret_cast<Word*>(field);
-    return cweight->getWeight(*w);
+    try {
+        IndexWeights *cweight = reinterpret_cast<IndexWeights*>(weights);
+        Word *w = reinterpret_cast<Word*>(field);
+        return cweight->getWeight(*w);
+    } catch(exception &e) {
+        fprintf(stderr, "Error getting weight: %s\n", e.what());
+    }
+    return 1.0;
 }
 
 
