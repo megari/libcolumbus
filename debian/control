@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 9~),
                libicu-dev,
                python3-dev,
                libboost-python-dev,
-Standards-Version: 3.9.3
+Standards-Version: 3.9.4
 Homepage: https://launchpad.net/libcolombus
 # If you aren't a member of ~unity-team but need to upload packaging changes,
 # just go ahead.  ~unity-team will notice and sync up the code again.
