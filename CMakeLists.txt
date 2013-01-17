@@ -81,12 +81,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-find_library(icu1 icuuc)
-find_library(icu2 icudata)
-
-if(NOT icu1)
-  message(FATAL_ERROR "Libicu not found. Please install it and rerun CMake.")
-endif()
+pkg_search_module(ICU REQUIRED icu-uc)
 
 add_subdirectory(include)
 add_subdirectory(src)
