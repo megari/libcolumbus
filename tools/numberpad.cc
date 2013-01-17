@@ -297,12 +297,17 @@ int main(int argc, char **argv) {
         printf("%s input_data_file.txt\n", argv[0]);
         return 0;
     }
-    build_gui(app);
-    buildStart = hiresTimestamp();
-    build_matcher(app, argv[1]);
-    buildEnd = hiresTimestamp();
-    printf("Building the matcher took %.2f seconds.\n", buildEnd - buildStart);
-    gtk_main();
-    delete_matcher(app);
+    try {
+        build_gui(app);
+        buildStart = hiresTimestamp();
+        build_matcher(app, argv[1]);
+        buildEnd = hiresTimestamp();
+        printf("Building the matcher took %.2f seconds.\n", buildEnd - buildStart);
+        gtk_main();
+        delete_matcher(app);
+    } catch(std::exception &e) {
+        fprintf(stderr, "Failed with exception: %s\n", e.what());
+        return 99;
+    }
     return 0;
 }

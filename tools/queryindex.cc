@@ -89,7 +89,13 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    queryAndPrint(ind, s, *query, maxError);
+    try {
+        queryAndPrint(ind, s, *query, maxError);
+    } catch(std::exception &e) {
+        fprintf(stderr, "Query failed with exception: %s\n", e.what());
+        return 99;
+    }
+
     delete query;
     return 0;
 }

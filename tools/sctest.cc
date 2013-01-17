@@ -268,7 +268,8 @@ int main(int argc, char **argv) {
         gtk_main();
         delete_matcher(app);
     } catch(std::exception &e) {
-        printf("Exception: %s\n", e.what());
+        fprintf(stderr, "Failed with exception: %s\n", e.what());
+        return 99;
     }
     return 0;
 }

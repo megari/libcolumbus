@@ -182,10 +182,15 @@ int main(int argc, char **argv) {
         printf("%s input_data_file.txt\n", argv[0]);
         return 0;
     }
-    build_gui(app);
-    readData(words, argv[1]);
-    for(size_t i=0; i<words.size(); i++)
-        app.ind.insertWord(words[i], app.store.getID(words[i]));
-    gtk_main();
+    try {
+        build_gui(app);
+        readData(words, argv[1]);
+        for(size_t i=0; i<words.size(); i++)
+            app.ind.insertWord(words[i], app.store.getID(words[i]));
+        gtk_main();
+    } catch(std::exception &e) {
+        fprintf(stderr, "Failed with exception: %s\n", e.what());
+        return 99;
+    }
     return 0;
 }
