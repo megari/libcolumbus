@@ -71,7 +71,7 @@ BOOST_PYTHON_MODULE(_columbus)
             .def("match", queryAdaptor)
             .def("get_errorvalues", &Matcher::getErrorValues,
                     return_internal_reference<1, with_custodian_and_ward<1, 2> >())
-             .def("get_indexweigths", &Matcher::getIndexWeights,
+             .def("get_indexweights", &Matcher::getIndexWeights,
                     return_internal_reference<1, with_custodian_and_ward<1, 2> >())
             ;
 
