@@ -19,8 +19,3 @@ if(GTK3_FOUND)
   target_link_libraries(numberpad ${COL_LIB_BASENAME} ${GTK3_LIBRARIES})
 
 endif()
-
-if(icu1)
-  add_executable(lowertable lowertable.cc)
-  target_link_libraries(lowertable ${icu1} ${icu2})
-endif()
