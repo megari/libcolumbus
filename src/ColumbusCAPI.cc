@@ -46,27 +46,56 @@ ColWord col_word_new(const char *utf8_word) {
 }
 
 void col_word_delete(ColWord w) {
-    delete reinterpret_cast<Word*>(w);
+    try {
+        delete reinterpret_cast<Word*>(w);
+    } catch(exception &e) {
+        fprintf(stderr, "Error deleting Word: %s\n", e.what());
+    }
 }
 
 size_t col_word_length(ColWord w) {
-    return reinterpret_cast<Word*>(w)->length();
+    try {
+        return reinterpret_cast<Word*>(w)->length();
+    } catch(exception &e) {
+        fprintf(stderr, "Error getting Word length: %s\n", e.what());
+    }
+    return 0;
 }
 
 void col_word_as_utf8(ColWord w, char *buf, unsigned int bufSize) {
-    reinterpret_cast<Word*>(w)->toUtf8(buf, bufSize);
+    try {
+        reinterpret_cast<Word*>(w)->toUtf8(buf, bufSize);
+    } catch(exception &e) {
+        fprintf(stderr, "Error converting to Utf-8: %s\n", e.what());
+    }
 }
 
 ColDocument col_document_new(DocumentID id) {
-    return reinterpret_cast<ColDocument>(new Document(id));
+    try {
+        return reinterpret_cast<ColDocument>(new Document(id));
+    } catch(exception &e) {
+        fprintf(stderr, "Error creating Document: %s\n", e.what());
+    }
+    return nullptr;
 }
+
 void col_document_delete(ColDocument doc) {
-    delete reinterpret_cast<Document*>(doc);
+    try {
+        delete reinterpret_cast<Document*>(doc);
+    } catch(exception &e) {
+        fprintf(stderr, "Error deleting Document: %s\n", e.what());
+    }
 }
 
 DocumentID col_document_get_id(ColDocument doc) {
-    return reinterpret_cast<Document*>(doc)->getID();
+    try {
+        return reinterpret_cast<Document*>(doc)->getID();
+    } catch(exception &e) {
+        fprintf(stderr, "Error getting Document ID %s\n", e.what());
+    }
+    return INVALID_DOCID;
 }
+
 void col_document_add_text(ColDocument doc, ColWord field_name, const char *text_as_utf8) {
     try {
         Document *d = reinterpret_cast<Document*>(doc);
@@ -87,7 +116,11 @@ ColMatcher col_matcher_new() {
 }
 
 void col_matcher_delete(ColMatcher m) {
-    delete reinterpret_cast<Matcher*>(m);
+    try {
+        delete reinterpret_cast<Matcher*>(m);
+    } catch(exception &e) {
+        fprintf(stderr, "Error deleting Matcher: %s\n", e.what());
+    }
 }
 
 void col_matcher_index(ColMatcher m, ColCorpus c) {
@@ -139,7 +172,11 @@ ColMatchResults col_match_results_new() {
     return nullptr;
 }
 void col_match_results_delete(ColMatchResults mr) {
-    delete reinterpret_cast<MatchResults*>(mr);
+    try {
+        delete reinterpret_cast<MatchResults*>(mr);
+    } catch(exception &e) {
+        fprintf(stderr, "Error deleting MatchResults: %s\n", e.what());
+    }
 }
 
 size_t col_match_results_size(ColMatchResults mr) {
@@ -182,7 +219,11 @@ ColCorpus col_corpus_new() {
 
 
 void col_corpus_delete(ColCorpus c) {
-    delete reinterpret_cast<Corpus*>(c);
+    try {
+        delete reinterpret_cast<Corpus*>(c);
+    } catch(exception &e) {
+        fprintf(stderr, "Error deleting Corpus: %s\n", e.what());
+    }
 }
 
 void col_corpus_add_document(ColCorpus c, ColDocument d) {

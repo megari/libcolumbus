@@ -234,5 +234,6 @@ int main(int argc, char **argv) {
         fprintf(stderr, "Failed with exception: %s\n", e.what());
         return 99;
     }
+
     return 0;
 }
