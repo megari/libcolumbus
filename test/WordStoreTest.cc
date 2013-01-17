@@ -55,5 +55,11 @@ void testStore() {
 }
 
 int main(int argc, char **argv) {
-    testStore();
+    try {
+        testStore();
+    } catch(const std::exception &e) {
+        fprintf(stderr, "Fail: %s\n", e.what());
+        return 666;
+    }
+    return 0;
 }

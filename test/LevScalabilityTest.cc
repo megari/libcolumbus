@@ -97,7 +97,7 @@ void runTest(vector<Word> &a, int querySize) {
     printf("Heavy queries done in %.3f seconds. Queries per second %.2f.\n", fullErrorQueryTime, querySize/fullErrorQueryTime);
 }
 
-int main(int argc, char **argv) {
+int runtest(int argc, char **argv) {
     vector<Word> a;
     int querySize;
     const char *ifile;
@@ -116,4 +116,13 @@ int main(int argc, char **argv) {
     printf("Querying %d elements.\n", querySize);
     runTest(a, querySize);
     return 0;
+}
+
+int main(int argc, char **argv) {
+    try{
+        return runtest(argc, argv);
+    } catch(const std::exception &e) {
+        fprintf(stderr, "Fail: %s\n", e.what());
+        return 666;
+    }
 }

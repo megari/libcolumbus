@@ -24,6 +24,7 @@
 #include <cstring>
 #include <cassert>
 #include <stdexcept>
+#include <cstdio>
 #include "Word.hh"
 
 using namespace Columbus;
@@ -270,15 +271,21 @@ void testAssignment() {
 }
 
 int main(int argc, char **argv) {
-    testEmpty();
-    testIndexing();
-    testWhitespace();
-    testCreation();
-    testComparison();
-    testEncoding();
-    testLessThan();
-    testAutoLower();
-    testJoin();
-    testAssignment();
+    try {
+        testEmpty();
+        testIndexing();
+        testWhitespace();
+        testCreation();
+        testComparison();
+        testEncoding();
+        testLessThan();
+        testAutoLower();
+        testJoin();
+        testAssignment();
+    } catch(const exception &e) {
+        fprintf(stderr, "Fail: %s\n", e.what());
+        return 666;
+    }
+    return 0;
 }
 

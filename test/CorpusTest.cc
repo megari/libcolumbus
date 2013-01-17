@@ -67,6 +67,11 @@ void testCorpus() {
 }
 
 int main(int argc, char **argv) {
-    testCorpus();
+    try {
+        testCorpus();
+    } catch(const std::exception &e) {
+        fprintf(stderr, "Fail: %s\n", e.what());
+        return 666;
+    }
     return 0;
 }

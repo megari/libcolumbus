@@ -128,8 +128,13 @@ void testMultiWord() {
 }
 
 int main(int argc, char **argv) {
-    testMatcher();
-    testRelevancy();
-    testMultiWord();
+    try {
+        testMatcher();
+        testRelevancy();
+        testMultiWord();
+    } catch(const std::exception &e) {
+        fprintf(stderr, "Fail: %s\n", e.what());
+        return 666;
+    }
     return 0;
 }

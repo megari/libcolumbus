@@ -306,14 +306,19 @@ void testStartError() {
 }
 
 int main(int argc, char **argv) {
-    testTrivial();
-    testSimple();
-    testOrder();
-    testEdges();
-    testEmptyQuery();
-    testExact();
-    testTranspose();
-    testEndError();
-    testStartError();
+    try {
+        testTrivial();
+        testSimple();
+        testOrder();
+        testEdges();
+        testEmptyQuery();
+        testExact();
+        testTranspose();
+        testEndError();
+        testStartError();
+    } catch(const std::exception &e) {
+        fprintf(stderr, "Fail: %s\n", e.what());
+        return 666;
+    }
     return 0;
 }

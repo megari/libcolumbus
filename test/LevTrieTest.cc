@@ -160,12 +160,17 @@ int main(int argc, char **argv) {
     fprintf(stderr, "NDEBUG is defined, tests will not work!\n");
     return 1;
 #else
-    basicTest();
-    shortTest();
-    prefixTest();
-    suffixTest();
-    branchTest();
-    countTest();
+    try {
+        basicTest();
+        shortTest();
+        prefixTest();
+        suffixTest();
+        branchTest();
+        countTest();
+    } catch(const std::exception &e) {
+        fprintf(stderr, "Fail: %s\n", e.what());
+        return 666;
+    }
     return 0;
 #endif
 }

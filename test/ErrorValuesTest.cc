@@ -107,10 +107,15 @@ void testNumberpadErrors() {
 }
 
 int main(int argc, char **argv) {
-    testError();
-    testGroupError();
-    testKeyboardErrors();
-    testNumberpadErrors();
+    try {
+        testError();
+        testGroupError();
+        testKeyboardErrors();
+        testNumberpadErrors();
+    } catch(const std::exception &e) {
+        fprintf(stderr, "Fail: %s\n", e.what());
+        return 666;
+    }
     return 0;
 }
 

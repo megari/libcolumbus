@@ -82,7 +82,12 @@ int main(int argc, char **argv) {
     }
     if(argc > 2)
         maxLines = atoi(argv[2]);
-    m = build_matcher(argv[1], maxLines);
-    delete m;
+    try {
+        m = build_matcher(argv[1], maxLines);
+        delete m;
+    } catch(const std::exception &e) {
+        fprintf(stderr, "Fail: %s\n", e.what());
+        return 666;
+    }
     return 0;
 }
