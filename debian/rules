@@ -9,6 +9,9 @@ export DPKG_GENSYMBOLS_CHECK_LEVEL=4
 # needed for tests
 export COLUMBUS_DATADIR=$(CURDIR)/share
 
+# http://ccache.samba.org/manual.html#_precompiled_headers
+export CCACHE_SLOPPINESS=time_macros
+
 %:
 	dh $@ --parallel
 
