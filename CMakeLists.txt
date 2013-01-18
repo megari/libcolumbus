@@ -81,7 +81,21 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-pkg_search_module(ICU REQUIRED icu-uc)
+pkg_search_module(ICU icu-uc)
+
+# Quantal and earlier do not have pkg-config files for icu.
+# Find it manually.
+if(NOT ICU_FOUND)
+  find_library(icu1 icuuc)
+  find_library(icu2 icudata)
+  if(NOT icu1)
+    message(FATAL_ERROR "Libicu not found. Please install it and rerun CMake.")
+  endif()
+  if(NOT icu2)
+    message(FATAL_ERROR "Libicu not found. Please install it and rerun CMake.")
+  endif()
+  set(ICU_LIBRARIES ${icu1} ${icu2})
+endif()
 
 add_subdirectory(include)
 add_subdirectory(src)
