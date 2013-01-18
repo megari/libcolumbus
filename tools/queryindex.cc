@@ -63,7 +63,7 @@ void queryAndPrint(LevenshteinIndex &ind, WordStore &s, Word &query, int maxErro
     }
 }
 
-int main(int argc, char **argv) {
+int run_test(int argc, char **argv) {
     LevenshteinIndex ind;
     WordStore s;
     char *file;
@@ -99,3 +99,13 @@ int main(int argc, char **argv) {
     delete query;
     return 0;
 }
+
+int main(int argc, char **argv) {
+    try {
+        return run_test(argc, argv);
+    } catch(std::exception &e) {
+        printf("Fail: %s.\n", e.what());
+        return 105;
+    }
+}
+
