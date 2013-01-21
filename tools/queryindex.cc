@@ -24,6 +24,7 @@
 #include "WordStore.hh"
 #include <cstdio>
 #include <stdexcept>
+#include <cstdlib>
 #include <string>
 #include <cstring>
 #include <cassert>

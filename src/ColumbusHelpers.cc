@@ -32,6 +32,7 @@
 #include <cstring>
 #include <sys/time.h>
 #include <unicode/uchar.h>
+#include <cstdlib>
 
 COL_NAMESPACE_START
 
