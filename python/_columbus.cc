@@ -44,7 +44,7 @@ BOOST_PYTHON_MODULE(_columbus)
             .def(init<const WordList &>())
             .def("__len__", &WordList::size)
             .def("__getitem__", &WordList::operator[],
-                    return_internal_reference<1, with_custodian_and_ward<1, 2> >())
+                    return_internal_reference<>())
             .def("add_word", &WordList::addWord)
             ;
 
@@ -55,7 +55,7 @@ BOOST_PYTHON_MODULE(_columbus)
             .def("field_count", &Document::fieldCount)
             .def("get_id", &Document::getID)
             .def("get_text", &Document::getText,
-                    return_internal_reference<1, with_custodian_and_ward<1, 2> >())
+                    return_internal_reference<>())
             .def("add_text", addAdaptor)
             ;
 
@@ -70,9 +70,9 @@ BOOST_PYTHON_MODULE(_columbus)
             .def("index", &Matcher::index)
             .def("match", queryAdaptor)
             .def("get_errorvalues", &Matcher::getErrorValues,
-                    return_internal_reference<1, with_custodian_and_ward<1, 2> >())
+                    return_internal_reference<>())
              .def("get_indexweights", &Matcher::getIndexWeights,
-                    return_internal_reference<1, with_custodian_and_ward<1, 2> >())
+                    return_internal_reference<>())
             ;
 
     class_<ErrorValues>("ErrorValues")

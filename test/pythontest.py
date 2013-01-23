@@ -154,13 +154,26 @@ class TestMatcher(unittest.TestCase):
         c.add_document(d2)
         c.add_document(dFar)
         m.index(c)
-        
+
         m.match(columbus.split_to_words("abe"), matches)
         self.assertEqual(len(matches), 2)
         self.assertNotEqual(matches.get_document_id(0), name3);
         self.assertNotEqual(matches.get_document_id(1), name3);
         self.assertTrue(matches.get_document_id(0) == name1 or matches.get_document_id(1) == name1)
         self.assertTrue(matches.get_document_id(0) == name2 or matches.get_document_id(1) == name2)
+    
+    def test_errorvalues(self):
+        m = columbus.Matcher()
+        ev = m.get_errorvalues()
+        ev.add_standard_errors()
+    
+    def test_indexweights(self):
+        m = columbus.Matcher()
+        iw = m.get_indexweights()
+        field = columbus.Word("abc")
+        self.assertAlmostEqual(iw.get_weight(field), 1.0, 0.0001)
+        
+
 
 class TestErrorValues(unittest.TestCase):
     
