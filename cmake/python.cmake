@@ -1,7 +1,11 @@
 set(build_python FALSE)
 
 find_package(Boost 1.49.0 COMPONENTS python)
-pkg_search_module(PYTHONLIBS python3)
+if(use_python2)
+  pkg_search_module(PYTHONLIBS python)
+else()
+  pkg_search_module(PYTHONLIBS python3)
+endif()
 
 if(NOT Boost_FOUND)
   message(STATUS "Boost not found, not building Python bindings.")
@@ -11,11 +15,10 @@ else()
   else()
     string(SUBSTRING ${PYTHONLIBS_VERSION} 0 1 PYTHON_MAJOR)
     string(SUBSTRING ${PYTHONLIBS_VERSION} 2 1 PYTHON_MINOR)
-    if(NOT ${PYTHON_MAJOR} STREQUAL 3)
-      message(WARNING "Not building against Python 3. This is unsupported and probably won't work.")
-    endif()
     message(STATUS "Found Python version ${PYTHON_MAJOR}.${PYTHON_MINOR}.")
-    execute_process(COMMAND ${CMAKE_SOURCE_DIR}/cmake/pysoabi.py OUTPUT_VARIABLE pysoabi OUTPUT_STRIP_TRAILING_WHITESPACE)
+    if(NOT use_python2)
+      execute_process(COMMAND ${CMAKE_SOURCE_DIR}/cmake/pysoabi.py OUTPUT_VARIABLE pysoabi OUTPUT_STRIP_TRAILING_WHITESPACE)
+    endif()
 
     # Linking against libboost_python does not work with Python 3.
     # Working around this bug:

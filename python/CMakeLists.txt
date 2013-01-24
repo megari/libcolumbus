@@ -1,7 +1,11 @@
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(${PYTHONLIBS_INCLUDE_DIRS})
 
-set(python_lib_name "_columbus.${pysoabi}")
+if(use_python2)
+  set(python_lib_name "_columbus")
+else()
+  set(python_lib_name "_columbus.${pysoabi}")
+endif()
 
 add_library(_columbus_ext SHARED _columbus.cc)
 target_link_libraries(_columbus_ext ${COL_LIB_BASENAME} ${BOOST_PYTHON_HACK} ${PYTHONLIBS_LIBRARIES})

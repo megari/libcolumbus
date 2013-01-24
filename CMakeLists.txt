@@ -10,6 +10,12 @@ option(enable_scalability_tests "Additional scalability tests that are potential
 option(full_warnings "Full compiler warnings." ON)
 option(debug_messages "Print debug messages.")
 option(full_unicode "Enable full Unicode support (takes lots of memory).")
+option(use_python2 "Build Python bindings against Python 2 (UNSUPPORTED)." OFF)
+
+if(use_python2)
+  message(WARNING "Python 2 bindings are NOT SUPPORTED! If they break, you get to keep both pieces.")
+endif()
+
 include(FindPkgConfig)
 include(cmake/pch.cmake)
 include(cmake/python.cmake)
