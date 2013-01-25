@@ -47,7 +47,6 @@ typedef ChildList::const_iterator ChildListConstIter;
  * Vector takes 24 bytes, map 48 and unordered_map 56.
  */
 struct TrieNode {
-    TrieNode *parent;
     ChildList children;
     WordID currentWord; // The word that ends in this node.
 };
@@ -74,7 +73,6 @@ void gather_all_nodes(TrieNode *root, vector<TrieNode*> &nodes) {
 LevenshteinIndex::LevenshteinIndex() {
     p = new LevenshteinIndexPrivate();
     p->root = new TrieNode();
-    p->root->parent = 0;
     p->root->currentWord = INVALID_WORDID;
     p->maxCount = 0;
     p->longestWordLength = 0;
@@ -123,7 +121,6 @@ void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word, const WordID
         if(child == node->children.end()) {
             pair<Letter, TrieNode*> n;
             c = new TrieNode();
-            c->parent = node;
             c->currentWord = INVALID_WORDID;
             n.first = l;
             n.second = c;
