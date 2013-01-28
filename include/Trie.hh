@@ -48,6 +48,7 @@ public:
     Letter getLetter(trieOffset sibling) const;
     trieOffset getChild(trieOffset sibling) const;
     WordID getWordID(trieOffset node) const;
+    bool hasSibling(trieOffset sibling) const;
 };
 
 COL_NAMESPACE_END

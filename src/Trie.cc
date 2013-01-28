@@ -223,4 +223,9 @@ WordID Trie::getWordID(trieOffset node) const {
     return n->word;
 }
 
+bool Trie::hasSibling(trieOffset sibling) const {
+    TriePtrs *ptrs = (TriePtrs*)(p->map + sibling);
+    return ptrs->sibling != 0;
+}
+
 COL_NAMESPACE_END
