@@ -30,6 +30,7 @@ class Trie {
 private:
     TriePrivate *p;
     void expand();
+    void append(const char *data, const int size);
 
 public:
     Trie();

@@ -47,21 +47,29 @@ struct TriePtrs {
 
 struct TrieNode {
     WordID word;
+    TriePtrs ptrs;
 };
 
 struct TriePrivate {
     FILE *f;
-    void *map;
+    char *map;
     TrieHeader *h;
+    offset root;
 };
 
 Trie::Trie() {
+    TrieNode n;
     p = new TriePrivate();
     p->f = tmpfile();
     p->map = nullptr;
     expand();
     p->h->firstFree = sizeof(TrieHeader);
+    p->root = p->h->firstFree;
+    n.word = INVALID_WORDID;
+    n.ptrs.child = n.ptrs.sibling = n.ptrs.l = 0;
+    append((char*)&n, sizeof(n));
 }
+
 
 Trie::~Trie() {
     fclose(p->f);
@@ -82,7 +90,7 @@ void Trie::expand() {
         err += strerror(errno);
         throw runtime_error(err);
     }
-    p->map = mmap(NULL, newSize, PROT_READ | PROT_WRITE, MAP_PRIVATE,
+    p->map = (char*)mmap(NULL, newSize, PROT_READ | PROT_WRITE, MAP_PRIVATE,
                   fileno(p->f), 0);
     if(p->map == MAP_FAILED) {
         string err = "MMap failed: ";
@@ -91,6 +99,13 @@ void Trie::expand() {
     }
     p->h = (TrieHeader*)p->map;
     p->h->totalSize = newSize;
+}
+
+void Trie::append(const char *data, const int size) {
+    while(p->h->firstFree + size >= p->h->totalSize)
+        expand();
+    memcpy(p->map + p->h->firstFree, data, size);
+    p->h->firstFree += size;
 }
 
 COL_NAMESPACE_END
