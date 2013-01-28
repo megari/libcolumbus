@@ -46,7 +46,6 @@ struct TriePtrs {
 
 struct TrieNode {
     WordID word;
-//    TriePtrs ptrs;
 };
 
 struct TriePrivate {
@@ -176,7 +175,6 @@ bool Trie::hasWord(const Word &word) const {
     for(size_t i=0; word.length() > i; i++) {
         Letter l = word[i];
         offset searcher = node;
-        //TrieNode *n = (TrieNode*)(p->map + searcher);
         offset sibl = searcher + sizeof(TrieNode);
         TriePtrs *ptrs = (TriePtrs*)(p->map + sibl);
         while(ptrs->sibling != 0 && ptrs->l != l) {
@@ -194,26 +192,35 @@ bool Trie::hasWord(const Word &word) const {
     return false;
 }
 
-#if 0
-TrieNode *node = p->root;
-size_t i = 0;
-while(word.length() > i) {
-    Letter l = word[i];
-    ChildListConstIter child = node->children.begin();
-    while(child != node->children.end() && child->first != l)//= node->children.find(l);
-        child++;
-
-    if(child == node->children.end())
-        return false;
-    node = child->second;
-    i++;
+offset Trie::getRoot() const {
+    return p->root;
 }
 
-if(node->currentWord != INVALID_WORDID) {
-     //assert(node->current_word == word); FIXME, re-enable this.
-     return true;
- }
- return false;
-#endif
+
+offset Trie::getSiblingList(offset node) const {
+    TriePtrs *ptrs = (TriePtrs*)(p->map + node + sizeof(TrieNode));
+    return ptrs->sibling;
+
+}
+
+offset Trie::getNextSibling(offset sibling) const {
+    TriePtrs *ptrs = (TriePtrs*)(p->map + sibling);
+    return ptrs->sibling;
+}
+
+Letter Trie::getLetter(offset sibling) const {
+    TriePtrs *ptrs = (TriePtrs*)(p->map + sibling);
+    return ptrs->l;
+}
+
+offset Trie::getChild(offset sibling) const {
+    TriePtrs *ptrs = (TriePtrs*)(p->map + sibling);
+    return ptrs->child;
+}
+
+WordID Trie::getWordID(offset node) const {
+    TrieNode *n = (TrieNode*)(p->map + node);
+    return n->word;
+}
 
 COL_NAMESPACE_END

@@ -42,6 +42,12 @@ public:
 
     bool hasWord(const Word &word) const;
     void insertWord(const Word &word, const WordID wordID);
+    offset getRoot() const;
+    offset getSiblingList(offset node) const;
+    offset getNextSibling(offset sibling) const;
+    Letter getLetter(offset sibling) const;
+    offset getChild(offset sibling) const;
+    WordID getWordID(offset node) const;
 };
 
 COL_NAMESPACE_END
