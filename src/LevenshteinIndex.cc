@@ -33,6 +33,7 @@
 #include "ErrorValues.hh"
 #include "Word.hh"
 #include "ErrorMatrix.hh"
+#include "Trie.hh"
 
 COL_NAMESPACE_START
 using namespace std;
@@ -76,6 +77,7 @@ LevenshteinIndex::LevenshteinIndex() {
     p->root->currentWord = INVALID_WORDID;
     p->maxCount = 0;
     p->longestWordLength = 0;
+    Trie dummyJustForTesting;
 }
 
 LevenshteinIndex::~LevenshteinIndex() {

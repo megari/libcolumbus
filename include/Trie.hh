@@ -27,7 +27,9 @@ COL_NAMESPACE_START
 struct TriePrivate;
 
 class Trie {
+private:
     TriePrivate *p;
+    void expand();
 
 public:
     Trie();
