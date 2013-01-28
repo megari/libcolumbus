@@ -149,6 +149,8 @@ void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word, const WordID
 }
 
 bool LevenshteinIndex::hasWord(const Word &word) const {
+    return p->trie.hasWord(word);
+    /*
     TrieNode *node = p->root;
     size_t i = 0;
     while(word.length() > i) {
@@ -168,6 +170,7 @@ bool LevenshteinIndex::hasWord(const Word &word) const {
          return true;
      }
      return false;
+     */
 }
 
 void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int maxError, IndexMatches &matches) const {

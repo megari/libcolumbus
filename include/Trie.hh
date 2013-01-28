@@ -40,6 +40,7 @@ public:
     Trie();
     ~Trie();
 
+    bool hasWord(const Word &word) const;
     void insertWord(const Word &word, const WordID wordID);
 };
 

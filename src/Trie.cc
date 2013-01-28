@@ -119,11 +119,13 @@ offset Trie::addNewNode() {
 }
 
 offset Trie::addNewSibling(const offset sibling, Letter l) {
+    TriePtrs *last = (TriePtrs*)(p->map + sibling);
+    assert(last->sibling == 0);
     TriePtrs ptr;
     ptr.l = l;
     ptr.child = addNewNode();
     ptr.sibling = 0;
-    //return append((char*) &ptr, sizeof(ptr));
+    last->sibling = append((char*) &ptr, sizeof(ptr));
     return ptr.child;
 }
 
@@ -161,46 +163,49 @@ void Trie::insertWord(const Word &word, const WordID wordID) {
 
 }
 
-#if 0
-void LevenshteinIndex::insertWord(const Word &word, const WordID wordID) {
-    trieInsert(p->root, word, wordID);
-}
-
-void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word, const WordID wordID) {
-    size_t i = 0;
-    while(word.length() > i) {
+bool Trie::hasWord(const Word &word) const {
+    offset node = p->root;
+    for(size_t i=0; word.length() > i; i++) {
         Letter l = word[i];
-        ChildListIter child = node->children.begin();
-        while(child != node->children.end() && child->first != l)//= node->children.find(l);
-            child++;
-        TrieNode *c;
-
-        if(child == node->children.end()) {
-            pair<Letter, TrieNode*> n;
-            c = new TrieNode();
-            c->currentWord = INVALID_WORDID;
-            n.first = l;
-            n.second = c;
-            node->children.push_back(n);
-            p->numNodes++;
-        } else {
-            c = child->second;
+        offset searcher = node;
+        //TrieNode *n = (TrieNode*)(p->map + searcher);
+        offset sibl = searcher + sizeof(TrieNode);
+        TriePtrs *ptrs = (TriePtrs*)(p->map + sibl);
+        while(ptrs->sibling != 0 && ptrs->l != l) {
+            sibl = ptrs->sibling;
+            ptrs = (TriePtrs*)(p->map + sibl);
         }
-        assert(c != 0);
-        node = c;
-        i++;
+
+        if(ptrs->l != l)
+            return false;
+        node = ptrs->child;
     }
-    if(node->currentWord == INVALID_WORDID) {
-        node->currentWord = wordID;
-        p->numWords++;
-    }
-    /*
-     * Theoretically there is nothing wrong with adding the same word with
-     * different IDs. In our case it probably means that the word deduplicator
-     * is not working and there is a leak somewhere. So check explicitly.
-     */
-    assert(node->currentWord == wordID);
+    TrieNode *n = (TrieNode*)(p->map+node);
+    if(n->word != INVALID_WORDID)
+        return true;
+    return false;
 }
+
+#if 0
+TrieNode *node = p->root;
+size_t i = 0;
+while(word.length() > i) {
+    Letter l = word[i];
+    ChildListConstIter child = node->children.begin();
+    while(child != node->children.end() && child->first != l)//= node->children.find(l);
+        child++;
+
+    if(child == node->children.end())
+        return false;
+    node = child->second;
+    i++;
+}
+
+if(node->currentWord != INVALID_WORDID) {
+     //assert(node->current_word == word); FIXME, re-enable this.
+     return true;
+ }
+ return false;
 #endif
 
 COL_NAMESPACE_END
