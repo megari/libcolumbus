@@ -77,7 +77,11 @@ void Trie::expand() {
     if(p->map) {
         offset oldSize = p->h->totalSize;
         newSize = oldSize*2;
-        munmap(p->map, oldSize);
+        if(munmap(p->map, oldSize) != 0) {
+            string err = "Munmap failed: ";
+            err += strerror(errno);
+            throw runtime_error(err);
+        }
     } else {
         newSize = 1024;
     }
@@ -86,7 +90,7 @@ void Trie::expand() {
         err += strerror(errno);
         throw runtime_error(err);
     }
-    p->map = (char*)mmap(NULL, newSize, PROT_READ | PROT_WRITE, MAP_PRIVATE,
+    p->map = (char*)mmap(NULL, newSize, PROT_READ | PROT_WRITE, MAP_SHARED,
                   fileno(p->f), 0);
     if(p->map == MAP_FAILED) {
         string err = "MMap failed: ";
@@ -95,15 +99,19 @@ void Trie::expand() {
     }
     p->h = (TrieHeader*)p->map;
     p->h->totalSize = newSize;
+    assert(p->h->totalSize > p->h->firstFree);
 }
 
 offset Trie::append(const char *data, const int size) {
     offset result;
-    while(p->h->firstFree + size >= p->h->totalSize)
+    assert(p->h->totalSize > p->h->firstFree);
+    while(p->h->firstFree + size >= p->h->totalSize) {
         expand();
+    }
     memcpy(p->map + p->h->firstFree, data, size);
     result = p->h->firstFree;
     p->h->firstFree += size;
+    assert(p->h->totalSize > p->h->firstFree);
     return result;
 }
 
