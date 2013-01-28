@@ -25,16 +25,22 @@
 COL_NAMESPACE_START
 
 struct TriePrivate;
+class Word;
+typedef uint32_t offset;
 
 class Trie {
 private:
     TriePrivate *p;
     void expand();
-    void append(const char *data, const int size);
+    offset append(const char *data, const int size);
+    offset addNewSibling(const offset sibling, Letter l);
+    offset addNewNode();
 
 public:
     Trie();
     ~Trie();
+
+    void insertWord(const Word &word, const WordID wordID);
 };
 
 COL_NAMESPACE_END

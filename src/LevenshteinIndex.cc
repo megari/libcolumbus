@@ -61,6 +61,7 @@ struct LevenshteinIndexPrivate {
     size_t numNodes;
     size_t numWords; // How many words are in this index in total.
     size_t longestWordLength; // Longest word that has been added. Same as tree depth.
+    Trie trie;
 };
 
 
@@ -77,7 +78,6 @@ LevenshteinIndex::LevenshteinIndex() {
     p->root->currentWord = INVALID_WORDID;
     p->maxCount = 0;
     p->longestWordLength = 0;
-    Trie dummyJustForTesting;
 }
 
 LevenshteinIndex::~LevenshteinIndex() {
@@ -93,6 +93,7 @@ int LevenshteinIndex::getDefaultError() {
 }
 
 void LevenshteinIndex::insertWord(const Word &word, const WordID wordID) {
+    p->trie.insertWord(word, wordID);
     if(word.length() == 0)
         return;
     auto it = p->wordCounts.find(wordID);
