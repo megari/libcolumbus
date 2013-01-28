@@ -34,14 +34,14 @@ using namespace std;
 COL_NAMESPACE_START
 
 struct TrieHeader {
-    offset totalSize;
-    offset firstFree;
+    trieOffset totalSize;
+    trieOffset firstFree;
 };
 
 struct TriePtrs {
     Letter l;
-    offset child;
-    offset sibling;
+    trieOffset child;
+    trieOffset sibling;
 };
 
 struct TrieNode {
@@ -52,7 +52,7 @@ struct TriePrivate {
     FILE *f;
     char *map;
     TrieHeader *h;
-    offset root;
+    trieOffset root;
 };
 
 Trie::Trie() {
@@ -72,9 +72,9 @@ Trie::~Trie() {
 }
 
 void Trie::expand() {
-    offset newSize;
+    trieOffset newSize;
     if(p->map) {
-        offset oldSize = p->h->totalSize;
+        trieOffset oldSize = p->h->totalSize;
         newSize = oldSize*2;
         if(munmap(p->map, oldSize) != 0) {
             string err = "Munmap failed: ";
@@ -101,8 +101,8 @@ void Trie::expand() {
     assert(p->h->totalSize > p->h->firstFree);
 }
 
-offset Trie::append(const char *data, const int size) {
-    offset result;
+trieOffset Trie::append(const char *data, const int size) {
+    trieOffset result;
     assert(p->h->totalSize > p->h->firstFree);
     while(p->h->firstFree + size >= p->h->totalSize) {
         expand();
@@ -114,10 +114,10 @@ offset Trie::append(const char *data, const int size) {
     return result;
 }
 
-offset Trie::addNewNode() {
+trieOffset Trie::addNewNode() {
     TrieNode n;
     TriePtrs ptr;
-    offset nodeoffset;
+    trieOffset nodeoffset;
     n.word = INVALID_WORDID;
     ptr.child = ptr.sibling = ptr.l = 0;
     nodeoffset = append((char*)&n, sizeof(n));
@@ -125,7 +125,7 @@ offset Trie::addNewNode() {
     return nodeoffset;
 }
 
-offset Trie::addNewSibling(const offset sibling, Letter l) {
+trieOffset Trie::addNewSibling(const trieOffset sibling, Letter l) {
     TriePtrs *last = (TriePtrs*)(p->map + sibling);
     assert(last->sibling == 0);
     TriePtrs ptr;
@@ -138,12 +138,12 @@ offset Trie::addNewSibling(const offset sibling, Letter l) {
 
 void Trie::insertWord(const Word &word, const WordID wordID) {
     size_t i=0;
-    offset node = p->root;
+    trieOffset node = p->root;
     while(word.length() > i) {
         Letter l = word[i];
-        offset searcher = node;
+        trieOffset searcher = node;
         //TrieNode *n = (TrieNode*)(p->map + searcher);
-        offset sibl = searcher + sizeof(TrieNode);
+        trieOffset sibl = searcher + sizeof(TrieNode);
         TriePtrs *ptrs = (TriePtrs*)(p->map + sibl);
         while(ptrs->sibling != 0 && ptrs->l != l) {
             sibl = ptrs->sibling;
@@ -171,11 +171,11 @@ void Trie::insertWord(const Word &word, const WordID wordID) {
 }
 
 bool Trie::hasWord(const Word &word) const {
-    offset node = p->root;
+    trieOffset node = p->root;
     for(size_t i=0; word.length() > i; i++) {
         Letter l = word[i];
-        offset searcher = node;
-        offset sibl = searcher + sizeof(TrieNode);
+        trieOffset searcher = node;
+        trieOffset sibl = searcher + sizeof(TrieNode);
         TriePtrs *ptrs = (TriePtrs*)(p->map + sibl);
         while(ptrs->sibling != 0 && ptrs->l != l) {
             sibl = ptrs->sibling;
@@ -192,33 +192,33 @@ bool Trie::hasWord(const Word &word) const {
     return false;
 }
 
-offset Trie::getRoot() const {
+trieOffset Trie::getRoot() const {
     return p->root;
 }
 
 
-offset Trie::getSiblingList(offset node) const {
+trieOffset Trie::getSiblingList(trieOffset node) const {
     TriePtrs *ptrs = (TriePtrs*)(p->map + node + sizeof(TrieNode));
     return ptrs->sibling;
 
 }
 
-offset Trie::getNextSibling(offset sibling) const {
+trieOffset Trie::getNextSibling(trieOffset sibling) const {
     TriePtrs *ptrs = (TriePtrs*)(p->map + sibling);
     return ptrs->sibling;
 }
 
-Letter Trie::getLetter(offset sibling) const {
+Letter Trie::getLetter(trieOffset sibling) const {
     TriePtrs *ptrs = (TriePtrs*)(p->map + sibling);
     return ptrs->l;
 }
 
-offset Trie::getChild(offset sibling) const {
+trieOffset Trie::getChild(trieOffset sibling) const {
     TriePtrs *ptrs = (TriePtrs*)(p->map + sibling);
     return ptrs->child;
 }
 
-WordID Trie::getWordID(offset node) const {
+WordID Trie::getWordID(trieOffset node) const {
     TrieNode *n = (TrieNode*)(p->map + node);
     return n->word;
 }
