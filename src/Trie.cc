@@ -17,6 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * This class implements a trie as an array. It uses a sparse memory mapped
+ * file for backing storage. This makes it possible to grow the allocation
+ * efficiently with ftruncate.
+ *
+ * The offsets have 32 bits to save memory. 4 gigs of trie should be enough
+ * for everybody.
+ *
+ * This low level bit fiddling makes the code slightly hard to read. It
+ * should still be understandable, though.
+ */
+
 #include"Trie.hh"
 #include"Word.hh"
 #include<sys/mman.h>
