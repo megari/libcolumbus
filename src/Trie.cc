@@ -145,14 +145,16 @@ TrieOffset Trie::addNewNode() {
 }
 
 TrieOffset Trie::addNewSibling(const TrieOffset sibling, Letter l) {
-    TriePtrs *last; // Assign after addNewNode, because it may cause remapping.
+    TriePtrs *last; // Assign only at the end so remappings won't invalidate it.
     TriePtrs ptr;
+    TrieOffset newSibling;
     ptr.l = l;
     ptr.child = addNewNode();
     ptr.sibling = 0;
+    newSibling = append((char*) &ptr, sizeof(ptr));
     last = (TriePtrs*)(p->map + sibling);
     assert(last->sibling == 0);
-    last->sibling = append((char*) &ptr, sizeof(ptr));
+    last->sibling = newSibling;
     return ptr.child;
 }
 

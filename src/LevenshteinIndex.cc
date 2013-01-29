@@ -43,19 +43,9 @@ typedef ChildList::iterator ChildListIter;
 typedef ChildList::const_iterator ChildListConstIter;
 
 
-/*
- * There will be a LOT of these, so it must be small.
- * Vector takes 24 bytes, map 48 and unordered_map 56.
- */
-struct TrieNode {
-    ChildList children;
-    WordID currentWord; // The word that ends in this node.
-};
-
 typedef map<WordID, size_t> WordCount;
 
 struct LevenshteinIndexPrivate {
-    TrieNode *root;
     WordCount wordCounts; // How many times the word has been added to this index.
     size_t maxCount; // How many times the most common word has been added.
     size_t numNodes;
@@ -65,26 +55,13 @@ struct LevenshteinIndexPrivate {
 };
 
 
-void gather_all_nodes(TrieNode *root, vector<TrieNode*> &nodes) {
-    nodes.push_back(root);
-    for(ChildListIter c=root->children.begin(); c != root->children.end(); c++) {
-        gather_all_nodes(c->second, nodes);
-    }
-}
-
 LevenshteinIndex::LevenshteinIndex() {
     p = new LevenshteinIndexPrivate();
-    p->root = new TrieNode();
-    p->root->currentWord = INVALID_WORDID;
     p->maxCount = 0;
     p->longestWordLength = 0;
 }
 
 LevenshteinIndex::~LevenshteinIndex() {
-    vector<TrieNode*> nodes;
-    gather_all_nodes(p->root, nodes);
-    for(size_t i=0; i< nodes.size(); i++)
-        delete nodes[i];
     delete p;
 }
 
