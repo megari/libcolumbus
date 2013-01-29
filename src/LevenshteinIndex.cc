@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <cassert>
 #include <map>
+#include <unordered_map>
 #include <vector>
 #include "LevenshteinIndex.hh"
 #include "ErrorValues.hh"
@@ -43,7 +44,7 @@ typedef ChildList::iterator ChildListIter;
 typedef ChildList::const_iterator ChildListConstIter;
 
 
-typedef map<WordID, size_t> WordCount;
+typedef unordered_map<WordID, size_t> WordCount;
 
 struct LevenshteinIndexPrivate {
     WordCount wordCounts; // How many times the word has been added to this index.

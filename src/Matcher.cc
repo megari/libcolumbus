@@ -41,7 +41,8 @@ using namespace std;
 
 typedef set<DocumentID> DocumentSet;
 typedef map<WordID, LevenshteinIndex*> IndexMap;
-typedef map<WordID, map<WordID, DocumentSet > > ReverseIndex; // Index name, word, documents.
+typedef map<WordID, DocumentSet> WordDocsetIndex;
+typedef map<WordID, WordDocsetIndex > ReverseIndex; // Index name, word, documents.
 
 struct MatcherPrivate {
     IndexMap indexes;
@@ -54,14 +55,14 @@ struct MatcherPrivate {
 
 typedef IndexMap::iterator IndIterator;
 typedef ReverseIndex::iterator RevIndIterator;
-typedef map<WordID, DocumentSet >::iterator RevIterator;
+typedef WordDocsetIndex::iterator RevIterator;
 
 typedef map<WordID, int> MatchErrorMap;
 
 typedef map<WordID, MatchErrorMap> BestIndexMatches;
 
-typedef map<WordID, MatchErrorMap>::iterator MatchIndIterator;
-typedef map<WordID, int>::iterator MatchIterator;
+typedef BestIndexMatches::iterator MatchIndIterator;
+typedef MatchErrorMap::iterator MatchIterator;
 
 /*
  * These are helper functions for Matcher. They are not member functions to avoid polluting the header
@@ -269,7 +270,7 @@ void Matcher::addToReverseIndex(const WordID wordID, const WordID indexID, const
         p->reverseIndex[indexID] = tmp;
         rit = p->reverseIndex.find(indexID);
     }
-    map<WordID, DocumentSet > &indexRind = rit->second;
+    WordDocsetIndex &indexRind = rit->second;
     RevIterator revIt = indexRind.find(wordID);
     if(revIt == indexRind.end()) {
         DocumentSet tmp;
