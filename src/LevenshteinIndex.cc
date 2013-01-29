@@ -174,14 +174,21 @@ bool LevenshteinIndex::hasWord(const Word &word) const {
 }
 
 void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int maxError, IndexMatches &matches) const {
+    trieOffset root;
+    trieOffset sibling;
     ErrorMatrix em(p->longestWordLength+1, query.length()+1,
             e.getDeletionError(), e.getStartInsertionError(query.length()));
 
     assert(em.get(0, 0) == 0);
     if(query.length() > 0)
         assert(em.get(0, 1) == e.getInsertionError());
-    for(ChildListIter i = p->root->children.begin(); i != p->root->children.end(); i++) {
-        searchRecursive(query, i->second, e, i->first, (Letter)0, 1, em, matches, maxError);
+    root = p->trie.getRoot();
+    sibling = p->trie.getSiblingList(root);
+    while(sibling != 0) {
+        Letter l = p->trie.getLetter(sibling);
+        trieOffset nextNode = p->trie.getChild(sibling);
+        searchRecursive(query, nextNode, e, l, (Letter)0, 1, em, matches, maxError);
+        sibling = p->trie.getNextSibling(sibling);
     }
     matches.sort();
 }
@@ -206,7 +213,7 @@ int LevenshteinIndex::findOptimalError(const Letter letter, const Letter previou
     return min(insertError, min(deleteError, min(substituteError, transposeError)));
 }
 
-void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const ErrorValues &e,
+void LevenshteinIndex::searchRecursive(const Word &query, trieOffset node, const ErrorValues &e,
         const Letter letter, const Letter previousLetter, const size_t depth, ErrorMatrix &em,
         IndexMatches &matches, const int maxError) const {
 
@@ -216,12 +223,16 @@ void LevenshteinIndex::searchRecursive(const Word &query, TrieNode *node, const 
     }
 
     // Error row evaluated. Now check if a word was found and continue recursively.
-    if(em.totalError(depth) <= maxError && node->currentWord != INVALID_WORDID) {
-        matches.addMatch(query, node->currentWord, em.totalError(depth));
+    if(em.totalError(depth) <= maxError && p->trie.getWordID(node) != INVALID_WORDID) {
+        matches.addMatch(query, p->trie.getWordID(node), em.totalError(depth));
     }
     if(em.minError(depth) <= maxError) {
-        for(ChildListIter i = node->children.begin(); i != node->children.end(); i++) {
-            searchRecursive(query, i->second, e, i->first, letter, depth+1, em, matches, maxError);
+        trieOffset sibling = p->trie.getSiblingList(node);
+        while(sibling != 0) {
+            Letter l = p->trie.getLetter(sibling);
+            trieOffset nextNode = p->trie.getChild(sibling);
+            searchRecursive(query, nextNode, e, l, letter, depth+1, em, matches, maxError);
+            sibling = p->trie.getNextSibling(sibling);
         }
     }
 }
