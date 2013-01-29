@@ -174,7 +174,7 @@ static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dy
     }
 }
 
-static void gatherMatchedDocuments(MatcherPrivate *p,  map<WordID, MatchErrorMap> &bestIndexMatches, map<DocumentID, double> &matchedDocuments) {
+static void gatherMatchedDocuments(MatcherPrivate *p,  BestIndexMatches &bestIndexMatches, map<DocumentID, double> &matchedDocuments) {
     for(MatchIndIterator it = bestIndexMatches.begin(); it != bestIndexMatches.end(); it++) {
         for(MatchIterator mIt = it->second.begin(); mIt != it->second.end(); mIt++) {
             vector<DocumentID> tmp;
