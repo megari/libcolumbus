@@ -48,6 +48,8 @@ COL_NAMESPACE_START
 struct TrieHeader {
     trieOffset totalSize;
     trieOffset firstFree;
+    uint32_t numWords;
+    uint32_t numNodes;
 };
 
 struct TriePtrs {
@@ -74,6 +76,7 @@ Trie::Trie() {
     expand();
     p->h->firstFree = sizeof(TrieHeader);
     p->root = p->h->firstFree;
+    p->h->numWords = 0;
     addNewNode();
 }
 
@@ -134,6 +137,7 @@ trieOffset Trie::addNewNode() {
     ptr.child = ptr.sibling = ptr.l = 0;
     nodeoffset = append((char*)&n, sizeof(n));
     append((char*)&ptr, sizeof(ptr));
+    p->h->numNodes++;
     return nodeoffset;
 }
 
@@ -172,6 +176,7 @@ void Trie::insertWord(const Word &word, const WordID wordID) {
     TrieNode *final = (TrieNode*)(p->map + node);
     if (final->word == INVALID_WORDID) {
         final->word = wordID;
+        p->h->numWords++;
     }
     /*
      * Theoretically there is nothing wrong with adding the same word with
@@ -238,6 +243,14 @@ WordID Trie::getWordID(trieOffset node) const {
 bool Trie::hasSibling(trieOffset sibling) const {
     TriePtrs *ptrs = (TriePtrs*)(p->map + sibling);
     return ptrs->sibling != 0;
+}
+
+uint32_t Trie::numWords() const {
+    return p->h->numWords;
+}
+
+uint32_t Trie::numNodes() const {
+    return p->h->numNodes;
 }
 
 COL_NAMESPACE_END
