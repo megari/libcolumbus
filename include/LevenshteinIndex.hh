@@ -41,7 +41,6 @@ private:
     void searchRecursive(const Word &query, trieOffset node, const ErrorValues &e,
             const Letter letter, const Letter previousLetter, const size_t depth, ErrorMatrix &em,
             IndexMatches &matches, const int max_error) const;
-    void trieInsert(TrieNode *node, const Word &word, const WordID wordID);
 
     // Disable copy and move.
     LevenshteinIndex(const LevenshteinIndex &other);

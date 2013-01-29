@@ -93,7 +93,6 @@ int LevenshteinIndex::getDefaultError() {
 }
 
 void LevenshteinIndex::insertWord(const Word &word, const WordID wordID) {
-    p->trie.insertWord(word, wordID);
     if(word.length() == 0)
         return;
     auto it = p->wordCounts.find(wordID);
@@ -103,7 +102,7 @@ void LevenshteinIndex::insertWord(const Word &word, const WordID wordID) {
     } else {
         newCount = 1;
     }
-    trieInsert(p->root, word, wordID);
+    p->trie.insertWord(word, wordID);
     p->wordCounts[wordID] = newCount;
     if(word.length() > p->longestWordLength)
         p->longestWordLength = word.length();
@@ -112,65 +111,8 @@ void LevenshteinIndex::insertWord(const Word &word, const WordID wordID) {
     return;
 }
 
-void LevenshteinIndex::trieInsert(TrieNode *node, const Word &word, const WordID wordID) {
-    size_t i = 0;
-    while(word.length() > i) {
-        Letter l = word[i];
-        ChildListIter child = node->children.begin();
-        while(child != node->children.end() && child->first != l)//= node->children.find(l);
-            child++;
-        TrieNode *c;
-
-        if(child == node->children.end()) {
-            pair<Letter, TrieNode*> n;
-            c = new TrieNode();
-            c->currentWord = INVALID_WORDID;
-            n.first = l;
-            n.second = c;
-            node->children.push_back(n);
-            p->numNodes++;
-        } else {
-            c = child->second;
-        }
-        assert(c != 0);
-        node = c;
-        i++;
-    }
-    if(node->currentWord == INVALID_WORDID) {
-        node->currentWord = wordID;
-        p->numWords++;
-    }
-    /*
-     * Theoretically there is nothing wrong with adding the same word with
-     * different IDs. In our case it probably means that the word deduplicator
-     * is not working and there is a leak somewhere. So check explicitly.
-     */
-    assert(node->currentWord == wordID);
-}
-
 bool LevenshteinIndex::hasWord(const Word &word) const {
     return p->trie.hasWord(word);
-    /*
-    TrieNode *node = p->root;
-    size_t i = 0;
-    while(word.length() > i) {
-        Letter l = word[i];
-        ChildListConstIter child = node->children.begin();
-        while(child != node->children.end() && child->first != l)//= node->children.find(l);
-            child++;
-
-        if(child == node->children.end())
-            return false;
-        node = child->second;
-        i++;
-    }
-
-    if(node->currentWord != INVALID_WORDID) {
-         //assert(node->current_word == word); FIXME, re-enable this.
-         return true;
-     }
-     return false;
-     */
 }
 
 void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int maxError, IndexMatches &matches) const {
