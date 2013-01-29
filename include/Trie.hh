@@ -26,15 +26,14 @@ COL_NAMESPACE_START
 
 struct TriePrivate;
 class Word;
-typedef uint32_t trieOffset;
 
 class Trie {
 private:
     TriePrivate *p;
     void expand();
-    trieOffset append(const char *data, const int size);
-    trieOffset addNewSibling(const trieOffset sibling, Letter l);
-    trieOffset addNewNode();
+    TrieOffset append(const char *data, const int size);
+    TrieOffset addNewSibling(const TrieOffset sibling, Letter l);
+    TrieOffset addNewNode();
 
 public:
     Trie();
@@ -42,13 +41,13 @@ public:
 
     bool hasWord(const Word &word) const;
     void insertWord(const Word &word, const WordID wordID);
-    trieOffset getRoot() const;
-    trieOffset getSiblingList(trieOffset node) const;
-    trieOffset getNextSibling(trieOffset sibling) const;
-    Letter getLetter(trieOffset sibling) const;
-    trieOffset getChild(trieOffset sibling) const;
-    WordID getWordID(trieOffset node) const;
-    bool hasSibling(trieOffset sibling) const;
+    TrieOffset getRoot() const;
+    TrieOffset getSiblingList(TrieOffset node) const;
+    TrieOffset getNextSibling(TrieOffset sibling) const;
+    Letter getLetter(TrieOffset sibling) const;
+    TrieOffset getChild(TrieOffset sibling) const;
+    WordID getWordID(TrieOffset node) const;
+    bool hasSibling(TrieOffset sibling) const;
 
     size_t numWords() const;
     size_t numNodes() const;

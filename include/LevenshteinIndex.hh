@@ -32,13 +32,11 @@ class ErrorMatrix;
 class Word;
 class ErrorValues;
 
-typedef uint32_t trieOffset; // FIXME, move this.
-
 class COL_PUBLIC LevenshteinIndex {
 private:
     LevenshteinIndexPrivate *p;
 
-    void searchRecursive(const Word &query, trieOffset node, const ErrorValues &e,
+    void searchRecursive(const Word &query, TrieOffset node, const ErrorValues &e,
             const Letter letter, const Letter previousLetter, const size_t depth, ErrorMatrix &em,
             IndexMatches &matches, const int max_error) const;
 

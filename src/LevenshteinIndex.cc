@@ -116,8 +116,8 @@ bool LevenshteinIndex::hasWord(const Word &word) const {
 }
 
 void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const int maxError, IndexMatches &matches) const {
-    trieOffset root;
-    trieOffset sibling;
+    TrieOffset root;
+    TrieOffset sibling;
     ErrorMatrix em(p->longestWordLength+1, query.length()+1,
             e.getDeletionError(), e.getStartInsertionError(query.length()));
 
@@ -128,7 +128,7 @@ void LevenshteinIndex::findWords(const Word &query, const ErrorValues &e, const 
     sibling = p->trie.getSiblingList(root);
     while(sibling != 0) {
         Letter l = p->trie.getLetter(sibling);
-        trieOffset nextNode = p->trie.getChild(sibling);
+        TrieOffset nextNode = p->trie.getChild(sibling);
         searchRecursive(query, nextNode, e, l, (Letter)0, 1, em, matches, maxError);
         sibling = p->trie.getNextSibling(sibling);
     }
@@ -155,7 +155,7 @@ int LevenshteinIndex::findOptimalError(const Letter letter, const Letter previou
     return min(insertError, min(deleteError, min(substituteError, transposeError)));
 }
 
-void LevenshteinIndex::searchRecursive(const Word &query, trieOffset node, const ErrorValues &e,
+void LevenshteinIndex::searchRecursive(const Word &query, TrieOffset node, const ErrorValues &e,
         const Letter letter, const Letter previousLetter, const size_t depth, ErrorMatrix &em,
         IndexMatches &matches, const int maxError) const {
 
@@ -169,10 +169,10 @@ void LevenshteinIndex::searchRecursive(const Word &query, trieOffset node, const
         matches.addMatch(query, p->trie.getWordID(node), em.totalError(depth));
     }
     if(em.minError(depth) <= maxError) {
-        trieOffset sibling = p->trie.getSiblingList(node);
+        TrieOffset sibling = p->trie.getSiblingList(node);
         while(sibling != 0) {
             Letter l = p->trie.getLetter(sibling);
-            trieOffset nextNode = p->trie.getChild(sibling);
+            TrieOffset nextNode = p->trie.getChild(sibling);
             searchRecursive(query, nextNode, e, l, letter, depth+1, em, matches, maxError);
             sibling = p->trie.getNextSibling(sibling);
         }
