@@ -142,12 +142,13 @@ trieOffset Trie::addNewNode() {
 }
 
 trieOffset Trie::addNewSibling(const trieOffset sibling, Letter l) {
-    TriePtrs *last = (TriePtrs*)(p->map + sibling);
-    assert(last->sibling == 0);
+    TriePtrs *last; // Assign after addNewNode, because it may cause remapping.
     TriePtrs ptr;
     ptr.l = l;
     ptr.child = addNewNode();
     ptr.sibling = 0;
+    last = (TriePtrs*)(p->map + sibling);
+    assert(last->sibling == 0);
     last->sibling = append((char*) &ptr, sizeof(ptr));
     return ptr.child;
 }
@@ -245,11 +246,11 @@ bool Trie::hasSibling(trieOffset sibling) const {
     return ptrs->sibling != 0;
 }
 
-uint32_t Trie::numWords() const {
+size_t Trie::numWords() const {
     return p->h->numWords;
 }
 
-uint32_t Trie::numNodes() const {
+size_t Trie::numNodes() const {
     return p->h->numNodes;
 }
 

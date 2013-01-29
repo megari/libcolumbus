@@ -50,8 +50,8 @@ public:
     WordID getWordID(trieOffset node) const;
     bool hasSibling(trieOffset sibling) const;
 
-    uint32_t numWords() const;
-    uint32_t numNodes() const;
+    size_t numWords() const;
+    size_t numNodes() const;
 };
 
 COL_NAMESPACE_END

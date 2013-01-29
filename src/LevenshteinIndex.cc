@@ -249,11 +249,11 @@ size_t LevenshteinIndex::maxCount() const {
 }
 
 size_t LevenshteinIndex::numNodes() const {
-    return p->numNodes;
+    return p->trie.numNodes();
 }
 
 size_t LevenshteinIndex::numWords() const {
-    return p->numWords;
+    return p->trie.numWords();
 }
 
 COL_NAMESPACE_END
