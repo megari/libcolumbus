@@ -111,6 +111,9 @@ void Trie::expand() {
         err += strerror(errno);
         throw runtime_error(err);
     }
+    if(madvise(p->map, newSize, MADV_RANDOM | MADV_WILLNEED) != 0) {
+        fprintf(stderr, "Problem with madvise: %s\n", strerror(errno));
+    }
     p->h = (TrieHeader*)p->map;
     p->h->totalSize = newSize;
     assert(p->h->totalSize > p->h->firstFree);
