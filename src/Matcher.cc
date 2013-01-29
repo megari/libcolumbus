@@ -35,14 +35,15 @@
 #include <stdexcept>
 #include <set>
 #include <map>
+#include <unordered_map>
 
 COL_NAMESPACE_START
 using namespace std;
 
 typedef set<DocumentID> DocumentSet;
-typedef map<WordID, LevenshteinIndex*> IndexMap;
-typedef map<WordID, DocumentSet> WordDocsetIndex;
-typedef map<WordID, WordDocsetIndex > ReverseIndex; // Index name, word, documents.
+typedef unordered_map<WordID, LevenshteinIndex*> IndexMap;
+typedef unordered_map<WordID, DocumentSet> WordDocsetIndex;
+typedef unordered_map<WordID, WordDocsetIndex > ReverseIndex; // Index name, word, documents.
 
 struct MatcherPrivate {
     IndexMap indexes;
@@ -143,7 +144,7 @@ static void findDocuments(MatcherPrivate *p, const WordID wordID, const WordID f
     RevIndIterator it = p->reverseIndex.find(fieldID);
     if(it == p->reverseIndex.end())
         return;
-    map<WordID, DocumentSet > &rind = it->second;
+    WordDocsetIndex &rind = it->second;
     RevIterator s = rind.find(wordID);
     if(s == rind.end())
         return;
@@ -266,7 +267,7 @@ void Matcher::addToIndex(const Word &word, const WordID wordID, const WordID ind
 void Matcher::addToReverseIndex(const WordID wordID, const WordID indexID, const Document *d) {
     RevIndIterator rit = p->reverseIndex.find(indexID);
     if(rit == p->reverseIndex.end()) {
-        map<WordID, DocumentSet > tmp;
+        WordDocsetIndex tmp;
         p->reverseIndex[indexID] = tmp;
         rit = p->reverseIndex.find(indexID);
     }
