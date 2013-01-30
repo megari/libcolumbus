@@ -19,9 +19,10 @@
 
 #include "WordStore.hh"
 #include "Word.hh"
-#include <map>
 #include <vector>
 #include <stdexcept>
+
+#include <map>
 
 COL_NAMESPACE_START
 using namespace std;
@@ -41,7 +42,7 @@ WordStore::~WordStore() {
 }
 
 WordID WordStore::getID(const Word &w) {
-    map<Word, WordID>::const_iterator it = p->wordList.find(w);
+    auto it = p->wordList.find(w);
     if(it != p->wordList.end())
         return it->second;
     p->wordIndex.push_back(w);

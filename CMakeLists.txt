@@ -69,6 +69,13 @@ else()
   set(LETTER_TYPE "uint16_t")
 endif()  
 
+find_file(HAS_SPARSE_HASH "google/sparse_hash_map")
+if(HAS_SPARSE_HASH)
+  message(STATUS "Using sparse hash.")
+else()
+  message(STATUS "Sparse hash not found, using regular hash.")
+endif()
+
 # Only required on some platforms.
 # If not found, that's ok.
 find_library(ICONV_LIBRARIES iconv)

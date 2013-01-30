@@ -28,13 +28,21 @@
 #include <stdio.h>
 #include <cassert>
 #include <map>
-#include <unordered_map>
 #include <vector>
 #include "LevenshteinIndex.hh"
 #include "ErrorValues.hh"
 #include "Word.hh"
 #include "ErrorMatrix.hh"
 #include "Trie.hh"
+
+#ifdef HAS_SPARSE_HASH
+#include <google/sparse_hash_map>
+using google::sparse_hash_map;
+#define hashmap sparse_hash_map
+#else
+#include <unordered_map>
+#define hashmap unordered_map
+#endif
 
 COL_NAMESPACE_START
 using namespace std;
@@ -43,8 +51,8 @@ typedef vector<pair<Letter, TrieNode*> > ChildList;
 typedef ChildList::iterator ChildListIter;
 typedef ChildList::const_iterator ChildListConstIter;
 
+typedef hashmap<WordID, size_t> WordCount;
 
-typedef unordered_map<WordID, size_t> WordCount;
 
 struct LevenshteinIndexPrivate {
     WordCount wordCounts; // How many times the word has been added to this index.

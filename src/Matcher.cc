@@ -33,17 +33,29 @@
 #include "ResultFilter.hh"
 #include <cassert>
 #include <stdexcept>
-#include <set>
 #include <map>
+
+#ifdef HAS_SPARSE_HASH
+#include <google/sparse_hash_map>
+#include <google/sparse_hash_set>
+using google::sparse_hash_map;
+using google::sparse_hash_set;
+#define hashmap sparse_hash_map
+#define hashset sparse_hash_set
+#else
 #include <unordered_map>
+#include <unordered_set>
+#define hashmap unordered_map
+#define hashset unordered_set
+#endif
 
 COL_NAMESPACE_START
 using namespace std;
 
-typedef set<DocumentID> DocumentSet;
-typedef unordered_map<WordID, LevenshteinIndex*> IndexMap;
-typedef unordered_map<WordID, DocumentSet> WordDocsetIndex;
-typedef unordered_map<WordID, WordDocsetIndex > ReverseIndex; // Index name, word, documents.
+typedef hashset<DocumentID> DocumentSet;
+typedef hashmap<WordID, LevenshteinIndex*> IndexMap;
+typedef hashmap<WordID, DocumentSet> WordDocsetIndex;
+typedef hashmap<WordID, WordDocsetIndex > ReverseIndex; // Index name, word, documents.
 
 struct MatcherPrivate {
     IndexMap indexes;

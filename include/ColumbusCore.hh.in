@@ -88,4 +88,6 @@ typedef uintptr_t DocumentID;
 
 typedef uint32_t TrieOffset;
 
+#cmakedefine HAS_SPARSE_HASH
+
 #endif
