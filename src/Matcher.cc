@@ -55,12 +55,10 @@ using namespace std;
 
 typedef hashset<DocumentID> DocumentSet;
 typedef hashmap<WordID, LevenshteinIndex*> IndexMap;
-typedef hashmap<WordID, DocumentSet> WordDocsetIndex;
-typedef hashmap<WordID, WordDocsetIndex > ReverseIndexData; // Index name, word, documents.
+typedef map<std::pair<WordID, WordID>, DocumentSet > ReverseIndexData; // Index name, word, documents.
 
 typedef IndexMap::iterator IndIterator;
 typedef ReverseIndexData::iterator RevIndIterator;
-typedef WordDocsetIndex::iterator RevIterator;
 
 typedef map<WordID, int> MatchErrorMap;
 
@@ -74,9 +72,9 @@ private:
     ReverseIndexData reverseIndex;
 public:
 
-    void add(const WordID wordID, const WordID indexID, const Document *d);
-    bool documentHasTerm(DocumentID id, const WordID indexID, const WordID valueID);
-    void findDocuments(MatcherPrivate *p, const WordID wordID, const WordID fieldID, std::vector<DocumentID> &result);
+    void add(const WordID wordID, const WordID indexID, const DocumentID id);
+    bool documentHasTerm(const WordID indexID, const WordID valueI, DocumentID id);
+    void findDocuments(const WordID wordID, const WordID fieldID, std::vector<DocumentID> &result);
 };
 
 struct MatcherPrivate {
@@ -88,46 +86,39 @@ struct MatcherPrivate {
     WordStore store;
 };
 
-void ReverseIndex::add(const WordID wordID, const WordID indexID, const Document *d) {
-    RevIndIterator rit = reverseIndex.find(indexID);
-    if(rit == reverseIndex.end()) {
-        WordDocsetIndex tmp;
-        reverseIndex[indexID] = tmp;
-        rit = reverseIndex.find(indexID);
-    }
-    WordDocsetIndex &indexRind = rit->second;
-    RevIterator revIt = indexRind.find(wordID);
-    if(revIt == indexRind.end()) {
+void ReverseIndex::add(const WordID wordID, const WordID indexID, const DocumentID id) {
+    pair<WordID, WordID> p;
+    p.first = indexID;
+    p.second = wordID;
+    auto revIt = reverseIndex.find(p);
+    if(revIt == reverseIndex.end()) {
         DocumentSet tmp;
-        tmp.insert(d->getID());
-        indexRind[wordID] = tmp;
+        tmp.insert(id);
+        reverseIndex[p] = tmp;
     } else {
-        DocumentID tmp = d->getID();
-        revIt->second.insert(tmp);
+        revIt->second.insert(id);
     }
 
 }
 
-bool ReverseIndex::documentHasTerm(DocumentID id, const WordID indexID, const WordID valueID) {
-    const RevIndIterator rind = reverseIndex.find(indexID);
-    if(rind == reverseIndex.end())
+bool ReverseIndex::documentHasTerm(const WordID indexID, const WordID valueID, DocumentID id) {
+    pair<WordID, WordID> p;
+    p.first = indexID;
+    p.second = valueID;
+    auto revIt = reverseIndex.find(p);
+    if(revIt == reverseIndex.end())
         return false;
-    RevIterator rev = rind->second.find(valueID);
-    if(rev == rind->second.end())
-        return false;
-    return rev->second.find(id) != rev->second.end();
+    return revIt->second.find(id) != revIt->second.end();
 }
 
-void ReverseIndex::findDocuments(MatcherPrivate *p, const WordID wordID, const WordID fieldID, std::vector<DocumentID> &result) {
-    IndexMatches im;
-    RevIndIterator it = reverseIndex.find(fieldID);
-    if(it == reverseIndex.end())
+void ReverseIndex::findDocuments(const WordID wordID, const WordID fieldID, std::vector<DocumentID> &result) {
+    pair<WordID, WordID> p;
+    p.first = fieldID;
+    p.second = wordID;
+    auto revIt = reverseIndex.find(p);
+    if(revIt == reverseIndex.end())
         return;
-    WordDocsetIndex &rind = it->second;
-    RevIterator s = rind.find(wordID);
-    if(s == rind.end())
-        return;
-    DocumentSet &docSet = s->second;
+    DocumentSet &docSet = revIt->second;
     for(auto docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
         result.push_back(*docIter);
     }
@@ -214,7 +205,7 @@ static void gatherMatchedDocuments(MatcherPrivate *p,  BestIndexMatches &bestInd
     for(MatchIndIterator it = bestIndexMatches.begin(); it != bestIndexMatches.end(); it++) {
         for(MatchIterator mIt = it->second.begin(); mIt != it->second.end(); mIt++) {
             vector<DocumentID> tmp;
-            p->reverseIndex.findDocuments(p, mIt->first, it->first, tmp);
+            p->reverseIndex.findDocuments(mIt->first, it->first, tmp);
             debugMessage("Exact searched \"%s\" in field \"%s\", which was found in %lu documents.\n",
                     p->store.getWord(mIt->first).asUtf8().c_str(),
                     p->store.getWord(it->first).asUtf8().c_str(), (unsigned long)tmp.size());
@@ -282,7 +273,7 @@ void Matcher::buildIndexes(const Corpus &c) {
                 p->stats.wordProcessed(wordID);
                 addToIndex(word, wordID, fieldID);
                 p->stats.addedWordToIndex(wordID, fieldName);
-                p->reverseIndex.add(wordID, fieldID, &d);
+                p->reverseIndex.add(wordID, fieldID, d.getID());
             }
         }
     }
@@ -356,8 +347,8 @@ static bool subtermsMatch(MatcherPrivate *p, const ResultFilter &filter, size_t 
     for(size_t subTerm=0; subTerm < filter.numSubTerms(term); subTerm++) {
         const Word &filterName = filter.getField(term, subTerm);
         const Word &value = filter.getWord(term, subTerm);
-        bool termFound = p->reverseIndex.documentHasTerm(id,
-                p->store.getID(filterName), p->store.getID(value));
+        bool termFound = p->reverseIndex.documentHasTerm(
+                p->store.getID(filterName), p->store.getID(value), id);
         if(!termFound) {
             return false;
         }
