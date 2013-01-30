@@ -73,8 +73,8 @@ private:
 public:
 
     void add(const WordID wordID, const WordID indexID, const DocumentID id);
-    bool documentHasTerm(const WordID indexID, const WordID valueI, DocumentID id);
-    void findDocuments(const WordID wordID, const WordID fieldID, std::vector<DocumentID> &result);
+    bool documentHasTerm(const WordID wordID, const WordID indexID, DocumentID id);
+    void findDocuments(const WordID wordID, const WordID indexID, std::vector<DocumentID> &result);
 };
 
 struct MatcherPrivate {
@@ -101,19 +101,19 @@ void ReverseIndex::add(const WordID wordID, const WordID indexID, const Document
 
 }
 
-bool ReverseIndex::documentHasTerm(const WordID indexID, const WordID valueID, DocumentID id) {
+bool ReverseIndex::documentHasTerm(const WordID wordID, const WordID indexID, DocumentID id) {
     pair<WordID, WordID> p;
     p.first = indexID;
-    p.second = valueID;
+    p.second = wordID;
     auto revIt = reverseIndex.find(p);
     if(revIt == reverseIndex.end())
         return false;
     return revIt->second.find(id) != revIt->second.end();
 }
 
-void ReverseIndex::findDocuments(const WordID wordID, const WordID fieldID, std::vector<DocumentID> &result) {
+void ReverseIndex::findDocuments(const WordID wordID, const WordID indexID, std::vector<DocumentID> &result) {
     pair<WordID, WordID> p;
-    p.first = fieldID;
+    p.first = indexID;
     p.second = wordID;
     auto revIt = reverseIndex.find(p);
     if(revIt == reverseIndex.end())
@@ -348,7 +348,7 @@ static bool subtermsMatch(MatcherPrivate *p, const ResultFilter &filter, size_t 
         const Word &filterName = filter.getField(term, subTerm);
         const Word &value = filter.getWord(term, subTerm);
         bool termFound = p->reverseIndex.documentHasTerm(
-                p->store.getID(filterName), p->store.getID(value), id);
+                p->store.getID(value), p->store.getID(filterName), id);
         if(!termFound) {
             return false;
         }
