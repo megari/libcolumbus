@@ -41,11 +41,6 @@ private:
     void duplicateFrom(const Word &w);
     void convertString(const char *utf8Word);
 
-    static size_t rands[256];
-    static bool rands_initialized;
-
-    static void init_rands();
-
 public:
     Word();
     Word(const Word &w);
