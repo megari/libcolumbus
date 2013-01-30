@@ -56,7 +56,28 @@ using namespace std;
 typedef hashset<DocumentID> DocumentSet;
 typedef hashmap<WordID, LevenshteinIndex*> IndexMap;
 typedef hashmap<WordID, DocumentSet> WordDocsetIndex;
-typedef hashmap<WordID, WordDocsetIndex > ReverseIndex; // Index name, word, documents.
+typedef hashmap<WordID, WordDocsetIndex > ReverseIndexData; // Index name, word, documents.
+
+typedef IndexMap::iterator IndIterator;
+typedef ReverseIndexData::iterator RevIndIterator;
+typedef WordDocsetIndex::iterator RevIterator;
+
+typedef map<WordID, int> MatchErrorMap;
+
+typedef map<WordID, MatchErrorMap> BestIndexMatches;
+
+typedef BestIndexMatches::iterator MatchIndIterator;
+typedef MatchErrorMap::iterator MatchIterator;
+
+class ReverseIndex {
+private:
+    ReverseIndexData reverseIndex;
+public:
+
+    void add(const WordID wordID, const WordID indexID, const Document *d);
+    bool documentHasTerm(DocumentID id, const WordID indexID, const WordID valueID);
+    void findDocuments(MatcherPrivate *p, const WordID wordID, const WordID fieldID, std::vector<DocumentID> &result);
+};
 
 struct MatcherPrivate {
     IndexMap indexes;
@@ -67,40 +88,56 @@ struct MatcherPrivate {
     WordStore store;
 };
 
-typedef IndexMap::iterator IndIterator;
-typedef ReverseIndex::iterator RevIndIterator;
-typedef WordDocsetIndex::iterator RevIterator;
+void ReverseIndex::add(const WordID wordID, const WordID indexID, const Document *d) {
+    RevIndIterator rit = reverseIndex.find(indexID);
+    if(rit == reverseIndex.end()) {
+        WordDocsetIndex tmp;
+        reverseIndex[indexID] = tmp;
+        rit = reverseIndex.find(indexID);
+    }
+    WordDocsetIndex &indexRind = rit->second;
+    RevIterator revIt = indexRind.find(wordID);
+    if(revIt == indexRind.end()) {
+        DocumentSet tmp;
+        tmp.insert(d->getID());
+        indexRind[wordID] = tmp;
+    } else {
+        DocumentID tmp = d->getID();
+        revIt->second.insert(tmp);
+    }
 
-typedef map<WordID, int> MatchErrorMap;
+}
 
-typedef map<WordID, MatchErrorMap> BestIndexMatches;
+bool ReverseIndex::documentHasTerm(DocumentID id, const WordID indexID, const WordID valueID) {
+    const RevIndIterator rind = reverseIndex.find(indexID);
+    if(rind == reverseIndex.end())
+        return false;
+    RevIterator rev = rind->second.find(valueID);
+    if(rev == rind->second.end())
+        return false;
+    return rev->second.find(id) != rev->second.end();
+}
 
-typedef BestIndexMatches::iterator MatchIndIterator;
-typedef MatchErrorMap::iterator MatchIterator;
+void ReverseIndex::findDocuments(MatcherPrivate *p, const WordID wordID, const WordID fieldID, std::vector<DocumentID> &result) {
+    IndexMatches im;
+    RevIndIterator it = reverseIndex.find(fieldID);
+    if(it == reverseIndex.end())
+        return;
+    WordDocsetIndex &rind = it->second;
+    RevIterator s = rind.find(wordID);
+    if(s == rind.end())
+        return;
+    DocumentSet &docSet = s->second;
+    for(auto docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
+        result.push_back(*docIter);
+    }
+}
 
 /*
  * These are helper functions for Matcher. They are not member functions to avoid polluting the header
  * with STL includes.
  */
 
-static bool documentHasTerm(MatcherPrivate *p, DocumentID id, const Word &indexName, const Word &value) {
-    try {
-        WordID indexID = p->store.getID(indexName);
-        WordID valueID = p->store.getID(value);
-        RevIndIterator rind = p->reverseIndex.find(indexID);
-        if(rind == p->reverseIndex.end())
-            return false;
-        RevIterator rev = rind->second.find(valueID);
-        if(rev == rind->second.end())
-            return false;
-        return rev->second.find(id) != rev->second.end();
-    } catch(out_of_range &e) {
-        // The return command would be here, but it had to be moved
-        // below outside this block to shut the compiler up about
-        // this function not having a return statement.
-    }
-    return false;
-}
 
 static int getDynamicError(const Word &w) {
     size_t len = w.length();
@@ -152,20 +189,6 @@ static double calculateRelevancy(MatcherPrivate *p, const WordID wID, const Word
     return errorMultiplier*frequencyMultiplier*indexWeightMultiplier;
 }
 
-static void findDocuments(MatcherPrivate *p, const WordID wordID, const WordID fieldID, std::vector<DocumentID> &result) {
-    IndexMatches im;
-    RevIndIterator it = p->reverseIndex.find(fieldID);
-    if(it == p->reverseIndex.end())
-        return;
-    WordDocsetIndex &rind = it->second;
-    RevIterator s = rind.find(wordID);
-    if(s == rind.end())
-        return;
-    DocumentSet &docSet = s->second;
-    for(auto docIter = docSet.begin(); docIter != docSet.end(); docIter++) {
-        result.push_back(*docIter);
-    }
-}
 
 static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dynamicError, const int extraError, BestIndexMatches &bestIndexMatches) {
     for(size_t i=0; i<query.size(); i++) {
@@ -191,7 +214,7 @@ static void gatherMatchedDocuments(MatcherPrivate *p,  BestIndexMatches &bestInd
     for(MatchIndIterator it = bestIndexMatches.begin(); it != bestIndexMatches.end(); it++) {
         for(MatchIterator mIt = it->second.begin(); mIt != it->second.end(); mIt++) {
             vector<DocumentID> tmp;
-            findDocuments(p, mIt->first, it->first, tmp);
+            p->reverseIndex.findDocuments(p, mIt->first, it->first, tmp);
             debugMessage("Exact searched \"%s\" in field \"%s\", which was found in %lu documents.\n",
                     p->store.getWord(mIt->first).asUtf8().c_str(),
                     p->store.getWord(it->first).asUtf8().c_str(), (unsigned long)tmp.size());
@@ -259,7 +282,7 @@ void Matcher::buildIndexes(const Corpus &c) {
                 p->stats.wordProcessed(wordID);
                 addToIndex(word, wordID, fieldID);
                 p->stats.addedWordToIndex(wordID, fieldName);
-                addToReverseIndex(wordID, fieldID, &d);
+                p->reverseIndex.add(wordID, fieldID, &d);
             }
         }
     }
@@ -277,24 +300,6 @@ void Matcher::addToIndex(const Word &word, const WordID wordID, const WordID ind
     target->insertWord(word, wordID);
 }
 
-void Matcher::addToReverseIndex(const WordID wordID, const WordID indexID, const Document *d) {
-    RevIndIterator rit = p->reverseIndex.find(indexID);
-    if(rit == p->reverseIndex.end()) {
-        WordDocsetIndex tmp;
-        p->reverseIndex[indexID] = tmp;
-        rit = p->reverseIndex.find(indexID);
-    }
-    WordDocsetIndex &indexRind = rit->second;
-    RevIterator revIt = indexRind.find(wordID);
-    if(revIt == indexRind.end()) {
-        DocumentSet tmp;
-        tmp.insert(d->getID());
-        indexRind[wordID] = tmp;
-    } else {
-        DocumentID tmp = d->getID();
-        revIt->second.insert(tmp);
-    }
-}
 
 void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError, const int extraError, MatchResults &matchedDocuments) {
     map<DocumentID, double> docs;
@@ -351,7 +356,8 @@ static bool subtermsMatch(MatcherPrivate *p, const ResultFilter &filter, size_t 
     for(size_t subTerm=0; subTerm < filter.numSubTerms(term); subTerm++) {
         const Word &filterName = filter.getField(term, subTerm);
         const Word &value = filter.getWord(term, subTerm);
-        bool termFound = documentHasTerm(p, id, filterName, value);
+        bool termFound = p->reverseIndex.documentHasTerm(id,
+                p->store.getID(filterName), p->store.getID(value));
         if(!termFound) {
             return false;
         }
