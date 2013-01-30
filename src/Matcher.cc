@@ -53,9 +53,21 @@ using google::sparse_hash_set;
 COL_NAMESPACE_START
 using namespace std;
 
+struct idhasher : std::unary_function<const pair<WordID, WordID>, size_t> {
+    size_t operator() ( const pair<WordID, WordID> &p) const {
+        size_t w1 = p.first;
+        size_t w2 = p.second;
+        if(sizeof(size_t) > sizeof(WordID)) {
+            return (w1 << 32) | w2; // Assuming size_t is 64 bits.
+        } else {
+            return w1 ^ w2;
+        }
+    }
+};
+
 typedef hashset<DocumentID> DocumentSet;
 typedef hashmap<WordID, LevenshteinIndex*> IndexMap;
-typedef map<std::pair<WordID, WordID>, DocumentSet > ReverseIndexData; // Index name, word, documents.
+typedef hashmap<std::pair<WordID, WordID>, DocumentSet, idhasher > ReverseIndexData; // Index name, word, documents.
 
 typedef IndexMap::iterator IndIterator;
 typedef ReverseIndexData::iterator RevIndIterator;
@@ -66,6 +78,7 @@ typedef map<WordID, MatchErrorMap> BestIndexMatches;
 
 typedef BestIndexMatches::iterator MatchIndIterator;
 typedef MatchErrorMap::iterator MatchIterator;
+
 
 class ReverseIndex {
 private:
