@@ -41,6 +41,11 @@ private:
     void duplicateFrom(const Word &w);
     void convertString(const char *utf8Word);
 
+    static size_t rands[256];
+    static bool rands_initialized;
+
+    static void init_rands();
+
 public:
     Word();
     Word(const Word &w);
@@ -67,6 +72,8 @@ public:
     Word& operator=(Word &&w);
     Word& operator=(const char *utf8Word);
     Word& operator=(const std::string &utf8Str);
+
+    size_t hash() const;
 
     friend class LevenshteinIndex;
 };

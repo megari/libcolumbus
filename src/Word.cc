@@ -28,6 +28,9 @@ using namespace std;
 
 COL_NAMESPACE_START
 
+size_t Word::rands[256];
+bool Word::rands_initialized;
+
 Word::Word() : text(0), len(0){
 
 }
@@ -201,6 +204,30 @@ Word& Word::operator=(const char *utf8Word) {
 
 Word& Word::operator=(const string &utf8Str) {
     return *this = utf8Str.c_str();
+}
+
+/*
+ * This should be in a read-only array but since size_t
+ * can be of different sizes on different platforms, this
+ * is easier.
+ */
+
+void Word::init_rands() {
+    unsigned char *arr = (unsigned char*) Word::rands;
+    for(unsigned int i=0; i<256*sizeof(size_t); i++) {
+        arr[i] = (unsigned char) random();
+    }
+    rands_initialized = true;
+}
+
+size_t Word::hash() const {
+    size_t result = 0;
+    unsigned char *arr = (unsigned char*) text;
+    if(!rands_initialized)
+        init_rands();
+    for(size_t i=0; i<len*sizeof(Letter); i++)
+        result ^= rands[arr[i]];
+    return result;
 }
 
 COL_NAMESPACE_END

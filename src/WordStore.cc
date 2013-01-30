@@ -22,13 +22,19 @@
 #include <vector>
 #include <stdexcept>
 
-#include <map>
+#include <unordered_map>
 
 COL_NAMESPACE_START
 using namespace std;
 
+struct hasher : std::unary_function<const Word&, std::size_t> {
+    size_t operator() ( const Word &obj) const {
+        return obj.hash();
+    }
+};
+
 struct WordStorePrivate {
-    map<Word, WordID> wordList;
+    unordered_map<Word, WordID, hasher> wordList;
     vector<Word> wordIndex; // The Word object is duplicated here. It should be fixed.
 };
 
