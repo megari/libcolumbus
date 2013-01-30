@@ -21,11 +21,15 @@
 #include "Word.hh"
 #include <vector>
 #include <stdexcept>
-
-#include <unordered_map>
+#include <map>
 
 COL_NAMESPACE_START
 using namespace std;
+
+/*
+ * Wordstore turned out to be too slow when used with
+ * sparse_maps or unordered_maps.
+ */
 
 struct hasher : std::unary_function<const Word&, std::size_t> {
     size_t operator() ( const Word &obj) const {
@@ -34,7 +38,7 @@ struct hasher : std::unary_function<const Word&, std::size_t> {
 };
 
 struct WordStorePrivate {
-    unordered_map<Word, WordID, hasher> wordList;
+    map<Word, WordID> wordList;
     vector<Word> wordIndex; // The Word object is duplicated here. It should be fixed.
 };
 

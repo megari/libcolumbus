@@ -18,14 +18,22 @@
  */
 
 #include "Word.hh"
-#include <map>
 #include "MatcherStatistics.hh"
+
+#ifdef HAS_SPARSE_HASH
+#include <google/sparse_hash_map>
+using google::sparse_hash_map;
+#define hashmap sparse_hash_map
+#else
+#include <unordered_map>
+#define hashmap unordered_map
+#endif
 
 COL_NAMESPACE_START
 using namespace std;
 
 struct MatcherStatisticsPrivate {
-    map<WordID, size_t> totalWordCounts;
+    hashmap<WordID, size_t> totalWordCounts;
 };
 
 MatcherStatistics::MatcherStatistics() {

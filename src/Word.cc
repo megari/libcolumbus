@@ -28,8 +28,8 @@ using namespace std;
 
 COL_NAMESPACE_START
 
-static_assert(sizeof(size_t) <= sizeof(uint64_t), "Fuufuu");
-const static uint64_t rands[256] = {
+static_assert(sizeof(size_t) <= sizeof(uint64_t), "Wow, you are running a 128 bit platform. Respect!");
+const static uint64_t randomNumbers[256] = {
 0x31d04490f9cd0152, 0xcfd220f4878a1427, 0x9b2dd113758d9e8a, 0x35a4419e88a812d5, 0x9f9743e9ee40cd55, 0x7038be807e85f27f, 0x9ca0e3499edabe60, 0x9b3e409e7ffbe39f,
 0xc58155e5a1e164e0, 0x1f3f0823c9670283, 0xddc1ff4e8431766f, 0xf708145c12c3a474, 0x1bd343edebb746e8, 0x59363d26f1d34003, 0xade2044c51ce1ab5, 0x86c0607a613fa4e6,
 0x4751cef8b5647cf1, 0x618cdd1beaba96a6, 0x9a5616eed71a1b05, 0x90fffcf56ab61b54, 0xc7b408b8542bf4f9, 0x64d8fba24eed76cd, 0x483d04576118f39b,  0x5c9534dee689698,
@@ -217,7 +217,7 @@ Word& Word::operator=(const string &utf8Str) {
 
 size_t Word::hash() const {
     size_t result = 0;
-    const size_t *nums = (const size_t*) rands;
+    const size_t *nums = (const size_t*) randomNumbers;
     unsigned char *arr = (unsigned char*) text;
     for(size_t i=0; i<len*sizeof(Letter); i++)
         result ^= nums[arr[i]];

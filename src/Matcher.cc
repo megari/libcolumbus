@@ -34,6 +34,7 @@
 #include <cassert>
 #include <stdexcept>
 #include <map>
+#include <vector>
 
 #ifdef HAS_SPARSE_HASH
 #include <google/sparse_hash_map>
