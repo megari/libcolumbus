@@ -269,8 +269,10 @@ TrieOffset Trie::getParent(TrieOffset node) const {
 
 TrieOffset Trie::getSiblingTo(const TrieOffset node, const TrieOffset child) const {
     TrieOffset sibling = getSiblingList(node);
-    while(getChild(sibling) != node) {
+    while(getChild(sibling) != child) {
         sibling = getNextSibling(sibling);
+        if(!sibling)
+            throw runtime_error("Trie is corrupted");
     }
     return sibling;
 }
@@ -282,12 +284,15 @@ Word Trie::getWord(const TrieOffset startNode) const {
     if(node == 0) {
         return Word();
     }
+    TrieOffset parent = getParent(node);
     letters.push_back(0);
-    do {
-        TrieOffset parent = getParent(node);
+    while(parent) {
+        TrieOffset newParent;
         letters.push_back(getLetter(getSiblingTo(parent, node)));
+        newParent = getParent(parent);
         node = parent;
-    } while(node);
+        parent = newParent;
+    }
     res.insert(res.begin(), letters.rbegin(), letters.rend());
     return Word(&(res[0]), res.size());
 }

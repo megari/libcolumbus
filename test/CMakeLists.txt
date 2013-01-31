@@ -4,6 +4,7 @@ macro(coltest tname tfilename)
   add_test(${tname} ${tname})
 endmacro()
 
+coltest(trie TrieTest.cc)
 coltest(levtrie LevTrieTest.cc)
 coltest(levindex LevIndexTest.cc)
 coltest(custom_error CustomErrorTest.cc)

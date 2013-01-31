@@ -59,8 +59,14 @@ Word::Word(Word &&w) :
 }
 
 Word::Word(Letter *letters, size_t length) {
-    text = new Letter[length];
-    len = length;
+    if(letters[length-1] == 0) {
+        text = new Letter[length];
+        len = length-1;
+    } else {
+        text = new Letter[length+1];
+        text[length] = 0;
+        len = length;
+    }
     memcpy(text, letters, length*sizeof(Letter));
     if(hasWhitespace()) {
         delete []text;
