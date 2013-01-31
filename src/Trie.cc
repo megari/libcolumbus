@@ -197,6 +197,16 @@ TrieOffset Trie::insertWord(const Word &word, const WordID wordID) {
 }
 
 bool Trie::hasWord(const Word &word) const {
+    TrieOffset node = findWord(word);
+    if(!node)
+        return false;
+    TrieNode *n = (TrieNode*)(p->map+node);
+    if(n->word != INVALID_WORDID)
+        return true;
+    return false;
+}
+
+TrieOffset Trie::findWord(const Word &word) const {
     TrieOffset node = p->root;
     for(size_t i=0; word.length() > i; i++) {
         Letter l = word[i];
@@ -209,13 +219,10 @@ bool Trie::hasWord(const Word &word) const {
         }
 
         if(ptrs->l != l)
-            return false;
+            return 0;
         node = ptrs->child;
     }
-    TrieNode *n = (TrieNode*)(p->map+node);
-    if(n->word != INVALID_WORDID)
-        return true;
-    return false;
+    return node;
 }
 
 TrieOffset Trie::getRoot() const {

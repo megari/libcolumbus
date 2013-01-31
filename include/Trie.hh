@@ -40,6 +40,7 @@ public:
     ~Trie();
 
     bool hasWord(const Word &word) const;
+    TrieOffset findWord(const Word &word) const;
     TrieOffset insertWord(const Word &word, const WordID wordID);
     TrieOffset getRoot() const;
     TrieOffset getSiblingList(TrieOffset node) const;

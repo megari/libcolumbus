@@ -19,9 +19,10 @@
 
 #include "WordStore.hh"
 #include "Word.hh"
+#include "Trie.hh"
 #include <vector>
 #include <stdexcept>
-#include <map>
+
 
 COL_NAMESPACE_START
 using namespace std;
@@ -38,8 +39,8 @@ struct hasher : std::unary_function<const Word&, std::size_t> {
 };
 
 struct WordStorePrivate {
-    map<Word, WordID> wordList;
-    vector<Word> wordIndex; // The Word object is duplicated here. It should be fixed.
+    Trie words;
+    vector<TrieOffset> wordIndex; // The Word object is duplicated here. It should be fixed.
 };
 
 WordStore::WordStore() {
@@ -52,20 +53,20 @@ WordStore::~WordStore() {
 }
 
 WordID WordStore::getID(const Word &w) {
-    auto it = p->wordList.find(w);
-    if(it != p->wordList.end())
-        return it->second;
-    p->wordIndex.push_back(w);
+    TrieOffset node = p->words.findWord(w);
+    if(node)
+        return p->words.getWordID(node);
+    node = p->words.insertWord(w, p->wordIndex.size());
+    p->wordIndex.push_back(node);
     WordID result = p->wordIndex.size()-1;
-    p->wordList[w] = result;
     return result;
 }
 
-const Word& WordStore::getWord(const WordID id) const {
+Word WordStore::getWord(const WordID id) const {
     if(!hasWord(id)) {
         throw out_of_range("Tried to access non-existing WordID in WordStore.");
     }
-    return p->wordIndex[id];
+    return p->words.getWord(p->wordIndex[id]);
 }
 
 bool WordStore::hasWord(const WordID id) const {
