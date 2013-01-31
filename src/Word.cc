@@ -41,7 +41,6 @@ const static uint64_t randomNumbers[256] = {
 };
 
 Word::Word() : text(0), len(0){
-
 }
 
 Word::Word(const char *utf8Word) : text(0), len(0) {
@@ -57,6 +56,17 @@ Word::Word(Word &&w) :
     len(w.len) {
     w.len = 0;
     w.text = 0;
+}
+
+Word::Word(Letter *letters, size_t length) {
+    text = new Letter[length];
+    len = length;
+    memcpy(text, letters, length*sizeof(Letter));
+    if(hasWhitespace()) {
+        delete []text;
+        text = nullptr;
+        throw std::invalid_argument("Tried to create a Word with whitespace.");
+    }
 }
 
 Word::Word(const std::string &w) : text(0), len(0) {

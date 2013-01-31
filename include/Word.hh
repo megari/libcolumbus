@@ -47,6 +47,7 @@ public:
     Word(Word &&w);
     Word(const std::string &w);
     explicit Word(const char *utf8Word);
+    explicit Word(Letter *letters, size_t length);
     ~Word();
 
     unsigned int length() const { return len;}

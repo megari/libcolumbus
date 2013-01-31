@@ -39,6 +39,7 @@
 #include<string.h>
 #include<stdexcept>
 #include<string>
+#include<vector>
 #include<cassert>
 
 using namespace std;
@@ -60,6 +61,7 @@ struct TriePtrs {
 
 struct TrieNode {
     WordID word;
+    TrieOffset parent;
 };
 
 struct TriePrivate {
@@ -77,7 +79,7 @@ Trie::Trie() {
     p->h->firstFree = sizeof(TrieHeader);
     p->root = p->h->firstFree;
     p->h->numWords = 0;
-    addNewNode();
+    addNewNode(0);
 }
 
 
@@ -132,11 +134,12 @@ TrieOffset Trie::append(const char *data, const int size) {
     return result;
 }
 
-TrieOffset Trie::addNewNode() {
+TrieOffset Trie::addNewNode(const TrieOffset parent) {
     TrieNode n;
     TriePtrs ptr;
     TrieOffset nodeoffset;
     n.word = INVALID_WORDID;
+    n.parent = parent;
     ptr.child = ptr.sibling = ptr.l = 0;
     nodeoffset = append((char*)&n, sizeof(n));
     append((char*)&ptr, sizeof(ptr));
@@ -144,12 +147,12 @@ TrieOffset Trie::addNewNode() {
     return nodeoffset;
 }
 
-TrieOffset Trie::addNewSibling(const TrieOffset sibling, Letter l) {
+TrieOffset Trie::addNewSibling(const TrieOffset node, const TrieOffset sibling, Letter l) {
     TriePtrs *last; // Assign only at the end so remappings won't invalidate it.
     TriePtrs ptr;
     TrieOffset newSibling;
     ptr.l = l;
-    ptr.child = addNewNode();
+    ptr.child = addNewNode(node);
     ptr.sibling = 0;
     newSibling = append((char*) &ptr, sizeof(ptr));
     last = (TriePtrs*)(p->map + sibling);
@@ -158,7 +161,7 @@ TrieOffset Trie::addNewSibling(const TrieOffset sibling, Letter l) {
     return ptr.child;
 }
 
-void Trie::insertWord(const Word &word, const WordID wordID) {
+TrieOffset Trie::insertWord(const Word &word, const WordID wordID) {
     size_t i=0;
     TrieOffset node = p->root;
     while(word.length() > i) {
@@ -175,7 +178,7 @@ void Trie::insertWord(const Word &word, const WordID wordID) {
         if(ptrs->l == l) {
             node = ptrs->child;
         } else {
-            node = addNewSibling(sibl, l);
+            node = addNewSibling(node, sibl, l);
         }
         i++;
     }
@@ -190,7 +193,7 @@ void Trie::insertWord(const Word &word, const WordID wordID) {
      * is not working and there is a leak somewhere. So check explicitly.
      */
     assert(final->word == wordID);
-
+    return node;
 }
 
 bool Trie::hasWord(const Word &word) const {
@@ -257,6 +260,36 @@ size_t Trie::numWords() const {
 
 size_t Trie::numNodes() const {
     return p->h->numNodes;
+}
+
+TrieOffset Trie::getParent(TrieOffset node) const {
+    TrieNode *n = (TrieNode*)(p->map + node);
+    return n->parent;
+}
+
+TrieOffset Trie::getSiblingTo(const TrieOffset node, const TrieOffset child) const {
+    TrieOffset sibling = getSiblingList(node);
+    while(getChild(sibling) != node) {
+        sibling = getNextSibling(sibling);
+    }
+    return sibling;
+}
+
+Word Trie::getWord(const TrieOffset startNode) const {
+    vector<Letter> letters;
+    vector<Letter> res;
+    TrieOffset node = startNode;
+    if(node == 0) {
+        return Word();
+    }
+    letters.push_back(0);
+    do {
+        TrieOffset parent = getParent(node);
+        letters.push_back(getLetter(getSiblingTo(parent, node)));
+        node = parent;
+    } while(node);
+    res.insert(res.begin(), letters.rbegin(), letters.rend());
+    return Word(&(res[0]), res.size());
 }
 
 COL_NAMESPACE_END

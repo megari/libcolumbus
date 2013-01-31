@@ -32,15 +32,15 @@ private:
     TriePrivate *p;
     void expand();
     TrieOffset append(const char *data, const int size);
-    TrieOffset addNewSibling(const TrieOffset sibling, Letter l);
-    TrieOffset addNewNode();
+    TrieOffset addNewSibling(const TrieOffset node, const TrieOffset sibling, Letter l);
+    TrieOffset addNewNode(const TrieOffset parent);
 
 public:
     Trie();
     ~Trie();
 
     bool hasWord(const Word &word) const;
-    void insertWord(const Word &word, const WordID wordID);
+    TrieOffset insertWord(const Word &word, const WordID wordID);
     TrieOffset getRoot() const;
     TrieOffset getSiblingList(TrieOffset node) const;
     TrieOffset getNextSibling(TrieOffset sibling) const;
@@ -48,9 +48,13 @@ public:
     TrieOffset getChild(TrieOffset sibling) const;
     WordID getWordID(TrieOffset node) const;
     bool hasSibling(TrieOffset sibling) const;
+    TrieOffset getParent(TrieOffset node) const;
+    TrieOffset getSiblingTo(const TrieOffset node, const TrieOffset child) const;
 
     size_t numWords() const;
     size_t numNodes() const;
+
+    Word getWord(const TrieOffset startNode) const;
 };
 
 COL_NAMESPACE_END
