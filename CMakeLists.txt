@@ -35,7 +35,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
 
 set(SO_VERSION_MAJOR "0")
-set(SO_VERSION_MINOR "3")
+set(SO_VERSION_MINOR "4")
 set(SO_VERSION_PATCH "0")
 
 set(SO_VERSION "${SO_VERSION_MAJOR}.${SO_VERSION_MINOR}.${SO_VERSION_PATCH}")
