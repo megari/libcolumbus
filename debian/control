@@ -44,8 +44,8 @@ Description: error tolerant matching engine - development files
  .
  This package contains files that are needed to build applications.
 
-Package: libcolumbus0-0-python
-Section: libdevel
+Package: python3-columbus
+Section: python
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: libcolumbus0-0 (= ${binary:Version}),
