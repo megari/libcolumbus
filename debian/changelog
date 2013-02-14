@@ -1,4 +1,4 @@
-libcolumbus (0.4.0-0ubuntu1) UNRELEASED; urgency=low
+libcolumbus (0.4.0daily13.02.14-0ubuntu1) raring; urgency=low
 
   [ Jussi Pakkanen ]
   * Initial release
@@ -7,4 +7,10 @@ libcolumbus (0.4.0-0ubuntu1) UNRELEASED; urgency=low
   * Fix the packaging to be in an acceptable shape to enter ubuntu
   * Automatic snapshot from revision 1 (bootstrap)
 
- -- Didier Roche <didrocks@ubuntu.com>  Mon, 26 Nov 2012 18:36:15 +0100
+  [ Michael Terry ]
+  * Rename python bindings (LP: #1122372)
+
+  [ Automatic PS uploader ]
+  * Automatic snapshot from revision 438
+
+ -- Automatic PS uploader <ps-jenkins@lists.canonical.com>  Thu, 14 Feb 2013 06:24:41 +0000
