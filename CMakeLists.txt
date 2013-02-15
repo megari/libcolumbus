@@ -19,6 +19,7 @@ endif()
 include(FindPkgConfig)
 include(cmake/pch.cmake)
 include(cmake/python.cmake)
+include(cmake/coverage.cmake)
 
 if(${full_warnings})
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic")
