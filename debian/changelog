@@ -1,3 +1,9 @@
+libcolumbus (0.4.0daily13.02.19-0ubuntu1) raring; urgency=low
+
+  * Automatic snapshot from revision 441
+
+ -- Automatic PS uploader <ps-jenkins@lists.canonical.com>  Tue, 19 Feb 2013 02:01:48 +0000
+
 libcolumbus (0.4.0daily13.02.14-0ubuntu1) raring; urgency=low
 
   [ Jussi Pakkanen ]
