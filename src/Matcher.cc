@@ -147,10 +147,13 @@ static int getDynamicError(const Word &w) {
     size_t len = w.length();
     if(len < 2)
         return LevenshteinIndex::getDefaultError();
-    else if(len < 5)
+    else
+        return 2*LevenshteinIndex::getDefaultError();
+/*    else if(len < 5)
         return 2*LevenshteinIndex::getDefaultError();
     else
         return int((1+len/4.0)*LevenshteinIndex::getDefaultError()); // Permit a typo for every fourth letter.
+*/
 }
 
 static void addMatches(MatcherPrivate *p, BestIndexMatches &bestIndexMatches, const Word &queryWord, const WordID indexID, IndexMatches &matches) {
