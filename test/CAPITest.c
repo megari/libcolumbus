@@ -118,7 +118,7 @@ void testMatching() {
     col_matcher_delete(m);
 }
 
-int main(int argc, char **argv) {
+int main(int argc UNUSED_VAR, char **argv UNUSED_VAR) {
     testWord();
     testDocument();
     testMatcher();

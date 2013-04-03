@@ -144,7 +144,7 @@ void testCounts() {
     assert(d.totalWordCount(w4) == 2);
 }
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
     try {
         testDoc();
         testIndexNames();

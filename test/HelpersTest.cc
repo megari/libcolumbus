@@ -62,7 +62,7 @@ void testWeirdWord() {
     assert(l.size() == 3);
 }
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
     try {
         testSplitter();
         testWeirdWord();

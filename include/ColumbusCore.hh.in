@@ -47,6 +47,8 @@
   #endif
 #endif
 
+#define UNUSED_VAR __attribute__ ((unused))
+
 #ifdef __cplusplus
   #include <cstddef>
   #include <cstdint>

@@ -153,7 +153,7 @@ static int getDynamicError(const Word &w) {
         return int((1+len/4.0)*LevenshteinIndex::getDefaultError()); // Permit a typo for every fourth letter.
 }
 
-static void addMatches(MatcherPrivate *p, BestIndexMatches &bestIndexMatches, const Word &queryWord, const WordID indexID, IndexMatches &matches) {
+static void addMatches(MatcherPrivate */*p*/, BestIndexMatches &bestIndexMatches, const Word &/*queryWord*/, const WordID indexID, IndexMatches &matches) {
     MatchIndIterator it = bestIndexMatches.find(indexID);
     map<WordID, int> *indexMatches;
     if(it == bestIndexMatches.end()) {

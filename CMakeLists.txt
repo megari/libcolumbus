@@ -7,7 +7,7 @@ endif()
 
 option(enable_tests "Enable tests." ON)
 option(enable_scalability_tests "Additional scalability tests that are potentially very slow to run." OFF)
-option(full_warnings "Full compiler warnings." ON)
+option(full_warnings "All possible compiler warnings." OFF)
 option(debug_messages "Print debug messages.")
 option(full_unicode "Enable full Unicode support (takes lots of memory).")
 option(use_python2 "Build Python bindings against Python 2 (UNSUPPORTED)." OFF)
@@ -21,9 +21,11 @@ include(cmake/pch.cmake)
 include(cmake/python.cmake)
 include(cmake/coverage.cmake)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra")
 if(${full_warnings})
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic")
+# C does not have any more warning flags.
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weffc++")
 endif()
 
 if(${debug_messages})

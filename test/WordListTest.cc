@@ -92,7 +92,7 @@ void testEquality() {
     assert(l1 != l2);
 }
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
     try {
         testList();
         testAssignment();

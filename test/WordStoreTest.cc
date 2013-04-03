@@ -54,7 +54,7 @@ void testStore() {
     assert(gotException);
 }
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
     try {
         testStore();
     } catch(const std::exception &e) {
