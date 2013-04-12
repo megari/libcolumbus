@@ -127,7 +127,7 @@ void testMultiWord() {
     assert(matches.getDocumentID(0) == correct);
 }
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
     try {
         testMatcher();
         testRelevancy();

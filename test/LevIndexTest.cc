@@ -305,7 +305,7 @@ void testStartError() {
     assert(matches.getMatch(0) == w1ID);
 }
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
     try {
         testTrivial();
         testSimple();

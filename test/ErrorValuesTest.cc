@@ -106,7 +106,7 @@ void testNumberpadErrors() {
     assert(ev.getSubstituteError('j', '6') < ErrorValues::getDefaultError());
 }
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
     try {
         testError();
         testGroupError();

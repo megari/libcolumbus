@@ -47,7 +47,7 @@ void testWordBuilding() {
 }
 
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
     // Move basic tests from levtrietest here.
     testWordBuilding();
     return 0;

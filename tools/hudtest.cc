@@ -48,16 +48,16 @@ struct app_data {
     vector<string> pathSource, commandSource;
 };
 
-static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) {
+static gboolean delete_event(GtkWidget */*widget*/, GdkEvent */*event*/, gpointer /*data*/) {
     gtk_main_quit();
     return TRUE;
 }
 
-static void destroy(GtkWidget *widget, gpointer data) {
+static void destroy(GtkWidget */*widget*/, gpointer /*data*/) {
     gtk_main_quit ();
 }
 
-static void doSearch(GtkWidget *widget, gpointer data) {
+static void doSearch(GtkWidget */*widget*/, gpointer data) {
     app_data *app = (app_data*) data;
     MatchResults matches;
     GtkTreeIter iter;

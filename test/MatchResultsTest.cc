@@ -46,7 +46,7 @@ void testMatchResult() {
     assert(r.getRelevancy(0) == r2);
 }
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
     try {
         testMatchResult();
     } catch(const std::exception &e) {

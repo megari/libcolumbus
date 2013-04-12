@@ -32,7 +32,7 @@ void testWeights() {
     assert(w.getWeight(w1) == 2.0);
 }
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
     try {
         testWeights();
     } catch(const std::exception &e) {

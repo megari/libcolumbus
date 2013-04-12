@@ -87,7 +87,7 @@ void testFiltering() {
     assert(andResults.size() == 0);
 }
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
     try {
         testFiltering();
     } catch(const std::exception &e) {

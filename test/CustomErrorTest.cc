@@ -67,7 +67,7 @@ void testCustomError() {
 
 
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
     try {
         testCustomError();
     } catch(const std::exception &e) {
