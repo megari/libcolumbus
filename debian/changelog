@@ -1,3 +1,9 @@
+libcolumbus (0.4.0daily13.04.15-0ubuntu1) raring; urgency=low
+
+  * Automatic snapshot from revision 443
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Mon, 15 Apr 2013 02:03:10 +0000
+
 libcolumbus (0.4.0daily13.02.19-0ubuntu1) raring; urgency=low
 
   * Automatic snapshot from revision 441
