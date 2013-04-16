@@ -138,20 +138,23 @@ void ReverseIndex::findDocuments(const WordID wordID, const WordID indexID, std:
 }
 
 /*
- * These are helper functions for Matcher. They are not member functions to avoid polluting the header
- * with STL includes.
+ * Long words should allow for more error than short ones.
+ * This is a simple function which is meant to be strict
+ * so there won't be too many matches.
  */
-
 
 static int getDynamicError(const Word &w) {
     size_t len = w.length();
     if(len < 2)
         return LevenshteinIndex::getDefaultError();
-    else if(len < 5)
-        return 2*LevenshteinIndex::getDefaultError();
     else
-        return int((1+len/4.0)*LevenshteinIndex::getDefaultError()); // Permit a typo for every fourth letter.
+        return 2*LevenshteinIndex::getDefaultError();
 }
+
+/*
+ * These are helper functions for Matcher. They are not member functions to avoid polluting the header
+ * with STL includes.
+ */
 
 static void addMatches(MatcherPrivate */*p*/, BestIndexMatches &bestIndexMatches, const Word &/*queryWord*/, const WordID indexID, IndexMatches &matches) {
     MatchIndIterator it = bestIndexMatches.find(indexID);
