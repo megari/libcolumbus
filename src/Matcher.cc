@@ -156,7 +156,7 @@ static int getDynamicError(const Word &w) {
  * with STL includes.
  */
 
-static void addMatches(MatcherPrivate *p, BestIndexMatches &bestIndexMatches, const Word &queryWord, const WordID indexID, IndexMatches &matches) {
+static void addMatches(MatcherPrivate */*p*/, BestIndexMatches &bestIndexMatches, const Word &/*queryWord*/, const WordID indexID, IndexMatches &matches) {
     MatchIndIterator it = bestIndexMatches.find(indexID);
     map<WordID, int> *indexMatches;
     if(it == bestIndexMatches.end()) {

@@ -64,7 +64,7 @@ size_t MatcherStatistics::getTotalWordCount(const WordID w) const {
 
 }
 
-void MatcherStatistics::addedWordToIndex(const WordID word, const Word &fieldName) {
+void MatcherStatistics::addedWordToIndex(const WordID /*word*/, const Word &/*fieldName*/) {
     // Doesn't do anything yet.
 }
 

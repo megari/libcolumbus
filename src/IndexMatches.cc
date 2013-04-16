@@ -50,7 +50,7 @@ IndexMatches::~IndexMatches() {
     delete p;
 }
 
-void IndexMatches::addMatch(const Word &queryWord, const WordID matchedWord, int error) {
+void IndexMatches::addMatch(const Word &/*queryWord*/, const WordID matchedWord, int error) {
     MatchData m;
     m.matchedWord = matchedWord;
     m.error = error;

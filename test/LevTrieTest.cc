@@ -155,7 +155,7 @@ void countTest() {
     assert(ind.numWords() == 2);
 }
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
 #ifdef NDEBUG
     fprintf(stderr, "NDEBUG is defined, tests will not work!\n");
     return 1;

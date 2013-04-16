@@ -66,7 +66,7 @@ void testCorpus() {
     assert(lNew[1] == w4);
 }
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char **/*argv*/) {
     try {
         testCorpus();
     } catch(const std::exception &e) {
