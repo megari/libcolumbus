@@ -9,6 +9,16 @@ libcolumbus (0.5.0daily13.05.23ubuntu.unity.next-0ubuntu1) raring; urgency=low
 
  -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 23 May 2013 03:01:05 +0000
 
+libcolumbus (0.4.0daily13.04.16~13.04-0ubuntu1) raring; urgency=low
+
+  [ Jussi Pakkanen ]
+  * search in application lens is innacurate (LP: #1159812)
+
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 443
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 16 Apr 2013 05:47:15 +0000
+
 libcolumbus (0.4.0daily13.04.15-0ubuntu1) raring; urgency=low
 
   * Automatic snapshot from revision 443
