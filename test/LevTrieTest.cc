@@ -156,6 +156,7 @@ void countTest() {
 }
 
 int main(int /*argc*/, char **/*argv*/) {
+#undef NDEBUG
 #ifdef NDEBUG
     fprintf(stderr, "NDEBUG is defined, tests will not work!\n");
     return 1;
