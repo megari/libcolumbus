@@ -9,6 +9,12 @@ libcolumbus (0.5.0daily13.05.23ubuntu.unity.next-0ubuntu1) raring; urgency=low
 
  -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 23 May 2013 03:01:05 +0000
 
+libcolumbus (0.4.0daily13.04.16~13.04-0ubuntu2) saucy; urgency=low
+
+  * No change rebuild for Boost 1.53 transition.
+
+ -- Dmitrijs Ledkovs <dmitrij.ledkov@ubuntu.com>  Fri, 26 Apr 2013 19:18:42 +0100
+
 libcolumbus (0.4.0daily13.04.16~13.04-0ubuntu1) raring; urgency=low
 
   [ Jussi Pakkanen ]
