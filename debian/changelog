@@ -1,3 +1,17 @@
+libcolumbus (0.5.0daily13.06.06-0ubuntu1) saucy; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Reduce the default amount of fuzziness. (LP: #1159812)
+
+  [ Timo Jyrinki ]
+  * Use -DCMAKE_BUILD_TYPE='' in debian/rules (LP: #1187771) This
+    workaround fixes the issue for now. (LP: #1187771)
+
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 450
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 06 Jun 2013 05:33:20 +0000
+
 libcolumbus (0.5.0daily13.05.23ubuntu.unity.next-0ubuntu1) raring; urgency=low
 
   [ Jussi Pakkanen ]
