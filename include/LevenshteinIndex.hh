@@ -20,7 +20,6 @@
 #ifndef LEVENSHTEININDEX_HH
 #define LEVENSHTEININDEX_HH
 
-#include <vector>
 #include "ColumbusCore.hh"
 #include "IndexMatches.hh"
 
