@@ -54,7 +54,7 @@ public:
 
     // When you want to specify search parameters exactly.
     void match(const char *queryAsUtf8, MatchResults &matchedDocuments, const SearchParameters &params);
-    void match(const WordList &query, const SearchParameters &params, MatchResults &matchedDocuments);
+    void match(const WordList &query, MatchResults &matchedDocuments, const SearchParameters &params);
     void index(const Corpus &c);
     ErrorValues& getErrorValues();
     IndexWeights& getIndexWeights();
