@@ -72,5 +72,9 @@ bool SearchParameters::isNonsearchingField(const Word &w) const {
     return p->nosearchFields.find(w) != p->nosearchFields.end();
 }
 
+int SearchParameters::looseningIterations() const {
+    return 1;
+}
+
 COL_NAMESPACE_END
 

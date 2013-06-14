@@ -45,6 +45,8 @@ public:
 
     void addNonsearchingField(const Word &w);
     bool isNonsearchingField(const Word &w) const;
+
+    int looseningIterations() const;
 };
 
 COL_NAMESPACE_END
