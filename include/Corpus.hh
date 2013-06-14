@@ -27,7 +27,7 @@ COL_NAMESPACE_START
 struct CorpusPrivate;
 class Document;
 
-class COL_PUBLIC Corpus {
+class COL_PUBLIC Corpus final {
 private:
     CorpusPrivate *p;
 

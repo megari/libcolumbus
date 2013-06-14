@@ -27,7 +27,7 @@ COL_NAMESPACE_START
 struct TriePrivate;
 class Word;
 
-class COL_PUBLIC Trie {
+class COL_PUBLIC Trie final {
 private:
     TriePrivate *p;
     void expand();

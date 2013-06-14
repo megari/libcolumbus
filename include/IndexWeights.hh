@@ -27,7 +27,7 @@ COL_NAMESPACE_START
 struct IndexWeightsPrivate;
 class Word;
 
-class COL_PUBLIC IndexWeights {
+class COL_PUBLIC IndexWeights final {
     IndexWeightsPrivate *p;
 public:
     IndexWeights();

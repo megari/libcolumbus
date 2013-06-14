@@ -34,7 +34,7 @@ class Word;
  * in growing error order.
  *
  */
-class COL_PUBLIC IndexMatches {
+class COL_PUBLIC IndexMatches final {
     friend class LevenshteinIndex;
 
 private:

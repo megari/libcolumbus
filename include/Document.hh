@@ -29,7 +29,7 @@ class WordList;
 
 struct DocumentPrivate;
 
-class COL_PUBLIC Document {
+class COL_PUBLIC Document final {
 private:
     DocumentPrivate *p;
 

@@ -34,7 +34,7 @@
 
 COL_NAMESPACE_START
 
-class ErrorMatrix {
+class ErrorMatrix final {
     size_t rows, columns;
     int **m;
 

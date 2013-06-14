@@ -26,7 +26,7 @@ COL_NAMESPACE_START
 
 struct SearchParametersPrivate;
 
-class COL_PUBLIC SearchParameters {
+class COL_PUBLIC SearchParameters final {
 private:
     SearchParametersPrivate *p;
 

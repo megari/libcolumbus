@@ -31,7 +31,7 @@ COL_NAMESPACE_START
  *
  * A word's contents are immutable.
  */
-class COL_PUBLIC Word {
+class COL_PUBLIC Word final {
 private:
 
     Letter *text; // Change this to a shared pointer to save memory.

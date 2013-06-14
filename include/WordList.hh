@@ -27,7 +27,7 @@ COL_NAMESPACE_START
 struct WordListPrivate;
 class Word;
 
-class COL_PUBLIC WordList {
+class COL_PUBLIC WordList final {
 private:
     WordListPrivate *p;
 

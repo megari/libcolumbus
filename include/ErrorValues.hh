@@ -27,7 +27,7 @@ COL_NAMESPACE_START
 struct ErrorValuesPrivate;
 class Word;
 
-class COL_PUBLIC ErrorValues {
+class COL_PUBLIC ErrorValues final {
 private:
     static const int DEFAULT_ERROR = 100;
     static const int DEFAULT_GROUP_ERROR = 30;
