@@ -18,11 +18,15 @@
  */
 
 #include"SearchParameters.hh"
+#include"Word.hh"
+#include"LevenshteinIndex.hh"
+#include"ResultFilter.hh"
 
 COL_NAMESPACE_START
 
 struct SearchParametersPrivate {
     bool dynamic;
+    ResultFilter filter;
 };
 
 SearchParameters::SearchParameters() {
@@ -34,11 +38,27 @@ SearchParameters::~SearchParameters() {
     delete p;
 }
 
-bool SearchParameters::getDynamicError() const {
+bool SearchParameters::isDynamic() const {
     return p->dynamic;
 }
-void SearchParameters::setDynamicError(bool dyn) {
+void SearchParameters::setDynamic(bool dyn) {
     p->dynamic = dyn;
+}
+
+int SearchParameters::getDynamicError(const Word &w) {
+    size_t len = w.length();
+    if(len < 2)
+        return LevenshteinIndex::getDefaultError();
+    else
+        return 2*LevenshteinIndex::getDefaultError();
+}
+
+ResultFilter& SearchParameters::getResultFilter() {
+    return p->filter;
+}
+
+const ResultFilter& SearchParameters::getResultFilter() const {
+    return p->filter;
 }
 
 COL_NAMESPACE_END

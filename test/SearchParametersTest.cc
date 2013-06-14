@@ -24,13 +24,13 @@ using namespace Columbus;
 
 void testDynamic() {
     SearchParameters sp;
-    assert(sp.getDynamicError());
+    assert(sp.isDynamic());
 
-    sp.setDynamicError(false);
-    assert(!sp.getDynamicError());
+    sp.setDynamic(false);
+    assert(!sp.isDynamic());
 
-    sp.setDynamicError(true);
-    assert(sp.getDynamicError());
+    sp.setDynamic(true);
+    assert(sp.isDynamic());
 }
 
 int main(int /*argc*/, char **/*argv*/) {

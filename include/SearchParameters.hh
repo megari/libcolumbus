@@ -25,6 +25,7 @@
 COL_NAMESPACE_START
 
 struct SearchParametersPrivate;
+class Word;
 
 class COL_PUBLIC SearchParameters final {
 private:
@@ -35,8 +36,11 @@ public:
     ~SearchParameters();
     SearchParameters & operator=(const SearchParameters &other) = delete;
 
-    bool getDynamicError() const;
-    void setDynamicError(bool dyn);
+    bool isDynamic() const;
+    void setDynamic(bool dyn);
+    int getDynamicError(const Word &w);
+    ResultFilter& getResultFilter();
+    const ResultFilter& getResultFilter() const;
 };
 
 COL_NAMESPACE_END
