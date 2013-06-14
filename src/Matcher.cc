@@ -31,6 +31,7 @@
 #include "MatcherStatistics.hh"
 #include "WordStore.hh"
 #include "ResultFilter.hh"
+#include "SearchParameters.hh"
 #include <cassert>
 #include <stdexcept>
 #include <map>
@@ -373,8 +374,9 @@ static bool subtermsMatch(MatcherPrivate *p, const ResultFilter &filter, size_t 
 
 }
 
-void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments, const ResultFilter &filter) {
+void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments, const SearchParameters &params) {
     MatchResults allMatches;
+    auto &filter = params.getResultFilter();
     match(queryAsUtf8, allMatches);
     for(size_t i=0; i<allMatches.size(); i++) {
         DocumentID id = allMatches.getDocumentID(i);
