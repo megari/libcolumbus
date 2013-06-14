@@ -18,6 +18,7 @@
  */
 
 #include"SearchParameters.hh"
+#include"Word.hh"
 #include<cassert>
 
 using namespace Columbus;
@@ -33,6 +34,24 @@ void testDynamic() {
     assert(sp.isDynamic());
 }
 
+void testNosearch() {
+    SearchParameters sp;
+    Word w1("abc");
+    Word w2("def");
+
+    assert(!sp.isNonsearchingField(w1));
+    assert(!sp.isNonsearchingField(w2));
+
+    sp.addNonsearchingField(w1);
+    assert(sp.isNonsearchingField(w1));
+    assert(!sp.isNonsearchingField(w2));
+
+    sp.addNonsearchingField(w2);
+    assert(sp.isNonsearchingField(w1));
+    assert(sp.isNonsearchingField(w2));
+}
+
 int main(int /*argc*/, char **/*argv*/) {
     testDynamic();
+    testNosearch();
 }

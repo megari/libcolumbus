@@ -21,12 +21,15 @@
 #include"Word.hh"
 #include"LevenshteinIndex.hh"
 #include"ResultFilter.hh"
+#include<set>
 
 COL_NAMESPACE_START
 
+using namespace std;
 struct SearchParametersPrivate {
     bool dynamic;
     ResultFilter filter;
+    set<Word> nosearchFields;
 };
 
 SearchParameters::SearchParameters() {
@@ -59,6 +62,14 @@ ResultFilter& SearchParameters::getResultFilter() {
 
 const ResultFilter& SearchParameters::getResultFilter() const {
     return p->filter;
+}
+
+void SearchParameters::addNonsearchingField(const Word &w) {
+    p->nosearchFields.insert(w);
+}
+
+bool SearchParameters::isNonsearchingField(const Word &w) const {
+    return p->nosearchFields.find(w) != p->nosearchFields.end();
 }
 
 COL_NAMESPACE_END

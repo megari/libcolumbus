@@ -26,6 +26,7 @@ COL_NAMESPACE_START
 
 struct SearchParametersPrivate;
 class Word;
+class ResultFilter;
 
 class COL_PUBLIC SearchParameters final {
 private:
@@ -41,6 +42,9 @@ public:
     int getDynamicError(const Word &w);
     ResultFilter& getResultFilter();
     const ResultFilter& getResultFilter() const;
+
+    void addNonsearchingField(const Word &w);
+    bool isNonsearchingField(const Word &w) const;
 };
 
 COL_NAMESPACE_END
