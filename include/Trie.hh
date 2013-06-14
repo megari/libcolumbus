@@ -38,6 +38,9 @@ private:
 public:
     Trie();
     ~Trie();
+    Trie(const Trie &other) = delete;
+    const Trie & operator=(const Trie &other) = delete;
+
 
     bool hasWord(const Word &word) const;
     TrieOffset findWord(const Word &word) const;

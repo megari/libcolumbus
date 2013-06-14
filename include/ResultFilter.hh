@@ -35,6 +35,8 @@ private:
 public:
     ResultFilter();
     ~ResultFilter();
+    ResultFilter(const ResultFilter &rf) = delete;
+    const ResultFilter & operator=(const ResultFilter &other) = delete;
 
     void addNewTerm();
     void addNewSubTerm(const Word &field, const Word &word);

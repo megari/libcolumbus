@@ -56,6 +56,7 @@ public:
 
     ErrorValues();
     ~ErrorValues();
+    const ErrorValues& operator=(const ErrorValues &other) = delete;
 
     int getInsertionError() const { return insertionError; }
     int getDeletionError() const { return deletionError; }

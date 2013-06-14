@@ -75,7 +75,7 @@ BOOST_PYTHON_MODULE(_columbus)
                     return_internal_reference<>())
             ;
 
-    class_<ErrorValues>("ErrorValues")
+    class_<ErrorValues>("ErrorValues", init<>())
             .def("add_standard_errors", &ErrorValues::addStandardErrors)
             .def("set_substring_mode", &ErrorValues::setSubstringMode)
             .def("set_error", &ErrorValues::setError)

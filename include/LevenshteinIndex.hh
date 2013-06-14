@@ -39,15 +39,14 @@ private:
             const Letter letter, const Letter previousLetter, const size_t depth, ErrorMatrix &em,
             IndexMatches &matches, const int max_error) const;
 
-    // Disable copy and move.
-    LevenshteinIndex(const LevenshteinIndex &other);
-    LevenshteinIndex& operator=(const LevenshteinIndex &other);
     int findOptimalError(const Letter letter, const Letter previousLetter, const Word &query,
             const size_t i, const size_t depth, const ErrorMatrix &em, const ErrorValues &e) const;
 
 public:
     LevenshteinIndex();
     ~LevenshteinIndex();
+    LevenshteinIndex(const LevenshteinIndex &other) = delete;
+    const LevenshteinIndex & operator=(const LevenshteinIndex &other) = delete;
 
     static int getDefaultError();
 

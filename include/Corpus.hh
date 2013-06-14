@@ -30,12 +30,12 @@ class Document;
 class COL_PUBLIC Corpus {
 private:
     CorpusPrivate *p;
-    Corpus(const Corpus &c);
-    const Corpus& operator=(const Corpus &c);
 
 public:
     Corpus();
     ~Corpus();
+    Corpus(const Corpus &c) = delete;
+    const Corpus& operator=(const Corpus &c) = delete;
 
     void addDocument(const Document &d);
     size_t size() const;

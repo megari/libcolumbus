@@ -32,6 +32,7 @@ class COL_PUBLIC IndexWeights {
 public:
     IndexWeights();
     ~IndexWeights();
+    const IndexWeights & operator=(const IndexWeights &other) = delete;
 
     void setWeight(const Word &w, double weigth);
     double getWeight(const Word &w) const;

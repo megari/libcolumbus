@@ -45,6 +45,7 @@ private:
 public:
     Matcher();
     ~Matcher();
+    Matcher& operator=(const Matcher &m) = delete;
 
     void match(const WordList &query, MatchResults &matchedDocuments);
     void match(const char *queryAsUtf8, MatchResults &matchedDocuments);
