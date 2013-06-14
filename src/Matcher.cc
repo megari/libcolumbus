@@ -139,20 +139,6 @@ void ReverseIndex::findDocuments(const WordID wordID, const WordID indexID, std:
 }
 
 /*
- * Long words should allow for more error than short ones.
- * This is a simple function which is meant to be strict
- * so there won't be too many matches.
- */
-
-static int getDynamicError(const Word &w) {
-    size_t len = w.length();
-    if(len < 2)
-        return LevenshteinIndex::getDefaultError();
-    else
-        return 2*LevenshteinIndex::getDefaultError();
-}
-
-/*
  * These are helper functions for Matcher. They are not member functions to avoid polluting the header
  * with STL includes.
  */
@@ -198,12 +184,12 @@ static double calculateRelevancy(MatcherPrivate *p, const WordID wID, const Word
 }
 
 
-static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dynamicError, const int extraError, BestIndexMatches &bestIndexMatches) {
+static void matchIndexes(MatcherPrivate *p, const WordList &query, const SearchParameters &params, const int extraError, BestIndexMatches &bestIndexMatches) {
     for(size_t i=0; i<query.size(); i++) {
         const Word &w = query[i];
         int maxError;
-        if(dynamicError)
-            maxError = getDynamicError(w);
+        if(params.isDynamic())
+            maxError = params.getDynamicError(w);
         else
             maxError = 2*LevenshteinIndex::getDefaultError();
         maxError += extraError;
@@ -309,13 +295,13 @@ void Matcher::addToIndex(const Word &word, const WordID wordID, const WordID ind
 }
 
 
-void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError, const int extraError, MatchResults &matchedDocuments) {
+void Matcher::matchWithRelevancy(const WordList &query, const SearchParameters &params, const int extraError, MatchResults &matchedDocuments) {
     map<DocumentID, double> docs;
     BestIndexMatches bestIndexMatches;
     double start, indexMatchEnd, gatherEnd, finish;
 
     start = hiresTimestamp();
-    matchIndexes(p, query, dynamicError, extraError, bestIndexMatches);
+    matchIndexes(p, query, params, extraError, bestIndexMatches);
     indexMatchEnd = hiresTimestamp();
     // Now we know all matched words in all indexes. Gather up the corresponding documents.
     gatherMatchedDocuments(p, bestIndexMatches, docs);
@@ -329,7 +315,7 @@ void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError,
             indexMatchEnd - start, gatherEnd - indexMatchEnd, finish - gatherEnd);
 }
 
-void Matcher::match(const WordList &query, MatchResults &matchedDocuments) {
+void Matcher::match(const WordList &query, const SearchParameters &params, MatchResults &matchedDocuments) {
     const int maxIterations = 1;
     const int increment = LevenshteinIndex::getDefaultError();
     const size_t minMatches = 10;
@@ -341,7 +327,7 @@ void Matcher::match(const WordList &query, MatchResults &matchedDocuments) {
     // Try to search with ever growing error until we find enough matches.
     for(int i=0; i<maxIterations; i++) {
         MatchResults matches;
-        matchWithRelevancy(expandedQuery, true, i*increment, matches);
+        matchWithRelevancy(expandedQuery, params, i*increment, matches);
         if(matches.size() >= minMatches || i == maxIterations-1) {
             matchedDocuments.addResults(matches);
             return;
@@ -354,6 +340,12 @@ void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments) {
     WordList l;
     splitToWords(queryAsUtf8, l);
     match(l, matchedDocuments);
+}
+
+void Matcher::match(const WordList &query, MatchResults &matchedDocuments) {
+    SearchParameters defaults;
+    match(query, defaults, matchedDocuments);
+
 }
 
 ErrorValues& Matcher::getErrorValues() {

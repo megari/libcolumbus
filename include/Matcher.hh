@@ -41,16 +41,20 @@ private:
 
     void buildIndexes(const Corpus &c);
     void addToIndex(const Word &word, const WordID wordID, const WordID indexID);
-    void matchWithRelevancy(const WordList &query, const bool dynamicError, const int extraError, MatchResults &matchedDocuments);
+    void matchWithRelevancy(const WordList &query, const SearchParameters &params, const int extraError, MatchResults &matchedDocuments);
 
 public:
     Matcher();
     ~Matcher();
     Matcher& operator=(const Matcher &m) = delete;
 
-    void match(const WordList &query, MatchResults &matchedDocuments);
+    // The simple API
     void match(const char *queryAsUtf8, MatchResults &matchedDocuments);
+    void match(const WordList &query, MatchResults &matchedDocuments);
+
+    // When you want to specify search parameters exactly.
     void match(const char *queryAsUtf8, MatchResults &matchedDocuments, const SearchParameters &params);
+    void match(const WordList &query, const SearchParameters &params, MatchResults &matchedDocuments);
     void index(const Corpus &c);
     ErrorValues& getErrorValues();
     IndexWeights& getIndexWeights();

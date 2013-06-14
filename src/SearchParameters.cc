@@ -48,7 +48,13 @@ void SearchParameters::setDynamic(bool dyn) {
     p->dynamic = dyn;
 }
 
-int SearchParameters::getDynamicError(const Word &w) {
+/*
+ * Long words should allow for more error than short ones.
+ * This is a simple function which is meant to be strict
+ * so there won't be too many matches.
+ */
+
+int SearchParameters::getDynamicError(const Word &w) const {
     size_t len = w.length();
     if(len < 2)
         return LevenshteinIndex::getDefaultError();

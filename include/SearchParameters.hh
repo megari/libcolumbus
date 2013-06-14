@@ -39,7 +39,7 @@ public:
 
     bool isDynamic() const;
     void setDynamic(bool dyn);
-    int getDynamicError(const Word &w);
+    int getDynamicError(const Word &w) const;
     ResultFilter& getResultFilter();
     const ResultFilter& getResultFilter() const;
 
