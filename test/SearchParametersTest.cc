@@ -19,6 +19,10 @@
 
 #include"SearchParameters.hh"
 #include"Word.hh"
+#include"Matcher.hh"
+#include"Document.hh"
+#include"Corpus.hh"
+#include"MatchResults.hh"
 #include<cassert>
 
 using namespace Columbus;
@@ -51,7 +55,32 @@ void testNosearch() {
     assert(sp.isNonsearchingField(w2));
 }
 
+void testNosearchMatching() {
+    Word textField("text");
+    Word search("field1");
+    Word nonSearch("field2");
+    const char *val1str = "one";
+    Corpus c;
+    Matcher m;
+    SearchParameters sp;
+    MatchResults r;
+    Document d1(1);
+    Document d2(2);
+
+    sp.addNonsearchingField(nonSearch);
+    d1.addText(search, val1str);
+    d2.addText(nonSearch, val1str);
+    c.addDocument(d1);
+    c.addDocument(d2);
+    m.index(c);
+
+    m.match(val1str, r, sp);
+    assert(r.size() == 1);
+    assert(r.getDocumentID(0) == 1);
+}
+
 int main(int /*argc*/, char **/*argv*/) {
     testDynamic();
     testNosearch();
+    testNosearchMatching();
 }
