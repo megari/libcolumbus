@@ -38,7 +38,7 @@ MatchResults::MatchResults() {
 
 MatchResults::MatchResults(const MatchResults &other) {
     p = new MatchResultsPrivate();
-    p = other.p;
+    *p = *other.p;
 }
 
 MatchResults::MatchResults(MatchResults &&other) {
@@ -61,7 +61,7 @@ const MatchResults& MatchResults::operator=(MatchResults &&other) {
 
 const MatchResults& MatchResults::operator=(const MatchResults &other) {
     if(this != &other) {
-        p = other.p;
+        *p = *other.p;
     }
     return *this;
 }

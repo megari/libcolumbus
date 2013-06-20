@@ -374,9 +374,7 @@ MatchResults Matcher::match(const char *queryAsUtf8) {
 
 MatchResults Matcher::match(const WordList &query) {
     SearchParameters defaults;
-    MatchResults m(match(query, defaults));
-    printf("Matches: %d\n", (int)m.size());
-    return m;
+    return match(query, defaults);
 }
 
 ErrorValues& Matcher::getErrorValues() {
