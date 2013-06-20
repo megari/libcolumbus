@@ -52,6 +52,7 @@ MatchResults::~MatchResults() {
 
 const MatchResults& MatchResults::operator=(MatchResults &&other) {
     if(this != &other) {
+        delete p;
         p = other.p;
         other.p = nullptr;
     }
