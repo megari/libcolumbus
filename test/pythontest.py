@@ -138,7 +138,6 @@ class TestMatcher(unittest.TestCase):
     def test_simple_match(self):
         c = columbus.Corpus()
         m = columbus.Matcher()
-        matches = columbus.MatchResults()
         name1 = 0;
         name2 = 10;
         name3 = 1000;
@@ -155,7 +154,7 @@ class TestMatcher(unittest.TestCase):
         c.add_document(dFar)
         m.index(c)
 
-        m.match(columbus.split_to_words("abe"), matches)
+        matches = m.match(columbus.split_to_words("abe"))
         self.assertEqual(len(matches), 2)
         self.assertNotEqual(matches.get_document_id(0), name3);
         self.assertNotEqual(matches.get_document_id(1), name3);

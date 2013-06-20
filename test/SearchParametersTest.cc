@@ -74,7 +74,7 @@ void testNosearchMatching() {
     c.addDocument(d2);
     m.index(c);
 
-    m.match(val1str, r, sp);
+    r = m.match(val1str, sp);
     assert(r.size() == 1);
     assert(r.getDocumentID(0) == 1);
 }

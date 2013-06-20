@@ -331,7 +331,8 @@ void Matcher::matchWithRelevancy(const WordList &query, const SearchParameters &
             indexMatchEnd - start, gatherEnd - indexMatchEnd, finish - gatherEnd);
 }
 
-void Matcher::match(const WordList &query, MatchResults &matchedDocuments, const SearchParameters &params) {
+MatchResults Matcher::match(const WordList &query, const SearchParameters &params) {
+    MatchResults matchedDocuments;
     const int maxIterations = 1;
     const int increment = LevenshteinIndex::getDefaultError();
     const size_t minMatches = 10;
@@ -339,7 +340,7 @@ void Matcher::match(const WordList &query, MatchResults &matchedDocuments, const
     MatchResults allMatches;
 
     if(query.size() == 0)
-        return;
+        return matchedDocuments;
     expandQuery(query, expandedQuery);
     // Try to search with ever growing error until we find enough matches.
     for(int i=0; i<maxIterations; i++) {
@@ -362,29 +363,30 @@ void Matcher::match(const WordList &query, MatchResults &matchedDocuments, const
             }
         }
     }
-
+    return matchedDocuments;
 }
 
-void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments) {
+MatchResults Matcher::match(const char *queryAsUtf8) {
     WordList l;
     splitToWords(queryAsUtf8, l);
-    match(l, matchedDocuments);
+    return match(l);
 }
 
-void Matcher::match(const WordList &query, MatchResults &matchedDocuments) {
+MatchResults Matcher::match(const WordList &query) {
     SearchParameters defaults;
-    match(query, matchedDocuments, defaults);
-
+    MatchResults m(match(query, defaults));
+    printf("Matches: %d\n", (int)m.size());
+    return m;
 }
 
 ErrorValues& Matcher::getErrorValues() {
     return p->e;
 }
 
-void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments, const SearchParameters &params) {
+MatchResults Matcher::match(const char *queryAsUtf8, const SearchParameters &params) {
     WordList l;
     splitToWords(queryAsUtf8, l);
-    match(l, matchedDocuments, params);
+    return match(l, params);
 }
 
 IndexWeights& Matcher::getIndexWeights() {

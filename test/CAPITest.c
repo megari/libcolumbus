@@ -98,7 +98,7 @@ ColCorpus buildCorpus() {
 void testMatching() {
     ColCorpus c = buildCorpus();
     ColMatcher m = col_matcher_new();
-    ColMatchResults matches = col_match_results_new();
+    ColMatchResults matches;
     DocumentID dFarName = 1000;
     DocumentID name1 = 0;
     DocumentID name2 = 10;
@@ -106,7 +106,7 @@ void testMatching() {
     col_matcher_index(m, c);
     col_corpus_delete(c);
 
-    col_matcher_match(m, "abe", matches);
+    matches = col_matcher_match(m, "abe");
     assert(col_match_results_size(matches) == 2);
     assert(col_match_results_get_id(matches, 0) != dFarName);
     assert(col_match_results_get_id(matches, 1) != dFarName);

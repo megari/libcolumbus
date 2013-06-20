@@ -49,12 +49,12 @@ public:
     Matcher& operator=(const Matcher &m) = delete;
 
     // The simple API
-    void match(const char *queryAsUtf8, MatchResults &matchedDocuments);
-    void match(const WordList &query, MatchResults &matchedDocuments);
+    MatchResults match(const char *queryAsUtf8);
+    MatchResults match(const WordList &query);
 
     // When you want to specify search parameters exactly.
-    void match(const char *queryAsUtf8, MatchResults &matchedDocuments, const SearchParameters &params);
-    void match(const WordList &query, MatchResults &matchedDocuments, const SearchParameters &params);
+    MatchResults match(const char *queryAsUtf8, const SearchParameters &params);
+    MatchResults match(const WordList &query, const SearchParameters &params);
     void index(const Corpus &c);
     ErrorValues& getErrorValues();
     IndexWeights& getIndexWeights();

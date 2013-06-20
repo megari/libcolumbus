@@ -56,7 +56,7 @@ COL_PUBLIC void col_document_add_text(ColDocument doc, ColWord field_name, const
 COL_PUBLIC ColMatcher col_matcher_new();
 COL_PUBLIC void col_matcher_delete(ColMatcher m);
 COL_PUBLIC void col_matcher_index(ColMatcher m, ColCorpus c);
-COL_PUBLIC void col_matcher_match(ColMatcher m, const char *query_as_utf8, ColMatchResults mr);
+COL_PUBLIC ColMatchResults col_matcher_match(ColMatcher m, const char *query_as_utf8);
 COL_PUBLIC ColErrorValues col_matcher_get_error_values(ColMatcher m);
 COL_PUBLIC ColIndexWeights col_matcher_get_index_weights(ColMatcher m);
 

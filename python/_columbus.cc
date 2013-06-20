@@ -25,7 +25,7 @@ using namespace Columbus;
 
 
 void (Document::*addAdaptor) (const Word &, const WordList &) = &Document::addText;
-void (Matcher::*queryAdaptor) (const WordList &, MatchResults &) = &Matcher::match;
+MatchResults (Matcher::*queryAdaptor) (const WordList &) = &Matcher::match;
 
 BOOST_PYTHON_MODULE(_columbus)
 {
