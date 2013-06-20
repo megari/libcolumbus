@@ -61,14 +61,13 @@ void testGroupError() {
     assert(ev.getSubstituteError(a, aacute) == defaultError);
     assert(ev.getSubstituteError(e, aacute) == defaultError);
 
-    ev.addLatinAccents();
+    ev.addAccents(latinAccentGroup);
     assert(ev.isInGroup(e));
     assert(ev.isInGroup(eacute));
     assert(ev.isInGroup(ebreve));
     assert(ev.isInGroup(a));
     assert(ev.isInGroup(aacute));
     assert(ev.isInGroup(abreve));
-
 
     assert(ev.getSubstituteError(e, eacute) == defaultGroupError);
     assert(ev.getSubstituteError(eacute, e) == defaultGroupError);
