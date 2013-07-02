@@ -39,6 +39,10 @@ WordList::WordList(const WordList &wl) {
     p->words = wl.p->words;
 }
 
+WordList::WordList(WordList &&wl) {
+    p = wl.p;
+    wl.p = nullptr;
+}
 
 WordList::~WordList() {
     delete p;
@@ -61,6 +65,15 @@ const WordList& WordList::operator=(const WordList &l) {
     if(this == &l)
         return *this;
     p->words = l.p->words;
+    return *this;
+}
+
+const WordList& WordList::operator=(WordList &&wl) {
+    if(this != &wl) {
+        delete p;
+        p = wl.p;
+        wl.p = nullptr;
+    }
     return *this;
 }
 
