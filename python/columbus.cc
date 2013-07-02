@@ -27,8 +27,7 @@ using namespace Columbus;
 void (Document::*addAdaptor) (const Word &, const WordList &) = &Document::addText;
 MatchResults (Matcher::*queryAdaptor) (const WordList &) = &Matcher::match;
 
-BOOST_PYTHON_MODULE(columbus)
-{
+BOOST_PYTHON_MODULE(columbus) {
     class_<Corpus, boost::noncopyable>("Corpus", init<>())
         .def("size", &Corpus::size)
         .def("add_document", &Corpus::addDocument)
