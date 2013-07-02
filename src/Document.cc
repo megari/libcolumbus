@@ -55,9 +55,7 @@ void Document::addText(const Word &field, const WordList &words) {
 }
 
 void Document::addText(const Word &field, const char *textAsUtf8) {
-    WordList l;
-    splitToWords(textAsUtf8, l);
-    addText(field, l);
+    addText(field, splitToWords(textAsUtf8));
 }
 
 const WordList& Document::getText(const Word &field) const {

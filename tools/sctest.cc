@@ -176,7 +176,7 @@ void processFile(string &fname, WordList &name, WordList &genericName, WordList 
         Word n;
         size_t equalsLoc = line.find('=', 0);
         if(equalsLoc < line.length()) {
-            splitToWords(line.c_str() + equalsLoc + 1, vals);
+            vals = splitToWords(line.c_str() + equalsLoc + 1);
             line[equalsLoc] = '\0';
             try {
                 n = line.c_str();

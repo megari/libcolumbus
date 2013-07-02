@@ -181,8 +181,8 @@ void build_matcher(app_data &app, const char *dataFile) {
         if(line[line.size()-2] == '\r')
             line[line.size()-2] = '\0';
         splitShowableParts(line, pathText, commandText);
-        splitToWords(pathText.c_str(), path);
-        splitToWords(commandText.c_str(), command);
+        path = splitToWords(pathText.c_str());
+        command = splitToWords(commandText.c_str());
         if(command.size() == 0)
             continue;
         Document d(app.pathSource.size());

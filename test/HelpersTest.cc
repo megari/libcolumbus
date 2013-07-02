@@ -25,8 +25,7 @@
 using namespace Columbus;
 
 bool splitCorrectly(const char *txt, const WordList &l) {
-    WordList result;
-    splitToWords(txt, result);
+    WordList result = splitToWords(txt);
     return result == l;
 }
 
@@ -57,8 +56,7 @@ void testSplitter() {
 void testWeirdWord() {
     const unsigned char txt[] = {0x42, 0x6c, 0x75, 0x65, 0x73, 0x20, 0xe2, 0x80, 0x9a, 0xc3, 0x84, 0xc3, 0xb2, 0x6e, 0xe2, 0x80,
                                    0x9a, 0xc3, 0x84, 0xc3, 0xb4, 0x20, 0x54, 0x72, 0x6f, 0x75, 0x62, 0x6c, 0x65, 0x0d, 0x0a, 0};
-    WordList l;
-    splitToWords((const char*)txt, l);
+    WordList l = splitToWords((const char*)txt);
     assert(l.size() == 3);
 }
 

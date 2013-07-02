@@ -30,8 +30,8 @@ class WordList;
 Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize);
 void internalToUtf8(const Letter *source, unsigned int characters, char *buf, unsigned int bufsize);
 COL_PUBLIC COL_PUBLIC double hiresTimestamp();
-COL_PUBLIC void splitToWords(const char *utf8Text, WordList &list);
-COL_PUBLIC void split(const char *utf8Text, WordList &list, const Letter *splitChars, int numChars);
+COL_PUBLIC WordList splitToWords(const char *utf8Text);
+COL_PUBLIC WordList split(const char *utf8Text, const Letter *splitChars, int numChars);
 COL_PUBLIC bool isWhitespace(Letter l);
 
 COL_NAMESPACE_END

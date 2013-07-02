@@ -367,9 +367,7 @@ MatchResults Matcher::match(const WordList &query, const SearchParameters &param
 }
 
 MatchResults Matcher::match(const char *queryAsUtf8) {
-    WordList l;
-    splitToWords(queryAsUtf8, l);
-    return match(l);
+    return match(splitToWords(queryAsUtf8));
 }
 
 MatchResults Matcher::match(const WordList &query) {
@@ -382,9 +380,7 @@ ErrorValues& Matcher::getErrorValues() {
 }
 
 MatchResults Matcher::match(const char *queryAsUtf8, const SearchParameters &params) {
-    WordList l;
-    splitToWords(queryAsUtf8, l);
-    return match(l, params);
+    return match(splitToWords(queryAsUtf8), params);
 }
 
 IndexWeights& Matcher::getIndexWeights() {
