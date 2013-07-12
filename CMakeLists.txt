@@ -50,7 +50,7 @@ set(COL_LIB_BASENAME "columbus${SO_VERSION_MAJOR}")
 set(ABI_VERSION 0)
 
 include(GNUInstallDirs)
-set(LIBDIR $CMAKE_INSTALL_LIBDIR)
+set(LIBDIR ${CMAKE_INSTALL_LIBDIR})
 # Set as cache variable so packaging can override.
 set(PYTHONDIR "lib/python3/dist-packages" CACHE PATH "Destination install dir for Python module")
 
