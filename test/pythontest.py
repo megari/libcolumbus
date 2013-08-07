@@ -154,7 +154,7 @@ class TestMatcher(unittest.TestCase):
         c.add_document(dFar)
         m.index(c)
 
-        matches = m.match(columbus.split_to_words("abe"))
+        matches = m.match("abe")
         self.assertEqual(len(matches), 2)
         self.assertNotEqual(matches.get_document_id(0), name3);
         self.assertNotEqual(matches.get_document_id(1), name3);

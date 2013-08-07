@@ -21,6 +21,7 @@
 #define MATCHER_HH_
 
 #include "ColumbusCore.hh"
+#include<string>
 
 COL_NAMESPACE_START
 
@@ -51,6 +52,7 @@ public:
     // The simple API
     MatchResults match(const char *queryAsUtf8);
     MatchResults match(const WordList &query);
+    MatchResults match(const std::string &queryAsUtf8);
 
     // When you want to specify search parameters exactly.
     MatchResults match(const char *queryAsUtf8, const SearchParameters &params);

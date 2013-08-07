@@ -370,6 +370,11 @@ MatchResults Matcher::match(const char *queryAsUtf8) {
     return match(splitToWords(queryAsUtf8));
 }
 
+MatchResults Matcher::match(const std::string &queryAsUtf8) {
+    return match(queryAsUtf8.c_str());
+}
+
+
 MatchResults Matcher::match(const WordList &query) {
     SearchParameters defaults;
     return match(query, defaults);
