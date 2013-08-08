@@ -1,7 +1,5 @@
 set(build_python FALSE)
 
-set(Boost_DEBUG TRUE)
-
 # CMake's Boost.Python detector is completely and utterly
 # broken. We have to do this manually.
 #
