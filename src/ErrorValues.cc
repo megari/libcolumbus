@@ -260,6 +260,11 @@ void ErrorValues::addNumberpadErrors() {
     }
 }
 
+void ErrorValues::addStandardErrors() {
+    addAccents(latinAccentGroup);
+    addAccents(greekAccentGroup);
+    addKeyboardErrors();
+}
 
 void ErrorValues::addToLUT(Letter l1, Letter l2, int value) {
     if(l1 < LUT_LETTERS && l2 < LUT_LETTERS) {

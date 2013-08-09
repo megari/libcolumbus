@@ -90,7 +90,7 @@ public:
     void addAccents(accentGroups group);
     void addKeyboardErrors();
     void addNumberpadErrors();
-    void addStandardErrors() { addAccents(latinAccentGroup); addAccents(greekAccentGroup); addKeyboardErrors(); }
+    void addStandardErrors();
     bool isInGroup(Letter l);
     void clearErrors();
     void setSubstringMode();

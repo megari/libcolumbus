@@ -77,10 +77,13 @@ BOOST_PYTHON_MODULE(columbus) {
     class_<ErrorValues>("ErrorValues", init<>())
             .def("add_standard_errors", &ErrorValues::addStandardErrors)
             .def("set_substring_mode", &ErrorValues::setSubstringMode)
+            .def("set_end_deletion_error", &ErrorValues::setEndDeletionError)
             .def("set_error", &ErrorValues::setError)
             .def("get_substitute_error", &ErrorValues::getSubstituteError)
             .def("get_default_error", &ErrorValues::getDefaultError)
             .staticmethod("get_default_error")
+            .def("get_substring_default_end_deletion_error", &ErrorValues::getSubstringDefaultEndDeletionError)
+            .staticmethod("get_substring_default_end_deletion_error")
             .def("clear_errors", &ErrorValues::clearErrors)
             ;
 
