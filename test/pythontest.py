@@ -89,7 +89,7 @@ class TestDocument(unittest.TestCase):
     def test_doc(self):
         docid = 435
         field = columbus.Word('fieldname')
-        text = columbus.split_to_words('ye olde butcherede englishe')
+        text = 'ye olde butcherede englishe'
         d = columbus.Document(docid)
         
         self.assertEqual(d.get_id(), docid, 'Document ID got mangled.')
@@ -98,7 +98,7 @@ class TestDocument(unittest.TestCase):
         d.add_text(field, text)
         self.assertEqual(d.field_count(), 1, 'field count did not increase')
         self.assertGreater(len(text), 0)
-        self.assertEqual(len(d.get_text(field)), len(text), 'stored text got mangled')
+        self.assertEqual(len(d.get_text(field)), len(text.split()), 'stored text got mangled')
 
 class TestCorpus(unittest.TestCase):
     
@@ -144,11 +144,11 @@ class TestMatcher(unittest.TestCase):
         textName = columbus.Word("title")
 
         d1 = columbus.Document(name1)
-        d1.add_text(textName, columbus.split_to_words("abc def"))
+        d1.add_text(textName, "abc def")
         d2 = columbus.Document(name2)
-        d2.add_text(textName, columbus.split_to_words("abe test"))
+        d2.add_text(textName, "abe test")
         dFar = columbus.Document(name3)
-        dFar.add_text(textName, columbus.split_to_words("faraway donotmatchme"))
+        dFar.add_text(textName, "faraway donotmatchme")
         c.add_document(d1)
         c.add_document(d2)
         c.add_document(dFar)

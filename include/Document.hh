@@ -21,6 +21,7 @@
 #define DOCUMENT_HH_
 
 #include "ColumbusCore.hh"
+#include<string>
 
 COL_NAMESPACE_START
 
@@ -41,6 +42,7 @@ public:
     const Document& operator=(const Document &d);
     void addText(const Word &field, const WordList &words);
     void addText(const Word &field, const char *textAsUtf8);
+    void addText(const Word &field, const std::string &textAsUtf8);
     const WordList& getText(const Word &field) const;
     size_t fieldCount() const;
     DocumentID getID() const;

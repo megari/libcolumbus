@@ -58,6 +58,10 @@ void Document::addText(const Word &field, const char *textAsUtf8) {
     addText(field, splitToWords(textAsUtf8));
 }
 
+void Document::addText(const Word &field, const std::string &textAsUtf8) {
+    addText(field, textAsUtf8.c_str());
+}
+
 const WordList& Document::getText(const Word &field) const {
     TextIter res = p->texts.find(field);
     if(res == p->texts.end()) {
