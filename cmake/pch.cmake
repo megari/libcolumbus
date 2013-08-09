@@ -65,7 +65,8 @@ function(add_pch_linux header_filename target_name pch_suffix)
   separate_arguments(compile_args)
   add_custom_command(OUTPUT ${gch_filename}
     COMMAND ${CMAKE_CXX_COMPILER} ${compile_args}
-    DEPENDS ${header_filename})
+    DEPENDS ${header_filename}
+    VERBATIM)
   add_custom_target(${gch_target_name} DEPENDS ${gch_filename})
   add_dependencies(${target_name} ${gch_target_name})
   
@@ -77,7 +78,8 @@ function(add_pch_linux header_filename target_name pch_suffix)
 
 endfunction()
 
-try_run(IS_CLANG did_build ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/isclang.cc)
+include(CheckCXXSourceCompiles)
+CHECK_CXX_SOURCE_COMPILES("#ifdef __clang__\n#else\n#error \"Not clang.\"\n#endif\nint main(int argc, char **argv) { return 0; }" IS_CLANG)
 
 if(UNIX)
   if(NOT APPLE)

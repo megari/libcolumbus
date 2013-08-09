@@ -27,7 +27,7 @@ COL_NAMESPACE_START
 struct TriePrivate;
 class Word;
 
-class COL_PUBLIC Trie {
+class COL_PUBLIC Trie final {
 private:
     TriePrivate *p;
     void expand();
@@ -38,6 +38,9 @@ private:
 public:
     Trie();
     ~Trie();
+    Trie(const Trie &other) = delete;
+    const Trie & operator=(const Trie &other) = delete;
+
 
     bool hasWord(const Word &word) const;
     TrieOffset findWord(const Word &word) const;

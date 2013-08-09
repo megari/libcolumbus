@@ -27,7 +27,7 @@ COL_NAMESPACE_START
 struct MatchResultsPrivate;
 class Word;
 
-class COL_PUBLIC MatchResults {
+class COL_PUBLIC MatchResults final {
     MatchResultsPrivate *p;
 
     void sortIfRequired() const;
@@ -35,6 +35,11 @@ class COL_PUBLIC MatchResults {
 public:
     MatchResults();
     ~MatchResults();
+    MatchResults(const MatchResults &other);
+    MatchResults(MatchResults &&other);
+
+    const MatchResults& operator=(MatchResults &&other);
+    const MatchResults& operator=(const MatchResults &other);
 
     void addResult(DocumentID docID, double relevancy);
     void addResults(const MatchResults &r);

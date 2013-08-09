@@ -125,8 +125,8 @@ double hiresTimestamp() {
 
 }
 
-void splitToWords(const char *utf8Text, WordList &list) {
-    split(utf8Text, list, whitespaceLetters, numWhitespaceLetters);
+WordList splitToWords(const char *utf8Text) {
+    return split(utf8Text, whitespaceLetters, numWhitespaceLetters);
 }
 
 static bool isInList(const Letter l, const Letter *chars, int numChars) {
@@ -136,7 +136,8 @@ static bool isInList(const Letter l, const Letter *chars, int numChars) {
     return false;
 }
 
-void split(const char *utf8Text, WordList &list, const Letter *splitChars, int numChars) {
+WordList split(const char *utf8Text, const Letter *splitChars, int numChars) {
+    WordList list;
     unsigned int strSize = strlen(utf8Text);
     size_t begin, end;
     end = 0;
@@ -150,7 +151,7 @@ void split(const char *utf8Text, WordList &list, const Letter *splitChars, int n
         }
         if(begin >= strSize) {
             delete []word;
-            return;
+            return list;
         }
         end = begin+1;
         while(!isInList(utf8Text[end], splitChars, numChars) && end < strSize) {
@@ -174,6 +175,7 @@ void split(const char *utf8Text, WordList &list, const Letter *splitChars, int n
         }
     } while(end < strSize);
     delete []word;
+    return list;
 }
 
 bool isWhitespace(Letter l) {

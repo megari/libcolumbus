@@ -27,7 +27,7 @@ COL_NAMESPACE_START
 struct ResultFilterPrivate;
 class Word;
 
-class COL_PUBLIC ResultFilter {
+class COL_PUBLIC ResultFilter final {
 private:
 
     ResultFilterPrivate *p;
@@ -35,6 +35,8 @@ private:
 public:
     ResultFilter();
     ~ResultFilter();
+    ResultFilter(const ResultFilter &rf) = delete;
+    const ResultFilter & operator=(const ResultFilter &other) = delete;
 
     void addNewTerm();
     void addNewSubTerm(const Word &field, const Word &word);

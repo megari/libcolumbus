@@ -49,8 +49,9 @@ set(COL_LIB_BASENAME "columbus${SO_VERSION_MAJOR}")
 # http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html#AEN135
 set(ABI_VERSION 0)
 
+include(GNUInstallDirs)
+set(LIBDIR ${CMAKE_INSTALL_LIBDIR})
 # Set as cache variable so packaging can override.
-set(LIBDIR "lib" CACHE PATH "Destination install dir for the library")
 set(PYTHONDIR "lib/python3/dist-packages" CACHE PATH "Destination install dir for Python module")
 
 include(TestBigEndian)

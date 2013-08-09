@@ -27,11 +27,12 @@ COL_NAMESPACE_START
 struct IndexWeightsPrivate;
 class Word;
 
-class COL_PUBLIC IndexWeights {
+class COL_PUBLIC IndexWeights final {
     IndexWeightsPrivate *p;
 public:
     IndexWeights();
     ~IndexWeights();
+    const IndexWeights & operator=(const IndexWeights &other) = delete;
 
     void setWeight(const Word &w, double weigth);
     double getWeight(const Word &w) const;

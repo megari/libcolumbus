@@ -46,9 +46,30 @@ void testMatchResult() {
     assert(r.getRelevancy(0) == r2);
 }
 
+MatchResults gimme() {
+    MatchResults m;
+    m.addResult(1, 1);
+    m.addResult(2, 2);
+    return m;
+}
+
+/*
+ *  For great Valgrind justice.
+ */
+void testAssignments() {
+    MatchResults m1, m2;
+    m1.addResult(3, 4);
+    m2 = m1;
+    MatchResults m3(m1);
+    MatchResults m4(m3);
+    MatchResults m5(gimme());
+    MatchResults m6 = gimme();
+}
+
 int main(int /*argc*/, char **/*argv*/) {
     try {
         testMatchResult();
+        testAssignments();
     } catch(const std::exception &e) {
         fprintf(stderr, "Fail: %s\n", e.what());
         return 666;

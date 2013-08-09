@@ -24,11 +24,10 @@ using namespace boost::python;
 using namespace Columbus;
 
 
-void (Document::*addAdaptor) (const Word &, const WordList &) = &Document::addText;
-void (Matcher::*queryAdaptor) (const WordList &, MatchResults &) = &Matcher::match;
+void (Document::*addAdaptor) (const Word &, const std::string &) = &Document::addText;
+MatchResults (Matcher::*queryAdaptor) (const std::string &) = &Matcher::match;
 
-BOOST_PYTHON_MODULE(_columbus)
-{
+BOOST_PYTHON_MODULE(columbus) {
     class_<Corpus, boost::noncopyable>("Corpus", init<>())
         .def("size", &Corpus::size)
         .def("add_document", &Corpus::addDocument)
@@ -48,7 +47,7 @@ BOOST_PYTHON_MODULE(_columbus)
             .def("add_word", &WordList::addWord)
             ;
 
-    def("_split_to_words", splitToWords);
+    def("split_to_words", splitToWords);
 
     class_<Document>("Document", init<DocumentID>())
             .def(init<const Document&>())
@@ -75,13 +74,16 @@ BOOST_PYTHON_MODULE(_columbus)
                     return_internal_reference<>())
             ;
 
-    class_<ErrorValues>("ErrorValues")
+    class_<ErrorValues>("ErrorValues", init<>())
             .def("add_standard_errors", &ErrorValues::addStandardErrors)
             .def("set_substring_mode", &ErrorValues::setSubstringMode)
+            .def("set_end_deletion_error", &ErrorValues::setEndDeletionError)
             .def("set_error", &ErrorValues::setError)
             .def("get_substitute_error", &ErrorValues::getSubstituteError)
             .def("get_default_error", &ErrorValues::getDefaultError)
             .staticmethod("get_default_error")
+            .def("get_substring_default_end_deletion_error", &ErrorValues::getSubstringDefaultEndDeletionError)
+            .staticmethod("get_substring_default_end_deletion_error")
             .def("clear_errors", &ErrorValues::clearErrors)
             ;
 

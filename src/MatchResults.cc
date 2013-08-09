@@ -36,8 +36,34 @@ MatchResults::MatchResults() {
     p->sorted = true;;
 }
 
+MatchResults::MatchResults(const MatchResults &other) {
+    p = new MatchResultsPrivate();
+    *p = *other.p;
+}
+
+MatchResults::MatchResults(MatchResults &&other) {
+    p = other.p;
+    other.p = nullptr;
+}
+
 MatchResults::~MatchResults() {
     delete p;
+}
+
+const MatchResults& MatchResults::operator=(MatchResults &&other) {
+    if(this != &other) {
+        delete p;
+        p = other.p;
+        other.p = nullptr;
+    }
+    return *this;
+}
+
+const MatchResults& MatchResults::operator=(const MatchResults &other) {
+    if(this != &other) {
+        *p = *other.p;
+    }
+    return *this;
 }
 
 void MatchResults::addResult(DocumentID id, double relevancy) {

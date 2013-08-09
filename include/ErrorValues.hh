@@ -24,10 +24,15 @@
 
 COL_NAMESPACE_START
 
+enum accentGroups {
+    latinAccentGroup,
+    greekAccentGroup,
+};
+
 struct ErrorValuesPrivate;
 class Word;
 
-class COL_PUBLIC ErrorValues {
+class COL_PUBLIC ErrorValues final {
 private:
     static const int DEFAULT_ERROR = 100;
     static const int DEFAULT_GROUP_ERROR = 30;
@@ -56,6 +61,7 @@ public:
 
     ErrorValues();
     ~ErrorValues();
+    const ErrorValues& operator=(const ErrorValues &other) = delete;
 
     int getInsertionError() const { return insertionError; }
     int getDeletionError() const { return deletionError; }
@@ -81,10 +87,10 @@ public:
 
     void setError(Letter l1, Letter l2, const int error);
     void setGroupError(const Word &groupLetters, const int error);
-    void addLatinAccents();
+    void addAccents(accentGroups group);
     void addKeyboardErrors();
     void addNumberpadErrors();
-    void addStandardErrors() { addLatinAccents(); addKeyboardErrors(); }
+    void addStandardErrors();
     bool isInGroup(Letter l);
     void clearErrors();
     void setSubstringMode();

@@ -21,6 +21,7 @@
 #define MATCHER_HH_
 
 #include "ColumbusCore.hh"
+#include<string>
 
 COL_NAMESPACE_START
 
@@ -33,22 +34,29 @@ class MatchResults;
 class ErrorValues;
 class IndexWeights;
 class ResultFilter;
+class SearchParameters;
 
-class COL_PUBLIC Matcher {
+class COL_PUBLIC Matcher final {
 private:
     MatcherPrivate *p;
 
     void buildIndexes(const Corpus &c);
     void addToIndex(const Word &word, const WordID wordID, const WordID indexID);
-    void matchWithRelevancy(const WordList &query, const bool dynamicError, const int extraError, MatchResults &matchedDocuments);
+    void matchWithRelevancy(const WordList &query, const SearchParameters &params, const int extraError, MatchResults &matchedDocuments);
 
 public:
     Matcher();
     ~Matcher();
+    Matcher& operator=(const Matcher &m) = delete;
 
-    void match(const WordList &query, MatchResults &matchedDocuments);
-    void match(const char *queryAsUtf8, MatchResults &matchedDocuments);
-    void match(const char *queryAsUtf8, MatchResults &matchedDocuments, const ResultFilter &filter);
+    // The simple API
+    MatchResults match(const char *queryAsUtf8);
+    MatchResults match(const WordList &query);
+    MatchResults match(const std::string &queryAsUtf8);
+
+    // When you want to specify search parameters exactly.
+    MatchResults match(const char *queryAsUtf8, const SearchParameters &params);
+    MatchResults match(const WordList &query, const SearchParameters &params);
     void index(const Corpus &c);
     ErrorValues& getErrorValues();
     IndexWeights& getIndexWeights();

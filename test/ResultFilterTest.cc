@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "SearchParameters.hh"
 #include "ResultFilter.hh"
 #include "Word.hh"
 #include "Document.hh"
@@ -44,8 +45,8 @@ void testFiltering() {
     Document d2(2);
     Corpus c;
     Matcher m;
-    ResultFilter emptyFilter;
-    ResultFilter onlyTakeFirst, onlyTakeSecond, orTest, andTest;
+    SearchParameters emptyFilter;
+    SearchParameters onlyTakeFirst, onlyTakeSecond, orTest, andTest;
 
     d1.addText(textField, txt);
     d1.addText(filterField1, val1str);
@@ -57,33 +58,28 @@ void testFiltering() {
     c.addDocument(d2);
 
     m.index(c);
-    MatchResults r1;
-    m.match(txt, r1, emptyFilter);
+    MatchResults r1 = m.match(txt, emptyFilter);
     assert(r1.size() == 2);
 
-    onlyTakeFirst.addNewSubTerm(filterField1, val1);
-    MatchResults r2;
-    m.match(txt, r2, onlyTakeFirst);
+    onlyTakeFirst.getResultFilter().addNewSubTerm(filterField1, val1);
+    MatchResults r2 = m.match(txt, onlyTakeFirst);
     assert(r2.size() == 1);
     assert(r2.getDocumentID(0) == 1);
 
-    onlyTakeSecond.addNewSubTerm(filterField1, val2);
-    MatchResults r3;
-    m.match(txt, r3, onlyTakeSecond);
+    onlyTakeSecond.getResultFilter().addNewSubTerm(filterField1, val2);
+    MatchResults r3 = m.match(txt, onlyTakeSecond);
     assert(r3.size() == 1);
     assert(r3.getDocumentID(0) == 2);
 
-    orTest.addNewSubTerm(filterField1, val1);
-    orTest.addNewTerm();
-    orTest.addNewSubTerm(filterField1, val2);
-    MatchResults orResults;
-    m.match(txt, orResults, orTest);
+    orTest.getResultFilter().addNewSubTerm(filterField1, val1);
+    orTest.getResultFilter().addNewTerm();
+    orTest.getResultFilter().addNewSubTerm(filterField1, val2);
+    MatchResults orResults = m.match(txt, orTest);
     assert(orResults.size() == 2);
 
-    andTest.addNewSubTerm(filterField2, val2);
-    andTest.addNewSubTerm(filterField1, val1);
-    MatchResults andResults;
-    m.match(txt, andResults, andTest);
+    andTest.getResultFilter().addNewSubTerm(filterField2, val2);
+    andTest.getResultFilter().addNewSubTerm(filterField1, val1);
+    MatchResults andResults = m.match(txt, andTest);
     assert(andResults.size() == 0);
 }
 
