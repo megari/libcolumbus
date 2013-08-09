@@ -37,17 +37,17 @@ add_definitions(-DBUILDING_COLUMBUS)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
 
-set(SO_VERSION_MAJOR "0")
-set(SO_VERSION_MINOR "5")
+set(SO_VERSION_MAJOR "1")
+set(SO_VERSION_MINOR "0")
 set(SO_VERSION_PATCH "0")
 
 set(SO_VERSION "${SO_VERSION_MAJOR}.${SO_VERSION_MINOR}.${SO_VERSION_PATCH}")
 
-set(COL_LIB_BASENAME "columbus${SO_VERSION_MAJOR}")
+set(COL_LIB_BASENAME "columbus")
 
 # Increment this manually whenever breaking ABI.
 # http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html#AEN135
-set(ABI_VERSION 0)
+set(ABI_VERSION 1)
 
 include(GNUInstallDirs)
 set(LIBDIR ${CMAKE_INSTALL_LIBDIR})
