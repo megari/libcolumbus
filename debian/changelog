@@ -1,3 +1,9 @@
+libcolumbus (1.0.0+13.10.20130814.1-0ubuntu1) saucy; urgency=low
+
+  * Automatic snapshot from revision 454
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 14 Aug 2013 15:20:10 +0000
+
 libcolumbus (1.0.0+13.10.20130814-0ubuntu1) saucy; urgency=low
 
   [ Mathieu Trudel-Lapierre ]
