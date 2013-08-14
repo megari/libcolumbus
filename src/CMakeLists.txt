@@ -17,6 +17,7 @@ ColumbusCAPI.cc
 ErrorMatrix.cc
 ResultFilter.cc
 Trie.cc
+SearchParameters.cc
 )
 
 if(ICONV_LIBRARIES)

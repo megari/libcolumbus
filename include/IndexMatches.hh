@@ -34,7 +34,7 @@ class Word;
  * in growing error order.
  *
  */
-class COL_PUBLIC IndexMatches {
+class COL_PUBLIC IndexMatches final {
     friend class LevenshteinIndex;
 
 private:
@@ -44,13 +44,11 @@ private:
     void addMatch(const Word &queryWord, const WordID matchedWord, int error);
     void sort();
 
-    // Disable copy and assignment.
-    IndexMatches(const IndexMatches &other);
-    const IndexMatches & operator=(const IndexMatches &other);
-
 public:
     IndexMatches();
     ~IndexMatches();
+    IndexMatches(const IndexMatches &other) = delete;
+    const IndexMatches & operator=(const IndexMatches &other) = delete;
 
     size_t size() const;
     const WordID& getMatch(size_t num) const;

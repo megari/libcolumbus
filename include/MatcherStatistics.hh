@@ -27,7 +27,7 @@ COL_NAMESPACE_START
 struct MatcherStatisticsPrivate;
 class Word;
 
-class MatcherStatistics {
+class MatcherStatistics final {
 private:
 
     MatcherStatisticsPrivate *p;

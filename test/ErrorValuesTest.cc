@@ -61,14 +61,13 @@ void testGroupError() {
     assert(ev.getSubstituteError(a, aacute) == defaultError);
     assert(ev.getSubstituteError(e, aacute) == defaultError);
 
-    ev.addLatinAccents();
+    ev.addAccents(latinAccentGroup);
     assert(ev.isInGroup(e));
     assert(ev.isInGroup(eacute));
     assert(ev.isInGroup(ebreve));
     assert(ev.isInGroup(a));
     assert(ev.isInGroup(aacute));
     assert(ev.isInGroup(abreve));
-
 
     assert(ev.getSubstituteError(e, eacute) == defaultGroupError);
     assert(ev.getSubstituteError(eacute, e) == defaultGroupError);
@@ -106,12 +105,31 @@ void testNumberpadErrors() {
     assert(ev.getSubstituteError('j', '6') < ErrorValues::getDefaultError());
 }
 
+void testBigError() {
+    ErrorValues ev;
+    Letter l1 = 1000;  // Big values, so they are guaranteed to be outside of the LUT.
+    Letter l2 = 10000;
+    int smallError = 1;
+
+    assert(smallError < ErrorValues::getDefaultError());
+    assert(ev.getSubstituteError(l1, l2) == ErrorValues::getDefaultError());
+    assert(ev.getSubstituteError(l2, l1) == ErrorValues::getDefaultError());
+    assert(ev.getSubstituteError(l2, l2) == 0);
+
+    ev.setError(l1, l2, smallError);
+    assert(ev.getSubstituteError(l1, l2) == smallError);
+    assert(ev.getSubstituteError(l2, l1) == smallError);
+    assert(ev.getSubstituteError(l2, l2) == 0);
+
+}
+
 int main(int /*argc*/, char **/*argv*/) {
     try {
         testError();
         testGroupError();
         testKeyboardErrors();
         testNumberpadErrors();
+        testBigError();
     } catch(const std::exception &e) {
         fprintf(stderr, "Fail: %s\n", e.what());
         return 666;

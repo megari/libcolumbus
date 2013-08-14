@@ -88,7 +88,7 @@ static void doSearch(GtkWidget */*widget*/, gpointer data) {
     double queryStart, queryEnd;
     try {
         queryStart = hiresTimestamp();
-        app->m->match(gtk_entry_get_text(GTK_ENTRY(app->entry)), matches);
+        matches = app->m->match(gtk_entry_get_text(GTK_ENTRY(app->entry)));
         queryEnd = hiresTimestamp();
     } catch(exception &e) {
         printf("Matching failed: %s\n", e.what());
@@ -176,7 +176,7 @@ void processFile(string &fname, WordList &name, WordList &genericName, WordList 
         Word n;
         size_t equalsLoc = line.find('=', 0);
         if(equalsLoc < line.length()) {
-            splitToWords(line.c_str() + equalsLoc + 1, vals);
+            vals = splitToWords(line.c_str() + equalsLoc + 1);
             line[equalsLoc] = '\0';
             try {
                 n = line.c_str();

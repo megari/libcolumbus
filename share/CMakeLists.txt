@@ -1,3 +1,4 @@
 install(FILES
 latinAccentedLetterGroups.txt
-DESTINATION share/${COL_LIB_BASENAME})
+greekAccentedLetterGroups.txt
+DESTINATION share/${COL_LIB_BASENAME}${SO_VERSION_MAJOR})

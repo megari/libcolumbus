@@ -36,7 +36,7 @@ COL_NAMESPACE_START
 struct WordStorePrivate;
 class Word;
 
-class COL_PUBLIC WordStore {
+class COL_PUBLIC WordStore final {
 private:
 
     WordStorePrivate *p;
@@ -44,6 +44,9 @@ private:
 public:
     WordStore();
     ~WordStore();
+    WordStore(const WordStore &other) = delete;
+    const WordStore & operator=(const WordStore &other) = delete;
+
 
     WordID getID(const Word &w);
     Word getWord(const WordID id) const;

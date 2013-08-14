@@ -35,6 +35,9 @@
 COL_NAMESPACE_START
 using namespace std;
 
+static const char *accentGroupDataFile[] =  {"latinAccentedLetterGroups.txt",
+        "greekAccentedLetterGroups.txt"};
+
 const int LUT_BITS = 9;
 const int LUT_LETTERS = 1 << LUT_BITS;
 const int LUT_SIZE = (LUT_LETTERS*LUT_LETTERS);
@@ -161,8 +164,8 @@ bool ErrorValues::isInGroup(Letter l) {
     return p->groupMap.find(l) != p->groupMap.end();
 }
 
-void ErrorValues::addLatinAccents() {
-    const char *baseName = "latinAccentedLetterGroups.txt";
+void ErrorValues::addAccents(accentGroups group) {
+    const char *baseName = accentGroupDataFile[group];
     string dataFile = findDataFile(baseName);
     string line;
     if(dataFile.length() == 0) {
@@ -257,6 +260,11 @@ void ErrorValues::addNumberpadErrors() {
     }
 }
 
+void ErrorValues::addStandardErrors() {
+    addAccents(latinAccentGroup);
+    addAccents(greekAccentGroup);
+    addKeyboardErrors();
+}
 
 void ErrorValues::addToLUT(Letter l1, Letter l2, int value) {
     if(l1 < LUT_LETTERS && l2 < LUT_LETTERS) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Canonical, Ltd.
+ * Copyright (C) 2013 Canonical, Ltd.
  *
  * Authors:
  *    Jussi Pakkanen <jussi.pakkanen@canonical.com>
@@ -17,24 +17,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef COLUMBUSHELPERS_H_
-#define COLUMBUSHELPERS_H_
+#ifndef SEARCHPARAMETERS_H_
+#define SEARCHPARAMETERS_H_
 
 #include "ColumbusCore.hh"
 
 COL_NAMESPACE_START
 
+struct SearchParametersPrivate;
 class Word;
-class WordList;
+class ResultFilter;
 
-Letter* utf8ToInternal(const char *utf8Text, unsigned int &resultStringSize);
-void internalToUtf8(const Letter *source, unsigned int characters, char *buf, unsigned int bufsize);
-COL_PUBLIC COL_PUBLIC double hiresTimestamp();
-COL_PUBLIC WordList splitToWords(const char *utf8Text);
-COL_PUBLIC WordList split(const char *utf8Text, const Letter *splitChars, int numChars);
-COL_PUBLIC bool isWhitespace(Letter l);
+class COL_PUBLIC SearchParameters final {
+private:
+    SearchParametersPrivate *p;
+
+public:
+    SearchParameters();
+    ~SearchParameters();
+    SearchParameters & operator=(const SearchParameters &other) = delete;
+
+    bool isDynamic() const;
+    void setDynamic(bool dyn);
+    int getDynamicError(const Word &w) const;
+    ResultFilter& getResultFilter();
+    const ResultFilter& getResultFilter() const;
+
+    void addNonsearchingField(const Word &w);
+    bool isNonsearchingField(const Word &w) const;
+
+    int looseningIterations() const;
+};
 
 COL_NAMESPACE_END
-
 #endif
-

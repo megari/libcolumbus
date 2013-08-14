@@ -34,13 +34,16 @@
 
 COL_NAMESPACE_START
 
-class ErrorMatrix {
+class ErrorMatrix final {
     size_t rows, columns;
     int **m;
 
 public:
     ErrorMatrix(const size_t rows_, const size_t columns_, const int insertError, const int deletionError);
     ~ErrorMatrix();
+    ErrorMatrix(const ErrorMatrix &em) = delete;
+    const ErrorMatrix & operator=(const ErrorMatrix &other) = delete;
+
 
     void set(const size_t rowNum, const size_t colNum, const int error);
     // No bounds checking because this is in the hot path.

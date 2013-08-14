@@ -31,6 +31,7 @@
 #include "MatcherStatistics.hh"
 #include "WordStore.hh"
 #include "ResultFilter.hh"
+#include "SearchParameters.hh"
 #include <cassert>
 #include <stdexcept>
 #include <map>
@@ -138,20 +139,6 @@ void ReverseIndex::findDocuments(const WordID wordID, const WordID indexID, std:
 }
 
 /*
- * Long words should allow for more error than short ones.
- * This is a simple function which is meant to be strict
- * so there won't be too many matches.
- */
-
-static int getDynamicError(const Word &w) {
-    size_t len = w.length();
-    if(len < 2)
-        return LevenshteinIndex::getDefaultError();
-    else
-        return 2*LevenshteinIndex::getDefaultError();
-}
-
-/*
  * These are helper functions for Matcher. They are not member functions to avoid polluting the header
  * with STL includes.
  */
@@ -197,17 +184,20 @@ static double calculateRelevancy(MatcherPrivate *p, const WordID wID, const Word
 }
 
 
-static void matchIndexes(MatcherPrivate *p, const WordList &query, const bool dynamicError, const int extraError, BestIndexMatches &bestIndexMatches) {
+static void matchIndexes(MatcherPrivate *p, const WordList &query, const SearchParameters &params, const int extraError, BestIndexMatches &bestIndexMatches) {
     for(size_t i=0; i<query.size(); i++) {
         const Word &w = query[i];
         int maxError;
-        if(dynamicError)
-            maxError = getDynamicError(w);
+        if(params.isDynamic())
+            maxError = params.getDynamicError(w);
         else
             maxError = 2*LevenshteinIndex::getDefaultError();
         maxError += extraError;
 
         for(IndIterator it = p->indexes.begin(); it != p->indexes.end(); it++) {
+            if(params.isNonsearchingField(p->store.getWord(it->first))) {
+                continue;
+            }
             IndexMatches m;
             it->second->findWords(w, p->e, maxError, m);
             addMatches(p, bestIndexMatches, w, it->first, m);
@@ -247,6 +237,19 @@ static void expandQuery(const WordList &query, WordList &expandedQuery) {
     for(size_t i=0; i<query.size()-1; i++) {
         expandedQuery.addWord(query[i].join(query[i+1]));
     }
+}
+
+static bool subtermsMatch(MatcherPrivate *p, const ResultFilter &filter, size_t term, DocumentID id) {
+    for(size_t subTerm=0; subTerm < filter.numSubTerms(term); subTerm++) {
+        const Word &filterName = filter.getField(term, subTerm);
+        const Word &value = filter.getWord(term, subTerm);
+        bool termFound = p->reverseIndex.documentHasTerm(
+                p->store.getID(value), p->store.getID(filterName), id);
+        if(!termFound) {
+            return false;
+        }
+    }
+    return true;
 }
 
 Matcher::Matcher() {
@@ -308,13 +311,13 @@ void Matcher::addToIndex(const Word &word, const WordID wordID, const WordID ind
 }
 
 
-void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError, const int extraError, MatchResults &matchedDocuments) {
+void Matcher::matchWithRelevancy(const WordList &query, const SearchParameters &params, const int extraError, MatchResults &matchedDocuments) {
     map<DocumentID, double> docs;
     BestIndexMatches bestIndexMatches;
     double start, indexMatchEnd, gatherEnd, finish;
 
     start = hiresTimestamp();
-    matchIndexes(p, query, dynamicError, extraError, bestIndexMatches);
+    matchIndexes(p, query, params, extraError, bestIndexMatches);
     indexMatchEnd = hiresTimestamp();
     // Now we know all matched words in all indexes. Gather up the corresponding documents.
     gatherMatchedDocuments(p, bestIndexMatches, docs);
@@ -328,54 +331,29 @@ void Matcher::matchWithRelevancy(const WordList &query, const bool dynamicError,
             indexMatchEnd - start, gatherEnd - indexMatchEnd, finish - gatherEnd);
 }
 
-void Matcher::match(const WordList &query, MatchResults &matchedDocuments) {
+MatchResults Matcher::match(const WordList &query, const SearchParameters &params) {
+    MatchResults matchedDocuments;
     const int maxIterations = 1;
     const int increment = LevenshteinIndex::getDefaultError();
     const size_t minMatches = 10;
     WordList expandedQuery;
+    MatchResults allMatches;
 
     if(query.size() == 0)
-        return;
+        return matchedDocuments;
     expandQuery(query, expandedQuery);
     // Try to search with ever growing error until we find enough matches.
     for(int i=0; i<maxIterations; i++) {
         MatchResults matches;
-        matchWithRelevancy(expandedQuery, true, i*increment, matches);
+        matchWithRelevancy(expandedQuery, params, i*increment, matches);
         if(matches.size() >= minMatches || i == maxIterations-1) {
-            matchedDocuments.addResults(matches);
-            return;
+            allMatches.addResults(matches);
+            break;
         }
     }
 
-}
-
-void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments) {
-    WordList l;
-    splitToWords(queryAsUtf8, l);
-    match(l, matchedDocuments);
-}
-
-ErrorValues& Matcher::getErrorValues() {
-    return p->e;
-}
-
-static bool subtermsMatch(MatcherPrivate *p, const ResultFilter &filter, size_t term, DocumentID id) {
-    for(size_t subTerm=0; subTerm < filter.numSubTerms(term); subTerm++) {
-        const Word &filterName = filter.getField(term, subTerm);
-        const Word &value = filter.getWord(term, subTerm);
-        bool termFound = p->reverseIndex.documentHasTerm(
-                p->store.getID(value), p->store.getID(filterName), id);
-        if(!termFound) {
-            return false;
-        }
-    }
-    return true;
-
-}
-
-void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments, const ResultFilter &filter) {
-    MatchResults allMatches;
-    match(queryAsUtf8, allMatches);
+    /* Filter results into final set. */
+    auto &filter = params.getResultFilter();
     for(size_t i=0; i<allMatches.size(); i++) {
         DocumentID id = allMatches.getDocumentID(i);
         for(size_t term=0; term < filter.numTerms(); term++) {
@@ -385,6 +363,29 @@ void Matcher::match(const char *queryAsUtf8, MatchResults &matchedDocuments, con
             }
         }
     }
+    return matchedDocuments;
+}
+
+MatchResults Matcher::match(const char *queryAsUtf8) {
+    return match(splitToWords(queryAsUtf8));
+}
+
+MatchResults Matcher::match(const std::string &queryAsUtf8) {
+    return match(queryAsUtf8.c_str());
+}
+
+
+MatchResults Matcher::match(const WordList &query) {
+    SearchParameters defaults;
+    return match(query, defaults);
+}
+
+ErrorValues& Matcher::getErrorValues() {
+    return p->e;
+}
+
+MatchResults Matcher::match(const char *queryAsUtf8, const SearchParameters &params) {
+    return match(splitToWords(queryAsUtf8), params);
 }
 
 IndexWeights& Matcher::getIndexWeights() {

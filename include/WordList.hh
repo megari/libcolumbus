@@ -27,18 +27,20 @@ COL_NAMESPACE_START
 struct WordListPrivate;
 class Word;
 
-class COL_PUBLIC WordList {
+class COL_PUBLIC WordList final {
 private:
     WordListPrivate *p;
 
 public:
     WordList();
     WordList(const WordList &wl);
+    WordList(WordList &&wl);
     ~WordList();
 
     size_t size() const;
     const Word& operator[](const size_t i) const;
     const WordList& operator=(const WordList &l);
+    const WordList& operator=(WordList &&wl);
     bool operator==(const WordList &l) const;
     bool operator!=(const WordList &l) const;
     void addWord(const Word &w); // This is more of an implementation detail and should not be exposed in a base class or interface.

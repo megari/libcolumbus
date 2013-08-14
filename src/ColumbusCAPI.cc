@@ -133,13 +133,15 @@ void col_matcher_index(ColMatcher m, ColCorpus c) {
     }
 }
 
-void col_matcher_match(ColMatcher m, const char *query_as_utf8, ColMatchResults mr) {
+ColMatchResults col_matcher_match(ColMatcher m, const char *query_as_utf8) {
     try {
         Matcher *matcher = reinterpret_cast<Matcher*>(m);
-        MatchResults *results = reinterpret_cast<MatchResults*>(mr);
-        matcher->match(query_as_utf8, *results);
+        MatchResults *results =
+                new MatchResults(matcher->match(query_as_utf8));
+        return reinterpret_cast<ColMatchResults>(results);
     } catch(exception &e) {
         fprintf(stderr, "Exception when matching: %s\n", e.what());
+        return nullptr;
     }
 }
 

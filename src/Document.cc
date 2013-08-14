@@ -55,9 +55,11 @@ void Document::addText(const Word &field, const WordList &words) {
 }
 
 void Document::addText(const Word &field, const char *textAsUtf8) {
-    WordList l;
-    splitToWords(textAsUtf8, l);
-    addText(field, l);
+    addText(field, splitToWords(textAsUtf8));
+}
+
+void Document::addText(const Word &field, const std::string &textAsUtf8) {
+    addText(field, textAsUtf8.c_str());
 }
 
 const WordList& Document::getText(const Word &field) const {

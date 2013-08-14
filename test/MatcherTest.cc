@@ -76,7 +76,7 @@ void testMatcher() {
     delete(c);
 
     queryList.addWord(w1);
-    m.match(queryList, matches);
+    matches = m.match(queryList);
     assert(matches.size() == 2);
     assert(matches.getDocumentID(0) != dFarName);
     assert(matches.getDocumentID(1) != dFarName);
@@ -99,7 +99,7 @@ void testRelevancy() {
     delete c;
 
     queryList.addWord(w1);
-    m.match(queryList, matches);
+    matches = m.match(queryList);
     assert(matches.size() == 2);
     // Document doc1 has an exact match, so it should be the best match.
     assert(matches.getRelevancy(0) > matches.getRelevancy(1));
@@ -123,7 +123,7 @@ void testMultiWord() {
     c.addDocument(d2);
     m.index(c);
 
-    m.match("Sara Michell Geller", matches);
+    matches = m.match("Sara Michell Geller");
     assert(matches.getDocumentID(0) == correct);
 }
 
