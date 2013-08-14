@@ -1,8 +1,12 @@
-libcolumbus (1.0.0daily13.08.09-0ubuntu1) UNRELEASED; urgency=low
+libcolumbus (1.0.0+13.10.20130814-0ubuntu1) saucy; urgency=low
 
-  * Release new upstream version, bump to ABI 1
+  [ Mathieu Trudel-Lapierre ]
+  * 
 
- -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 09 Aug 2013 10:31:48 -0400
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 452
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 14 Aug 2013 10:09:26 +0000
 
 libcolumbus (0.5.0daily13.06.06-0ubuntu1) saucy; urgency=low
 
