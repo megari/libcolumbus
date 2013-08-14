@@ -1,7 +1,7 @@
 libcolumbus (1.0.0+13.10.20130814-0ubuntu1) saucy; urgency=low
 
   [ Mathieu Trudel-Lapierre ]
-  * 
+  * Release new upstream version, bump to ABI 1 
 
   [ Ubuntu daily release ]
   * Automatic snapshot from revision 452
