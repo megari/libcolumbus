@@ -74,6 +74,11 @@ struct TriePrivate {
 Trie::Trie() {
     p = new TriePrivate();
     p->f = tmpfile();
+    if(!p->f) {
+        string msg("Could not create temporary file: ");
+        msg += strerror(errno);
+        throw runtime_error(msg);
+    }
     p->map = nullptr;
     expand();
     p->h->firstFree = sizeof(TrieHeader);
