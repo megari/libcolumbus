@@ -1,3 +1,9 @@
+libcolumbus (1.0.0+13.10.20130814.1-0ubuntu3) trusty; urgency=medium
+
+  * No change rebuild against libicu52
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Fri, 27 Dec 2013 04:23:13 +0000
+
 libcolumbus (1.0.0+13.10.20130814.1-0ubuntu2) trusty; urgency=low
 
   * No change rebuild for Boost 1.54 transition.
