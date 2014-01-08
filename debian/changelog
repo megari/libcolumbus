@@ -1,3 +1,13 @@
+libcolumbus (1.0.0+14.04.20140108-0ubuntu1) trusty; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Fail early if temporary file can't be created.
+
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 458
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 08 Jan 2014 03:20:54 +0000
+
 libcolumbus (1.0.0+13.10.20130814.1-0ubuntu3) trusty; urgency=medium
 
   * No change rebuild against libicu52
