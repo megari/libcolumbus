@@ -1,3 +1,10 @@
+libcolumbus (1.0.0+14.04.20140120-0ubuntu1) trusty; urgency=low
+
+  * New rebuild forced
+  * Automatic snapshot from revision 459
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Mon, 20 Jan 2014 19:43:49 +0000
+
 libcolumbus (1.0.0+14.04.20140108-0ubuntu1) trusty; urgency=low
 
   [ Jussi Pakkanen ]
