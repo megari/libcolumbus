@@ -327,7 +327,6 @@ MatchResults Matcher::match(const WordList &query, const SearchParameters &param
     const int maxIterations = 1;
     const int increment = LevenshteinIndex::getDefaultError();
     const size_t minMatches = 10;
-    WordList expandedQuery;
     MatchResults allMatches;
 
     if(query.size() == 0)
