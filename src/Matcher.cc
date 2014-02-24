@@ -230,15 +230,6 @@ static void gatherMatchedDocuments(MatcherPrivate *p,  BestIndexMatches &bestInd
     }
 }
 
-static void expandQuery(const WordList &query, WordList &expandedQuery) {
-    for(size_t i=0; i<query.size(); i++)
-        expandedQuery.addWord(query[i]);
-
-    for(size_t i=0; i<query.size()-1; i++) {
-        expandedQuery.addWord(query[i].join(query[i+1]));
-    }
-}
-
 static bool subtermsMatch(MatcherPrivate *p, const ResultFilter &filter, size_t term, DocumentID id) {
     for(size_t subTerm=0; subTerm < filter.numSubTerms(term); subTerm++) {
         const Word &filterName = filter.getField(term, subTerm);
@@ -341,11 +332,10 @@ MatchResults Matcher::match(const WordList &query, const SearchParameters &param
 
     if(query.size() == 0)
         return matchedDocuments;
-    expandQuery(query, expandedQuery);
     // Try to search with ever growing error until we find enough matches.
     for(int i=0; i<maxIterations; i++) {
         MatchResults matches;
-        matchWithRelevancy(expandedQuery, params, i*increment, matches);
+        matchWithRelevancy(query, params, i*increment, matches);
         if(matches.size() >= minMatches || i == maxIterations-1) {
             allMatches.addResults(matches);
             break;
