@@ -127,11 +127,36 @@ void testMultiWord() {
     assert(matches.getDocumentID(0) == correct);
 }
 
+void testSentence() {
+    Corpus c;
+    DocumentID correct = 1;
+    DocumentID wrong = 0;
+    Document d1(correct);
+    Document d2(wrong);
+    Word fieldName("name");
+    Word secondName("context");
+    Matcher m;
+    MatchResults matches;
+
+    d1.addText(fieldName, "Fit Canvas to Layers");
+    d1.addText(secondName, "View Zoom (100%)");
+    d2.addText(fieldName, "Fit image in Window");
+    d2.addText(secondName, "Image");
+
+    c.addDocument(d1);
+    c.addDocument(d2);
+
+    m.index(c);
+    matches = m.match("fit canvas to layers");
+    assert(matches.getDocumentID(0) == correct);
+}
+
 int main(int /*argc*/, char **/*argv*/) {
     try {
         testMatcher();
         testRelevancy();
         testMultiWord();
+        testSentence();
     } catch(const std::exception &e) {
         fprintf(stderr, "Fail: %s\n", e.what());
         return 666;
