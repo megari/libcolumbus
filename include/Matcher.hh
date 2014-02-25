@@ -60,7 +60,7 @@ public:
     void index(const Corpus &c);
     ErrorValues& getErrorValues();
     IndexWeights& getIndexWeights();
-    void tempMatch(const WordList &query, const Word &primaryIndex);
+    MatchResults tempMatch(const WordList &query, const Word &primaryIndex);
 };
 
 COL_NAMESPACE_END

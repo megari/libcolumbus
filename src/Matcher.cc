@@ -99,7 +99,6 @@ struct MatcherPrivate {
     IndexWeights weights;
     MatcherStatistics stats;
     WordStore store;
-    map<DocumentID, vector<WordID>> originals;
 };
 
 void ReverseIndex::add(const WordID wordID, const WordID indexID, const DocumentID id) {
@@ -407,21 +406,31 @@ struct DocCount {
     int diff;
 };
 
-void Matcher::tempMatch(const WordList &query, const Word &primaryIndex) {
-    if(!p->store.hasWord(primaryIndex))
-        return; // Throw on missing index?
-    WordID indexID = p->store.getID(primaryIndex);
+MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex) {
+    MatchResults results;
+    if(!p->store.hasWord(primaryIndex)) {
+        string msg("Index named ");
+        msg += primaryIndex.asUtf8();
+        msg += " is not known";
+        throw invalid_argument(msg);
+    }
+        WordID indexID = p->store.getID(primaryIndex);
     // How many times each document matched with zero error.
     vector<DocCount> stats;
     for(const auto &i : countExacts(p, query, indexID)) {
         DocCount c;
         c.id = i.first;
+        // Should account for diff of query to document size.
         c.diff = abs(i.second - (int)query.size());
         stats.push_back(c);
     }
     // Documents with least amount of difference to the top.
     sort(stats.begin(), stats.end(),
             [](const DocCount &a, const DocCount &b) { return a.diff < b.diff; });
+    for(const auto &i: stats) {
+        results.addResult(i.id, 3.0);
+    }
+    return results;
 }
 
 COL_NAMESPACE_END

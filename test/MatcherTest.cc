@@ -23,6 +23,7 @@
 #include "WordList.hh"
 #include "Document.hh"
 #include "MatchResults.hh"
+#include "ColumbusHelpers.hh"
 #include <cassert>
 
 using namespace Columbus;
@@ -151,12 +152,38 @@ void testSentence() {
     assert(matches.getDocumentID(0) == correct);
 }
 
+void testExactOrder() {
+    printf("\n\n\n");
+    Corpus c;
+    DocumentID correct = 1;
+    DocumentID wrong = 0;
+    Document d1(correct);
+    Document d2(wrong);
+    Word fieldName("name");
+    Word secondName("context");
+    Matcher m;
+    MatchResults matches;
+    WordList q = splitToWords("fit canvas to layers");
+    d1.addText(fieldName, "Fit Canvas to Layers");
+    d1.addText(secondName, "View Zoom (100%)");
+    d2.addText(fieldName, "Fit image in Window");
+    d2.addText(secondName, "Image");
+
+    c.addDocument(d1);
+    c.addDocument(d2);
+
+    m.index(c);
+    matches = m.tempMatch(q, fieldName);
+    assert(matches.getDocumentID(0) == correct);
+}
+
 int main(int /*argc*/, char **/*argv*/) {
     try {
         testMatcher();
         testRelevancy();
         testMultiWord();
         testSentence();
+        testExactOrder();
     } catch(const std::exception &e) {
         fprintf(stderr, "Fail: %s\n", e.what());
         return 666;
