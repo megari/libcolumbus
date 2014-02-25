@@ -157,8 +157,10 @@ void testExactOrder() {
     Corpus c;
     DocumentID correct = 1;
     DocumentID wrong = 0;
+    DocumentID moreWrong = 100;
     Document d1(correct);
     Document d2(wrong);
+    Document d3(moreWrong);
     Word fieldName("name");
     Word secondName("context");
     Matcher m;
@@ -168,12 +170,15 @@ void testExactOrder() {
     d1.addText(secondName, "View Zoom (100%)");
     d2.addText(fieldName, "Fit image in Window");
     d2.addText(secondName, "Image");
-
+    d3.addText(fieldName, "Not matching.");
+    d3.addText(secondName, "fit canvas to layers");
     c.addDocument(d1);
     c.addDocument(d2);
+    c.addDocument(d3);
 
     m.index(c);
     matches = m.tempMatch(q, fieldName);
+    assert(matches.size() == 2);
     assert(matches.getDocumentID(0) == correct);
 }
 
