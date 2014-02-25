@@ -36,6 +36,7 @@
 #include <stdexcept>
 #include <map>
 #include <vector>
+#include <algorithm>
 
 #ifdef HAS_SPARSE_HASH
 #include <google/sparse_hash_map>
@@ -98,6 +99,7 @@ struct MatcherPrivate {
     IndexWeights weights;
     MatcherStatistics stats;
     WordStore store;
+    map<DocumentID, vector<WordID>> originals;
 };
 
 void ReverseIndex::add(const WordID wordID, const WordID indexID, const DocumentID id) {
@@ -382,6 +384,44 @@ MatchResults Matcher::match(const char *queryAsUtf8, const SearchParameters &par
 
 IndexWeights& Matcher::getIndexWeights() {
     return p->weights;
+}
+
+static map<DocumentID, int> countExacts(MatcherPrivate *p, const WordList &query, const WordID indexID) {
+    map<DocumentID, int> matchCounts;
+    for(size_t i=0; i<query.size(); i++) {
+        const Word &w = query[i];
+        if(!p->store.hasWord(w))
+            continue;
+        WordID curWord = p->store.getID(w);
+        vector<DocumentID> exacts;
+        p->reverseIndex.findDocuments(curWord, indexID, exacts);
+        for(const auto &i : exacts) {
+            matchCounts[i]++; // Default is zero initialisation.
+        }
+    }
+    return matchCounts;
+}
+
+struct DocCount {
+    DocumentID id;
+    int diff;
+};
+
+void Matcher::tempMatch(const WordList &query, const Word &primaryIndex) {
+    if(!p->store.hasWord(primaryIndex))
+        return; // Throw on missing index?
+    WordID indexID = p->store.getID(primaryIndex);
+    // How many times each document matched with zero error.
+    vector<DocCount> stats;
+    for(const auto &i : countExacts(p, query, indexID)) {
+        DocCount c;
+        c.id = i.first;
+        c.diff = abs(i.second - (int)query.size());
+        stats.push_back(c);
+    }
+    // Documents with least amount of difference to the top.
+    sort(stats.begin(), stats.end(),
+            [](const DocCount &a, const DocCount &b) { return a.diff < b.diff; });
 }
 
 COL_NAMESPACE_END

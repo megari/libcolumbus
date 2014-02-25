@@ -62,6 +62,13 @@ WordID WordStore::getID(const Word &w) {
     return result;
 }
 
+bool WordStore::hasWord(const Word &w) const {
+    TrieOffset node = p->words.findWord(w);
+    if(node)
+        return true;
+    return false;
+}
+
 Word WordStore::getWord(const WordID id) const {
     if(!hasWord(id)) {
         throw out_of_range("Tried to access non-existing WordID in WordStore.");
