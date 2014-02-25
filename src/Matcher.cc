@@ -99,6 +99,7 @@ struct MatcherPrivate {
     IndexWeights weights;
     MatcherStatistics stats;
     WordStore store;
+    map<pair<DocumentID, WordID>, size_t> originalSizes; // Lengths of original documents.
 };
 
 void ReverseIndex::add(const WordID wordID, const WordID indexID, const DocumentID id) {
@@ -281,6 +282,10 @@ void Matcher::buildIndexes(const Corpus &c) {
             const Word &fieldName = textNames[ti];
             const WordID fieldID = p->store.getID(fieldName);
             const WordList &text = d.getText(fieldName);
+            pair<DocumentID, WordID> lengths;
+            lengths.first = d.getID();
+            lengths.second = fieldID;
+            p->originalSizes[lengths] = text.size();
             for(size_t wi=0; wi<text.size(); wi++) {
                 const Word &word = text[wi];
                 const WordID wordID = p->store.getID(word);
@@ -403,7 +408,8 @@ static map<DocumentID, int> countExacts(MatcherPrivate *p, const WordList &query
 
 struct DocCount {
     DocumentID id;
-    int diff;
+    int matchDiff;
+    int lengthDiff;
 };
 
 MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex) {
@@ -419,14 +425,22 @@ MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex)
     vector<DocCount> stats;
     for(const auto &i : countExacts(p, query, indexID)) {
         DocCount c;
+        pair<DocumentID, WordID> key;
+        key.first = i.first;
+        key.second = indexID;
         c.id = i.first;
-        // Should account for diff of query to document size.
-        c.diff = abs(i.second - (int)query.size());
+        c.matchDiff = abs(i.second - (int)query.size());
+        c.lengthDiff = abs(p->originalSizes[key] - (int)query.size());
         stats.push_back(c);
     }
     // Documents with least amount of difference to the top.
     sort(stats.begin(), stats.end(),
-            [](const DocCount &a, const DocCount &b) { return a.diff < b.diff; });
+            [](const DocCount &a, const DocCount &b) {
+        if(a.matchDiff != b.matchDiff) {
+            return a.matchDiff < b.matchDiff;
+        }
+        return a.lengthDiff < b.lengthDiff;
+    });
     for(const auto &i: stats) {
         results.addResult(i.id, 3.0);
     }

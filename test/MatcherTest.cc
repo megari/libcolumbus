@@ -153,7 +153,6 @@ void testSentence() {
 }
 
 void testExactOrder() {
-    printf("\n\n\n");
     Corpus c;
     DocumentID correct = 1;
     DocumentID wrong = 0;
@@ -182,6 +181,29 @@ void testExactOrder() {
     assert(matches.getDocumentID(0) == correct);
 }
 
+void testSmallestMatch() {
+    Corpus c;
+    DocumentID correct = 1;
+    DocumentID wrong = 0;
+    Document d1(correct);
+    Document d2(wrong);
+    Word fieldName("name");
+    Word field2("dummy");
+    Matcher m;
+    MatchResults matches;
+    WordList q = splitToWords("save");
+    d1.addText(fieldName, "save");
+    d1.addText(field2, "lots of text to ensure statistics of this field are ignored");
+    d2.addText(fieldName, "save as");
+    c.addDocument(d1);
+    c.addDocument(d2);
+
+    m.index(c);
+    matches = m.tempMatch(q, fieldName);
+    assert(matches.size() == 2);
+    assert(matches.getDocumentID(0) == correct);
+}
+
 int main(int /*argc*/, char **/*argv*/) {
     try {
         testMatcher();
@@ -189,6 +211,7 @@ int main(int /*argc*/, char **/*argv*/) {
         testMultiWord();
         testSentence();
         testExactOrder();
+        testSmallestMatch();
     } catch(const std::exception &e) {
         fprintf(stderr, "Fail: %s\n", e.what());
         return 666;
