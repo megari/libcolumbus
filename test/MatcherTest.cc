@@ -204,6 +204,24 @@ void testSmallestMatch() {
     assert(matches.getDocumentID(0) == correct);
 }
 
+void noCommonMatch() {
+    Corpus c;
+    DocumentID correct = 1;
+    Document d1(correct);
+    Word fieldName("name");
+    Word field2("dummy");
+    Matcher m;
+    MatchResults matches;
+    WordList q = splitToWords("fit canvas to selection");
+    d1.addText(fieldName, "Preparing your Images for the Web");
+    d1.addText(fieldName, "Help user manual");
+    c.addDocument(d1);
+
+    m.index(c);
+    matches = m.tempMatch(q, fieldName);
+    assert(matches.size() == 0);
+}
+
 int main(int /*argc*/, char **/*argv*/) {
     try {
         testMatcher();
@@ -212,6 +230,7 @@ int main(int /*argc*/, char **/*argv*/) {
         testSentence();
         testExactOrder();
         testSmallestMatch();
+        noCommonMatch();
     } catch(const std::exception &e) {
         fprintf(stderr, "Fail: %s\n", e.what());
         return 666;
