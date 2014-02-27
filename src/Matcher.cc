@@ -409,6 +409,7 @@ static map<DocumentID, int> countExacts(MatcherPrivate *p, const WordList &query
 
 struct DocCount {
     DocumentID id;
+    int matches;
     int matchDiff;
     int lengthDiff;
 };
@@ -430,6 +431,7 @@ MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex)
         key.first = i.first;
         key.second = indexID;
         c.id = i.first;
+        c.matches = i.second;
         c.matchDiff = abs(i.second - (int)query.size());
         c.lengthDiff = abs(p->originalSizes[key] - (int)query.size());
         stats.push_back(c);
@@ -437,12 +439,16 @@ MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex)
     // Documents with least amount of difference to the top.
     sort(stats.begin(), stats.end(),
             [](const DocCount &a, const DocCount &b) {
+        if(a.matches != b.matches) {
+            return a.matches > b.matches;
+        }
         if(a.matchDiff != b.matchDiff) {
             return a.matchDiff < b.matchDiff;
         }
         return a.lengthDiff < b.lengthDiff;
     });
     for(const auto &i: stats) {
+        printf("%ld with %ld matches\n", i.id, i.matches);
         results.addResult(i.id, 3.0);
     }
     return results;

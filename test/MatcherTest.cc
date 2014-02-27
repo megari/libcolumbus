@@ -240,6 +240,30 @@ void emptyMatch() {
     assert(matches.size() == 0);
 }
 
+void testMatchCount() {
+    Corpus c;
+    DocumentID correct = 1;
+    DocumentID wrong = 0;
+    Document d1(correct);
+    Document d2(wrong);
+    Word fieldName("name");
+    Word secondName("context");
+    Matcher m;
+    MatchResults matches;
+    WordList q = splitToWords("fit canvas to selection");
+    d1.addText(fieldName, "Fit Canvas to Layers");
+    d1.addText(secondName, "View Zoom (100%)");
+    d2.addText(fieldName, "Selection editor");
+    d2.addText(secondName, "Windows dockable dialogs");
+    c.addDocument(d1);
+    c.addDocument(d2);
+
+    m.index(c);
+    matches = m.tempMatch(q, fieldName);
+    assert(matches.size() == 2);
+    assert(matches.getDocumentID(0) == correct);
+}
+
 int main(int /*argc*/, char **/*argv*/) {
     try {
         testMatcher();
@@ -250,6 +274,7 @@ int main(int /*argc*/, char **/*argv*/) {
         testSmallestMatch();
         noCommonMatch();
         emptyMatch();
+        testMatchCount();
     } catch(const std::exception &e) {
         fprintf(stderr, "Fail: %s\n", e.what());
         return 666;
