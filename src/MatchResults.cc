@@ -96,7 +96,10 @@ void MatchResults::sortIfRequired() const {
     if(p->sorted)
         return;
     MatchResults *me = const_cast<MatchResults*>(this);
-    sort(me->p->results.rbegin(), me->p->results.rend());
+    stable_sort(me->p->results.rbegin(), me->p->results.rend(),
+            [](const pair<double, DocumentID> &a, const pair<double, DocumentID> &b) {
+        return a.first < b.first;
+    });
     me->p->sorted = true;
 }
 
