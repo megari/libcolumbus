@@ -394,8 +394,9 @@ static map<DocumentID, int> countExacts(MatcherPrivate *p, const WordList &query
     map<DocumentID, int> matchCounts;
     for(size_t i=0; i<query.size(); i++) {
         const Word &w = query[i];
-        if(!p->store.hasWord(w))
+        if(w.length() == 0 || !p->store.hasWord(w)) {
             continue;
+        }
         WordID curWord = p->store.getID(w);
         vector<DocumentID> exacts;
         p->reverseIndex.findDocuments(curWord, indexID, exacts);
@@ -420,7 +421,7 @@ MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex)
         msg += " is not known";
         throw invalid_argument(msg);
     }
-        WordID indexID = p->store.getID(primaryIndex);
+    WordID indexID = p->store.getID(primaryIndex);
     // How many times each document matched with zero error.
     vector<DocCount> stats;
     for(const auto &i : countExacts(p, query, indexID)) {

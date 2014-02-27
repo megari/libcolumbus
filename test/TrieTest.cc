@@ -46,10 +46,30 @@ void testWordBuilding() {
     assert(result == w2);
 }
 
+void testHas() {
+    Trie t;
+    Word w1("abc");
+    Word w2("abd");
+    Word w3("a");
+    Word w4("x");
+    Word result;
+    TrieOffset node1, node2;
+
+    WordID i1 = 1;
+    WordID i2 = 2;
+
+    assert(t.numWords() == 0);
+    node1 = t.insertWord(w1, i1);
+    assert(t.hasWord(w1));
+    assert(!t.hasWord(w2));
+    assert(!t.hasWord(w3));
+    assert(!t.hasWord(w4));
+}
 
 int main(int /*argc*/, char **/*argv*/) {
     // Move basic tests from levtrietest here.
     testWordBuilding();
+    testHas();
     return 0;
 }
 

@@ -63,10 +63,7 @@ WordID WordStore::getID(const Word &w) {
 }
 
 bool WordStore::hasWord(const Word &w) const {
-    TrieOffset node = p->words.findWord(w);
-    if(node)
-        return true;
-    return false;
+    return p->words.hasWord(w);
 }
 
 Word WordStore::getWord(const WordID id) const {
