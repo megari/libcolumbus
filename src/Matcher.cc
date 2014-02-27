@@ -176,8 +176,6 @@ static void addMatches(MatcherPrivate */*p*/, BestIndexMatches &bestIndexMatches
 static double calculateRelevancy(MatcherPrivate *p, const WordID wID, const WordID indexID, int error) {
     const LevenshteinIndex * const ind = p->indexes[indexID];
     double errorMultiplier = 100.0/(100.0+error); // Should be adjusted for maxError or word length.
-    return errorMultiplier;
-    /*
     size_t indexCount = ind->wordCount(wID);
     size_t indexMaxCount = ind->maxCount();
     assert(indexCount > 0);
@@ -185,7 +183,6 @@ static double calculateRelevancy(MatcherPrivate *p, const WordID wID, const Word
     double frequencyMultiplier = 1.0 - double(indexCount)/(indexMaxCount+1);
     double indexWeightMultiplier = p->weights.getWeight(p->store.getWord(indexID));
     return errorMultiplier*frequencyMultiplier*indexWeightMultiplier;
-*/
 }
 
 
@@ -416,6 +413,7 @@ struct DocCount {
 
 MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex) {
     MatchResults results;
+    set<DocumentID> exactMatched;
     if(!p->store.hasWord(primaryIndex)) {
         string msg("Index named ");
         msg += primaryIndex.asUtf8();
@@ -428,6 +426,7 @@ MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex)
     for(const auto &i : countExacts(p, query, indexID)) {
         DocCount c;
         pair<DocumentID, WordID> key;
+        exactMatched.insert(i.first);
         key.first = i.first;
         key.second = indexID;
         c.id = i.first;
@@ -448,8 +447,19 @@ MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex)
         return a.lengthDiff < b.lengthDiff;
     });
     for(const auto &i: stats) {
-        printf("%ld with %ld matches\n", i.id, i.matches);
         results.addResult(i.id, i.matches);
+    }
+    // Merge in fuzzy matches.
+    MatchResults fuzzyResults = match(query);
+    if(fuzzyResults.size() > 0) {
+        double biggestRelevancy = fuzzyResults.getRelevancy(0) + 0.1;
+        for(size_t i = 0; i<fuzzyResults.size(); i++) {
+            DocumentID docid = fuzzyResults.getDocumentID(i);
+            if(exactMatched.find(docid) != exactMatched.end())
+                continue;
+            results.addResult(docid,
+                    fuzzyResults.getRelevancy(i)/(2.0*biggestRelevancy));
+        }
     }
     return results;
 }
