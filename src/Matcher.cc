@@ -449,7 +449,7 @@ MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex)
     });
     for(const auto &i: stats) {
         printf("%ld with %ld matches\n", i.id, i.matches);
-        results.addResult(i.id, 3.0);
+        results.addResult(i.id, i.matches);
     }
     return results;
 }
