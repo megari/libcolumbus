@@ -436,6 +436,7 @@ MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex)
         c.lengthDiff = abs(p->originalSizes[key] - (int)query.size());
         stats.push_back(c);
     }
+    /*
     // Documents with least amount of difference to the top.
     sort(stats.begin(), stats.end(),
             [](const DocCount &a, const DocCount &b) {
@@ -447,15 +448,18 @@ MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex)
         }
         return a.lengthDiff < b.lengthDiff;
     });
+    */
     for(const auto &i: stats) {
         accumulator[i.id] = 2*i.matches;
+        if(i.matches == (int)query.size()) { // Perfect match.
+            accumulator[i.id] += 100;
+        }
     }
     // Merge in fuzzy matches.
     MatchResults fuzzyResults = match(query);
     for(size_t i = 0; i<fuzzyResults.size(); i++) {
         DocumentID docid = fuzzyResults.getDocumentID(i);
         accumulator[docid] += fuzzyResults.getRelevancy(i);
-        printf("Incrementing by %f.\n", fuzzyResults.getRelevancy(i));
     }
     for(const auto &i : accumulator) {
         results.addResult(i.first, i.second);
