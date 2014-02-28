@@ -414,6 +414,7 @@ struct DocCount {
 MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex) {
     MatchResults results;
     set<DocumentID> exactMatched;
+    map<DocumentID, double> accumulator;
     if(!p->store.hasWord(primaryIndex)) {
         string msg("Index named ");
         msg += primaryIndex.asUtf8();
@@ -447,19 +448,17 @@ MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex)
         return a.lengthDiff < b.lengthDiff;
     });
     for(const auto &i: stats) {
-        results.addResult(i.id, i.matches);
+        accumulator[i.id] = 2*i.matches;
     }
     // Merge in fuzzy matches.
     MatchResults fuzzyResults = match(query);
-    if(fuzzyResults.size() > 0) {
-        double biggestRelevancy = fuzzyResults.getRelevancy(0) + 0.1;
-        for(size_t i = 0; i<fuzzyResults.size(); i++) {
-            DocumentID docid = fuzzyResults.getDocumentID(i);
-            if(exactMatched.find(docid) != exactMatched.end())
-                continue;
-            results.addResult(docid,
-                    fuzzyResults.getRelevancy(i)/(2.0*biggestRelevancy));
-        }
+    for(size_t i = 0; i<fuzzyResults.size(); i++) {
+        DocumentID docid = fuzzyResults.getDocumentID(i);
+        accumulator[docid] += fuzzyResults.getRelevancy(i);
+        printf("Incrementing by %f.\n", fuzzyResults.getRelevancy(i));
+    }
+    for(const auto &i : accumulator) {
+        results.addResult(i.first, i.second);
     }
     return results;
 }
