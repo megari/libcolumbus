@@ -53,10 +53,8 @@ void testHas() {
     Word w3("a");
     Word w4("x");
     Word result;
-    TrieOffset node1, node2;
 
     WordID i1 = 1;
-    WordID i2 = 2;
 
     assert(t.numWords() == 0);
     node1 = t.insertWord(w1, i1);

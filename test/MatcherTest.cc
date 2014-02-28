@@ -266,18 +266,23 @@ void testMatchCount() {
 
 void testPerfect() {
     Corpus c;
-    DocumentID correct = 1;
-    DocumentID wrong = 0;
-    Document d1(wrong);
+    DocumentID correct = 0;
+    Document d1(1);
     Document d2(correct);
+    Document d3(2);
+    Document d4(3);
     Word fieldName("name");
     Matcher m;
     MatchResults matches;
     WordList q = splitToWords("save");
     d1.addText(fieldName, "Save as");
     d2.addText(fieldName, "Save");
+    d3.addText(fieldName, "Save yourself");
+    d4.addText(fieldName, "Save the whales");
     c.addDocument(d1);
     c.addDocument(d2);
+    c.addDocument(d3);
+    c.addDocument(d4);
 
     m.index(c);
     matches = m.onlineMatch(q, fieldName);
