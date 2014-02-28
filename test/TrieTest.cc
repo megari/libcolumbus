@@ -57,7 +57,7 @@ void testHas() {
     WordID i1 = 1;
 
     assert(t.numWords() == 0);
-    node1 = t.insertWord(w1, i1);
+    t.insertWord(w1, i1);
     assert(t.hasWord(w1));
     assert(!t.hasWord(w2));
     assert(!t.hasWord(w3));
