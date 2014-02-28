@@ -1,3 +1,9 @@
+libcolumbus (1.1.0-0ubuntu1) UNRELEASED; urgency=medium
+
+  * New online search mode
+
+ -- Jussi Pakkanen <jussi.pakkanen@ubuntu.com>  Fri, 28 Feb 2014 15:44:25 +0200
+
 libcolumbus (1.0.0+14.04.20140120-0ubuntu1) trusty; urgency=low
 
   * New rebuild forced
