@@ -176,7 +176,7 @@ void testExactOrder() {
     c.addDocument(d3);
 
     m.index(c);
-    matches = m.tempMatch(q, fieldName);
+    matches = m.onlineMatch(q, fieldName);
     assert(matches.size() == 2);
     assert(matches.getDocumentID(0) == correct);
 }
@@ -199,7 +199,7 @@ void testSmallestMatch() {
     c.addDocument(d2);
 
     m.index(c);
-    matches = m.tempMatch(q, fieldName);
+    matches = m.onlineMatch(q, fieldName);
     assert(matches.size() == 2);
     assert(matches.getDocumentID(0) == correct);
 }
@@ -218,7 +218,7 @@ void noCommonMatch() {
     c.addDocument(d1);
 
     m.index(c);
-    matches = m.tempMatch(q, fieldName);
+    matches = m.onlineMatch(q, fieldName);
     assert(matches.size() == 0);
 }
 
@@ -236,7 +236,7 @@ void emptyMatch() {
     c.addDocument(d1);
 
     m.index(c);
-    matches = m.tempMatch(q, fieldName);
+    matches = m.onlineMatch(q, fieldName);
     assert(matches.size() == 0);
 }
 
@@ -259,7 +259,7 @@ void testMatchCount() {
     c.addDocument(d2);
 
     m.index(c);
-    matches = m.tempMatch(q, fieldName);
+    matches = m.onlineMatch(q, fieldName);
     assert(matches.size() == 2);
     assert(matches.getDocumentID(0) == correct);
 }

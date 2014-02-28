@@ -387,8 +387,8 @@ IndexWeights& Matcher::getIndexWeights() {
     return p->weights;
 }
 
-static map<DocumentID, int> countExacts(MatcherPrivate *p, const WordList &query, const WordID indexID) {
-    map<DocumentID, int> matchCounts;
+static map<DocumentID, size_t> countExacts(MatcherPrivate *p, const WordList &query, const WordID indexID) {
+    map<DocumentID, size_t> matchCounts;
     for(size_t i=0; i<query.size(); i++) {
         const Word &w = query[i];
         if(w.length() == 0 || !p->store.hasWord(w)) {
@@ -406,12 +406,10 @@ static map<DocumentID, int> countExacts(MatcherPrivate *p, const WordList &query
 
 struct DocCount {
     DocumentID id;
-    int matches;
-    int matchDiff;
-    int lengthDiff;
+    size_t matches;
 };
 
-MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex) {
+MatchResults Matcher::onlineMatch(const WordList &query, const Word &primaryIndex) {
     MatchResults results;
     set<DocumentID> exactMatched;
     map<DocumentID, double> accumulator;
@@ -432,27 +430,12 @@ MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex)
         key.second = indexID;
         c.id = i.first;
         c.matches = i.second;
-        c.matchDiff = abs(i.second - (int)query.size());
-        c.lengthDiff = abs(p->originalSizes[key] - (int)query.size());
         stats.push_back(c);
     }
-    /*
-    // Documents with least amount of difference to the top.
-    sort(stats.begin(), stats.end(),
-            [](const DocCount &a, const DocCount &b) {
-        if(a.matches != b.matches) {
-            return a.matches > b.matches;
-        }
-        if(a.matchDiff != b.matchDiff) {
-            return a.matchDiff < b.matchDiff;
-        }
-        return a.lengthDiff < b.lengthDiff;
-    });
-    */
     for(const auto &i: stats) {
         accumulator[i.id] = 2*i.matches;
-        if(i.matches == (int)query.size()
-                && i.matches == (int) p->originalSizes[make_pair(i.id, indexID)]) { // Perfect match.
+        if(i.matches == query.size()
+                && i.matches == p->originalSizes[make_pair(i.id, indexID)]) { // Perfect match.
             accumulator[i.id] += 100;
         }
     }
