@@ -451,7 +451,8 @@ MatchResults Matcher::tempMatch(const WordList &query, const Word &primaryIndex)
     */
     for(const auto &i: stats) {
         accumulator[i.id] = 2*i.matches;
-        if(i.matches == (int)query.size()) { // Perfect match.
+        if(i.matches == (int)query.size()
+                && i.matches == (int) p->originalSizes[make_pair(i.id, indexID)]) { // Perfect match.
             accumulator[i.id] += 100;
         }
     }
