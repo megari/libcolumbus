@@ -264,6 +264,27 @@ void testMatchCount() {
     assert(matches.getDocumentID(0) == correct);
 }
 
+void testPerfect() {
+    Corpus c;
+    DocumentID correct = 1;
+    DocumentID wrong = 0;
+    Document d1(wrong);
+    Document d2(correct);
+    Word fieldName("name");
+    Matcher m;
+    MatchResults matches;
+    WordList q = splitToWords("save");
+    d1.addText(fieldName, "Save as");
+    d2.addText(fieldName, "Save");
+    c.addDocument(d1);
+    c.addDocument(d2);
+
+    m.index(c);
+    matches = m.onlineMatch(q, fieldName);
+    assert(matches.size() >= 1);
+    assert(matches.getDocumentID(0) == correct);
+}
+
 int main(int /*argc*/, char **/*argv*/) {
     try {
         testMatcher();
@@ -275,6 +296,7 @@ int main(int /*argc*/, char **/*argv*/) {
         noCommonMatch();
         emptyMatch();
         testMatchCount();
+        testPerfect();
     } catch(const std::exception &e) {
         fprintf(stderr, "Fail: %s\n", e.what());
         return 666;
