@@ -36,6 +36,7 @@
 #include <stdexcept>
 #include <map>
 #include <vector>
+#include <algorithm>
 
 #ifdef HAS_SPARSE_HASH
 #include <google/sparse_hash_map>
@@ -98,6 +99,7 @@ struct MatcherPrivate {
     IndexWeights weights;
     MatcherStatistics stats;
     WordStore store;
+    map<pair<DocumentID, WordID>, size_t> originalSizes; // Lengths of original documents.
 };
 
 void ReverseIndex::add(const WordID wordID, const WordID indexID, const DocumentID id) {
@@ -230,15 +232,6 @@ static void gatherMatchedDocuments(MatcherPrivate *p,  BestIndexMatches &bestInd
     }
 }
 
-static void expandQuery(const WordList &query, WordList &expandedQuery) {
-    for(size_t i=0; i<query.size(); i++)
-        expandedQuery.addWord(query[i]);
-
-    for(size_t i=0; i<query.size()-1; i++) {
-        expandedQuery.addWord(query[i].join(query[i+1]));
-    }
-}
-
 static bool subtermsMatch(MatcherPrivate *p, const ResultFilter &filter, size_t term, DocumentID id) {
     for(size_t subTerm=0; subTerm < filter.numSubTerms(term); subTerm++) {
         const Word &filterName = filter.getField(term, subTerm);
@@ -286,6 +279,10 @@ void Matcher::buildIndexes(const Corpus &c) {
             const Word &fieldName = textNames[ti];
             const WordID fieldID = p->store.getID(fieldName);
             const WordList &text = d.getText(fieldName);
+            pair<DocumentID, WordID> lengths;
+            lengths.first = d.getID();
+            lengths.second = fieldID;
+            p->originalSizes[lengths] = text.size();
             for(size_t wi=0; wi<text.size(); wi++) {
                 const Word &word = text[wi];
                 const WordID wordID = p->store.getID(word);
@@ -336,16 +333,14 @@ MatchResults Matcher::match(const WordList &query, const SearchParameters &param
     const int maxIterations = 1;
     const int increment = LevenshteinIndex::getDefaultError();
     const size_t minMatches = 10;
-    WordList expandedQuery;
     MatchResults allMatches;
 
     if(query.size() == 0)
         return matchedDocuments;
-    expandQuery(query, expandedQuery);
     // Try to search with ever growing error until we find enough matches.
     for(int i=0; i<maxIterations; i++) {
         MatchResults matches;
-        matchWithRelevancy(expandedQuery, params, i*increment, matches);
+        matchWithRelevancy(query, params, i*increment, matches);
         if(matches.size() >= minMatches || i == maxIterations-1) {
             allMatches.addResults(matches);
             break;
@@ -390,6 +385,70 @@ MatchResults Matcher::match(const char *queryAsUtf8, const SearchParameters &par
 
 IndexWeights& Matcher::getIndexWeights() {
     return p->weights;
+}
+
+static map<DocumentID, size_t> countExacts(MatcherPrivate *p, const WordList &query, const WordID indexID) {
+    map<DocumentID, size_t> matchCounts;
+    for(size_t i=0; i<query.size(); i++) {
+        const Word &w = query[i];
+        if(w.length() == 0 || !p->store.hasWord(w)) {
+            continue;
+        }
+        WordID curWord = p->store.getID(w);
+        vector<DocumentID> exacts;
+        p->reverseIndex.findDocuments(curWord, indexID, exacts);
+        for(const auto &i : exacts) {
+            matchCounts[i]++; // Default is zero initialisation.
+        }
+    }
+    return matchCounts;
+}
+
+struct DocCount {
+    DocumentID id;
+    size_t matches;
+};
+
+MatchResults Matcher::onlineMatch(const WordList &query, const Word &primaryIndex) {
+    MatchResults results;
+    set<DocumentID> exactMatched;
+    map<DocumentID, double> accumulator;
+    if(!p->store.hasWord(primaryIndex)) {
+        string msg("Index named ");
+        msg += primaryIndex.asUtf8();
+        msg += " is not known";
+        throw invalid_argument(msg);
+    }
+    WordID indexID = p->store.getID(primaryIndex);
+    // How many times each document matched with zero error.
+    vector<DocCount> stats;
+    for(const auto &i : countExacts(p, query, indexID)) {
+        DocCount c;
+        pair<DocumentID, WordID> key;
+        exactMatched.insert(i.first);
+        key.first = i.first;
+        key.second = indexID;
+        c.id = i.first;
+        c.matches = i.second;
+        stats.push_back(c);
+    }
+    for(const auto &i: stats) {
+        accumulator[i.id] = 2*i.matches;
+        if(i.matches == query.size()
+                && i.matches == p->originalSizes[make_pair(i.id, indexID)]) { // Perfect match.
+            accumulator[i.id] += 100;
+        }
+    }
+    // Merge in fuzzy matches.
+    MatchResults fuzzyResults = match(query);
+    for(size_t i = 0; i<fuzzyResults.size(); i++) {
+        DocumentID docid = fuzzyResults.getDocumentID(i);
+        accumulator[docid] += fuzzyResults.getRelevancy(i);
+    }
+    for(const auto &i : accumulator) {
+        results.addResult(i.first, i.second);
+    }
+    return results;
 }
 
 COL_NAMESPACE_END

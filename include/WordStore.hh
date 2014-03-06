@@ -49,6 +49,7 @@ public:
 
 
     WordID getID(const Word &w);
+    bool hasWord(const Word &w) const;
     Word getWord(const WordID id) const;
     bool hasWord(const WordID id) const;
 };

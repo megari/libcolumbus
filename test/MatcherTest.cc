@@ -23,6 +23,7 @@
 #include "WordList.hh"
 #include "Document.hh"
 #include "MatchResults.hh"
+#include "ColumbusHelpers.hh"
 #include <cassert>
 
 using namespace Columbus;
@@ -123,7 +124,169 @@ void testMultiWord() {
     c.addDocument(d2);
     m.index(c);
 
-    matches = m.match("Sara Michell Geller");
+    matches = m.match("Sari Michell Geller");
+    assert(matches.getDocumentID(0) == correct);
+}
+
+void testSentence() {
+    Corpus c;
+    DocumentID correct = 1;
+    DocumentID wrong = 0;
+    Document d1(correct);
+    Document d2(wrong);
+    Word fieldName("name");
+    Word secondName("context");
+    Matcher m;
+    MatchResults matches;
+
+    d1.addText(fieldName, "Fit Canvas to Layers");
+    d1.addText(secondName, "View Zoom (100%)");
+    d2.addText(fieldName, "Fit image in Window");
+    d2.addText(secondName, "Image");
+
+    c.addDocument(d1);
+    c.addDocument(d2);
+
+    m.index(c);
+    matches = m.match("fit canvas to layers");
+    assert(matches.getDocumentID(0) == correct);
+}
+
+void testExactOrder() {
+    Corpus c;
+    DocumentID correct = 1;
+    DocumentID wrong = 0;
+    DocumentID moreWrong = 100;
+    Document d1(correct);
+    Document d2(wrong);
+    Document d3(moreWrong);
+    Word fieldName("name");
+    Word secondName("context");
+    Matcher m;
+    MatchResults matches;
+    WordList q = splitToWords("fit canvas to layers");
+    d1.addText(fieldName, "Fit Canvas to Layers");
+    d1.addText(secondName, "View Zoom (100%)");
+    d2.addText(fieldName, "Fit image in Window");
+    d2.addText(secondName, "Image");
+    d3.addText(fieldName, "Not matching.");
+    d3.addText(secondName, "fit canvas to layers");
+    c.addDocument(d1);
+    c.addDocument(d2);
+    c.addDocument(d3);
+
+    m.index(c);
+    matches = m.onlineMatch(q, fieldName);
+    assert(matches.size() >= 1);
+    assert(matches.getDocumentID(0) == correct);
+}
+
+void testSmallestMatch() {
+    Corpus c;
+    DocumentID correct = 1;
+    DocumentID wrong = 0;
+    Document d1(correct);
+    Document d2(wrong);
+    Word fieldName("name");
+    Word field2("dummy");
+    Matcher m;
+    MatchResults matches;
+    WordList q = splitToWords("save");
+    d1.addText(fieldName, "save");
+    d1.addText(field2, "lots of text to ensure statistics of this field are ignored");
+    d2.addText(fieldName, "save as");
+    c.addDocument(d1);
+    c.addDocument(d2);
+
+    m.index(c);
+    matches = m.onlineMatch(q, fieldName);
+    assert(matches.size() == 2);
+    assert(matches.getDocumentID(0) == correct);
+}
+
+void noCommonMatch() {
+    Corpus c;
+    DocumentID correct = 1;
+    Document d1(correct);
+    Word fieldName("name");
+    Word field2("dummy");
+    Matcher m;
+    MatchResults matches;
+    WordList q = splitToWords("fit canvas to selection");
+    d1.addText(fieldName, "Preparing your Images for the Web");
+    d1.addText(fieldName, "Help user manual");
+    c.addDocument(d1);
+
+    m.index(c);
+    matches = m.onlineMatch(q, fieldName);
+    assert(matches.size() == 0);
+}
+
+void emptyMatch() {
+    Corpus c;
+    DocumentID correct = 1;
+    Document d1(correct);
+    Word fieldName("name");
+    Word field2("dummy");
+    Matcher m;
+    MatchResults matches;
+    WordList q;
+    d1.addText(fieldName, "Preparing your Images for the Web");
+    d1.addText(fieldName, "Help user manual");
+    c.addDocument(d1);
+
+    m.index(c);
+    matches = m.onlineMatch(q, fieldName);
+    assert(matches.size() == 0);
+}
+
+void testMatchCount() {
+    Corpus c;
+    DocumentID correct = 1;
+    DocumentID wrong = 0;
+    Document d1(correct);
+    Document d2(wrong);
+    Word fieldName("name");
+    Word secondName("context");
+    Matcher m;
+    MatchResults matches;
+    WordList q = splitToWords("fit canvas to selection");
+    d1.addText(fieldName, "Fit Canvas to Layers");
+    d1.addText(secondName, "View Zoom (100%)");
+    d2.addText(fieldName, "Selection editor");
+    d2.addText(secondName, "Windows dockable dialogs");
+    c.addDocument(d1);
+    c.addDocument(d2);
+
+    m.index(c);
+    matches = m.onlineMatch(q, fieldName);
+    assert(matches.size() == 2);
+    assert(matches.getDocumentID(0) == correct);
+}
+
+void testPerfect() {
+    Corpus c;
+    DocumentID correct = 0;
+    Document d1(1);
+    Document d2(correct);
+    Document d3(2);
+    Document d4(3);
+    Word fieldName("name");
+    Matcher m;
+    MatchResults matches;
+    WordList q = splitToWords("save");
+    d1.addText(fieldName, "Save as");
+    d2.addText(fieldName, "Save");
+    d3.addText(fieldName, "Save yourself");
+    d4.addText(fieldName, "Save the whales");
+    c.addDocument(d1);
+    c.addDocument(d2);
+    c.addDocument(d3);
+    c.addDocument(d4);
+
+    m.index(c);
+    matches = m.onlineMatch(q, fieldName);
+    assert(matches.size() >= 1);
     assert(matches.getDocumentID(0) == correct);
 }
 
@@ -132,6 +295,13 @@ int main(int /*argc*/, char **/*argv*/) {
         testMatcher();
         testRelevancy();
         testMultiWord();
+        testSentence();
+        testExactOrder();
+        testSmallestMatch();
+        noCommonMatch();
+        emptyMatch();
+        testMatchCount();
+        testPerfect();
     } catch(const std::exception &e) {
         fprintf(stderr, "Fail: %s\n", e.what());
         return 666;

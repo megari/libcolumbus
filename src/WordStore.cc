@@ -53,13 +53,17 @@ WordStore::~WordStore() {
 }
 
 WordID WordStore::getID(const Word &w) {
-    TrieOffset node = p->words.findWord(w);
-    if(node)
-        return p->words.getWordID(node);
-    node = p->words.insertWord(w, p->wordIndex.size());
+    if(p->words.hasWord(w)) {
+        return p->words.getWordID(p->words.findWord(w));
+    }
+    TrieOffset node = p->words.insertWord(w, p->wordIndex.size());
     p->wordIndex.push_back(node);
     WordID result = p->wordIndex.size()-1;
     return result;
+}
+
+bool WordStore::hasWord(const Word &w) const {
+    return p->words.hasWord(w);
 }
 
 Word WordStore::getWord(const WordID id) const {
