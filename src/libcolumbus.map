@@ -1,0 +1,58 @@
+{
+global:
+    extern "C++" {
+        Columbus::Matcher*;
+        Columbus::Word*;
+        Columbus::WordStore*;
+        Columbus::Corpus*;
+        Columbus::WordList*;
+        Columbus::Document*;
+        Columbus::MatchResults*;
+        Columbus::ErrorValues*;
+        Columbus::IndexMatches*;
+        Columbus::IndexWeights*;
+        Columbus::LevenshteinIndex*;
+        Columbus::SearchParameters*;
+        Columbus::ResultFilter*;
+        Columbus::Trie*;
+        "Columbus::hiresTimestamp()";
+        "Columbus::splitToWords(char const*)";
+    };
+    col_word_new;
+    col_word_delete;
+    col_word_length;
+    col_word_as_utf8;
+
+    col_document_new;
+    col_document_delete;
+    col_document_get_id;
+    col_document_add_text;
+
+    col_matcher_new;
+    col_matcher_delete;
+    col_matcher_index;
+    col_matcher_match;
+    col_matcher_get_error_values;
+    col_matcher_get_index_weights;
+
+    col_match_results_new;
+    col_match_results_delete;
+    col_match_results_size;
+    col_match_results_get_id;
+    col_match_results_get_relevancy;
+
+    col_corpus_new;
+    col_corpus_delete;
+    col_corpus_add_document;
+
+    col_index_weights_set_weight;
+    col_index_weights_get_weight;
+
+    col_error_values_add_standard_errors;
+    col_error_values_set_substring_mode;
+
+local:
+    extern "C++" {
+        *;
+    };
+};
