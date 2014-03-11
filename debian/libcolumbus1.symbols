@@ -1,0 +1,34 @@
+libcolumbus.so.1 libcolumbus1 #MINVER#
+
+col_word_new@Base 1.0
+col_word_delete@Base 1.0
+col_word_length@Base 1.0
+col_word_as_utf8@Base 1.0
+
+col_document_new@Base 1.0
+col_document_delete@Base 1.0
+col_document_get_id@Base 1.0
+col_document_add_text@Base 1.0
+
+col_matcher_new@Base 1.0
+col_matcher_delete@Base 1.0
+col_matcher_index@Base 1.0
+col_matcher_match@Base 1.0
+col_matcher_get_error_values@Base 1.0
+col_matcher_get_index_weights@Base 1.0
+
+col_match_results_new@Base 1.0
+col_match_results_delete@Base 1.0
+col_match_results_size@Base 1.0
+col_match_results_get_id@Base 1.0
+col_match_results_get_relevancy@Base 1.0
+
+col_corpus_new@Base 1.0
+corpus_delete@Base 1.0
+col_corpus_add_document@Base 1.0
+
+col_index_weights_set_weight@Base 1.0
+col_index_weights_get_weight@Base 1.0
+
+col_error_values_add_standard_errors@Base 1.0
+col_error_values_set_substring_mode@Base 1.0

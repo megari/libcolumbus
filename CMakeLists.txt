@@ -34,8 +34,8 @@ endif()
 
 # Symbol visibility
 add_definitions(-DBUILDING_COLUMBUS)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden")
 
 set(SO_VERSION_MAJOR "1")
 set(SO_VERSION_MINOR "0")
