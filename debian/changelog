@@ -1,8 +1,57 @@
-libcolumbus (1.0.0daily13.08.09-0ubuntu1) UNRELEASED; urgency=low
+libcolumbus (1.1.0+14.04.20140306-0ubuntu1) trusty; urgency=medium
 
-  * 
+  [ Jussi Pakkanen ]
+  * New online search mode
 
- -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 09 Aug 2013 10:31:48 -0400
+  [ Ubuntu daily release ]
+  * New rebuild forced
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 06 Mar 2014 13:06:03 +0000
+
+libcolumbus (1.0.0+14.04.20140120-0ubuntu1) trusty; urgency=low
+
+  * New rebuild forced
+  * Automatic snapshot from revision 459
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Mon, 20 Jan 2014 19:43:49 +0000
+
+libcolumbus (1.0.0+14.04.20140108-0ubuntu1) trusty; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Fail early if temporary file can't be created.
+
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 458
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 08 Jan 2014 03:20:54 +0000
+
+libcolumbus (1.0.0+13.10.20130814.1-0ubuntu3) trusty; urgency=medium
+
+  * No change rebuild against libicu52
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Fri, 27 Dec 2013 04:23:13 +0000
+
+libcolumbus (1.0.0+13.10.20130814.1-0ubuntu2) trusty; urgency=low
+
+  * No change rebuild for Boost 1.54 transition.
+
+ -- Dmitrijs Ledkovs <xnox@ubuntu.com>  Tue, 22 Oct 2013 15:36:59 +0100
+
+libcolumbus (1.0.0+13.10.20130814.1-0ubuntu1) saucy; urgency=low
+
+  * Automatic snapshot from revision 454
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 14 Aug 2013 15:20:10 +0000
+
+libcolumbus (1.0.0+13.10.20130814-0ubuntu1) saucy; urgency=low
+
+  [ Mathieu Trudel-Lapierre ]
+  * Release new upstream version, bump to ABI 1 
+
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 452
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 14 Aug 2013 10:09:26 +0000
 
 libcolumbus (0.5.0daily13.06.06-0ubuntu1) saucy; urgency=low
 

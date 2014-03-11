@@ -60,6 +60,17 @@ public:
     void index(const Corpus &c);
     ErrorValues& getErrorValues();
     IndexWeights& getIndexWeights();
+    /*
+     * This function is optimized for online matches, that is, queries
+     * that are live updated during typing. It uses slightly different
+     * search heuristics to ensure results that "feel good" to humans.
+     *
+     * The second argument is the field that should be the primary focus.
+     * Usually it means having the text that will be shown to the user.
+     * As an example, in the HUD, this field would contain the command
+     * (and nothing else) that will be executed.
+     */
+    MatchResults onlineMatch(const WordList &query, const Word &primaryIndex);
 };
 
 COL_NAMESPACE_END
