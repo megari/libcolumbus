@@ -49,13 +49,6 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::SearchParameters::addNonsearchingField(Columbus::Word const&)@Base" 0replaceme
  (c++)"Columbus::SearchParameters::SearchParameters()@Base" 0replaceme
  (c++)"Columbus::SearchParameters::~SearchParameters()@Base" 0replaceme
- (c++)"Columbus::Trie::addNewNode(unsigned int)@Base" 0replaceme
- (c++)"Columbus::Trie::insertWord(Columbus::Word const&, unsigned int)@Base" 0replaceme
- (c++)"Columbus::Trie::addNewSibling(unsigned int, unsigned int, unsigned short)@Base" 0replaceme
- (c++)"Columbus::Trie::append(char const*, int)@Base" 0replaceme
- (c++)"Columbus::Trie::expand()@Base" 0replaceme
- (c++)"Columbus::Trie::Trie()@Base" 0replaceme
- (c++)"Columbus::Trie::~Trie()@Base" 0replaceme
  (c++)"Columbus::Word::convertString(char const*)@Base" 0replaceme
  (c++)"Columbus::Word::duplicateFrom(Columbus::Word const&)@Base" 0replaceme
  (c++)"Columbus::Word::hasWhitespace()@Base" 0replaceme

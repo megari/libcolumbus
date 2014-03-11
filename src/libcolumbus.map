@@ -14,7 +14,6 @@ global:
         Columbus::LevenshteinIndex*;
         Columbus::SearchParameters*;
         Columbus::ResultFilter*;
-        Columbus::Trie*;
         "Columbus::hiresTimestamp()";
         "Columbus::splitToWords(char const*)";
     };
