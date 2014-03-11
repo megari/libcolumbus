@@ -135,20 +135,6 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::SearchParameters::isNonsearchingField(Columbus::Word const&) const@Base" 0replaceme
  (c++)"Columbus::SearchParameters::looseningIterations() const@Base" 0replaceme
  (c++)"Columbus::SearchParameters::isDynamic() const@Base" 0replaceme
- (c++)"Columbus::Trie::hasSibling(unsigned int) const@Base" 0replaceme
- (c++)"Columbus::Trie::getSiblingTo(unsigned int, unsigned int) const@Base" 0replaceme
- (c++)"Columbus::Trie::getNextSibling(unsigned int) const@Base" 0replaceme
- (c++)"Columbus::Trie::getSiblingList(unsigned int) const@Base" 0replaceme
- (c++)"Columbus::Trie::getRoot() const@Base" 0replaceme
- (c++)"Columbus::Trie::getWord(unsigned int) const@Base" 0replaceme
- (c++)"Columbus::Trie::hasWord(Columbus::Word const&) const@Base" 0replaceme
- (c++)"Columbus::Trie::findWord(Columbus::Word const&) const@Base" 0replaceme
- (c++)"Columbus::Trie::getChild(unsigned int) const@Base" 0replaceme
- (c++)"Columbus::Trie::numNodes() const@Base" 0replaceme
- (c++)"Columbus::Trie::numWords() const@Base" 0replaceme
- (c++)"Columbus::Trie::getLetter(unsigned int) const@Base" 0replaceme
- (c++)"Columbus::Trie::getParent(unsigned int) const@Base" 0replaceme
- (c++)"Columbus::Trie::getWordID(unsigned int) const@Base" 0replaceme
  (c++)"Columbus::Word::hash() const@Base" 0replaceme
  (c++)"Columbus::Word::join(Columbus::Word const&) const@Base" 0replaceme
  (c++)"Columbus::Word::asUtf8() const@Base" 0replaceme
