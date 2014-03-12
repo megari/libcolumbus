@@ -112,7 +112,8 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::ErrorValues::getSubstituteErrorSlow(unsigned short, unsigned short) const@Base" 0replaceme
  (c++)"Columbus::IndexMatches::getMatchError(unsigned long) const@Base" 0replaceme
  (c++)"Columbus::IndexMatches::size() const@Base" 0replaceme
- (c++)"Columbus::IndexMatches::getMatch(unsigned long) const@Base" 0replaceme
+ (c++|arch=amd64)"Columbus::IndexMatches::getMatch(unsigned long) const@Base" 0replaceme
+ (c++|arch=!amd64)"Columbus::IndexMatches::getMatch(unsigned int) const@Base" 0replaceme
  (c++)"Columbus::IndexMatches::getQuery(unsigned long) const@Base" 0replaceme
  (c++)"Columbus::IndexWeights::getWeight(Columbus::Word const&) const@Base" 0replaceme
  (c++)"Columbus::MatchResults::getRelevancy(unsigned long) const@Base" 0replaceme
