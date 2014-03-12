@@ -83,6 +83,7 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::Matcher::match(Columbus::WordList const&)@Base" 0replaceme
  (c++)"Columbus::Matcher::match(Columbus::WordList const&, Columbus::SearchParameters const&)@Base" 0replaceme
  (c++)"Columbus::Matcher::match(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
+ (c++)"Columbus::Matcher::onlineMatch(Columbus::WordList const&, Columbus::Word const&)" 0replaceme
  (c++)"Columbus::Matcher::Matcher()@Base" 0replaceme
  (c++)"Columbus::Matcher::~Matcher()@Base" 0replaceme
  (c++)"Columbus::Document::addText(Columbus::Word const&, char const*)@Base" 0replaceme
@@ -105,6 +106,7 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::WordList::operator=(Columbus::WordList&&)@Base" 0replaceme
  (c++)"Columbus::WordList::operator=(Columbus::WordList const&)@Base" 0replaceme
  (c++)"Columbus::WordStore::getID(Columbus::Word const&)@Base" 0replaceme
+ (c++)"Columbus::WordStore::hasWord(Columbus::Word const&) const@Base" 0replaceme
  (c++)"Columbus::WordStore::WordStore()@Base" 0replaceme
  (c++)"Columbus::WordStore::~WordStore()@Base" 0replaceme
  (c++)"Columbus::ErrorValues::getSubstituteError(unsigned short, unsigned short) const@Base" 0replaceme
