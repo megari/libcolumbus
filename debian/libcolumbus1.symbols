@@ -63,7 +63,8 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::Word::Word()@Base" 0replaceme
  (c++)"Columbus::Word::Word(Columbus::Word&&)@Base" 0replaceme
  (c++)"Columbus::Word::Word(char const*)@Base" 0replaceme
- (c++)"Columbus::Word::Word(unsigned short*, unsigned long)@Base" 0replaceme
+ (c++|arch=amd64)"Columbus::Word::Word(unsigned short*, unsigned long)@Base" 0replaceme
+ (c++|arch=!amd64)"Columbus::Word::Word(unsigned short*, unsigned int)@Base" 0replaceme
  (c++)"Columbus::Word::Word(Columbus::Word const&)@Base" 0replaceme
  (c++)"Columbus::Word::Word(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
  (c++)"Columbus::Word::Word()@Base" 0replaceme
