@@ -23,8 +23,10 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::IndexWeights::IndexWeights()@Base" 0replaceme
  (c++)"Columbus::IndexWeights::~IndexWeights()@Base" 0replaceme
  (c++)"Columbus::MatchResults::addResults(Columbus::MatchResults const&)@Base" 0replaceme
- (c++)"Columbus::MatchResults::copyResult(Columbus::MatchResults const&, unsigned long)@Base" 0replaceme
- (c++)"Columbus::MatchResults::addResult(unsigned long, double)@Base" 0replaceme
+ (c++|arch=amd64)"Columbus::MatchResults::copyResult(Columbus::MatchResults const&, unsigned long)@Base" 0replaceme
+ (c++|arch=!amd64)"Columbus::MatchResults::copyResult(Columbus::MatchResults const&, unsigned int)@Base" 0replaceme
+ (c++|arch=amd64)"Columbus::MatchResults::addResult(unsigned long, double)@Base" 0replaceme
+ (c++|arch=!amd64)"Columbus::MatchResults::addResult(unsigned int, double)@Base" 0replaceme
  (c++)"Columbus::MatchResults::MatchResults(Columbus::MatchResults&&)@Base" 0replaceme
  (c++)"Columbus::MatchResults::MatchResults(Columbus::MatchResults const&)@Base" 0replaceme
  (c++)"Columbus::MatchResults::MatchResults()@Base" 0replaceme
@@ -90,7 +92,8 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::Document::addText(Columbus::Word const&, Columbus::WordList const&)@Base" 0replaceme
  (c++)"Columbus::Document::addText(Columbus::Word const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 0replaceme
  (c++)"Columbus::Document::Document(Columbus::Document const&)@Base" 0replaceme
- (c++)"Columbus::Document::Document(unsigned long)@Base" 0replaceme
+ (c++|arch=amd64)"Columbus::Document::Document(unsigned long)@Base" 0replaceme
+ (c++|arch=!amd64)"Columbus::Document::Document(unsigned int)@Base" 0replaceme
  (c++)"Columbus::Document::Document(Columbus::Document const&)@Base" 0replaceme
  (c++)"Columbus::Document::Document(unsigned long)@Base" 0replaceme
  (c++)"Columbus::Document::~Document()@Base" 0replaceme
@@ -110,22 +113,29 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::WordStore::~WordStore()@Base" 0replaceme
  (c++)"Columbus::ErrorValues::getSubstituteError(unsigned short, unsigned short) const@Base" 0replaceme
  (c++)"Columbus::ErrorValues::getSubstituteErrorSlow(unsigned short, unsigned short) const@Base" 0replaceme
- (c++)"Columbus::IndexMatches::getMatchError(unsigned long) const@Base" 0replaceme
+ (c++|arch=amd64)"Columbus::IndexMatches::getMatchError(unsigned long) const@Base" 0replaceme
+ (c++|arch=!amd64)"Columbus::IndexMatches::getMatchError(unsigned int) const@Base" 0replaceme
  (c++)"Columbus::IndexMatches::size() const@Base" 0replaceme
  (c++|arch=amd64)"Columbus::IndexMatches::getMatch(unsigned long) const@Base" 0replaceme
  (c++|arch=!amd64)"Columbus::IndexMatches::getMatch(unsigned int) const@Base" 0replaceme
- (c++)"Columbus::IndexMatches::getQuery(unsigned long) const@Base" 0replaceme
+ (c++|arch=amd64)"Columbus::IndexMatches::getQuery(unsigned long) const@Base" 0replaceme
+ (c++|arch=!amd64)"Columbus::IndexMatches::getQuery(unsigned int) const@Base" 0replaceme
  (c++)"Columbus::IndexWeights::getWeight(Columbus::Word const&) const@Base" 0replaceme
- (c++)"Columbus::MatchResults::getRelevancy(unsigned long) const@Base" 0replaceme
- (c++)"Columbus::MatchResults::getDocumentID(unsigned long) const@Base" 0replaceme
+ (c++|arch=amd64)"Columbus::MatchResults::getRelevancy(unsigned long) const@Base" 0replaceme
+ (c++|arch=!amd64)"Columbus::MatchResults::getRelevancy(unsigned int) const@Base" 0replaceme
+ (c++|arch=amd64)"Columbus::MatchResults::getDocumentID(unsigned long) const@Base" 0replaceme
+ (c++|arch=!amd64)"Columbus::MatchResults::getDocumentID(unsigned int) const@Base" 0replaceme
  (c++)"Columbus::MatchResults::sortIfRequired() const@Base" 0replaceme
  (c++)"Columbus::MatchResults::size() const@Base" 0replaceme
  (c++)"Columbus::ResultFilter::numSubTerms(unsigned long) const@Base" 0replaceme
- (c++)"Columbus::ResultFilter::getWord(unsigned long, unsigned long) const@Base" 0replaceme
- (c++)"Columbus::ResultFilter::getField(unsigned long, unsigned long) const@Base" 0replaceme
+ (c++|arch=amd64)"Columbus::ResultFilter::getWord(unsigned long, unsigned long) const@Base" 0replaceme
+ (c++|arch=!amd64)"Columbus::ResultFilter::getWord(unsigned int, unsigned int) const@Base" 0replaceme
+ (c++|arch=amd64)"Columbus::ResultFilter::getField(unsigned long, unsigned long) const@Base" 0replaceme
+ (c++|arch=!amd64)"Columbus::ResultFilter::getField(unsigned int, unsigned int) const@Base" 0replaceme
  (c++)"Columbus::ResultFilter::numTerms() const@Base" 0replaceme
  (c++)"Columbus::LevenshteinIndex::searchRecursive(Columbus::Word const&, unsigned int, Columbus::ErrorValues const&, unsigned short, unsigned short, unsigned long, Columbus::ErrorMatrix&, Columbus::IndexMatches&, int) const@Base" 0replaceme
- (c++)"Columbus::LevenshteinIndex::findOptimalError(unsigned short, unsigned short, Columbus::Word const&, unsigned long, unsigned long, Columbus::ErrorMatrix const&, Columbus::ErrorValues const&) const@Base" 0replaceme
+ (c++|arch=amd64)"Columbus::LevenshteinIndex::findOptimalError(unsigned short, unsigned short, Columbus::Word const&, unsigned long, unsigned long, Columbus::ErrorMatrix const&, Columbus::ErrorValues const&) const@Base" 0replaceme
+ (c++|arch=!amd64)"Columbus::LevenshteinIndex::findOptimalError(unsigned short, unsigned short, Columbus::Word const&, unsigned int, unsigned int, Columbus::ErrorMatrix const&, Columbus::ErrorValues const&) const@Base" 0replaceme
  (c++)"Columbus::LevenshteinIndex::hasWord(Columbus::Word const&) const@Base" 0replaceme
  (c++)"Columbus::LevenshteinIndex::maxCount() const@Base" 0replaceme
  (c++)"Columbus::LevenshteinIndex::numNodes() const@Base" 0replaceme
@@ -149,7 +159,8 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::Word::operator!=(char const*) const@Base" 0replaceme
  (c++)"Columbus::Word::operator!=(Columbus::Word const&) const@Base" 0replaceme
  (c++)"Columbus::Word::operator!=(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const@Base" 0replaceme
- (c++)"Columbus::Corpus::getDocument(unsigned long) const@Base" 0replaceme
+ (c++|arch=amd64)"Columbus::Corpus::getDocument(unsigned long) const@Base" 0replaceme
+ (c++|arch=!amd64)"Columbus::Corpus::getDocument(unsigned int) const@Base" 0replaceme
  (c++)"Columbus::Corpus::size() const@Base" 0replaceme
  (c++)"Columbus::Document::fieldCount() const@Base" 0replaceme
  (c++)"Columbus::Document::getFieldNames(Columbus::WordList&) const@Base" 0replaceme
