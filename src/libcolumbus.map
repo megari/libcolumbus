@@ -8,7 +8,14 @@ global:
         Columbus::Matcher::get*;
         Columbus::Matcher::operator*;
         Columbus::Matcher::index*;
-        Columbus::Word*;
+        Columbus::Word::Word*;
+        "Columbus::Word::~Word()";
+        "Columbs::Word::length()";
+        "Columbus::Word::asUtf8() const";
+        Columbus::Word::toUtf8*;
+        Columbus::Word::join*;
+        Columbus::Word::operator*;
+        "Columbus::Word::hash()";
         Columbus::WordStore*;
         Columbus::Corpus*;
         Columbus::WordList*;

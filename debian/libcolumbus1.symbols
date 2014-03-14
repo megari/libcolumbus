@@ -51,9 +51,6 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::SearchParameters::addNonsearchingField(Columbus::Word const&)@Base" 0replaceme
  (c++)"Columbus::SearchParameters::SearchParameters()@Base" 0replaceme
  (c++)"Columbus::SearchParameters::~SearchParameters()@Base" 0replaceme
- (c++)"Columbus::Word::convertString(char const*)@Base" 0replaceme
- (c++)"Columbus::Word::duplicateFrom(Columbus::Word const&)@Base" 0replaceme
- (c++)"Columbus::Word::hasWhitespace()@Base" 0replaceme
  (c++)"Columbus::Word::Word(Columbus::Word&&)@Base" 0replaceme
  (c++)"Columbus::Word::Word(char const*)@Base" 0replaceme
  (c++|arch=amd64)"Columbus::Word::Word(unsigned short*, unsigned long)@Base" 0replaceme
