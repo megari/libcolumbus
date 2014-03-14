@@ -20,7 +20,12 @@ global:
         Columbus::Corpus*;
         Columbus::WordList*;
         Columbus::Document*;
-        Columbus::MatchResults*;
+        Columbus::MatchResults::MatchResults*;
+        "Columbus::MatchResults::~MatchResults()";
+        Columbus::MatchResults::operator*;
+        Columbus::MatchResults::add*;
+        "Columbus::MatchResults::size() const";
+        Columbus::MatchResults::get*;
         Columbus::ErrorValues*;
         Columbus::IndexMatches*;
         Columbus::IndexWeights*;

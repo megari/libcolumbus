@@ -120,7 +120,6 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++|arch=!amd64)"Columbus::MatchResults::getRelevancy(unsigned int) const@Base" 0replaceme
  (c++|arch=amd64)"Columbus::MatchResults::getDocumentID(unsigned long) const@Base" 0replaceme
  (c++|arch=!amd64)"Columbus::MatchResults::getDocumentID(unsigned int) const@Base" 0replaceme
- (c++)"Columbus::MatchResults::sortIfRequired() const@Base" 0replaceme
  (c++)"Columbus::MatchResults::size() const@Base" 0replaceme
  (c++|arch=amd64)"Columbus::ResultFilter::numSubTerms(unsigned long) const@Base" 0replaceme
  (c++|arch=!amd64)"Columbus::ResultFilter::numSubTerms(unsigned int) const@Base" 0replaceme
