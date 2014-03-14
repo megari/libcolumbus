@@ -35,6 +35,7 @@
 #include <cassert>
 #include <stdexcept>
 #include <map>
+#include <set>
 #include <vector>
 #include <algorithm>
 
