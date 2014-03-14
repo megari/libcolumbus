@@ -10,9 +10,7 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::ErrorValues::isInGroup(unsigned short)@Base" 0replaceme
  (c++)"Columbus::ErrorValues::ErrorValues()@Base" 0replaceme
  (c++)"Columbus::ErrorValues::~ErrorValues()@Base" 0replaceme
- (c++)"Columbus::IndexMatches::sort()@Base" 0replaceme
  (c++)"Columbus::IndexMatches::clear()@Base" 0replaceme
- (c++)"Columbus::IndexMatches::addMatch(Columbus::Word const&, unsigned int, int)@Base" 0replaceme
  (c++)"Columbus::IndexMatches::IndexMatches()@Base" 0replaceme
  (c++)"Columbus::IndexMatches::~IndexMatches()@Base" 0replaceme
  (c++)"Columbus::IndexWeights::setWeight(Columbus::Word const&, double)@Base" 0replaceme

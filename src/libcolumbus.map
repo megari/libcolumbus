@@ -56,7 +56,15 @@ global:
         "Columbus::ErrorValues::clearErrors()";
         "Columbus::ErrorValues::setSubstringMode()";
         
-        Columbus::IndexMatches*;
+        "Columbus::IndexMatches::IndexMatches()";
+        "Columbus::IndexMatches::~IndexMatches()";
+
+        "Columbus::IndexMatches::size() const";
+        Columbus::IndexMatches::getMatch*;
+        Columbus::IndexMatches::getQuery*;
+        Columbus::IndexMatches::getMatchError*;
+        "Columbus::IndexMatches::clear()";
+
         Columbus::IndexWeights*;
         Columbus::LevenshteinIndex*;
         Columbus::SearchParameters*;
