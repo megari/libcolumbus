@@ -66,7 +66,16 @@ global:
         "Columbus::IndexMatches::clear()";
 
         Columbus::IndexWeights*;
-        Columbus::LevenshteinIndex*;
+        "Columbus::LevenshteinIndex::LevenshteinIndex()";
+        "Columbus::LevenshteinIndex::~LevenshteinIndex()";
+        "Columbus::LevenshteinIndex::getDefaultError()";
+        Columbus::LevenshteinIndex::insertWord*;
+        Columbus::LevenshteinIndex::hasWord*;
+        Columbus::LevenshteinIndex::findWords*;
+        Columbus::LevenshteinIndex::wordCount*;
+        "Columbus::LevenshteinIndex::maxCount() const";
+        "Columbus::LevenshteinIndex::numNodes() const";
+        "Columbus::LevenshteinIndex::numWords() const";
         Columbus::SearchParameters*;
         Columbus::ResultFilter*;
         "Columbus::hiresTimestamp()";

@@ -121,10 +121,6 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++|arch=amd64)"Columbus::ResultFilter::getField(unsigned long, unsigned long) const@Base" 0replaceme
  (c++|arch=!amd64)"Columbus::ResultFilter::getField(unsigned int, unsigned int) const@Base" 0replaceme
  (c++)"Columbus::ResultFilter::numTerms() const@Base" 0replaceme
- (c++|arch=amd64)"Columbus::LevenshteinIndex::searchRecursive(Columbus::Word const&, unsigned int, Columbus::ErrorValues const&, unsigned short, unsigned short, unsigned long, Columbus::ErrorMatrix&, Columbus::IndexMatches&, int) const@Base" 0replaceme
- (c++|arch=!amd64)"Columbus::LevenshteinIndex::searchRecursive(Columbus::Word const&, unsigned int, Columbus::ErrorValues const&, unsigned short, unsigned short, unsigned int, Columbus::ErrorMatrix&, Columbus::IndexMatches&, int) const@Base" 0replaceme
- (c++|arch=amd64)"Columbus::LevenshteinIndex::findOptimalError(unsigned short, unsigned short, Columbus::Word const&, unsigned long, unsigned long, Columbus::ErrorMatrix const&, Columbus::ErrorValues const&) const@Base" 0replaceme
- (c++|arch=!amd64)"Columbus::LevenshteinIndex::findOptimalError(unsigned short, unsigned short, Columbus::Word const&, unsigned int, unsigned int, Columbus::ErrorMatrix const&, Columbus::ErrorValues const&) const@Base" 0replaceme
  (c++)"Columbus::LevenshteinIndex::hasWord(Columbus::Word const&) const@Base" 0replaceme
  (c++)"Columbus::LevenshteinIndex::maxCount() const@Base" 0replaceme
  (c++)"Columbus::LevenshteinIndex::numNodes() const@Base" 0replaceme
