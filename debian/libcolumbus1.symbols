@@ -1,15 +1,11 @@
 libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::ErrorValues::addAccents(Columbus::accentGroups)@Base" 0replaceme
  (c++)"Columbus::ErrorValues::clearErrors()@Base" 0replaceme
- (c++)"Columbus::ErrorValues::setPadError(unsigned short, char const*, int, int)@Base" 0replaceme
  (c++)"Columbus::ErrorValues::setGroupError(Columbus::Word const&, int)@Base" 0replaceme
  (c++)"Columbus::ErrorValues::setSubstringMode()@Base" 0replaceme
  (c++)"Columbus::ErrorValues::addKeyboardErrors()@Base" 0replaceme
  (c++)"Columbus::ErrorValues::addStandardErrors()@Base" 0replaceme
- (c++)"Columbus::ErrorValues::addGroupErrorToLUT(Columbus::Word const&, int)@Base" 0replaceme
  (c++)"Columbus::ErrorValues::addNumberpadErrors()@Base" 0replaceme
- (c++)"Columbus::ErrorValues::addToLUT(unsigned short, unsigned short, int)@Base" 0replaceme
- (c++)"Columbus::ErrorValues::clearLUT()@Base" 0replaceme
  (c++)"Columbus::ErrorValues::setError(unsigned short, unsigned short, int)@Base" 0replaceme
  (c++)"Columbus::ErrorValues::isInGroup(unsigned short)@Base" 0replaceme
  (c++)"Columbus::ErrorValues::ErrorValues()@Base" 0replaceme
@@ -107,7 +103,6 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::WordStore::WordStore()@Base" 0replaceme
  (c++)"Columbus::WordStore::~WordStore()@Base" 0replaceme
  (c++)"Columbus::ErrorValues::getSubstituteError(unsigned short, unsigned short) const@Base" 0replaceme
- (c++)"Columbus::ErrorValues::getSubstituteErrorSlow(unsigned short, unsigned short) const@Base" 0replaceme
  (c++|arch=amd64)"Columbus::IndexMatches::getMatchError(unsigned long) const@Base" 0replaceme
  (c++|arch=!amd64)"Columbus::IndexMatches::getMatchError(unsigned int) const@Base" 0replaceme
  (c++)"Columbus::IndexMatches::size() const@Base" 0replaceme

@@ -26,7 +26,36 @@ global:
         Columbus::MatchResults::add*;
         "Columbus::MatchResults::size() const";
         Columbus::MatchResults::get*;
-        Columbus::ErrorValues*;
+
+        "Columbus::ErrorValues::ErrorValues()";
+        "Columbus::ErrorValues::~ErrorValues()";
+        "Columbus::ErrorValues::getInsertionError() const";
+        "Columbus::ErrorValues::getDeletionError() const";
+        "Columbus::ErrorValues::getEndDeletionError() const";
+        Columbus::ErrorValues::getStartInsertionError*;
+        "Columbus::ErrorValues::getTransposeError() const";
+        "Columbus::ErrorValues::setInsertionError(const int)";
+        "Columbus::ErrorValues::setDeletionError(const int)";
+        "Columbus::ErrorValues::setEndDeletionError(const int)";
+        "Columbus::ErrorValues::setStartInsertionError(const int)";
+        "Columbus::ErrorValues::setTransposeError(const int)";
+        Columbus::ErrorValues::setSubstringStartLimit*;
+        Columbus::ErrorValues::getSubstituteError*;
+        "Columbus::ErrorValues::getDefaultError()";
+        "Columbus::ErrorValues::getDefaultGroupError()";
+        "Columbus::ErrorValues::getDefaultTypoError()";
+        "Columbus::ErrorValues::getSubstringDefaultEndDeletionError()";
+        "Columbus::ErrorValues::getSubstringDefaultStartInsertionError()";
+        Columbus::ErrorValues::setError*;
+        Columbus::ErrorValues::setGroupError*;
+        Columbus::ErrorValues::addAccents*;
+        "Columbus::ErrorValues::addKeyboardErrors()";
+        "Columbus::ErrorValues::addNumberpadErrors()";
+        "Columbus::ErrorValues::addStandardErrors()";
+        Columbus::ErrorValues::isInGroup*;
+        "Columbus::ErrorValues::clearErrors()";
+        "Columbus::ErrorValues::setSubstringMode()";
+        
         Columbus::IndexMatches*;
         Columbus::IndexWeights*;
         Columbus::LevenshteinIndex*;
