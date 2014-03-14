@@ -1,7 +1,13 @@
 {
 global:
     extern "C++" {
-        Columbus::Matcher*;
+        "Columbus::Matcher::Matcher()";
+        "Columbus::Matcher::~Matcher()";
+        Columbus::Matcher::match*;
+        Columbus::Matcher::onlineMatch*;
+        Columbus::Matcher::get*;
+        Columbus::Matcher::operator*;
+        Columbus::Matcher::index*;
         Columbus::Word*;
         Columbus::WordStore*;
         Columbus::Corpus*;

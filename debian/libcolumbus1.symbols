@@ -76,12 +76,9 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::Corpus::addDocument(Columbus::Document const&)@Base" 0replaceme
  (c++)"Columbus::Corpus::Corpus()@Base" 0replaceme
  (c++)"Columbus::Corpus::~Corpus()@Base" 0replaceme
- (c++)"Columbus::Matcher::addToIndex(Columbus::Word const&, unsigned int, unsigned int)@Base" 0replaceme
  (c++)"Columbus::Matcher::onlineMatch(Columbus::WordList const&, Columbus::Word const&)@Base" 0replaceme
- (c++)"Columbus::Matcher::buildIndexes(Columbus::Corpus const&)@Base" 0replaceme
  (c++)"Columbus::Matcher::getErrorValues()@Base" 0replaceme
  (c++)"Columbus::Matcher::getIndexWeights()@Base" 0replaceme
- (c++)"Columbus::Matcher::matchWithRelevancy(Columbus::WordList const&, Columbus::SearchParameters const&, int, Columbus::MatchResults&)@Base" 0replaceme
  (c++)"Columbus::Matcher::index(Columbus::Corpus const&)@Base" 0replaceme
  (c++)"Columbus::Matcher::match(char const*)@Base" 0replaceme
  (c++)"Columbus::Matcher::match(char const*, Columbus::SearchParameters const&)@Base" 0replaceme
