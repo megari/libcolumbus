@@ -15,7 +15,7 @@ global:
         Columbus::Word::toUtf8*;
         Columbus::Word::join*;
         Columbus::Word::operator*;
-        "Columbus::Word::hash()";
+        "Columbus::Word::hash() const";
         Columbus::WordStore*;
         Columbus::Corpus*;
         Columbus::WordList*;
@@ -24,6 +24,7 @@ global:
         "Columbus::MatchResults::~MatchResults()";
         Columbus::MatchResults::operator*;
         Columbus::MatchResults::add*;
+        Columbus::MatchResults::copyResult*;
         "Columbus::MatchResults::size() const";
         Columbus::MatchResults::get*;
 

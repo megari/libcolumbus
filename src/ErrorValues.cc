@@ -94,10 +94,10 @@ int ErrorValues::getSubstituteError(Letter l1, Letter l2) const {
     if(l1 < LUT_LETTERS && l2 < LUT_LETTERS) {
         return p->lut[LUT_OFFSET(l1, l2)];
     }
-    return getSubstituteErrorSlow(l1, l2);
+    return substituteErrorSlow(l1, l2);
 }
 
-int ErrorValues::getSubstituteErrorSlow(Letter l1, Letter l2) const {
+int ErrorValues::substituteErrorSlow(Letter l1, Letter l2) const {
     if(l1 == l2)
         return 0;
     if(l1 > l2) {

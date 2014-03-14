@@ -42,7 +42,7 @@ private:
 
     void buildIndexes(const Corpus &c);
     void addToIndex(const Word &word, const WordID wordID, const WordID indexID);
-    void matchWithRelevancy(const WordList &query, const SearchParameters &params, const int extraError, MatchResults &matchedDocuments);
+    void relevancyMatch(const WordList &query, const SearchParameters &params, const int extraError, MatchResults &matchedDocuments);
 
 public:
     Matcher();

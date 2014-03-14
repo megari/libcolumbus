@@ -308,7 +308,7 @@ void Matcher::addToIndex(const Word &word, const WordID wordID, const WordID ind
 }
 
 
-void Matcher::matchWithRelevancy(const WordList &query, const SearchParameters &params, const int extraError, MatchResults &matchedDocuments) {
+void Matcher::relevancyMatch(const WordList &query, const SearchParameters &params, const int extraError, MatchResults &matchedDocuments) {
     map<DocumentID, double> docs;
     BestIndexMatches bestIndexMatches;
     double start, indexMatchEnd, gatherEnd, finish;
@@ -340,7 +340,7 @@ MatchResults Matcher::match(const WordList &query, const SearchParameters &param
     // Try to search with ever growing error until we find enough matches.
     for(int i=0; i<maxIterations; i++) {
         MatchResults matches;
-        matchWithRelevancy(query, params, i*increment, matches);
+        relevancyMatch(query, params, i*increment, matches);
         if(matches.size() >= minMatches || i == maxIterations-1) {
             allMatches.addResults(matches);
             break;
