@@ -25,8 +25,11 @@ if(ICONV_LIBRARIES)
 endif()
 target_link_libraries(${COL_LIB_BASENAME} ${ICU_LIBRARIES})
 
+set(symbol_map "${CMAKE_CURRENT_SOURCE_DIR}/libcolumbus.map")
 set_target_properties(${COL_LIB_BASENAME} PROPERTIES VERSION ${SO_VERSION} SOVERSION ${ABI_VERSION})
-
+set_target_properties(${COL_LIB_BASENAME} PROPERTIES
+    LINK_FLAGS "${ldflags} -Wl,--version-script,${symbol_map}")
+set_target_properties(${COL_LIB_BASENAME} PROPERTIES LINK_DEPENDS ${symbol_map})
 add_pch(pch/columbus_pch.hh ${COL_LIB_BASENAME})
 
 install(

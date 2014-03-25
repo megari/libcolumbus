@@ -4,7 +4,11 @@ macro(coltest tname tfilename)
   add_test(${tname} ${tname})
 endmacro()
 
-coltest(trie TrieTest.cc)
+# Trie is an internal class whose symbols are hidden
+# so we need to add the source manually.
+add_executable(trie TrieTest.cc ../src/Trie.cc)
+target_link_libraries(trie ${COL_LIB_BASENAME})
+add_test(trie trie)
 coltest(levtrie LevTrieTest.cc)
 coltest(levindex LevIndexTest.cc)
 coltest(custom_error CustomErrorTest.cc)

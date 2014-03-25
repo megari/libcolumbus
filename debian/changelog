@@ -1,3 +1,13 @@
+libcolumbus (1.1.0+14.04.20140325.2-0ubuntu1) UNRELEASED; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Add symbol versioning.
+
+  [ Ubuntu daily release ]
+  * New rebuild forced
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 25 Mar 2014 12:52:05 +0000
+
 libcolumbus (1.1.0+14.04.20140306-0ubuntu1) trusty; urgency=medium
 
   [ Jussi Pakkanen ]
@@ -46,7 +56,7 @@ libcolumbus (1.0.0+13.10.20130814.1-0ubuntu1) saucy; urgency=low
 libcolumbus (1.0.0+13.10.20130814-0ubuntu1) saucy; urgency=low
 
   [ Mathieu Trudel-Lapierre ]
-  * Release new upstream version, bump to ABI 1 
+  * Release new upstream version, bump to ABI 1
 
   [ Ubuntu daily release ]
   * Automatic snapshot from revision 452
