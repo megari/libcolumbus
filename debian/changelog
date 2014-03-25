@@ -1,10 +1,10 @@
-libcolumbus (1.1.0+14.04.20140325-0ubuntu1) trusty; urgency=low
+libcolumbus (1.1.0+14.04.20140325.2-0ubuntu1) UNRELEASED; urgency=low
 
   [ Jussi Pakkanen ]
   * Add symbol versioning.
 
   [ Ubuntu daily release ]
-  * debian/*symbols: auto-update new symbols to released version
+  * New rebuild forced
 
  -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 25 Mar 2014 12:52:05 +0000
 
