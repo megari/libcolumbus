@@ -1,3 +1,13 @@
+libcolumbus (1.1.0+15.10.20150806-0ubuntu1) wily; urgency=medium
+
+  [ CI Train Bot ]
+  * New rebuild forced.
+
+  [ Iain Lane ]
+  * Rename packages for g++5 ABI break
+
+ -- CI Train Bot <ci-train-bot@canonical.com>  Thu, 06 Aug 2015 09:15:23 +0000
+
 libcolumbus (1.1.0+14.04.20140325.3-0ubuntu1) trusty; urgency=low
 
   [ Jussi Pakkanen ]
