@@ -11,7 +11,7 @@ global:
         Columbus::Word::Word*;
         "Columbus::Word::~Word()";
         "Columbs::Word::length()";
-        "Columbus::Word::asUtf8() const";
+        "Columbus::Word::asUtf8[abi:cxx11]() const";
         Columbus::Word::toUtf8*;
         Columbus::Word::join*;
         Columbus::Word::operator*;

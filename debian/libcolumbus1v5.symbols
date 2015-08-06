@@ -50,20 +50,20 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++|arch=amd64 arm64 ppc64el)"Columbus::Word::Word(unsigned short*, unsigned long)@Base" 1.1.0+14.04.20140325.3
  (c++|arch=i386 armhf powerpc)"Columbus::Word::Word(unsigned short*, unsigned int)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::Word(Columbus::Word const&)@Base" 1.1.0+14.04.20140325.3
- (c++)"Columbus::Word::Word(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 1.1.0+14.04.20140325.3
+ (c++)"Columbus::Word::Word(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::Word()@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::Word(Columbus::Word&&)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::Word(char const*)@Base" 1.1.0+14.04.20140325.3
  (c++|arch=amd64 arm64 ppc64el)"Columbus::Word::Word(unsigned short*, unsigned long)@Base" 1.1.0+14.04.20140325.3
  (c++|arch=i386 armhf powerpc)"Columbus::Word::Word(unsigned short*, unsigned int)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::Word(Columbus::Word const&)@Base" 1.1.0+14.04.20140325.3
- (c++)"Columbus::Word::Word(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 1.1.0+14.04.20140325.3
+ (c++)"Columbus::Word::Word(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::Word()@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::~Word()@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::operator=(Columbus::Word&&)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::operator=(char const*)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::operator=(Columbus::Word const&)@Base" 1.1.0+14.04.20140325.3
- (c++)"Columbus::Word::operator=(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 1.1.0+14.04.20140325.3
+ (c++)"Columbus::Word::operator=(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Corpus::addDocument(Columbus::Document const&)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Corpus::Corpus()@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Corpus::~Corpus()@Base" 1.1.0+14.04.20140325.3
@@ -75,12 +75,12 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::Matcher::match(char const*, Columbus::SearchParameters const&)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Matcher::match(Columbus::WordList const&)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Matcher::match(Columbus::WordList const&, Columbus::SearchParameters const&)@Base" 1.1.0+14.04.20140325.3
- (c++)"Columbus::Matcher::match(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 1.1.0+14.04.20140325.3
+ (c++)"Columbus::Matcher::match(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Matcher::Matcher()@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Matcher::~Matcher()@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Document::addText(Columbus::Word const&, char const*)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Document::addText(Columbus::Word const&, Columbus::WordList const&)@Base" 1.1.0+14.04.20140325.3
- (c++)"Columbus::Document::addText(Columbus::Word const&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 1.1.0+14.04.20140325.3
+ (c++)"Columbus::Document::addText(Columbus::Word const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Document::Document(Columbus::Document const&)@Base" 1.1.0+14.04.20140325.3
  (c++|arch=amd64 arm64 ppc64el)"Columbus::Document::Document(unsigned long)@Base" 1.1.0+14.04.20140325.3
  (c++|arch=i386 armhf powerpc)"Columbus::Document::Document(unsigned int)@Base" 1.1.0+14.04.20140325.3
@@ -134,16 +134,16 @@ libcolumbus.so.1 libcolumbus1 #MINVER#
  (c++)"Columbus::SearchParameters::isDynamic() const@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::hash() const@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::join(Columbus::Word const&) const@Base" 1.1.0+14.04.20140325.3
- (c++)"Columbus::Word::asUtf8() const@Base" 1.1.0+14.04.20140325.3
+ (c++)"Columbus::Word::asUtf8[abi:cxx11]() const@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::toUtf8(char*, unsigned int) const@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::operator==(char const*) const@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::operator==(Columbus::Word const&) const@Base" 1.1.0+14.04.20140325.3
- (c++)"Columbus::Word::operator==(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const@Base" 1.1.0+14.04.20140325.3
+ (c++)"Columbus::Word::operator==(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::operator[](unsigned int) const@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::operator<(Columbus::Word const&) const@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::operator!=(char const*) const@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Word::operator!=(Columbus::Word const&) const@Base" 1.1.0+14.04.20140325.3
- (c++)"Columbus::Word::operator!=(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const@Base" 1.1.0+14.04.20140325.3
+ (c++)"Columbus::Word::operator!=(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const@Base" 1.1.0+14.04.20140325.3
  (c++|arch=amd64 arm64 ppc64el)"Columbus::Corpus::getDocument(unsigned long) const@Base" 1.1.0+14.04.20140325.3
  (c++|arch=i386 armhf powerpc)"Columbus::Corpus::getDocument(unsigned int) const@Base" 1.1.0+14.04.20140325.3
  (c++)"Columbus::Corpus::size() const@Base" 1.1.0+14.04.20140325.3
