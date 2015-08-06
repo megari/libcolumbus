@@ -13,7 +13,7 @@ Standards-Version: 3.9.4
 Homepage: https://launchpad.net/libcolombus
 Vcs-Bzr: https://code.launchpad.net/~canonical-product-strategy/libcolumbus/trunk
 
-Package: libcolumbus1
+Package: libcolumbus1v5
 Section: libs
 Architecture: any
 Multi-Arch: same
@@ -21,6 +21,8 @@ Pre-Depends: ${misc:Pre-Depends}
 Depends: libcolumbus1-common (= ${source:Version}),
          ${shlibs:Depends},
          ${misc:Depends},
+Conflicts: libcolumbus1
+Replaces: libcolumbus1
 Description: error tolerant matching engine - shared library
  Libcolumbus is a search engine designed to work with unclean data.
 
@@ -40,7 +42,7 @@ Section: libdevel
 Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
-Depends: libcolumbus1 (= ${binary:Version}),
+Depends: libcolumbus1v5 (= ${binary:Version}),
          ${misc:Depends},
 Description: error tolerant matching engine - development files
  Libcolumbus is a search engine designed to work with unclean data.
@@ -51,7 +53,7 @@ Package: python3-columbus
 Section: python
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
-Depends: libcolumbus1 (= ${binary:Version}),
+Depends: libcolumbus1v5 (= ${binary:Version}),
          ${misc:Depends},
          ${shlibs:Depends},
 Description: error tolerant matching engine - Python bindings
