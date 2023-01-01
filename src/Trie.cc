@@ -169,7 +169,7 @@ TrieOffset Trie::addNewSibling(const TrieOffset node, const TrieOffset sibling, 
 TrieOffset Trie::insertWord(const Word &word, const WordID wordID) {
     size_t i=0;
     TrieOffset node = p->root;
-    LetterW lw = word[0];
+    Letter lw = word[0];
 
     // A word mustn't begin with a broken surrogate pair.
     if(lw.isSurrogate() && !lw.isHighSurrogate()) {

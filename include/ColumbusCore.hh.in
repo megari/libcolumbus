@@ -80,7 +80,6 @@
 #define COLUMBUS_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}"
 #define COLUMBUS_DATADIR COLUMBUS_INSTALL_PREFIX "/share/${COL_LIB_BASENAME}${SO_VERSION_MAJOR}/"
 
-#if 1
 typedef ${LETTER_TYPE} Letter_;
 
 #ifdef __cplusplus
@@ -93,29 +92,20 @@ struct LetterBaseT {
 	T val;
 	//using LetterType = T;
 
+	LetterBaseT() = default;
 	LetterBaseT(const T& l) : val(l) { }
 
+	operator T() const {
+		return val;
+	}
+
 #if 0
-	bool isSurrogate() const;
-
-	bool isHighSurrogate() const;
-
-	bool isLowSurrogate() const;
-#endif
-
-	operator T() {
-		return val;
-	}
-
-	operator T&() {
-		return val;
-	}
-
 	operator const T&() const {
 		return val;
 	}
+#endif
 
-	operator T&&() const {
+	operator T&&() {
 		return std::move(val);
 	}
 };
@@ -123,36 +113,77 @@ struct LetterBaseT {
 template<typename T>
 struct LetterT;
 
+namespace megari_internal {
+template<typename T>
+static inline bool isHighSurrogate(const T);
+template<typename T>
+static inline bool isLowSurrogate(const T);
+
+template<typename T>
+static inline constexpr bool isSurrogate(const T val)
+{
+	return isHighSurrogate(val) || isLowSurrogate(val);
+}
+
+template<>
+inline constexpr bool isHighSurrogate(const LetterUCS4) {
+	return false;
+}
+template<>
+inline constexpr bool isLowSurrogate(const LetterUCS4) {
+	return false;
+}
+
+template<>
+inline bool isHighSurrogate(const LetterUTF16 val) {
+	return (val > 0xd7ffu) && (val < 0xdc00u);
+}
+template<>
+inline bool isLowSurrogate(const LetterUTF16 val) {
+	return (val > 0xdbffu) && (val < 0xe000u);
+}
+}
+
+
+template<typename T>
+struct LetterT : public LetterBaseT<T> {
+	using LetterBaseT<T>::LetterBaseT;
+	using LetterBaseT<T>::val;
+
+	constexpr bool isSurrogate() const {
+		return megari_internal::isSurrogate<T>(val);
+	}
+
+	constexpr bool isHighSurrogate() const {
+		return megari_internal::isHighSurrogate<T>(val);
+	}
+
+	constexpr bool isLowSurrogate() const {
+		return megari_internal::isLowSurrogate<T>(val);
+	}
+};
+
+#if 0
 template<>
 struct LetterT<LetterUCS4> : public LetterBaseT<LetterUCS4> {
-
-//	using LetterT<LetterUCS4>::val;
-//	using LetterT<LetterUCS4>::LetterType;
 	using LetterBaseT<LetterUCS4>::LetterBaseT;
 
-//	Letter(const LetterUCS4& l) : LetterBaseT<LetterUCS4>(l) { }
-
-	bool isSurrogate() const {
+	constexpr bool isSurrogate() const {
 		return false;
 	}
 
-	bool isHighSurrogate() const {
+	constexpr bool isHighSurrogate() const {
 		return false;
 	}
 
-	bool isLowSurrogate() const {
+	constexpr bool isLowSurrogate() const {
 		return false;
 	}
 };
 
 template<>
 struct LetterT<LetterUTF16> : public LetterBaseT<LetterUTF16> {
-
-//	using LetterT<LetterUTF16>::val;
-//	using LetterT<LetterUTF16>::LetterType;
 	using LetterBaseT<LetterUTF16>::LetterBaseT;
-
-//	Letter(const LetterUTF16& l) : LetterBaseT<LetterUTF16>(l) { }
 
 	bool isSurrogate() const {
 		return isHighSurrogate() || isLowSurrogate();
@@ -166,20 +197,20 @@ struct LetterT<LetterUTF16> : public LetterBaseT<LetterUTF16> {
 		return (val > 0xdbffu) && (val < 0xe000u);
 	}
 };
+#endif
 
-//typedef LetterT<Letter_>::LetterType Letter;
-typedef Letter_ Letter;
-typedef LetterT<Letter> LetterW;
-//static_assert(std::is_pod<LetterW>::value, "LetterW is not POD");
-static_assert(std::is_standard_layout<LetterW>::value, "LetterW is not standard layout");
-static_assert(std::is_trivially_copyable<LetterW>::value, "LetterW is not trivially copyable");
+typedef LetterT<Letter_> Letter;
+static_assert(std::is_pod<Letter>::value, "Letter is not POD");
+static_assert(std::is_standard_layout<Letter>::value, "Letter is not standard layout");
+static_assert(std::is_trivially_copyable<Letter>::value, "Letter is not trivially copyable");
+static_assert(std::is_constructible<Letter>::value, "Letter is not constructible");
+static_assert(std::is_trivially_default_constructible<Letter>::value, "Letter is not trivially default constructible");
+static_assert(std::is_trivial<Letter>::value, "Letter is not trivial");
+static_assert(sizeof(Letter) == sizeof(Letter_),
+	"Size of letter wrapper class does not match that of the underlying type");
 #else
 typedef Letter_ Letter;
 #endif /* __cplusplus */
-
-#else
-typedef ${LETTER_TYPE} Letter;
-#endif /* 0 */
 
 #define INTERNAL_ENCODING "${INTERNAL_ENCODING}"
 

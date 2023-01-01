@@ -173,6 +173,73 @@ void testEncoding() {
     assert(strcmp(text, wInit.asUtf8().c_str()) == 0);
 }
 
+void testEncoding2() {
+    const unsigned char txt[] = { 0xF0, 0x90, 0x90, 0xB7, 0}; // "𐐷" in UTF-8.
+    char *text = (char*)txt;
+    char returned[5];
+    Word w1((const char *) &txt[0]);
+
+    if(sizeof(Letter) == 2u) {
+        assert(w1.length() == 2);
+        assert(w1[0] == 0xd801u);
+        assert(w1[1] == 0xdc37u);
+
+        bool gotAssertion = false;
+
+        // A lone UTF-16 high surrogate
+        try {
+           Letter broken_surr_ls[5] = { 'a', 'b', 0xd801u, 'c', 0 };
+           Word w_broken(&broken_surr_ls[0], 5);
+           gotAssertion = false;
+        } catch(std::invalid_argument &e) {
+           gotAssertion = true;
+        }
+        assert(gotAssertion);
+
+        // A lone UTF-16 low surrogate
+        gotAssertion = false;
+        try {
+           Letter broken_surr_ls[5] = { 'a', 'b', 0xdc37u, 'c', 0 };
+           Word w_broken(&broken_surr_ls[0], 5);
+           gotAssertion = false;
+        } catch(std::invalid_argument &e) {
+           gotAssertion = true;
+        }
+        assert(gotAssertion);
+
+        // An invalid sequence of UTF-16 surrogates
+        gotAssertion = false;
+        try {
+           Letter broken_surr_ls[5] = { 'a', 0xd801u, 0xdc37u, 0xdc37u, 0 };
+           Word w_broken(&broken_surr_ls[0], 5);
+           gotAssertion = false;
+        } catch(std::invalid_argument &e) {
+           gotAssertion = true;
+        }
+        assert(gotAssertion);
+    }
+    else if(sizeof(Letter) == 4u) {
+        assert(w1.length() == 1);
+        assert(w1[0] == Letter(0x10437u));
+    }
+    else {
+	assert(false);
+    }
+    w1.toUtf8(returned, 5);
+    assert(strcmp(text, returned) == 0);
+    assert(strcmp(text, w1.asUtf8().c_str()) == 0);
+
+    Word wAss("abc");
+    assert(strcmp("abc", wAss.asUtf8().c_str()) == 0); // Make it allocate its internal things to check that they are released appropriately
+    wAss = w1;
+    assert(strcmp(text, w1.asUtf8().c_str()) == 0);
+    assert(strcmp(text, wAss.asUtf8().c_str()) == 0);
+
+    Word wInit(w1);
+    assert(strcmp(text, w1.asUtf8().c_str()) == 0);
+    assert(strcmp(text, wInit.asUtf8().c_str()) == 0);
+}
+
 void testLessThan() {
     Word w1("a");
     Word w2("b");
@@ -278,6 +345,7 @@ int main(int /*argc*/, char **/* argv*/) {
         testCreation();
         testComparison();
         testEncoding();
+        testEncoding2();
         testLessThan();
         testAutoLower();
         testJoin();

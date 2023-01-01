@@ -74,6 +74,11 @@ Word::Word(Letter *letters, size_t length) {
         text = nullptr;
         throw std::invalid_argument("Tried to create a Word with whitespace.");
     }
+    else if(hasBrokenSurrogates()) {
+        delete []text;
+        text = nullptr;
+        throw std::invalid_argument("Tried to create a Word with broken surrogates.");
+    }
 }
 
 Word::Word(const std::string &w) : text(0), len(0) {
@@ -90,6 +95,13 @@ void Word::convertString(const char *utf8Word) {
         delete []text;
         text = nullptr;
         std::string err("Tried to create a word with whitespace in it: ");
+        err += (const char*)utf8Word;
+        throw std::invalid_argument(err);
+    }
+    else if(hasBrokenSurrogates()) {
+        delete []text;
+        text = nullptr;
+        std::string err("Tried to create a word with broken surrogates in it: ");
         err += (const char*)utf8Word;
         throw std::invalid_argument(err);
     }
@@ -149,11 +161,15 @@ bool Word::hasWhitespace() {
     return false;
 }
 
+/**
+ * A word should not have any lone surrogates or broken surrogates.
+ * Verify that we don't.
+ */
 bool Word::hasBrokenSurrogates() {
     bool expectSurrogate = false;
     bool expectHigh = true;
     for(unsigned int i=0; i < len; ++i) {
-        LetterW cur = LetterW(text[i]);
+       Letter cur = text[i];
 	if(expectSurrogate && !cur.isSurrogate()) {
             return true;
 	}
