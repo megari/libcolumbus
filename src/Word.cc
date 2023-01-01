@@ -149,6 +149,40 @@ bool Word::hasWhitespace() {
     return false;
 }
 
+bool Word::hasBrokenSurrogates() {
+    bool expectSurrogate = false;
+    bool expectHigh = true;
+    for(unsigned int i=0; i < len; ++i) {
+        LetterW cur = LetterW(text[i]);
+	if(expectSurrogate && !cur.isSurrogate()) {
+            return true;
+	}
+
+        if(cur.isSurrogate()) {
+            if(expectHigh && !cur.isHighSurrogate()) {
+                return true;
+            }
+
+            assert(expectHigh || (!expectHigh && cur.isLowSurrogate()));
+            if(expectHigh) {
+                expectHigh = false;
+                expectSurrogate = true;
+            }
+            else { // Low surrogate
+                expectHigh = true;
+                expectSurrogate = false;
+            }
+        }
+#if 0
+        else {
+            expectHigh = true;
+            expectSurrogate = false;
+        }
+#endif /* 0 */
+    }
+    return false;
+}
+
 bool Word::operator==(const Word &w) const {
     if(this == &w)
         return true;

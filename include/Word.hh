@@ -38,6 +38,7 @@ private:
     unsigned int len;
 
     bool hasWhitespace();
+    bool hasBrokenSurrogates();
     void duplicateFrom(const Word &w);
     void convertString(const char *utf8Word);
 

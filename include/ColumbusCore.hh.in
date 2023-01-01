@@ -52,6 +52,7 @@
 #ifdef __cplusplus
   #include <cstddef>
   #include <cstdint>
+  #include <utility>
 #else
   #include<stddef.h>
   #include <stdint.h>
@@ -79,7 +80,107 @@
 #define COLUMBUS_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}"
 #define COLUMBUS_DATADIR COLUMBUS_INSTALL_PREFIX "/share/${COL_LIB_BASENAME}${SO_VERSION_MAJOR}/"
 
+#if 1
+typedef ${LETTER_TYPE} Letter_;
+
+#ifdef __cplusplus
+typedef uint32_t LetterUCS4;
+//typedef uint16_t LetterUCS2;
+typedef uint16_t LetterUTF16;
+
+template<typename T>
+struct LetterBaseT {
+	T val;
+	//using LetterType = T;
+
+	LetterBaseT(const T& l) : val(l) { }
+
+#if 0
+	bool isSurrogate() const;
+
+	bool isHighSurrogate() const;
+
+	bool isLowSurrogate() const;
+#endif
+
+	operator T() {
+		return val;
+	}
+
+	operator T&() {
+		return val;
+	}
+
+	operator const T&() const {
+		return val;
+	}
+
+	operator T&&() const {
+		return std::move(val);
+	}
+};
+
+template<typename T>
+struct LetterT;
+
+template<>
+struct LetterT<LetterUCS4> : public LetterBaseT<LetterUCS4> {
+
+//	using LetterT<LetterUCS4>::val;
+//	using LetterT<LetterUCS4>::LetterType;
+	using LetterBaseT<LetterUCS4>::LetterBaseT;
+
+//	Letter(const LetterUCS4& l) : LetterBaseT<LetterUCS4>(l) { }
+
+	bool isSurrogate() const {
+		return false;
+	}
+
+	bool isHighSurrogate() const {
+		return false;
+	}
+
+	bool isLowSurrogate() const {
+		return false;
+	}
+};
+
+template<>
+struct LetterT<LetterUTF16> : public LetterBaseT<LetterUTF16> {
+
+//	using LetterT<LetterUTF16>::val;
+//	using LetterT<LetterUTF16>::LetterType;
+	using LetterBaseT<LetterUTF16>::LetterBaseT;
+
+//	Letter(const LetterUTF16& l) : LetterBaseT<LetterUTF16>(l) { }
+
+	bool isSurrogate() const {
+		return isHighSurrogate() || isLowSurrogate();
+	}
+
+	bool isHighSurrogate() const {
+		return (val > 0xd7ffu) && (val < 0xdc00u);
+	}
+
+	bool isLowSurrogate() const {
+		return (val > 0xdbffu) && (val < 0xe000u);
+	}
+};
+
+//typedef LetterT<Letter_>::LetterType Letter;
+typedef Letter_ Letter;
+typedef LetterT<Letter> LetterW;
+//static_assert(std::is_pod<LetterW>::value, "LetterW is not POD");
+static_assert(std::is_standard_layout<LetterW>::value, "LetterW is not standard layout");
+static_assert(std::is_trivially_copyable<LetterW>::value, "LetterW is not trivially copyable");
+#else
+typedef Letter_ Letter;
+#endif /* __cplusplus */
+
+#else
 typedef ${LETTER_TYPE} Letter;
+#endif /* 0 */
+
 #define INTERNAL_ENCODING "${INTERNAL_ENCODING}"
 
 typedef uint32_t WordID;
